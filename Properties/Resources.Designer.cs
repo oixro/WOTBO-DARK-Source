@@ -61,16 +61,6 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap aaaaaaaaaaaaaaaa {
-            get {
-                object obj = ResourceManager.GetObject("aaaaaaaaaaaaaaaa", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на @echo off
         ///for /f &quot;tokens=*&quot; %%f in (&apos;wmic cpu get NumberOfCores /value ^| find &quot;=&quot;&apos;) do set %%f
         ///for /f &quot;tokens=*&quot; %%f in (&apos;wmic cpu get NumberOfLogicalProcessors /value ^| find &quot;=&quot;&apos;) do set %%f
@@ -97,16 +87,6 @@ namespace WOTBO.Properties {
         internal static System.Drawing.Bitmap back {
             get {
                 object obj = ResourceManager.GetObject("back", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap back1 {
-            get {
-                object obj = ResourceManager.GetObject("back1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

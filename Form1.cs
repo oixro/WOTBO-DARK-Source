@@ -750,7 +750,6 @@ namespace Project
             #endregion
             label_ver.Text = version;
         }
-
         #region закрытие формы
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -1275,28 +1274,26 @@ namespace Project
                 checkBox_mica.Checked = false;
                 back_ui_11.Visible = true;
             }
-            //if (checkBox_cursors.Checked)
-            //{
-            //    using (WebClient wc = new WebClient())
-            //        if (!File.Exists($"{tempfolder}\\cursors.zip"))
-            //        {
-            //            wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
-            //            ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-            //        }
-            //    if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            //    {
-            //        Directory.CreateDirectory(@"C:\Windows\Cursors\W11_light_v2.2_small");
-            //        Directory.Move($"{tempfolder}\\cursors\\W11_light_v2.2_small", "C:\\Windows\\Cursors\\W11_light_v2.2_small");
-            //        hcmd($"regedit /s \"{tempfolder}\\cursors\\light.Install.reg\"");
-            //    }
-            //    else
-            //    {
-            //
-            //    }
-            //    checkBox_cursors.Checked = false;
-            //    checkBox_cursors.Enabled = false;
-            //    back_ui_12.Visible = true;
-            //}
+            if (checkBox_cursors.Checked)
+            {
+                using (WebClient wc = new WebClient())
+                    if (!File.Exists($"{tempfolder}\\cursors.zip"))
+                    {
+                        wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
+                        ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                    }
+                if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+                }
+                else
+                {
+                    InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+                }
+                checkBox_cursors.Checked = false;
+                checkBox_cursors.Enabled = false;
+                back_ui_12.Visible = true;
+            }
             #endregion
             #region dop
             if (checkBox_activate.Checked)
@@ -1593,6 +1590,25 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_pro_14.Enabled = false;
                 back_pro_14.Visible = true;
             }//alwaysontop
+            if (checkBox_pro_15.Checked)
+            {
+                if (MessageBox.Show($"Твик является эксперементальным!\nИ может вызвать непредвиденные ошибки.\nПродолжить?", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\CI\Policy", true).SetValue("UpgradedSystem", 0);
+                    using (WebClient wc = new WebClient())
+                        if (!Directory.Exists(tempfolder + @"\hidusbf"))
+                        {
+                            wc.DownloadFile("https://raw.githubusercontent.com/LordOfMice/hidusbf/master/hidusbf.zip", $@"{tempfolder}\\hidusbf.zip");
+                        }
+                    ZipFile.ExtractToDirectory($"{tempfolder}\\hidusbf.zip", tempfolder + @"\hidusbf");
+                    hcmd($"certutil.exe -addstore root \"{tempfolder}\\hidusbf\\SweetLow.CER\"");
+                    Process.Start($@"{tempfolder}\hidusbf\DRIVER\Setup.exe");
+                    checkBox_pro_15.Enabled = false;
+                }
+
+                checkBox_pro_15.Checked = false;
+                back_pro_15.Visible = true;
+            }
             #endregion
             #region uwp
             if (checkBox_uwp_cortana.Checked)
@@ -1645,7 +1661,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             #endregion
         }
-
         #region перемещение по пунктам
         void label1_Click(object sender, EventArgs e)
         {
@@ -2089,7 +2104,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
         }// f5 & f12
         #endregion
-
         #region download progs
         void label_download_1_Click(object sender, EventArgs e)
         {
@@ -2662,8 +2676,30 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             back_dop_4.Visible = false;
         }
         #endregion
+        public void InstallCursor(string installerFilePath)
+        {
+            string command = @"C:\WINDOWS\System32\rundll32.exe";
+            string arguments = "setupapi,InstallHinfSection DefaultInstall 132 " + installerFilePath;
 
-        
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c \"{command} {arguments}\"",
+                Verb = "runas",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            Process process = new Process
+            {
+                StartInfo = startInfo
+            };
+
+            process.Start();
+            process.WaitForExit();
+        }
+
     }
 }
 

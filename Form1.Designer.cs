@@ -80,7 +80,9 @@ namespace Project
             this.back_ui_12 = new System.Windows.Forms.PictureBox();
             this.back_ui_11 = new System.Windows.Forms.PictureBox();
             this.panel_pro2 = new System.Windows.Forms.Panel();
+            this.back_pro_15 = new System.Windows.Forms.PictureBox();
             this.back_pro_14 = new System.Windows.Forms.PictureBox();
+            this.checkBox_pro_15 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_14 = new System.Windows.Forms.CheckBox();
             this.panel_dop = new System.Windows.Forms.Panel();
             this.back_dop_4 = new System.Windows.Forms.PictureBox();
@@ -222,6 +224,7 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_11)).BeginInit();
             this.panel_pro2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_pro_15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).BeginInit();
             this.panel_dop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_4)).BeginInit();
@@ -912,7 +915,6 @@ namespace Project
             this.checkBox_cursors.Tag = "";
             this.checkBox_cursors.Text = "Установить новые курсоры";
             this.checkBox_cursors.UseVisualStyleBackColor = true;
-            this.checkBox_cursors.Visible = false;
             // 
             // checkBox_mica
             // 
@@ -960,13 +962,31 @@ namespace Project
             // panel_pro2
             // 
             this.panel_pro2.BackColor = System.Drawing.Color.Transparent;
+            this.panel_pro2.Controls.Add(this.back_pro_15);
             this.panel_pro2.Controls.Add(this.back_pro_14);
+            this.panel_pro2.Controls.Add(this.checkBox_pro_15);
             this.panel_pro2.Controls.Add(this.checkBox_pro_14);
             this.panel_pro2.Location = new System.Drawing.Point(418, 806);
             this.panel_pro2.Name = "panel_pro2";
             this.panel_pro2.Size = new System.Drawing.Size(287, 245);
             this.panel_pro2.TabIndex = 34;
             this.panel_pro2.Visible = false;
+            // 
+            // back_pro_15
+            // 
+            this.back_pro_15.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_pro_15.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_15.BackgroundImage")));
+            this.back_pro_15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_pro_15.Location = new System.Drawing.Point(0, 27);
+            this.back_pro_15.Name = "back_pro_15";
+            this.back_pro_15.Size = new System.Drawing.Size(15, 15);
+            this.back_pro_15.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_pro_15.TabIndex = 12;
+            this.back_pro_15.TabStop = false;
+            this.back_pro_15.Visible = false;
+            this.back_pro_15.Click += new System.EventHandler(this.back_pro_14_Click);
             // 
             // back_pro_14
             // 
@@ -983,6 +1003,19 @@ namespace Project
             this.back_pro_14.TabStop = false;
             this.back_pro_14.Visible = false;
             this.back_pro_14.Click += new System.EventHandler(this.back_pro_14_Click);
+            // 
+            // checkBox_pro_15
+            // 
+            this.checkBox_pro_15.AutoSize = true;
+            this.checkBox_pro_15.ForeColor = System.Drawing.Color.White;
+            this.checkBox_pro_15.Location = new System.Drawing.Point(20, 25);
+            this.checkBox_pro_15.Name = "checkBox_pro_15";
+            this.checkBox_pro_15.Size = new System.Drawing.Size(212, 17);
+            this.checkBox_pro_15.TabIndex = 21;
+            this.checkBox_pro_15.Tag = "";
+            this.checkBox_pro_15.Text = "Повысить частоту опроса USB хоста";
+            this.toolTip1.SetToolTip(this.checkBox_pro_15, resources.GetString("checkBox_pro_15.ToolTip"));
+            this.checkBox_pro_15.UseVisualStyleBackColor = true;
             // 
             // checkBox_pro_14
             // 
@@ -2762,6 +2795,7 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_11)).EndInit();
             this.panel_pro2.ResumeLayout(false);
             this.panel_pro2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_pro_15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).EndInit();
             this.panel_dop.ResumeLayout(false);
             this.panel_dop.PerformLayout();
@@ -2985,6 +3019,8 @@ namespace Project
         private System.Windows.Forms.Button button_pro_2_new;
         private System.Windows.Forms.Button button_pro_1_new;
         private System.Windows.Forms.PictureBox logo;
+        private System.Windows.Forms.PictureBox back_pro_15;
+        private System.Windows.Forms.CheckBox checkBox_pro_15;
     }
 }
 
