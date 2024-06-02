@@ -2676,6 +2676,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             back_dop_4.Visible = false;
         }
         #endregion
+        #region installcursors
         public void InstallCursor(string installerFilePath)
         {
             string command = @"C:\WINDOWS\System32\rundll32.exe";
@@ -2699,6 +2700,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             process.Start();
             process.WaitForExit();
         }
+        #endregion
 
     }
 }
