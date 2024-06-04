@@ -1,7 +1,7 @@
 ﻿
 namespace Project
 {
-    partial class Form1
+    partial class WOTBO
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -30,7 +30,7 @@ namespace Project
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WOTBO));
             this.PanelMain = new System.Windows.Forms.Panel();
             this.button_new = new System.Windows.Forms.Button();
             this.label_language = new System.Windows.Forms.Label();
@@ -1016,6 +1016,7 @@ namespace Project
             this.checkBox_pro_15.Text = "Повысить частоту опроса USB хоста";
             this.toolTip1.SetToolTip(this.checkBox_pro_15, resources.GetString("checkBox_pro_15.ToolTip"));
             this.checkBox_pro_15.UseVisualStyleBackColor = true;
+            this.checkBox_pro_15.Visible = false;
             // 
             // checkBox_pro_14
             // 
@@ -1027,7 +1028,7 @@ namespace Project
             this.checkBox_pro_14.TabIndex = 21;
             this.checkBox_pro_14.Tag = "";
             this.checkBox_pro_14.Text = "Добавить закрепление окон";
-            this.toolTip1.SetToolTip(this.checkBox_pro_14, "Закрепление окон по нажатию Ctrl+Пробел\r\n");
+            this.toolTip1.SetToolTip(this.checkBox_pro_14, "Закрепление окна по нажатию Ctrl+Пробел\r\n");
             this.checkBox_pro_14.UseVisualStyleBackColor = true;
             // 
             // panel_dop
@@ -1226,6 +1227,7 @@ namespace Project
             // 
             this.checkBox_onedrive.AutoSize = true;
             this.checkBox_onedrive.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_onedrive.Enabled = false;
             this.checkBox_onedrive.ForeColor = System.Drawing.Color.White;
             this.checkBox_onedrive.Location = new System.Drawing.Point(20, 65);
             this.checkBox_onedrive.Name = "checkBox_onedrive";
@@ -1412,7 +1414,7 @@ namespace Project
             // 
             this.panel_5.BackColor = System.Drawing.Color.Transparent;
             this.panel_5.Controls.Add(this.label7);
-            this.panel_5.Location = new System.Drawing.Point(1618, 27);
+            this.panel_5.Location = new System.Drawing.Point(1016, 289);
             this.panel_5.Name = "panel_5";
             this.panel_5.Size = new System.Drawing.Size(287, 245);
             this.panel_5.TabIndex = 30;
@@ -1782,6 +1784,7 @@ namespace Project
             this.label_ddu.Size = new System.Drawing.Size(74, 13);
             this.label_ddu.TabIndex = 13;
             this.label_ddu.Text = "Скачать DDU";
+            this.toolTip1.SetToolTip(this.label_ddu, "Лучшая программа для удаления драйвера на видеокарту");
             this.label_ddu.Click += new System.EventHandler(this.label_ddu_Click);
             // 
             // label_nvcleaninstall
@@ -1794,6 +1797,7 @@ namespace Project
             this.label_nvcleaninstall.Size = new System.Drawing.Size(122, 13);
             this.label_nvcleaninstall.TabIndex = 12;
             this.label_nvcleaninstall.Text = "Скачать NVCleanInstall";
+            this.toolTip1.SetToolTip(this.label_nvcleaninstall, "Лучшая программа для установки драйвера на видеокарту.\r\n(Только для NVIDIA)");
             this.label_nvcleaninstall.Click += new System.EventHandler(this.label_nvcleaninstall_Click);
             // 
             // back_gpu_4
@@ -1897,6 +1901,8 @@ namespace Project
             this.checkBox_hdcp.TabIndex = 2;
             this.checkBox_hdcp.Tag = "";
             this.checkBox_hdcp.Text = "Отключить HDCP";
+            this.toolTip1.SetToolTip(this.checkBox_hdcp, "Отключает технологию защиты медиаконтента, \r\nпредназначенная для предотвращения н" +
+        "езаконного копирования видеосигнала.");
             this.checkBox_hdcp.UseVisualStyleBackColor = false;
             // 
             // checkBox_ansel
@@ -1910,6 +1916,8 @@ namespace Project
             this.checkBox_ansel.TabIndex = 1;
             this.checkBox_ansel.Tag = "";
             this.checkBox_ansel.Text = "Отключить Ansel";
+            this.toolTip1.SetToolTip(this.checkBox_ansel, "Отключает \"NVIDIA Ansel\" - \"производительный\" инструмент, \r\nпозволяющий создавать" +
+        " внутриигровые фотографии \"профессионального уровня\".");
             this.checkBox_ansel.UseVisualStyleBackColor = false;
             // 
             // panel_pro
@@ -2252,8 +2260,8 @@ namespace Project
             this.checkBox_pro_3.TabIndex = 14;
             this.checkBox_pro_3.Tag = "";
             this.checkBox_pro_3.Text = "Отключить автообновление Windows";
-            this.toolTip1.SetToolTip(this.checkBox_pro_3, "Отключает автоматическое скачивание и установку обновлений,\r\n после применения об" +
-        "новления будут устанавливаться только по требованию самого пользователя.");
+            this.toolTip1.SetToolTip(this.checkBox_pro_3, "Disables automatic downloading and installation of updates,\r\nOnce applied, update" +
+        "s will only be installed at the user\'s request.");
             this.checkBox_pro_3.UseVisualStyleBackColor = true;
             // 
             // checkBox_pro_2
@@ -2736,12 +2744,12 @@ namespace Project
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Краткое описании функции:";
             // 
-            // Form1
+            // WOTBO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(44)))), ((int)(((byte)(55)))));
-            this.ClientSize = new System.Drawing.Size(2000, 1425);
+            this.ClientSize = new System.Drawing.Size(1600, 1080);
             this.Controls.Add(this.button_pro_2);
             this.Controls.Add(this.button_pro_1);
             this.Controls.Add(this.button_ui_1);
@@ -2764,12 +2772,14 @@ namespace Project
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.KeyPreview = true;
+            this.Name = "WOTBO";
             this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "WOTBO";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
             this.panel1.ResumeLayout(false);

@@ -58,7 +58,20 @@ namespace Project
                 default: break;
             }
         }
-        #endif
+#endif
         #endregion
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // FormShadow
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 265);
+            this.Name = "FormShadow";
+            this.Text = "WOTBO";
+            this.ResumeLayout(false);
+
+        }
     }
 }

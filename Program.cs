@@ -17,7 +17,7 @@ namespace test1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Exception);
-            Application.Run(new Form1());
+            Application.Run(new Project.WOTBO());
         }
 
         static void Exception(object sender, ThreadExceptionEventArgs e)

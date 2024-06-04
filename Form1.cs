@@ -21,7 +21,7 @@ using WOTBO.Properties;
 namespace Project
 {
     // Наследуемся от FormShadow
-    public partial class Form1 : FormShadow
+    public partial class WOTBO : FormShadow
     {
         #region переменные
         string version = $"build - {Assembly.GetExecutingAssembly().GetName().Version.ToString(2)}";
@@ -70,7 +70,7 @@ namespace Project
         static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
         #endregion
-        public Form1()
+        public WOTBO()
         {
             InitializeComponent();
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
@@ -161,99 +161,137 @@ namespace Project
             label_pro.Text = "7.PRO Mode";
             delete_UWP.Text = "8.Delete UWP crap";
             button1.Text = "Apply";
+            button_new.Text = "Apply";
             //label_language.Text = "9. Language";
+            toolTip1.ToolTipTitle = "Brief description of the function:";
 
             //main
             checkBox_disabledefender.Text = "Disable Windows Defender";
             toolTip1.SetToolTip(checkBox_disabledefender, "Initial Tooltip Text");
-
             checkBox_reg.Text = "Apply basic registry settings";
-            toolTip1.SetToolTip(checkBox_disabledefender, "The most important registry settings are applied");
-
+            toolTip1.SetToolTip(checkBox_reg, "The most important registry settings are applied");
             checkBox_gibernate.Text = "Disable hibernation mode";
             toolTip1.SetToolTip(checkBox_gibernate, "Hibernation is a power-saving state of the computer, primarily intended for laptops.\r\n(Takes up ~2gb)");
-
             checkBox_scheme.Text = "Import power scheme";
-            toolTip1.SetToolTip(checkBox_scheme, "Adopts optimal power supply circuitry.\r\nImproves FPS stability.");
-
+            toolTip1.SetToolTip(checkBox_scheme, "Adopts optimal power supply circuitry.\r\nImproves FPS stability.");            
             toolTip1.SetToolTip(checkBox_mousefix, "Disables acceleration, mouse acceleration.\r\nMakes mouse movements more predictable.");
-
             checkBox_mpo.Text = "Disable Multi-Plane Overlay (MPO)";
-            toolTip1.SetToolTip(checkBox_mpo, "Disabling Multi-Plane Overlay (MPO) can fix flicker issues in some desktop applications.\r\nScreen flicker may occur when playing videos using hardware acceleration in Chrome.\r\nBlack screens can occur when switching from a game (or app like Whatsapp) to a browser with looped video.\r\nSome desktop applications may flicker or stutter when resizing the window on some PC configurations.");
-
+            toolTip1.SetToolTip(checkBox_mpo, "Disabling Multi-Plane Overlay (MPO) can fix flicker issues in some desktop applications.\r\n" +
+                "Screen flicker may occur when playing videos using hardware acceleration in Chrome.\r\n" +
+                "Black screens can occur when switching from a game (or app like Whatsapp) to a browser with looped video.\r\n" +
+                "Some desktop applications may flicker or stutter when resizing the window on some PC configurations.");
             checkBox_usb.Text = "Disable USB Power saving";
             toolTip1.SetToolTip(checkBox_usb, "Disables power saving mode on USB ports.");
-
             toolTip1.SetToolTip(checkBox_bcdedit, "Configures Windows boot loader settings");
-
             checkBox_mtiititit.Text = "Disable Meltdown и Spectre";
-            toolTip1.SetToolTip(checkBox_mtiititit, "Disables advanced defenses against memory-based attacks, that is, attacks, \r\nwhere malware manipulates memory to gain control of the system.\r\n(Takes 3-5% FPS)");
-
+            toolTip1.SetToolTip(checkBox_mtiititit, "Disables advanced defenses against memory-based attacks, that is, attacks, \r\n" +
+                "where malware manipulates memory to gain control of the system.\r\n(Takes 3-5% FPS)");
             checkBox_mmagent.Text = "Configure MM-Agent";
             toolTip1.SetToolTip(checkBox_mmagent, "Configures the memory management agent (MMAgent)\r\ndepending on the amount of RAM installed\r\nto achieve stable FPS");
-
             checkBox_page.Text = "Configure the swap file";
-
-
+            toolTip1.SetToolTip(checkBox_page, "Applies optimal settings for the swap file\r\n(Ranges from 16 mb to 32 gb)");            
             checkBox_dism.Text = "Disable reserved storage";
 
 
 
             //ui
             checkBoxUI_Buttons_1.Text = "Reducing the Close, Collapse buttons size";
+            toolTip1.SetToolTip(checkBoxUI_Buttons_1, "");
             checkBoxUI_Buttons_2.Text = "Minor explorer customizations";
+            toolTip1.SetToolTip(checkBoxUI_Buttons_2, "Makes Explorer more pleasant to use\r\n(Removes unnecessary folders, items, etc.)");
             checkBoxUI_Buttons_3.Text = "Customize context menu";
+            toolTip1.SetToolTip(checkBoxUI_Buttons_3, "Adds useful items for the context menu");
             checkBoxUI_Buttons_4.Text = "Disable desktop wallpaper compression";
+            toolTip1.SetToolTip(checkBoxUI_Buttons_4, "");
             checkBox_bluefolders.Text = "Install blue folders";
+            toolTip1.SetToolTip(checkBox_bluefolders, "Sets the blue folders in Explorer to replace the yellow ones.");
             checkBox_contex.Text = "Bring back the old context menu";
+            toolTip1.SetToolTip(checkBox_contex, "Returns a human context menu");
             checkBox_shapka.Text = "Bring back the old explorer hat";
+            toolTip1.SetToolTip(checkBox_shapka, "Returns the human menu header");
             checkBox_wotboincontex.Text = "Add WOTBO to the context menu on the desktop";
+            toolTip1.SetToolTip(checkBox_wotboincontex, "");
             checkBox_explorer.Text = "Add WOTBO to the context menu on the desktop";
+            toolTip1.SetToolTip(checkBox_explorer, "");
             checkBox_ffmpeg.Text = "Add ffmpeg to context menu";
+            toolTip1.SetToolTip(checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео");
             checkBox_mica.Text = "Make the explorer translucent";
+            toolTip1.SetToolTip(checkBox_mica, "");
+            checkBox_cursors.Text = "Install new cursors";
 
             //gpu
             label_nvcleaninstall.Text = "Download NVCleanInstall";
+            toolTip1.SetToolTip(label_nvcleaninstall, "The best program to install driver on graphics card.\r\n(NVIDIA only)");
             label_ddu.Text = "Download DDU";
+            toolTip1.SetToolTip(label_ddu, "Best program to uninstall video card driver");
             checkBox_directplay.Text = "Enable DirectPlay";
+            toolTip1.SetToolTip(checkBox_directplay, "");
             checkBox_hdcp.Text = "Disable HDCP";
+            toolTip1.SetToolTip(checkBox_hdcp, "Disables media content protection technology, \r\ndesigned to prevent illegal video copying.");
             checkBox_dopNVIDIA_tweaks.Text = "NVIDIA Minor Customizations";
+            toolTip1.SetToolTip(checkBox_dopNVIDIA_tweaks, "");
             checkBox_ansel.Text = "Disable Ansel";
+            toolTip1.SetToolTip(checkBox_ansel, "Disables NVIDIA Ansel, a “productivity” tool, \r\nthat allows you to create “professional-grade” in-game photos.");
 
             //dop
             checkBox_activate.Text = "Activate Windows";
+            toolTip1.SetToolTip(checkBox_activate, "Opens the Windows activator");
             checkBox_killdefender.Text = "Remove the defender completely";
+            toolTip1.SetToolTip(checkBox_killdefender, "Utility that allows you to remove the defender completely");
             checkBox_edgedelete.Text = "Remove Edge browser";
+            toolTip1.SetToolTip(checkBox_edgedelete, "A utility that allows you to remove the built-in Edge browser");
             checkBox_onedrive.Text = "Delete OneDrive";
+            toolTip1.SetToolTip(checkBox_onedrive, "");
             checkBox_WinSxS.Text = "Cleaning the WinSxS storage";
+            toolTip1.SetToolTip(checkBox_WinSxS, "Clears the folder where all remaining Windows updates are stored\r\n(May free up several GB, depending on the number of installed updates)");
             checkBox_compactos.Text = "Compress OS files";
+            toolTip1.SetToolTip(checkBox_compactos, "Compresses Windows system files to save space");
             checkBox_temp.Text = "Clear temporary files";
+            toolTip1.SetToolTip(checkBox_temp, "Clears temporary files that are no longer used by programs");
             checkBox_updclean.Text = "Clear the Windows update cache";
+            toolTip1.SetToolTip(checkBox_updclean, "Clears downloaded Windows updates");
             checkBox_picture_cache.Text = "Increase the image cache";
+            toolTip1.SetToolTip(checkBox_picture_cache, "Increases the size of the image preview cache. \r\nThus, it (cache) will not be overwritten too often (raping NDD/SSD).");
             checkBox_mobile_traffic.Text = "Обход отслеживания мобильного трафика";
+            toolTip1.SetToolTip(checkBox_mobile_traffic, "Allows you to hide the consumption of your mobile traffic on your PC to your mobile operator.\r\nmobile traffic on your PC. Thus, you will stop paying for going over the limit.");
             checkBox_nastroyka.Text = "Remove the Windows Setup window";
+            toolTip1.SetToolTip(checkBox_nastroyka, "Disables the annoying prompt at Windows startup to finish customization");
             checkBox_zalipanie.Text = "Disable key sticking";
+            toolTip1.SetToolTip(checkBox_zalipanie, "Disables notification when Shift is pressed five times and that very Shift is stuck.");
 
             //pro
             checkBox_pro_1.Text = "Remove Home and Gallery (W11)";
+            toolTip1.SetToolTip(checkBox_pro_1, "Removes useless two folders in explorer from explorer");
             checkBox_pro_2.Text = "Disable auto-promo";
+            toolTip1.SetToolTip(checkBox_pro_2, "Disables auto-entry of promo code #oixro when registering for Evolve RP");
             checkBox_pro_3.Text = "Disable Windows Auto Update";
+            toolTip1.SetToolTip(checkBox_pro_3, "Disables automatic downloading and installation of updates,\r\nOnce applied, updates will only be installed at the user's request.");
             checkBox_pro_4.Text = "Configure Nvidia Profile Inspector";
-            //checkBox_pro_5.Text = "";
+            toolTip1.SetToolTip(checkBox_pro_4, "Applies my personal Nvidia Profile Inspector settings.");
             checkBox_pro_6.Text = "Configure MSI Mode";
+            toolTip1.SetToolTip(checkBox_pro_6, "Allows you to customize device interrupts\r\n(Increases FPS, reduces latency)");
             //checkBox_pro_7.Text = "";
+            toolTip1.SetToolTip(checkBox_pro_7, "Automatically allocates devices (usb, video card) to different processor cores");
             //checkBox_pro_8.Text = "";
+            toolTip1.SetToolTip(checkBox_pro_8, "Gives high priority to a Windows component that allows you to control most of the graphics instruction sets in Windows");
             checkBox_pro_9.Text = "Optimize Windows memory settings";
-            //checkBox_pro_10.Text = "";
+            toolTip1.SetToolTip(checkBox_pro_9, "Configures the system file management utility in Windows");
+            checkBox_pro_10.Text = "Advanced Windows Cleanup";
+            toolTip1.SetToolTip(checkBox_pro_10, "Opens a system cleanup window hidden from the normal user.");
             //checkBox_pro_11.Text = "";
+            toolTip1.SetToolTip(checkBox_pro_11, "Parameter that allows you to customize the amount of time allocated to background and active processes.");
             //checkBox_pro_12.Text = "";
+            toolTip1.SetToolTip(checkBox_pro_12, "Bufferbloat is the phenomenon where excessive buffering\r\ncauses an increase in packet transit time (Ping)\r\nand packet delay spread (Packetloss)");
             checkBox_pro_13.Text = "Forced deletion of files";
+            toolTip1.SetToolTip(checkBox_pro_13, "Adds to the context menu (RMB) the ability to:\r\ndelete files that are used by other processes\r\ndelete any folders, even system folders\r\n");
             checkBox_pro_14.Text = "Add window pinning";
-
-
-            //ChangeToolTipsForAllPictureBoxes("Returns the default value of the parameter");
-
-
+            toolTip1.SetToolTip(checkBox_pro_14, "Pinning a window by pressing Ctrl+Space");
+            checkBox_pro_15.Text = "Increase the USB host polling frequency";
+            toolTip1.SetToolTip(checkBox_pro_15, "The maximum achievable polling rate for USB mice is 1000 polls per second.\r\n" +
+                "However, the standard specifies that low-speed devices," +
+                "\r\n which is what mice typically are, should not poll more frequently " +
+                "\r\nthan once every 10 bus command cycles, which is 125 polls per second." +
+                "\r\nThis tweak sets a higher polling rate for USB mice.");
         }
 
         // Красим форму
@@ -279,6 +317,7 @@ namespace Project
         #endregion
         async void Form1_Load(object sender, EventArgs e)
         {
+            
             #region позиция и размеры
             Size = new System.Drawing.Size(390, 305);
             CenterToScreen();
@@ -287,8 +326,15 @@ namespace Project
             #region проверка запущенна ли, eula и язык
             if (!InstanceChecker.TakeMemory())
             {
-                MessageBox.Show("Другая копия программы уже запущена\nОжидайте открытия программы", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
+                if (!isEnglish)
+                {
+                    MessageBox.Show("Другая копия программы уже запущена\nИметь две открытии копии программы не рекомендуется.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("It is not recommended to have two copies of the program open.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                //hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
             }
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
             {
@@ -331,9 +377,15 @@ namespace Project
             #region temp
             if (Directory.Exists(tempfolder))
             {
-                try { Directory.Delete(tempfolder, true); }
-                catch { tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; }
-
+                tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}";
+                path_regpack7z = tempfolder + @"\regpack.zip";
+                path_regpack = tempfolder + @"\regpack";
+                path_services = tempfolder + @"\services";
+                path_uizip = tempfolder + @"\ui.zip";
+                path_ui = tempfolder + @"\ui";
+                path_dfkiller = tempfolder + @"\DFKiller";
+                path_scheme = tempfolder + @"\scheme.pow";
+                smartctl = tempfolder + @"\smartctl.exe";
             }
             #endregion
             #region ебашим backrg
@@ -655,8 +707,17 @@ namespace Project
                 checkBox_ffmpeg.Enabled = false;
                 checkBox_mica.Enabled = false;
                 checkBox_cursors.Enabled = false;
-                MessageBox.Show("Нет доступа в интернет!\nПроврека на обновления, и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
-    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (!isEnglish)
+                {
+                    MessageBox.Show("Нет доступа в интернет!\nПроврека на обновления, и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
+        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("No internet access!\nChecking for updates and some features are not available.", "Windows optimization tool by oixro (WOTBO)",
+MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                label_ver.Text = $"{version}";
             }
             else
             {
@@ -676,8 +737,15 @@ namespace Project
                                 if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) <= (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                                 {
                                     wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
-                                    MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
+                                    if (!isEnglish)
+                                    {   MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
                                         $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show($"Current version - {curver}\nA new one is available - {verjson}\nAn update will be performed\n\n" +
+                                        $"Changelog:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
+                                    }
                                     wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
                                     hcmd($"taskkill /f /im \"{exename}\" &&" +
                                         $" timeout /t 1 &&" +
@@ -748,11 +816,14 @@ namespace Project
             }
             catch { }
             #endregion
-            label_ver.Text = version;
         }
-        #region закрытие формы
+        #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Directory.Exists(@"C:\Windows\oixro"))
+            {
+                try { Directory.Delete(@"C:\Windows\oixro", true); } catch { }
+            }
             if (Directory.Exists(tempfolder))
             {
                 try
@@ -768,26 +839,49 @@ namespace Project
             }
             hcmd("taskkill /f /im cmd.exe");
             InstanceChecker.ReleaseMemory();
-        }
-        #endregion
 
-        private async void button1_Click(object sender, EventArgs e)
+        }
+        
+    
+    #endregion
+
+    async void button1_Click(object sender, EventArgs e)
         {
             #region main
             if (checkBox_disabledefender.Checked)
             {
-                MessageBox.Show("Защитник будет отключен!" +
-                    "\nЗащита от эксполитов не будет работать." +
-                    "\nОна нужна для работы некоторых античитов." +
-                    "\nНо восстановить защитник можно через вкладку дополнительно.\n" +
-                    "", "", MessageBoxButtons.OK);
+                if (!isEnglish)
+                {
+                    MessageBox.Show("Защитник будет отключен!" +
+                        "\nЗащита от эксполитов не будет работать." +
+                        "\nОна нужна для работы некоторых античитов." +
+                        "\nНо восстановить защитник можно через вкладку дополнительно.\n" +
+                        "", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("The defender will be disabled!" +
+    "\nThe expolite defense won't work." +
+    "\nIt's needed for some anti-chips to work." +
+    "\nBut you can restore the defender through the advanced tab.\n" +
+    "", "", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                }
             waitforexit:
                 int tamperstatus = Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Features").GetValue("TamperProtection"));
                 if (tamperstatus == 5 | tamperstatus == 1)
                 {
                     Process.Start(new ProcessStartInfo { FileName = "explorer", Arguments = $"windowsdefender://ThreatSettings" });
-                    MessageBox.Show("Защиты в Windows Defender не отключены!\nОтлючите их!", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    await Task.Delay(2000);
+                    if (!isEnglish)
+                    {
+                        MessageBox.Show("Защиты в Windows Defender не отключены!\nОтлючите их!", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("The protections in Windows Defender are not disabled! Disable them!", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+
+                    await Task.Delay(1000);
                     goto waitforexit;
                 }
                 else
@@ -1043,19 +1137,39 @@ namespace Project
             if (checkBox_mousefix.Checked)
             {
                 File.WriteAllText(tempfolder + @"\mousefix.reg", Resources.mousefix);
-                DialogResult result = MessageBox.Show("Mousefix корректно будет работать только при масштабе Windows 100%.\nВы уверены что у вас установлен корректный масштаб?",
-                    "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
+                if (!isEnglish)
                 {
-                    hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("mousefix", 1);
-                    checkBox_mousefix.Enabled = false;
-                    checkBox_mousefix.Checked = false;
-                    back_main_5.Visible = true;
+                    DialogResult result = MessageBox.Show("Mousefix корректно будет работать только при масштабе Windows 100%.\nВы уверены что у вас установлен корректный масштаб?",
+                        "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
+                        Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("mousefix", 1);
+                        checkBox_mousefix.Enabled = false;
+                        checkBox_mousefix.Checked = false;
+                        back_main_5.Visible = true;
+                    }
+                    else
+                    {
+                        checkBox_mousefix.Checked = false;
+                    }
                 }
                 else
                 {
-                    checkBox_mousefix.Checked = false;
+                    DialogResult result = MessageBox.Show("Mousefix will work correctly only when the Windows scale is 100%. \nAre you sure you have the correct scale set?",
+    "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
+                        Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("mousefix", 1);
+                        checkBox_mousefix.Enabled = false;
+                        checkBox_mousefix.Checked = false;
+                        back_main_5.Visible = true;
+                    }
+                    else
+                    {
+                        checkBox_mousefix.Checked = false;
+                    }
                 }
             }
             #endregion
@@ -2199,25 +2313,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         #endregion
         #region gpu downloads
-        void label_language_Click(object sender, EventArgs e)
-        {
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language") != null)
-            {
-                //MessageBox.Show("не null ебать");
-                if ((Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language").ToString()) == "en")
-                {
-                    //MessageBox.Show("мы были en, ща будем ru");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("Language", "ru");
-                    hcmd($"taskkill /f /im \"{exename}\" && \"{exepath}\"");
-                }
-                else
-                {
-                    // MessageBox.Show("ща будем EN");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("Language", "en");
-                    hcmd($"taskkill /f /im \"{exename}\" && \"{exepath}\"");
-                }
-            }
-        }
+        
 
         void label_ddu_Click(object sender, EventArgs e)
         {
@@ -2701,7 +2797,27 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             process.WaitForExit();
         }
         #endregion
-
+        #region language
+        void label_language_Click(object sender, EventArgs e)
+        {
+            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language") != null)
+            {
+                //MessageBox.Show("не null ебать");
+                if ((Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language").ToString()) == "en")
+                {
+                    //MessageBox.Show("мы были en, ща будем ru");
+                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("Language", "ru");
+                    hcmd($"taskkill /f /im \"{exename}\" && \"{exepath}\"");
+                }
+                else
+                {
+                    // MessageBox.Show("ща будем EN");
+                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("Language", "en");
+                    hcmd($"taskkill /f /im \"{exename}\" && \"{exepath}\"");
+                }
+            }
+        }
+        #endregion
     }
 }
 

@@ -6,13 +6,13 @@ namespace WOTBO
     {
         public static bool OK()
         {
-			try
-			{
+            try
+            {
                 Dns.GetHostEntry("github.com");
                 return true;
-			}
-			catch
-			{
+            }
+            catch
+            {
                 return false;
             }
         }
