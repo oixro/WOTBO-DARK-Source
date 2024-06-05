@@ -1888,6 +1888,7 @@ namespace Project
             this.checkBox_dopNVIDIA_tweaks.TabIndex = 3;
             this.checkBox_dopNVIDIA_tweaks.Tag = "";
             this.checkBox_dopNVIDIA_tweaks.Text = "Мелкие настройки NVIDIA";
+            this.toolTip1.SetToolTip(this.checkBox_dopNVIDIA_tweaks, "Настраивает драйвер видеокарты\r\n(Отключение энергосбережения и т.д)");
             this.checkBox_dopNVIDIA_tweaks.UseVisualStyleBackColor = false;
             // 
             // checkBox_hdcp

@@ -2680,15 +2680,10 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         void back_gpu_3_Click(object sender, EventArgs e)
         {
             Registry.CurrentUser.CreateSubKey(@"Software\NVIDIA Corporation\Global\NVTweak\Devices\509901423-0\Color", true)?.DeleteValue("NvCplUseColorCorrection");
-            MessageBox.Show("1");
             Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\GraphicsDrivers", true)?.SetValue("PlatformSupportMiracast", "1");
-            MessageBox.Show("2");
             Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak", true)?.DeleteValue("DisplayPowerSaving");
-            MessageBox.Show("3");
             Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000", true)?.SetValue("EnableTiledDisplay", "0");
-            MessageBox.Show("4");
             Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\nvlddmkm\FTS", true)?.DeleteValue("EnableRID61684");
-            MessageBox.Show("5");
             checkBox_dopNVIDIA_tweaks.Checked = false;
             checkBox_dopNVIDIA_tweaks.Enabled = true;
             back_gpu_3.Visible = false;
