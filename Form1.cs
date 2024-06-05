@@ -20,7 +20,6 @@ using WOTBO.Properties;
 
 namespace Project
 {
-    // Наследуемся от FormShadow
     public partial class WOTBO : FormShadow
     {
         #region переменные
@@ -173,7 +172,7 @@ namespace Project
             checkBox_gibernate.Text = "Disable hibernation mode";
             toolTip1.SetToolTip(checkBox_gibernate, "Hibernation is a power-saving state of the computer, primarily intended for laptops.\r\n(Takes up ~2gb)");
             checkBox_scheme.Text = "Import power scheme";
-            toolTip1.SetToolTip(checkBox_scheme, "Adopts optimal power supply circuitry.\r\nImproves FPS stability.");            
+            toolTip1.SetToolTip(checkBox_scheme, "Adopts optimal power supply circuitry.\r\nImproves FPS stability.");
             toolTip1.SetToolTip(checkBox_mousefix, "Disables acceleration, mouse acceleration.\r\nMakes mouse movements more predictable.");
             checkBox_mpo.Text = "Disable Multi-Plane Overlay (MPO)";
             toolTip1.SetToolTip(checkBox_mpo, "Disabling Multi-Plane Overlay (MPO) can fix flicker issues in some desktop applications.\r\n" +
@@ -189,7 +188,7 @@ namespace Project
             checkBox_mmagent.Text = "Configure MM-Agent";
             toolTip1.SetToolTip(checkBox_mmagent, "Configures the memory management agent (MMAgent)\r\ndepending on the amount of RAM installed\r\nto achieve stable FPS");
             checkBox_page.Text = "Configure the swap file";
-            toolTip1.SetToolTip(checkBox_page, "Applies optimal settings for the swap file\r\n(Ranges from 16 mb to 32 gb)");            
+            toolTip1.SetToolTip(checkBox_page, "Applies optimal settings for the swap file\r\n(Ranges from 16 mb to 32 gb)");
             checkBox_dism.Text = "Disable reserved storage";
 
 
@@ -214,7 +213,7 @@ namespace Project
             checkBox_explorer.Text = "Add WOTBO to the context menu on the desktop";
             toolTip1.SetToolTip(checkBox_explorer, "");
             checkBox_ffmpeg.Text = "Add ffmpeg to context menu";
-            toolTip1.SetToolTip(checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео");
+            toolTip1.SetToolTip(checkBox_ffmpeg, "Adds useful items to the context menu for videos\r\n(Works for avi, flac, mov,mkv,mp4,wav,weba)");
             checkBox_mica.Text = "Make the explorer translucent";
             toolTip1.SetToolTip(checkBox_mica, "");
             checkBox_cursors.Text = "Install new cursors";
@@ -252,7 +251,7 @@ namespace Project
             toolTip1.SetToolTip(checkBox_updclean, "Clears downloaded Windows updates");
             checkBox_picture_cache.Text = "Increase the image cache";
             toolTip1.SetToolTip(checkBox_picture_cache, "Increases the size of the image preview cache. \r\nThus, it (cache) will not be overwritten too often (raping NDD/SSD).");
-            checkBox_mobile_traffic.Text = "Обход отслеживания мобильного трафика";
+            checkBox_mobile_traffic.Text = "Bypassing mobile traffic tracking";
             toolTip1.SetToolTip(checkBox_mobile_traffic, "Allows you to hide the consumption of your mobile traffic on your PC to your mobile operator.\r\nmobile traffic on your PC. Thus, you will stop paying for going over the limit.");
             checkBox_nastroyka.Text = "Remove the Windows Setup window";
             toolTip1.SetToolTip(checkBox_nastroyka, "Disables the annoying prompt at Windows startup to finish customization");
@@ -317,7 +316,7 @@ namespace Project
         #endregion
         async void Form1_Load(object sender, EventArgs e)
         {
-            
+            label_ver.Text = $"{version}";
             #region позиция и размеры
             Size = new System.Drawing.Size(390, 305);
             CenterToScreen();
@@ -717,7 +716,7 @@ namespace Project
                     MessageBox.Show("No internet access!\nChecking for updates and some features are not available.", "Windows optimization tool by oixro (WOTBO)",
 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                label_ver.Text = $"{version}";
+                
             }
             else
             {
@@ -738,7 +737,8 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 {
                                     wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
                                     if (!isEnglish)
-                                    {   MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
+                                    {
+                                        MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
                                         $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
                                     }
                                     else
@@ -841,11 +841,10 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             InstanceChecker.ReleaseMemory();
 
         }
-        
-    
-    #endregion
 
-    async void button1_Click(object sender, EventArgs e)
+
+        #endregion
+        async void button1_Click(object sender, EventArgs e)
         {
             #region main
             if (checkBox_disabledefender.Checked)
@@ -864,7 +863,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
     "\nThe expolite defense won't work." +
     "\nIt's needed for some anti-chips to work." +
     "\nBut you can restore the defender through the advanced tab.\n" +
-    "", "", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+    "", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             waitforexit:
                 int tamperstatus = Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Features").GetValue("TamperProtection"));
@@ -1396,13 +1395,27 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
                         ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
                     }
-                if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (!isEnglish)
                 {
-                    InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+                    if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+                    }
+                    else
+                    {
+                        InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+                    }
                 }
                 else
                 {
-                    InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+                    if (MessageBox.Show($"Set a light or dark cursor?\nYes, light. \nNo, dark.", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+                    }
+                    else
+                    {
+                        InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+                    }
                 }
                 checkBox_cursors.Checked = false;
                 checkBox_cursors.Enabled = false;
@@ -1445,27 +1458,55 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             if (checkBox_edgedelete.Checked)
             {
-                DialogResult result = MessageBox.Show("Edge будет удалён, оставить WebView? ", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (result == DialogResult.No)
+                if (!isEnglish)
                 {
-                    //MessageBox.Show("Ожидайте открытия программы");
-                    using (WebClient wc = new WebClient())
-                        wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-Edge.exe?raw=true", $"{tempfolder}\\Remove-Edge.exe");
-                    Process.Start($"{tempfolder}\\Remove-Edge.exe").WaitForExit();
-                    checkBox_edgedelete.Checked = false;
+                    DialogResult result = MessageBox.Show("Edge будет удалён, оставить WebView? ", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.No)
+                    {
+                        //MessageBox.Show("Ожидайте открытия программы");
+                        using (WebClient wc = new WebClient())
+                            wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-Edge.exe?raw=true", $"{tempfolder}\\Remove-Edge.exe");
+                        Process.Start($"{tempfolder}\\Remove-Edge.exe").WaitForExit();
+                        checkBox_edgedelete.Checked = false;
 
+                    }
+                    if (result == DialogResult.Yes)
+                    {
+                        //MessageBox.Show("Ожидайте открытия программы");
+                        using (WebClient wc = new WebClient())
+                            wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-EdgeOnly.exe?raw=true", $"{tempfolder}\\Remove-EdgeOnly.exe");
+                        Process.Start($"{tempfolder}\\Remove-EdgeOnly.exe").WaitForExit();
+                        checkBox_edgedelete.Checked = false;
+                    }
+                    if (result == DialogResult.Cancel)
+                    {
+                        checkBox_edgedelete.Checked = false;
+                    }
                 }
-                if (result == DialogResult.Yes)
+                else
                 {
-                    //MessageBox.Show("Ожидайте открытия программы");
-                    using (WebClient wc = new WebClient())
-                        wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-EdgeOnly.exe?raw=true", $"{tempfolder}\\Remove-EdgeOnly.exe");
-                    Process.Start($"{tempfolder}\\Remove-EdgeOnly.exe").WaitForExit();
-                    checkBox_edgedelete.Checked = false;
-                }
-                if (result == DialogResult.Cancel)
-                {
-                    checkBox_edgedelete.Checked = false;
+                    DialogResult result = MessageBox.Show("Edge will be deleted, keep WebView? ", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.No)
+                    {
+                        //MessageBox.Show("Ожидайте открытия программы");
+                        using (WebClient wc = new WebClient())
+                            wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-Edge.exe?raw=true", $"{tempfolder}\\Remove-Edge.exe");
+                        Process.Start($"{tempfolder}\\Remove-Edge.exe").WaitForExit();
+                        checkBox_edgedelete.Checked = false;
+
+                    }
+                    if (result == DialogResult.Yes)
+                    {
+                        //MessageBox.Show("Ожидайте открытия программы");
+                        using (WebClient wc = new WebClient())
+                            wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-EdgeOnly.exe?raw=true", $"{tempfolder}\\Remove-EdgeOnly.exe");
+                        Process.Start($"{tempfolder}\\Remove-EdgeOnly.exe").WaitForExit();
+                        checkBox_edgedelete.Checked = false;
+                    }
+                    if (result == DialogResult.Cancel)
+                    {
+                        checkBox_edgedelete.Checked = false;
+                    }
                 }
 
             }
@@ -2041,16 +2082,35 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 }
                 else
                 {
-                    if (MessageBox.Show($"Pro версия не куплена!\nДа - открыть страницу покупки?\nНет - просто скопировать уникальный код для привязки.", "WOTBO PRO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (!isEnglish)
                     {
-                        Clipboard.Clear();
-                        Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
-                        Process.Start("https://boosty.to/oixro/posts/fbe75ebb-3476-4843-9726-f1702b4db0a3");
+                        if (MessageBox.Show($"Pro версия не куплена!\nДа - открыть страницу покупки?\nНет - просто скопировать уникальный код для привязки.",
+                            "WOTBO PRO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            Clipboard.Clear();
+                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
+                            Process.Start("https://boosty.to/oixro/posts/fbe75ebb-3476-4843-9726-f1702b4db0a3");
+                        }
+                        else
+                        {
+                            Clipboard.Clear();
+                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
+                        }
                     }
                     else
                     {
-                        Clipboard.Clear();
-                        Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
+                        if (MessageBox.Show($"Pro version is not purchased! \nYes - open the purchase page? \nNo - just copy the unique code for binding.",
+                            "WOTBO PRO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            Clipboard.Clear();
+                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
+                            Process.Start("https://boosty.to/oixro/posts/fbe75ebb-3476-4843-9726-f1702b4db0a3");
+                        }
+                        else
+                        {
+                            Clipboard.Clear();
+                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
+                        }
                     }
                 }
         }
@@ -2313,7 +2373,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         #endregion
         #region gpu downloads
-        
+
 
         void label_ddu_Click(object sender, EventArgs e)
         {

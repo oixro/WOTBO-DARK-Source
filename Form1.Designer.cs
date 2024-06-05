@@ -2550,7 +2550,8 @@ namespace Project
             this.checkBox_ffmpeg.TabIndex = 22;
             this.checkBox_ffmpeg.Tag = "";
             this.checkBox_ffmpeg.Text = "Добавить ffmpeg в контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео");
+            this.toolTip1.SetToolTip(this.checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео\r\n(Работает для файлов avi," +
+        " flac, mov,mkv,mp4,wav,weba)");
             this.checkBox_ffmpeg.UseVisualStyleBackColor = false;
             // 
             // checkBox_explorer

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace WOTBO
     {
         string exepath = Assembly.GetEntryAssembly().Location;
         string exename = AppDomain.CurrentDomain.FriendlyName;
+        public string uilanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         public Form2()
         {
             InitializeComponent();
@@ -38,6 +40,7 @@ namespace WOTBO
             {
                 Registry.CurrentUser.CreateSubKey(@"Software\oixro\wotbo");
             }
+
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\out") != null)
             {
                 MessageBox.Show("В версии 0.959 был изменён путь к реестру, будет выполнена очитска данных","",MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -49,23 +52,38 @@ namespace WOTBO
             //    MessageBox.Show("Тебе нельзя этим пользоватся. Программа не откроется!");
             //    hcmd($"taskkill /f /im \"{exename}\" && timeout /t 1 && del \"{exepath}\" /f /q");
             //}
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).GetValue("eula") != null)
+            if (uilanguage == "Ru")
             {
-                Close();
+                label1.Text = $"Перед использованием программы прочитай:\n" +
+"1. Программа не является идеальной, и не обязана дать вам 5000fps на днищенском компе\n" +
+"2. Я не несу никакой отвественности за работоспособность вашего комьютера, при возникновении проблем - виноват ТЫ!\n" +
+"3. При возникновении вопросов сначала нужно посмотреть гайд на канале, тупые вопросы в личку будут игнорироваться!\n" +
+"4. Если ответа в видео нет - скинь полное описание своего компьютера и ситуацию при которой возникает проблема!\n" +
+"5. На фразу \"не работает!\" - cразу игнор! Уважайте своё и моё время.\n" +
+"6. Если ты мне напишешь - \"Я НАЖЫМАЮ НА ПРИНЯТЬ, ОНО НЕ РАБОТАЕТ\" - читай лучше этот текст!\n" +
+$"7. Чтобы принять - нажмите правой кнопкой мыши по {button1.Text}" +
+"\n8.За большинство настроек спасибо ТехноШахте - (discord.gg/GUC7ckWtmn)" +
+"\n9. И Win 10 Tweaker (win10tweaker.ru)\n" +
+"10. Работоспособность проверна только на оригинальных версиях Windows\n" +
+"11. За ошибки на говносборках я ответсвенности не несу!";
             }
-
-            label1.Text = $"Перед использованием программы прочитай:\n" +
-    "1. Программа не является идеальной, и не обязана дать вам 5000fps на днищенском компе\n" +
-    "2. Я не несу никакой отвественности за работоспособность вашего комьютера, при возникновении проблем - виноват ТЫ!\n" +
-    "3. При возникновении вопросов сначала нужно посмотреть гайд на канале, тупые вопросы в личку будут игнорироваться!\n" +
-    "4. Если ответа в видео нет - скинь полное описание своего компьютера и ситуацию при которой возникает проблема!\n" +
-    "5. На фразу \"не работает!\" - cразу игнор! Уважайте своё и моё время.\n" +
-    "6. Если ты мне напишешь - \"Я НАЖЫМАЮ НА ПРИНЯТЬ, ОНО НЕ РАБОТАЕТ\" - читай лучше этот текст!\n" +
-    $"7. Чтобы принять - нажмите правой кнопкой мыши по {button1.Text}" +
-    "\n8.За большинство настроек спасибо ТехноШахте - (discord.gg/GUC7ckWtmn)" +
-    "\n9. И Win 10 Tweaker (win10tweaker.ru)\n" +
-    "10. Работоспособность проверна только на оригинальных версиях Windows\n" +
-    "11. За ошибки на говносборках я ответсвенности не несу!";
+            else
+            {
+                label1.Text = $"Before using the program, read:\n" +
+"1. The program is not perfect, and is not obligated to give you 5000fps on a crappy computer\n" +
+"2. I am not responsible for the performance of your computer, if there are problems - it's your fault!\n" +
+"3. If you have any questions, you should first look at the guide on the channel, stupid questions in person will be ignored!\n" +
+"4. If the answer is not in the video - give a full description of your computer and the situation in which the problem occurs!\n" +
+"5. On the phrase ”does not work!” - immediately ignore! Respect your time and mine. \n" +
+"6. If you write to me - “I'm pressing accept, it's not working” - read this text better!\n" +
+$"7. To accept, right-click on {button1.Text}" +
+"\n8. For most of the customization thanks to - (discord.gg/GUC7ckWtmn)" +
+"\n9. And Win 10 Tweaker\n" +
+"10. Workability is tested only on original versions of Windows\n" +
+"11. I am not responsible for errors on shitty builds!";
+                button1.Text = "Accept";
+                button2.Text = "Exit";
+            }
         }
 
         private void button1_MouseDown(object sender, MouseEventArgs e)
@@ -75,7 +93,10 @@ namespace WOTBO
                 k++;
                 if (k >= 2)
                 {
-                    MessageBox.Show("Иди читай");
+                    if (uilanguage == "Ru")
+                        MessageBox.Show("Иди читай");
+                    if (uilanguage != "Ru")
+                            MessageBox.Show("Read more");
                 }
 
             }
