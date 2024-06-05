@@ -1355,7 +1355,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 using (WebClient wc = new WebClient())
                     if (!File.Exists($"{tempfolder}\\ffmpeg.zip"))
                     {
-                        wc.DownloadFile("https://github.com/GyanD/codexffmpeg/releases/download/7.0/ffmpeg-7.0-essentials_build.zip", $"{tempfolder}\\ffmpeg.zip");
+                        wc.DownloadFile("https://github.com/GyanD/codexffmpeg/releases/download/7.0.1/ffmpeg-7.0.1-essentials_build.zip", $"{tempfolder}\\ffmpeg.zip");
                         wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg", $"{tempfolder}\\ffmpeg.reg");
                         ZipFile.ExtractToDirectory($"{tempfolder}\\ffmpeg.zip", tempfolder);
                     }
@@ -1364,7 +1364,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     hcmd("taskkill /f /im ffmpeg.exe");
                     File.Delete(@"C:\Windows\ffmpeg.exe");
                 }
-                File.Copy($@"{tempfolder}\ffmpeg-7.0-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
+                File.Copy($@"{tempfolder}\ffmpeg-7.0.1-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
                 hcmd($@"regedit.exe /s {tempfolder}/ffmpeg.reg");
 
                 checkBox_ffmpeg.Enabled = false;
