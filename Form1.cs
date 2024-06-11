@@ -2285,7 +2285,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label_download_2_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.6/npp.8.6.6.Installer.x64.exe");
+            Process.Start("https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.8/npp.8.6.8.Installer.x64.exe");
         }
         void label_download_3_Click(object sender, EventArgs e)
         {
@@ -2293,7 +2293,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label_download_4_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.7-zip.org/a/7z2404-x64.exe");
+            Process.Start("https://www.7-zip.org/a/7z2406-x64.exe");
         }
         void label_download_5_Click(object sender, EventArgs e)
         {
@@ -2321,7 +2321,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label_download_11_Click(object sender, EventArgs e)
         {
-            Process.Start("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-30.1.1-Full-Installer-x64.exe");
+            Process.Start("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-30.1.2-Full-Installer-x64.exe");
         }
         void label_download_12_Click(object sender, EventArgs e)
         {
@@ -2329,7 +2329,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label_download_13_Click(object sender, EventArgs e)
         {
-            Process.Start("https://files2.codecguide.com/K-Lite_Codec_Pack_1830_Mega.exe");
+            Process.Start("https://files3.codecguide.com/K-Lite_Codec_Pack_1835_Mega.exe");
         }
         void label_download_14_Click(object sender, EventArgs e)
         {
@@ -2337,7 +2337,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label_download_15_Click(object sender, EventArgs e)
         {
-            Process.Start("https://deac-riga.dl.sourceforge.net/project/hwinfo/Windows_Portable/hwi_800.zip");
+            Process.Start("https://www.hwinfo.com/files/hwi_802.zip");
         }
         void label_download_16_Click(object sender, EventArgs e)
         {
@@ -2345,7 +2345,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label_download_17_Click(object sender, EventArgs e)
         {
-            Process.Start("https://static.centbrowser.com/win_stable/5.0.1002.354/centbrowser_5.0.1002.354_x64.exe");
+            Process.Start("https://static.centbrowser.com/win_stable/5.1.1130.123/centbrowser_5.1.1130.123_x64.exe");
         }
         void label_download_18_Click(object sender, EventArgs e)
         {
@@ -2875,4 +2875,3 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         #endregion
     }
 }
-

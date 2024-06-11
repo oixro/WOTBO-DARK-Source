@@ -31,20 +31,17 @@ namespace Project
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WOTBO));
-            this.PanelMain = new System.Windows.Forms.Panel();
-            this.button_new = new System.Windows.Forms.Button();
-            this.label_language = new System.Windows.Forms.Label();
-            this.label_winver = new System.Windows.Forms.Label();
-            this.label_ver = new System.Windows.Forms.Label();
-            this.delete_UWP = new System.Windows.Forms.Label();
-            this.label_pro = new System.Windows.Forms.Label();
-            this.label_interface = new System.Windows.Forms.Label();
-            this.label_pc = new System.Windows.Forms.Label();
-            this.label_progs = new System.Windows.Forms.Label();
-            this.label_dop = new System.Windows.Forms.Label();
-            this.label_gpu = new System.Windows.Forms.Label();
-            this.label_main = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button_pro_2 = new System.Windows.Forms.Button();
+            this.button_pro_1 = new System.Windows.Forms.Button();
+            this.button_ui_1 = new System.Windows.Forms.Button();
+            this.button_ui_2 = new System.Windows.Forms.Button();
+            this.panel_pro_navigate = new System.Windows.Forms.Panel();
+            this.button_pro_2_new = new System.Windows.Forms.Button();
+            this.button_pro_1_new = new System.Windows.Forms.Button();
+            this.panel_ui_navigate = new System.Windows.Forms.Panel();
+            this.button_ui_new_2 = new System.Windows.Forms.Button();
+            this.button_ui_new_1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.back_main_12 = new System.Windows.Forms.PictureBox();
             this.back_main_11 = new System.Windows.Forms.PictureBox();
@@ -70,10 +67,27 @@ namespace Project
             this.checkBox_gibernate = new System.Windows.Forms.CheckBox();
             this.checkBox_dism = new System.Windows.Forms.CheckBox();
             this.checkBox_reg = new System.Windows.Forms.CheckBox();
-            this.PanelHead = new System.Windows.Forms.Panel();
-            this.logo = new System.Windows.Forms.PictureBox();
-            this.LabelHead = new System.Windows.Forms.Label();
-            this.ButtonClose = new System.Windows.Forms.Button();
+            this.panel_ui_1 = new System.Windows.Forms.Panel();
+            this.back_ui_10 = new System.Windows.Forms.PictureBox();
+            this.back_ui_9 = new System.Windows.Forms.PictureBox();
+            this.back_ui_8 = new System.Windows.Forms.PictureBox();
+            this.back_ui_7 = new System.Windows.Forms.PictureBox();
+            this.back_ui_6 = new System.Windows.Forms.PictureBox();
+            this.back_ui_5 = new System.Windows.Forms.PictureBox();
+            this.back_ui_4 = new System.Windows.Forms.PictureBox();
+            this.back_ui_3 = new System.Windows.Forms.PictureBox();
+            this.back_ui_2 = new System.Windows.Forms.PictureBox();
+            this.back_ui_1 = new System.Windows.Forms.PictureBox();
+            this.checkBox_ffmpeg = new System.Windows.Forms.CheckBox();
+            this.checkBox_explorer = new System.Windows.Forms.CheckBox();
+            this.checkBox_wotboincontex = new System.Windows.Forms.CheckBox();
+            this.checkBox_shapka = new System.Windows.Forms.CheckBox();
+            this.checkBox_bluefolders = new System.Windows.Forms.CheckBox();
+            this.checkBoxUI_Buttons_4 = new System.Windows.Forms.CheckBox();
+            this.checkBoxUI_Buttons_3 = new System.Windows.Forms.CheckBox();
+            this.checkBoxUI_Buttons_2 = new System.Windows.Forms.CheckBox();
+            this.checkBoxUI_Buttons_1 = new System.Windows.Forms.CheckBox();
+            this.checkBox_contex = new System.Windows.Forms.CheckBox();
             this.panel_ui_2 = new System.Windows.Forms.Panel();
             this.checkBox_cursors = new System.Windows.Forms.CheckBox();
             this.checkBox_mica = new System.Windows.Forms.CheckBox();
@@ -113,6 +127,7 @@ namespace Project
             this.checkBox_uwp_cortana = new System.Windows.Forms.CheckBox();
             this.panel_5 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel_sorry = new System.Windows.Forms.Panel();
             this.label_download_23 = new System.Windows.Forms.Label();
             this.label_download_22 = new System.Windows.Forms.Label();
@@ -172,39 +187,25 @@ namespace Project
             this.checkBox_pro_3 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_2 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_1 = new System.Windows.Forms.CheckBox();
-            this.panel_pro_navigate = new System.Windows.Forms.Panel();
-            this.button_pro_2_new = new System.Windows.Forms.Button();
-            this.button_pro_1_new = new System.Windows.Forms.Button();
-            this.button_pro_2 = new System.Windows.Forms.Button();
-            this.button_pro_1 = new System.Windows.Forms.Button();
-            this.panel_ui_1 = new System.Windows.Forms.Panel();
-            this.back_ui_10 = new System.Windows.Forms.PictureBox();
-            this.back_ui_9 = new System.Windows.Forms.PictureBox();
-            this.back_ui_8 = new System.Windows.Forms.PictureBox();
-            this.back_ui_7 = new System.Windows.Forms.PictureBox();
-            this.back_ui_6 = new System.Windows.Forms.PictureBox();
-            this.back_ui_5 = new System.Windows.Forms.PictureBox();
-            this.back_ui_4 = new System.Windows.Forms.PictureBox();
-            this.back_ui_3 = new System.Windows.Forms.PictureBox();
-            this.back_ui_2 = new System.Windows.Forms.PictureBox();
-            this.back_ui_1 = new System.Windows.Forms.PictureBox();
-            this.checkBox_ffmpeg = new System.Windows.Forms.CheckBox();
-            this.checkBox_explorer = new System.Windows.Forms.CheckBox();
-            this.checkBox_wotboincontex = new System.Windows.Forms.CheckBox();
-            this.checkBox_shapka = new System.Windows.Forms.CheckBox();
-            this.checkBox_bluefolders = new System.Windows.Forms.CheckBox();
-            this.checkBoxUI_Buttons_4 = new System.Windows.Forms.CheckBox();
-            this.checkBoxUI_Buttons_3 = new System.Windows.Forms.CheckBox();
-            this.checkBoxUI_Buttons_2 = new System.Windows.Forms.CheckBox();
-            this.checkBoxUI_Buttons_1 = new System.Windows.Forms.CheckBox();
-            this.checkBox_contex = new System.Windows.Forms.CheckBox();
-            this.panel_ui_navigate = new System.Windows.Forms.Panel();
-            this.button_ui_new_2 = new System.Windows.Forms.Button();
-            this.button_ui_new_1 = new System.Windows.Forms.Button();
-            this.button_ui_2 = new System.Windows.Forms.Button();
-            this.button_ui_1 = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.PanelMain.SuspendLayout();
+            this.PanelHead = new System.Windows.Forms.Panel();
+            this.logo = new System.Windows.Forms.PictureBox();
+            this.LabelHead = new System.Windows.Forms.Label();
+            this.ButtonClose = new System.Windows.Forms.Button();
+            this.PanelMain = new System.Windows.Forms.Panel();
+            this.button_new = new System.Windows.Forms.Button();
+            this.label_language = new System.Windows.Forms.Label();
+            this.label_winver = new System.Windows.Forms.Label();
+            this.label_ver = new System.Windows.Forms.Label();
+            this.delete_UWP = new System.Windows.Forms.Label();
+            this.label_pro = new System.Windows.Forms.Label();
+            this.label_interface = new System.Windows.Forms.Label();
+            this.label_pc = new System.Windows.Forms.Label();
+            this.label_progs = new System.Windows.Forms.Label();
+            this.label_dop = new System.Windows.Forms.Label();
+            this.label_gpu = new System.Windows.Forms.Label();
+            this.label_main = new System.Windows.Forms.Label();
+            this.panel_pro_navigate.SuspendLayout();
+            this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_11)).BeginInit();
@@ -218,8 +219,17 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_1)).BeginInit();
-            this.PanelHead.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
+            this.panel_ui_1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).BeginInit();
             this.panel_ui_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_11)).BeginInit();
@@ -251,206 +261,141 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_1)).BeginInit();
-            this.panel_pro_navigate.SuspendLayout();
-            this.panel_ui_1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).BeginInit();
-            this.panel_ui_navigate.SuspendLayout();
+            this.PanelHead.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
+            this.PanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // PanelMain
+            // toolTip1
             // 
-            this.PanelMain.BackColor = System.Drawing.Color.Transparent;
-            this.PanelMain.Controls.Add(this.button_new);
-            this.PanelMain.Controls.Add(this.label_language);
-            this.PanelMain.Controls.Add(this.label_winver);
-            this.PanelMain.Controls.Add(this.label_ver);
-            this.PanelMain.Controls.Add(this.delete_UWP);
-            this.PanelMain.Controls.Add(this.label_pro);
-            this.PanelMain.Controls.Add(this.label_interface);
-            this.PanelMain.Controls.Add(this.label_pc);
-            this.PanelMain.Controls.Add(this.label_progs);
-            this.PanelMain.Controls.Add(this.label_dop);
-            this.PanelMain.Controls.Add(this.label_gpu);
-            this.PanelMain.Controls.Add(this.label_main);
-            this.PanelMain.Location = new System.Drawing.Point(0, 36);
-            this.PanelMain.Name = "PanelMain";
-            this.PanelMain.Size = new System.Drawing.Size(395, 270);
-            this.PanelMain.TabIndex = 0;
+            this.toolTip1.AutoPopDelay = 50000;
+            this.toolTip1.InitialDelay = 100;
+            this.toolTip1.ReshowDelay = 100;
+            this.toolTip1.ShowAlways = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Краткое описании функции:";
             // 
-            // button_new
+            // button_pro_2
             // 
-            this.button_new.FlatAppearance.BorderSize = 0;
-            this.button_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_new.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_new.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_new.Location = new System.Drawing.Point(15, 218);
-            this.button_new.Name = "button_new";
-            this.button_new.Size = new System.Drawing.Size(77, 23);
-            this.button_new.TabIndex = 2;
-            this.button_new.TabStop = false;
-            this.button_new.Text = "Применить";
-            this.button_new.UseVisualStyleBackColor = true;
-            this.button_new.Click += new System.EventHandler(this.button1_Click);
+            this.button_pro_2.Location = new System.Drawing.Point(623, 776);
+            this.button_pro_2.Name = "button_pro_2";
+            this.button_pro_2.Size = new System.Drawing.Size(20, 20);
+            this.button_pro_2.TabIndex = 0;
+            this.button_pro_2.Text = "2";
+            this.button_pro_2.UseVisualStyleBackColor = true;
+            this.button_pro_2.Click += new System.EventHandler(this.button_pro_2_Click);
             // 
-            // label_language
+            // button_pro_1
             // 
-            this.label_language.AutoSize = true;
-            this.label_language.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_language.ForeColor = System.Drawing.Color.White;
-            this.label_language.Location = new System.Drawing.Point(3, 163);
-            this.label_language.Name = "label_language";
-            this.label_language.Size = new System.Drawing.Size(51, 13);
-            this.label_language.TabIndex = 24;
-            this.label_language.Text = "9. RU/EN";
-            this.label_language.Click += new System.EventHandler(this.label_language_Click);
+            this.button_pro_1.Location = new System.Drawing.Point(598, 776);
+            this.button_pro_1.Name = "button_pro_1";
+            this.button_pro_1.Size = new System.Drawing.Size(20, 20);
+            this.button_pro_1.TabIndex = 0;
+            this.button_pro_1.Text = "1";
+            this.button_pro_1.UseVisualStyleBackColor = true;
+            this.button_pro_1.Click += new System.EventHandler(this.button_pro_1_Click);
             // 
-            // label_winver
+            // button_ui_1
             // 
-            this.label_winver.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_winver.AutoSize = true;
-            this.label_winver.ForeColor = System.Drawing.Color.White;
-            this.label_winver.Location = new System.Drawing.Point(3, 251);
-            this.label_winver.Name = "label_winver";
-            this.label_winver.Size = new System.Drawing.Size(41, 13);
-            this.label_winver.TabIndex = 27;
-            this.label_winver.Text = "Winver";
-            this.label_winver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_ui_1.Location = new System.Drawing.Point(884, 265);
+            this.button_ui_1.Name = "button_ui_1";
+            this.button_ui_1.Size = new System.Drawing.Size(20, 20);
+            this.button_ui_1.TabIndex = 0;
+            this.button_ui_1.Text = "1";
+            this.button_ui_1.UseVisualStyleBackColor = true;
+            this.button_ui_1.Click += new System.EventHandler(this.button_ui_1_Click);
             // 
-            // label_ver
+            // button_ui_2
             // 
-            this.label_ver.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_ver.AutoSize = true;
-            this.label_ver.ForeColor = System.Drawing.Color.White;
-            this.label_ver.Location = new System.Drawing.Point(320, 253);
-            this.label_ver.Name = "label_ver";
-            this.label_ver.Size = new System.Drawing.Size(67, 13);
-            this.label_ver.TabIndex = 34;
-            this.label_ver.Text = "dbuild - 9.99";
-            this.label_ver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_ui_2.Location = new System.Drawing.Point(910, 265);
+            this.button_ui_2.Name = "button_ui_2";
+            this.button_ui_2.Size = new System.Drawing.Size(20, 20);
+            this.button_ui_2.TabIndex = 0;
+            this.button_ui_2.Text = "2";
+            this.button_ui_2.UseVisualStyleBackColor = true;
+            this.button_ui_2.Click += new System.EventHandler(this.button_ui_2_Click);
             // 
-            // delete_UWP
+            // panel_pro_navigate
             // 
-            this.delete_UWP.AutoSize = true;
-            this.delete_UWP.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.delete_UWP.ForeColor = System.Drawing.Color.White;
-            this.delete_UWP.Location = new System.Drawing.Point(3, 143);
-            this.delete_UWP.Name = "delete_UWP";
-            this.delete_UWP.Size = new System.Drawing.Size(96, 13);
-            this.delete_UWP.TabIndex = 32;
-            this.delete_UWP.Text = "8. Удаление UWP";
-            this.delete_UWP.Click += new System.EventHandler(this.delete_UWP_Click);
+            this.panel_pro_navigate.Controls.Add(this.button_pro_2_new);
+            this.panel_pro_navigate.Controls.Add(this.button_pro_1_new);
+            this.panel_pro_navigate.Location = new System.Drawing.Point(523, 776);
+            this.panel_pro_navigate.Name = "panel_pro_navigate";
+            this.panel_pro_navigate.Size = new System.Drawing.Size(50, 20);
+            this.panel_pro_navigate.TabIndex = 35;
             // 
-            // label_pro
+            // button_pro_2_new
             // 
-            this.label_pro.AutoSize = true;
-            this.label_pro.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_pro.ForeColor = System.Drawing.Color.White;
-            this.label_pro.Location = new System.Drawing.Point(3, 123);
-            this.label_pro.Name = "label_pro";
-            this.label_pro.Size = new System.Drawing.Size(70, 13);
-            this.label_pro.TabIndex = 31;
-            this.label_pro.Text = "7. PRO Mode";
-            this.label_pro.Click += new System.EventHandler(this.label_pro_Click);
+            this.button_pro_2_new.FlatAppearance.BorderSize = 0;
+            this.button_pro_2_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_pro_2_new.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_pro_2_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_pro_2_new.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_pro_2_new.Location = new System.Drawing.Point(26, 0);
+            this.button_pro_2_new.Name = "button_pro_2_new";
+            this.button_pro_2_new.Size = new System.Drawing.Size(20, 20);
+            this.button_pro_2_new.TabIndex = 2;
+            this.button_pro_2_new.TabStop = false;
+            this.button_pro_2_new.Text = "2";
+            this.button_pro_2_new.UseVisualStyleBackColor = true;
+            this.button_pro_2_new.Click += new System.EventHandler(this.button_pro_2_Click);
             // 
-            // label_interface
+            // button_pro_1_new
             // 
-            this.label_interface.AutoSize = true;
-            this.label_interface.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_interface.ForeColor = System.Drawing.Color.White;
-            this.label_interface.Location = new System.Drawing.Point(3, 23);
-            this.label_interface.Name = "label_interface";
-            this.label_interface.Size = new System.Drawing.Size(76, 13);
-            this.label_interface.TabIndex = 30;
-            this.label_interface.Text = "2. Интерфейс";
-            this.label_interface.Click += new System.EventHandler(this.label_interface_Click);
+            this.button_pro_1_new.FlatAppearance.BorderSize = 0;
+            this.button_pro_1_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_pro_1_new.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_pro_1_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_pro_1_new.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_pro_1_new.Location = new System.Drawing.Point(0, 0);
+            this.button_pro_1_new.Name = "button_pro_1_new";
+            this.button_pro_1_new.Size = new System.Drawing.Size(20, 20);
+            this.button_pro_1_new.TabIndex = 2;
+            this.button_pro_1_new.TabStop = false;
+            this.button_pro_1_new.Text = "1";
+            this.button_pro_1_new.UseVisualStyleBackColor = true;
+            this.button_pro_1_new.Click += new System.EventHandler(this.button_pro_1_Click);
             // 
-            // label_pc
+            // panel_ui_navigate
             // 
-            this.label_pc.AutoSize = true;
-            this.label_pc.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_pc.ForeColor = System.Drawing.Color.White;
-            this.label_pc.Location = new System.Drawing.Point(3, 103);
-            this.label_pc.Name = "label_pc";
-            this.label_pc.Size = new System.Drawing.Size(56, 13);
-            this.label_pc.TabIndex = 29;
-            this.label_pc.Text = "6. PC Info";
-            this.label_pc.Click += new System.EventHandler(this.label8_Click);
+            this.panel_ui_navigate.Controls.Add(this.button_ui_new_2);
+            this.panel_ui_navigate.Controls.Add(this.button_ui_new_1);
+            this.panel_ui_navigate.Location = new System.Drawing.Point(819, 265);
+            this.panel_ui_navigate.Name = "panel_ui_navigate";
+            this.panel_ui_navigate.Size = new System.Drawing.Size(50, 20);
+            this.panel_ui_navigate.TabIndex = 38;
             // 
-            // label_progs
+            // button_ui_new_2
             // 
-            this.label_progs.AutoSize = true;
-            this.label_progs.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_progs.ForeColor = System.Drawing.Color.White;
-            this.label_progs.Location = new System.Drawing.Point(3, 83);
-            this.label_progs.Name = "label_progs";
-            this.label_progs.Size = new System.Drawing.Size(95, 13);
-            this.label_progs.TabIndex = 28;
-            this.label_progs.Text = "5. Скачать проги";
-            this.label_progs.Click += new System.EventHandler(this.label6_Click);
+            this.button_ui_new_2.FlatAppearance.BorderSize = 0;
+            this.button_ui_new_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_ui_new_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_ui_new_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_ui_new_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_ui_new_2.Location = new System.Drawing.Point(26, 0);
+            this.button_ui_new_2.Name = "button_ui_new_2";
+            this.button_ui_new_2.Size = new System.Drawing.Size(20, 20);
+            this.button_ui_new_2.TabIndex = 2;
+            this.button_ui_new_2.TabStop = false;
+            this.button_ui_new_2.Text = "2";
+            this.button_ui_new_2.UseVisualStyleBackColor = true;
+            this.button_ui_new_2.Click += new System.EventHandler(this.button_ui_2_Click);
             // 
-            // label_dop
+            // button_ui_new_1
             // 
-            this.label_dop.AutoSize = true;
-            this.label_dop.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_dop.ForeColor = System.Drawing.Color.White;
-            this.label_dop.Location = new System.Drawing.Point(3, 63);
-            this.label_dop.Name = "label_dop";
-            this.label_dop.Size = new System.Drawing.Size(100, 13);
-            this.label_dop.TabIndex = 25;
-            this.label_dop.Text = "4. Дополнительно";
-            this.label_dop.Click += new System.EventHandler(this.label3_Click);
-            // 
-            // label_gpu
-            // 
-            this.label_gpu.AutoSize = true;
-            this.label_gpu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_gpu.ForeColor = System.Drawing.Color.White;
-            this.label_gpu.Location = new System.Drawing.Point(3, 43);
-            this.label_gpu.Name = "label_gpu";
-            this.label_gpu.Size = new System.Drawing.Size(40, 13);
-            this.label_gpu.TabIndex = 24;
-            this.label_gpu.Text = "3. GPU";
-            this.label_gpu.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // label_main
-            // 
-            this.label_main.AutoSize = true;
-            this.label_main.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_main.ForeColor = System.Drawing.Color.White;
-            this.label_main.Location = new System.Drawing.Point(3, 3);
-            this.label_main.Name = "label_main";
-            this.label_main.Size = new System.Drawing.Size(69, 13);
-            this.label_main.TabIndex = 23;
-            this.label_main.Text = "1. Основное";
-            this.label_main.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button1.Location = new System.Drawing.Point(21, 331);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(77, 23);
-            this.button1.TabIndex = 0;
-            this.button1.TabStop = false;
-            this.button1.Text = "Применить";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_ui_new_1.FlatAppearance.BorderSize = 0;
+            this.button_ui_new_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_ui_new_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_ui_new_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_ui_new_1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_ui_new_1.Location = new System.Drawing.Point(0, 0);
+            this.button_ui_new_1.Name = "button_ui_new_1";
+            this.button_ui_new_1.Size = new System.Drawing.Size(20, 20);
+            this.button_ui_new_1.TabIndex = 2;
+            this.button_ui_new_1.TabStop = false;
+            this.button_ui_new_1.Text = "1";
+            this.button_ui_new_1.UseVisualStyleBackColor = true;
+            this.button_ui_new_1.Click += new System.EventHandler(this.button_ui_1_Click);
             // 
             // panel1
             // 
@@ -841,56 +786,329 @@ namespace Project
             this.toolTip1.SetToolTip(this.checkBox_reg, "Применяются самые важные настройки реестра");
             this.checkBox_reg.UseVisualStyleBackColor = false;
             // 
-            // PanelHead
+            // panel_ui_1
             // 
-            this.PanelHead.BackColor = System.Drawing.Color.Transparent;
-            this.PanelHead.Controls.Add(this.logo);
-            this.PanelHead.Controls.Add(this.LabelHead);
-            this.PanelHead.Controls.Add(this.ButtonClose);
-            this.PanelHead.Location = new System.Drawing.Point(0, 0);
-            this.PanelHead.Name = "PanelHead";
-            this.PanelHead.Size = new System.Drawing.Size(395, 36);
-            this.PanelHead.TabIndex = 1;
+            this.panel_ui_1.BackColor = System.Drawing.Color.Transparent;
+            this.panel_ui_1.Controls.Add(this.back_ui_10);
+            this.panel_ui_1.Controls.Add(this.back_ui_9);
+            this.panel_ui_1.Controls.Add(this.back_ui_8);
+            this.panel_ui_1.Controls.Add(this.back_ui_7);
+            this.panel_ui_1.Controls.Add(this.back_ui_6);
+            this.panel_ui_1.Controls.Add(this.back_ui_5);
+            this.panel_ui_1.Controls.Add(this.back_ui_4);
+            this.panel_ui_1.Controls.Add(this.back_ui_3);
+            this.panel_ui_1.Controls.Add(this.back_ui_2);
+            this.panel_ui_1.Controls.Add(this.back_ui_1);
+            this.panel_ui_1.Controls.Add(this.checkBox_ffmpeg);
+            this.panel_ui_1.Controls.Add(this.checkBox_explorer);
+            this.panel_ui_1.Controls.Add(this.checkBox_wotboincontex);
+            this.panel_ui_1.Controls.Add(this.checkBox_shapka);
+            this.panel_ui_1.Controls.Add(this.checkBox_bluefolders);
+            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_4);
+            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_3);
+            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_2);
+            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_1);
+            this.panel_ui_1.Controls.Add(this.checkBox_contex);
+            this.panel_ui_1.Location = new System.Drawing.Point(711, 27);
+            this.panel_ui_1.Name = "panel_ui_1";
+            this.panel_ui_1.Size = new System.Drawing.Size(287, 235);
+            this.panel_ui_1.TabIndex = 37;
+            this.panel_ui_1.Visible = false;
             // 
-            // logo
+            // back_ui_10
             // 
-            this.logo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.back_ui_10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logo.BackColor = System.Drawing.Color.Transparent;
-            this.logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logo.BackgroundImage")));
-            this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.logo.Location = new System.Drawing.Point(87, 7);
-            this.logo.Name = "logo";
-            this.logo.Size = new System.Drawing.Size(20, 20);
-            this.logo.TabIndex = 11;
-            this.logo.TabStop = false;
+            this.back_ui_10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_10.BackgroundImage")));
+            this.back_ui_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_10.Location = new System.Drawing.Point(1, 215);
+            this.back_ui_10.Name = "back_ui_10";
+            this.back_ui_10.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_10.TabIndex = 23;
+            this.back_ui_10.TabStop = false;
+            this.back_ui_10.Visible = false;
+            this.back_ui_10.Click += new System.EventHandler(this.back_ui_10_Click);
             // 
-            // LabelHead
+            // back_ui_9
             // 
-            this.LabelHead.AutoSize = true;
-            this.LabelHead.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.LabelHead.Location = new System.Drawing.Point(111, 10);
-            this.LabelHead.Name = "LabelHead";
-            this.LabelHead.Size = new System.Drawing.Size(173, 13);
-            this.LabelHead.TabIndex = 1;
-            this.LabelHead.Text = "Windows optimization tool by oixro";
-            this.LabelHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.back_ui_9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_9.BackgroundImage")));
+            this.back_ui_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_9.Location = new System.Drawing.Point(0, 187);
+            this.back_ui_9.Name = "back_ui_9";
+            this.back_ui_9.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_9.TabIndex = 11;
+            this.back_ui_9.TabStop = false;
+            this.back_ui_9.Visible = false;
+            this.back_ui_9.Click += new System.EventHandler(this.back_ui_9_Click);
             // 
-            // ButtonClose
+            // back_ui_8
             // 
-            this.ButtonClose.FlatAppearance.BorderSize = 0;
-            this.ButtonClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.ButtonClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.ButtonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.ButtonClose.Location = new System.Drawing.Point(357, 0);
-            this.ButtonClose.Name = "ButtonClose";
-            this.ButtonClose.Size = new System.Drawing.Size(33, 33);
-            this.ButtonClose.TabIndex = 0;
-            this.ButtonClose.TabStop = false;
-            this.ButtonClose.Text = "✖";
-            this.ButtonClose.UseVisualStyleBackColor = true;
+            this.back_ui_8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_8.BackgroundImage")));
+            this.back_ui_8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_8.Location = new System.Drawing.Point(0, 151);
+            this.back_ui_8.Name = "back_ui_8";
+            this.back_ui_8.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_8.TabIndex = 11;
+            this.back_ui_8.TabStop = false;
+            this.back_ui_8.Visible = false;
+            this.back_ui_8.Click += new System.EventHandler(this.back_ui_8_Click);
+            // 
+            // back_ui_7
+            // 
+            this.back_ui_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_7.BackgroundImage")));
+            this.back_ui_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_7.Location = new System.Drawing.Point(0, 125);
+            this.back_ui_7.Name = "back_ui_7";
+            this.back_ui_7.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_7.TabIndex = 11;
+            this.back_ui_7.TabStop = false;
+            this.back_ui_7.Visible = false;
+            this.back_ui_7.Click += new System.EventHandler(this.back_ui_7_Click);
+            // 
+            // back_ui_6
+            // 
+            this.back_ui_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_6.BackgroundImage")));
+            this.back_ui_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_6.Location = new System.Drawing.Point(0, 105);
+            this.back_ui_6.Name = "back_ui_6";
+            this.back_ui_6.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_6.TabIndex = 11;
+            this.back_ui_6.TabStop = false;
+            this.back_ui_6.Visible = false;
+            this.back_ui_6.Click += new System.EventHandler(this.back_ui_6_Click);
+            // 
+            // back_ui_5
+            // 
+            this.back_ui_5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_5.BackgroundImage")));
+            this.back_ui_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_5.Location = new System.Drawing.Point(0, 85);
+            this.back_ui_5.Name = "back_ui_5";
+            this.back_ui_5.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_5.TabIndex = 11;
+            this.back_ui_5.TabStop = false;
+            this.back_ui_5.Visible = false;
+            this.back_ui_5.Click += new System.EventHandler(this.back_ui_5_Click);
+            // 
+            // back_ui_4
+            // 
+            this.back_ui_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_4.BackgroundImage")));
+            this.back_ui_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_4.Location = new System.Drawing.Point(0, 65);
+            this.back_ui_4.Name = "back_ui_4";
+            this.back_ui_4.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_4.TabIndex = 11;
+            this.back_ui_4.TabStop = false;
+            this.back_ui_4.Visible = false;
+            this.back_ui_4.Click += new System.EventHandler(this.back_ui_4_Click);
+            // 
+            // back_ui_3
+            // 
+            this.back_ui_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_3.BackgroundImage")));
+            this.back_ui_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_3.Location = new System.Drawing.Point(0, 45);
+            this.back_ui_3.Name = "back_ui_3";
+            this.back_ui_3.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_3.TabIndex = 11;
+            this.back_ui_3.TabStop = false;
+            this.back_ui_3.Visible = false;
+            this.back_ui_3.Click += new System.EventHandler(this.back_ui_3_Click);
+            // 
+            // back_ui_2
+            // 
+            this.back_ui_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_2.BackgroundImage")));
+            this.back_ui_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_2.Location = new System.Drawing.Point(0, 25);
+            this.back_ui_2.Name = "back_ui_2";
+            this.back_ui_2.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_2.TabIndex = 11;
+            this.back_ui_2.TabStop = false;
+            this.back_ui_2.Visible = false;
+            this.back_ui_2.Click += new System.EventHandler(this.back_ui_2_Click);
+            // 
+            // back_ui_1
+            // 
+            this.back_ui_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_1.BackgroundImage")));
+            this.back_ui_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_1.Location = new System.Drawing.Point(0, 5);
+            this.back_ui_1.Name = "back_ui_1";
+            this.back_ui_1.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_ui_1.TabIndex = 11;
+            this.back_ui_1.TabStop = false;
+            this.back_ui_1.Visible = false;
+            this.back_ui_1.Click += new System.EventHandler(this.back_ui_1_Click);
+            // 
+            // checkBox_ffmpeg
+            // 
+            this.checkBox_ffmpeg.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_ffmpeg.ForeColor = System.Drawing.Color.White;
+            this.checkBox_ffmpeg.Location = new System.Drawing.Point(20, 212);
+            this.checkBox_ffmpeg.Name = "checkBox_ffmpeg";
+            this.checkBox_ffmpeg.Size = new System.Drawing.Size(227, 22);
+            this.checkBox_ffmpeg.TabIndex = 22;
+            this.checkBox_ffmpeg.Tag = "";
+            this.checkBox_ffmpeg.Text = "Добавить ffmpeg в контекстное меню";
+            this.toolTip1.SetToolTip(this.checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео\r\n(Работает для файлов avi," +
+        " flac, mov,mkv,mp4,wav,weba)");
+            this.checkBox_ffmpeg.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_explorer
+            // 
+            this.checkBox_explorer.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_explorer.ForeColor = System.Drawing.Color.White;
+            this.checkBox_explorer.Location = new System.Drawing.Point(20, 181);
+            this.checkBox_explorer.Name = "checkBox_explorer";
+            this.checkBox_explorer.Size = new System.Drawing.Size(244, 30);
+            this.checkBox_explorer.TabIndex = 22;
+            this.checkBox_explorer.Tag = "";
+            this.checkBox_explorer.Text = "Добавить перезапуск explorer.exe в контекстное меню";
+            this.checkBox_explorer.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_wotboincontex
+            // 
+            this.checkBox_wotboincontex.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_wotboincontex.ForeColor = System.Drawing.Color.White;
+            this.checkBox_wotboincontex.Location = new System.Drawing.Point(20, 145);
+            this.checkBox_wotboincontex.Name = "checkBox_wotboincontex";
+            this.checkBox_wotboincontex.Size = new System.Drawing.Size(244, 30);
+            this.checkBox_wotboincontex.TabIndex = 22;
+            this.checkBox_wotboincontex.Tag = "";
+            this.checkBox_wotboincontex.Text = "Добавить WOTBO в контекстное меню\r\n на рабочем столе";
+            this.checkBox_wotboincontex.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_shapka
+            // 
+            this.checkBox_shapka.AutoSize = true;
+            this.checkBox_shapka.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_shapka.ForeColor = System.Drawing.Color.White;
+            this.checkBox_shapka.Location = new System.Drawing.Point(20, 125);
+            this.checkBox_shapka.Name = "checkBox_shapka";
+            this.checkBox_shapka.Size = new System.Drawing.Size(208, 17);
+            this.checkBox_shapka.TabIndex = 22;
+            this.checkBox_shapka.Tag = "";
+            this.checkBox_shapka.Text = "Вернуть старую шапку проводника";
+            this.toolTip1.SetToolTip(this.checkBox_shapka, "Возвращает человеческую шапку меню\r\n");
+            this.checkBox_shapka.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_bluefolders
+            // 
+            this.checkBox_bluefolders.AutoSize = true;
+            this.checkBox_bluefolders.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_bluefolders.ForeColor = System.Drawing.Color.White;
+            this.checkBox_bluefolders.Location = new System.Drawing.Point(20, 85);
+            this.checkBox_bluefolders.Name = "checkBox_bluefolders";
+            this.checkBox_bluefolders.Size = new System.Drawing.Size(151, 17);
+            this.checkBox_bluefolders.TabIndex = 21;
+            this.checkBox_bluefolders.Tag = "";
+            this.checkBox_bluefolders.Text = "Установить синие папки";
+            this.toolTip1.SetToolTip(this.checkBox_bluefolders, "Устанавлиает синие папки в проводнике, на замену жёлтых");
+            this.checkBox_bluefolders.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxUI_Buttons_4
+            // 
+            this.checkBoxUI_Buttons_4.AutoSize = true;
+            this.checkBoxUI_Buttons_4.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxUI_Buttons_4.ForeColor = System.Drawing.Color.White;
+            this.checkBoxUI_Buttons_4.Location = new System.Drawing.Point(20, 65);
+            this.checkBoxUI_Buttons_4.Name = "checkBoxUI_Buttons_4";
+            this.checkBoxUI_Buttons_4.Size = new System.Drawing.Size(240, 17);
+            this.checkBoxUI_Buttons_4.TabIndex = 13;
+            this.checkBoxUI_Buttons_4.Tag = "";
+            this.checkBoxUI_Buttons_4.Text = "Отключить сжатие обоев рабочего стола";
+            this.checkBoxUI_Buttons_4.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxUI_Buttons_3
+            // 
+            this.checkBoxUI_Buttons_3.AutoSize = true;
+            this.checkBoxUI_Buttons_3.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxUI_Buttons_3.ForeColor = System.Drawing.Color.White;
+            this.checkBoxUI_Buttons_3.Location = new System.Drawing.Point(20, 45);
+            this.checkBoxUI_Buttons_3.Name = "checkBoxUI_Buttons_3";
+            this.checkBoxUI_Buttons_3.Size = new System.Drawing.Size(178, 17);
+            this.checkBoxUI_Buttons_3.TabIndex = 3;
+            this.checkBoxUI_Buttons_3.Tag = "";
+            this.checkBoxUI_Buttons_3.Text = "Настроить контекстное меню";
+            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_3, "Добавляет полезные пункты для контекстного меню");
+            this.checkBoxUI_Buttons_3.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxUI_Buttons_2
+            // 
+            this.checkBoxUI_Buttons_2.AutoSize = true;
+            this.checkBoxUI_Buttons_2.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxUI_Buttons_2.ForeColor = System.Drawing.Color.White;
+            this.checkBoxUI_Buttons_2.Location = new System.Drawing.Point(20, 25);
+            this.checkBoxUI_Buttons_2.Name = "checkBoxUI_Buttons_2";
+            this.checkBoxUI_Buttons_2.Size = new System.Drawing.Size(184, 17);
+            this.checkBoxUI_Buttons_2.TabIndex = 3;
+            this.checkBoxUI_Buttons_2.Tag = "";
+            this.checkBoxUI_Buttons_2.Text = "Мелкие настройки проводника";
+            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_2, "Делает проводник более приятным в использовании\r\n(Убирает ненужные папки, пункты " +
+        "и т.д)");
+            this.checkBoxUI_Buttons_2.UseVisualStyleBackColor = false;
+            // 
+            // checkBoxUI_Buttons_1
+            // 
+            this.checkBoxUI_Buttons_1.AutoSize = true;
+            this.checkBoxUI_Buttons_1.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxUI_Buttons_1.ForeColor = System.Drawing.Color.White;
+            this.checkBoxUI_Buttons_1.Location = new System.Drawing.Point(20, 5);
+            this.checkBoxUI_Buttons_1.Name = "checkBoxUI_Buttons_1";
+            this.checkBoxUI_Buttons_1.Size = new System.Drawing.Size(231, 17);
+            this.checkBoxUI_Buttons_1.TabIndex = 3;
+            this.checkBoxUI_Buttons_1.Tag = "";
+            this.checkBoxUI_Buttons_1.Text = "Уменьшение кнопок Закрыть, Свернуть";
+            this.checkBoxUI_Buttons_1.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_contex
+            // 
+            this.checkBox_contex.AutoSize = true;
+            this.checkBox_contex.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_contex.ForeColor = System.Drawing.Color.White;
+            this.checkBox_contex.Location = new System.Drawing.Point(20, 105);
+            this.checkBox_contex.Name = "checkBox_contex";
+            this.checkBox_contex.Size = new System.Drawing.Size(204, 17);
+            this.checkBox_contex.TabIndex = 7;
+            this.checkBox_contex.Tag = "";
+            this.checkBox_contex.Text = "Вернуть старое контекстное меню";
+            this.toolTip1.SetToolTip(this.checkBox_contex, "Возвращает человеческое контекстное меню");
+            this.checkBox_contex.UseVisualStyleBackColor = false;
             // 
             // panel_ui_2
             // 
@@ -1430,6 +1648,20 @@ namespace Project
             this.label7.TabIndex = 0;
             this.label7.Text = "hwinfo";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button1.Location = new System.Drawing.Point(21, 331);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(77, 23);
+            this.button1.TabIndex = 0;
+            this.button1.TabStop = false;
+            this.button1.Text = "Применить";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // panel_sorry
             // 
             this.panel_sorry.BackColor = System.Drawing.Color.Transparent;
@@ -1600,7 +1832,7 @@ namespace Project
             this.label_download_13.TabIndex = 0;
             this.label_download_13.Text = "13. K-Lite Codec Pack";
             this.toolTip1.SetToolTip(this.label_download_13, "Лучший плеер для Windows");
-            this.label_download_13.Click += new System.EventHandler(this.label_download_14_Click);
+            this.label_download_13.Click += new System.EventHandler(this.label_download_13_Click);
             // 
             // label_download_12
             // 
@@ -2291,460 +2523,228 @@ namespace Project
             this.toolTip1.SetToolTip(this.checkBox_pro_1, "Убирает из проводника бесполезные две папки в проводнике");
             this.checkBox_pro_1.UseVisualStyleBackColor = true;
             // 
-            // panel_pro_navigate
+            // PanelHead
             // 
-            this.panel_pro_navigate.Controls.Add(this.button_pro_2_new);
-            this.panel_pro_navigate.Controls.Add(this.button_pro_1_new);
-            this.panel_pro_navigate.Location = new System.Drawing.Point(523, 776);
-            this.panel_pro_navigate.Name = "panel_pro_navigate";
-            this.panel_pro_navigate.Size = new System.Drawing.Size(50, 20);
-            this.panel_pro_navigate.TabIndex = 35;
+            this.PanelHead.BackColor = System.Drawing.Color.Transparent;
+            this.PanelHead.Controls.Add(this.logo);
+            this.PanelHead.Controls.Add(this.LabelHead);
+            this.PanelHead.Controls.Add(this.ButtonClose);
+            this.PanelHead.Location = new System.Drawing.Point(0, 0);
+            this.PanelHead.Name = "PanelHead";
+            this.PanelHead.Size = new System.Drawing.Size(395, 36);
+            this.PanelHead.TabIndex = 1;
             // 
-            // button_pro_2_new
+            // logo
             // 
-            this.button_pro_2_new.FlatAppearance.BorderSize = 0;
-            this.button_pro_2_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_pro_2_new.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_pro_2_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_pro_2_new.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_pro_2_new.Location = new System.Drawing.Point(26, 0);
-            this.button_pro_2_new.Name = "button_pro_2_new";
-            this.button_pro_2_new.Size = new System.Drawing.Size(20, 20);
-            this.button_pro_2_new.TabIndex = 2;
-            this.button_pro_2_new.TabStop = false;
-            this.button_pro_2_new.Text = "2";
-            this.button_pro_2_new.UseVisualStyleBackColor = true;
-            this.button_pro_2_new.Click += new System.EventHandler(this.button_pro_2_Click);
-            // 
-            // button_pro_1_new
-            // 
-            this.button_pro_1_new.FlatAppearance.BorderSize = 0;
-            this.button_pro_1_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_pro_1_new.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_pro_1_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_pro_1_new.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_pro_1_new.Location = new System.Drawing.Point(0, 0);
-            this.button_pro_1_new.Name = "button_pro_1_new";
-            this.button_pro_1_new.Size = new System.Drawing.Size(20, 20);
-            this.button_pro_1_new.TabIndex = 2;
-            this.button_pro_1_new.TabStop = false;
-            this.button_pro_1_new.Text = "1";
-            this.button_pro_1_new.UseVisualStyleBackColor = true;
-            this.button_pro_1_new.Click += new System.EventHandler(this.button_pro_1_Click);
-            // 
-            // button_pro_2
-            // 
-            this.button_pro_2.Location = new System.Drawing.Point(623, 776);
-            this.button_pro_2.Name = "button_pro_2";
-            this.button_pro_2.Size = new System.Drawing.Size(20, 20);
-            this.button_pro_2.TabIndex = 0;
-            this.button_pro_2.Text = "2";
-            this.button_pro_2.UseVisualStyleBackColor = true;
-            this.button_pro_2.Click += new System.EventHandler(this.button_pro_2_Click);
-            // 
-            // button_pro_1
-            // 
-            this.button_pro_1.Location = new System.Drawing.Point(598, 776);
-            this.button_pro_1.Name = "button_pro_1";
-            this.button_pro_1.Size = new System.Drawing.Size(20, 20);
-            this.button_pro_1.TabIndex = 0;
-            this.button_pro_1.Text = "1";
-            this.button_pro_1.UseVisualStyleBackColor = true;
-            this.button_pro_1.Click += new System.EventHandler(this.button_pro_1_Click);
-            // 
-            // panel_ui_1
-            // 
-            this.panel_ui_1.BackColor = System.Drawing.Color.Transparent;
-            this.panel_ui_1.Controls.Add(this.back_ui_10);
-            this.panel_ui_1.Controls.Add(this.back_ui_9);
-            this.panel_ui_1.Controls.Add(this.back_ui_8);
-            this.panel_ui_1.Controls.Add(this.back_ui_7);
-            this.panel_ui_1.Controls.Add(this.back_ui_6);
-            this.panel_ui_1.Controls.Add(this.back_ui_5);
-            this.panel_ui_1.Controls.Add(this.back_ui_4);
-            this.panel_ui_1.Controls.Add(this.back_ui_3);
-            this.panel_ui_1.Controls.Add(this.back_ui_2);
-            this.panel_ui_1.Controls.Add(this.back_ui_1);
-            this.panel_ui_1.Controls.Add(this.checkBox_ffmpeg);
-            this.panel_ui_1.Controls.Add(this.checkBox_explorer);
-            this.panel_ui_1.Controls.Add(this.checkBox_wotboincontex);
-            this.panel_ui_1.Controls.Add(this.checkBox_shapka);
-            this.panel_ui_1.Controls.Add(this.checkBox_bluefolders);
-            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_4);
-            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_3);
-            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_2);
-            this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_1);
-            this.panel_ui_1.Controls.Add(this.checkBox_contex);
-            this.panel_ui_1.Location = new System.Drawing.Point(711, 27);
-            this.panel_ui_1.Name = "panel_ui_1";
-            this.panel_ui_1.Size = new System.Drawing.Size(287, 235);
-            this.panel_ui_1.TabIndex = 37;
-            this.panel_ui_1.Visible = false;
-            // 
-            // back_ui_10
-            // 
-            this.back_ui_10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.logo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_10.BackgroundImage")));
-            this.back_ui_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_10.Location = new System.Drawing.Point(1, 215);
-            this.back_ui_10.Name = "back_ui_10";
-            this.back_ui_10.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_10.TabIndex = 23;
-            this.back_ui_10.TabStop = false;
-            this.back_ui_10.Visible = false;
-            this.back_ui_10.Click += new System.EventHandler(this.back_ui_10_Click);
+            this.logo.BackColor = System.Drawing.Color.Transparent;
+            this.logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logo.BackgroundImage")));
+            this.logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.logo.Location = new System.Drawing.Point(87, 7);
+            this.logo.Name = "logo";
+            this.logo.Size = new System.Drawing.Size(20, 20);
+            this.logo.TabIndex = 11;
+            this.logo.TabStop = false;
             // 
-            // back_ui_9
+            // LabelHead
             // 
-            this.back_ui_9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.LabelHead.AutoSize = true;
+            this.LabelHead.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.LabelHead.Location = new System.Drawing.Point(111, 10);
+            this.LabelHead.Name = "LabelHead";
+            this.LabelHead.Size = new System.Drawing.Size(173, 13);
+            this.LabelHead.TabIndex = 1;
+            this.LabelHead.Text = "Windows optimization tool by oixro";
+            this.LabelHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ButtonClose
+            // 
+            this.ButtonClose.FlatAppearance.BorderSize = 0;
+            this.ButtonClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.ButtonClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.ButtonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.ButtonClose.Location = new System.Drawing.Point(357, 0);
+            this.ButtonClose.Name = "ButtonClose";
+            this.ButtonClose.Size = new System.Drawing.Size(33, 33);
+            this.ButtonClose.TabIndex = 0;
+            this.ButtonClose.TabStop = false;
+            this.ButtonClose.Text = "✖";
+            this.ButtonClose.UseVisualStyleBackColor = true;
+            // 
+            // PanelMain
+            // 
+            this.PanelMain.BackColor = System.Drawing.Color.Transparent;
+            this.PanelMain.Controls.Add(this.button_new);
+            this.PanelMain.Controls.Add(this.label_language);
+            this.PanelMain.Controls.Add(this.label_winver);
+            this.PanelMain.Controls.Add(this.label_ver);
+            this.PanelMain.Controls.Add(this.delete_UWP);
+            this.PanelMain.Controls.Add(this.label_pro);
+            this.PanelMain.Controls.Add(this.label_interface);
+            this.PanelMain.Controls.Add(this.label_pc);
+            this.PanelMain.Controls.Add(this.label_progs);
+            this.PanelMain.Controls.Add(this.label_dop);
+            this.PanelMain.Controls.Add(this.label_gpu);
+            this.PanelMain.Controls.Add(this.label_main);
+            this.PanelMain.Location = new System.Drawing.Point(0, 36);
+            this.PanelMain.Name = "PanelMain";
+            this.PanelMain.Size = new System.Drawing.Size(395, 270);
+            this.PanelMain.TabIndex = 0;
+            // 
+            // button_new
+            // 
+            this.button_new.FlatAppearance.BorderSize = 0;
+            this.button_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_new.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_new.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_new.Location = new System.Drawing.Point(15, 218);
+            this.button_new.Name = "button_new";
+            this.button_new.Size = new System.Drawing.Size(77, 23);
+            this.button_new.TabIndex = 2;
+            this.button_new.TabStop = false;
+            this.button_new.Text = "Применить";
+            this.button_new.UseVisualStyleBackColor = true;
+            this.button_new.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label_language
+            // 
+            this.label_language.AutoSize = true;
+            this.label_language.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_language.ForeColor = System.Drawing.Color.White;
+            this.label_language.Location = new System.Drawing.Point(3, 163);
+            this.label_language.Name = "label_language";
+            this.label_language.Size = new System.Drawing.Size(51, 13);
+            this.label_language.TabIndex = 24;
+            this.label_language.Text = "9. RU/EN";
+            this.label_language.Click += new System.EventHandler(this.label_language_Click);
+            // 
+            // label_winver
+            // 
+            this.label_winver.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_9.BackgroundImage")));
-            this.back_ui_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_9.Location = new System.Drawing.Point(0, 187);
-            this.back_ui_9.Name = "back_ui_9";
-            this.back_ui_9.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_9.TabIndex = 11;
-            this.back_ui_9.TabStop = false;
-            this.back_ui_9.Visible = false;
-            this.back_ui_9.Click += new System.EventHandler(this.back_ui_9_Click);
+            this.label_winver.AutoSize = true;
+            this.label_winver.ForeColor = System.Drawing.Color.White;
+            this.label_winver.Location = new System.Drawing.Point(3, 251);
+            this.label_winver.Name = "label_winver";
+            this.label_winver.Size = new System.Drawing.Size(41, 13);
+            this.label_winver.TabIndex = 27;
+            this.label_winver.Text = "Winver";
+            this.label_winver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // back_ui_8
+            // label_ver
             // 
-            this.back_ui_8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.label_ver.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_8.BackgroundImage")));
-            this.back_ui_8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_8.Location = new System.Drawing.Point(0, 151);
-            this.back_ui_8.Name = "back_ui_8";
-            this.back_ui_8.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_8.TabIndex = 11;
-            this.back_ui_8.TabStop = false;
-            this.back_ui_8.Visible = false;
-            this.back_ui_8.Click += new System.EventHandler(this.back_ui_8_Click);
+            this.label_ver.AutoSize = true;
+            this.label_ver.ForeColor = System.Drawing.Color.White;
+            this.label_ver.Location = new System.Drawing.Point(320, 253);
+            this.label_ver.Name = "label_ver";
+            this.label_ver.Size = new System.Drawing.Size(67, 13);
+            this.label_ver.TabIndex = 34;
+            this.label_ver.Text = "dbuild - 9.99";
+            this.label_ver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // back_ui_7
+            // delete_UWP
             // 
-            this.back_ui_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_7.BackgroundImage")));
-            this.back_ui_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_7.Location = new System.Drawing.Point(0, 125);
-            this.back_ui_7.Name = "back_ui_7";
-            this.back_ui_7.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_7.TabIndex = 11;
-            this.back_ui_7.TabStop = false;
-            this.back_ui_7.Visible = false;
-            this.back_ui_7.Click += new System.EventHandler(this.back_ui_7_Click);
+            this.delete_UWP.AutoSize = true;
+            this.delete_UWP.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.delete_UWP.ForeColor = System.Drawing.Color.White;
+            this.delete_UWP.Location = new System.Drawing.Point(3, 143);
+            this.delete_UWP.Name = "delete_UWP";
+            this.delete_UWP.Size = new System.Drawing.Size(96, 13);
+            this.delete_UWP.TabIndex = 32;
+            this.delete_UWP.Text = "8. Удаление UWP";
+            this.delete_UWP.Click += new System.EventHandler(this.delete_UWP_Click);
             // 
-            // back_ui_6
+            // label_pro
             // 
-            this.back_ui_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_6.BackgroundImage")));
-            this.back_ui_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_6.Location = new System.Drawing.Point(0, 105);
-            this.back_ui_6.Name = "back_ui_6";
-            this.back_ui_6.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_6.TabIndex = 11;
-            this.back_ui_6.TabStop = false;
-            this.back_ui_6.Visible = false;
-            this.back_ui_6.Click += new System.EventHandler(this.back_ui_6_Click);
+            this.label_pro.AutoSize = true;
+            this.label_pro.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_pro.ForeColor = System.Drawing.Color.White;
+            this.label_pro.Location = new System.Drawing.Point(3, 123);
+            this.label_pro.Name = "label_pro";
+            this.label_pro.Size = new System.Drawing.Size(70, 13);
+            this.label_pro.TabIndex = 31;
+            this.label_pro.Text = "7. PRO Mode";
+            this.label_pro.Click += new System.EventHandler(this.label_pro_Click);
             // 
-            // back_ui_5
+            // label_interface
             // 
-            this.back_ui_5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_5.BackgroundImage")));
-            this.back_ui_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_5.Location = new System.Drawing.Point(0, 85);
-            this.back_ui_5.Name = "back_ui_5";
-            this.back_ui_5.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_5.TabIndex = 11;
-            this.back_ui_5.TabStop = false;
-            this.back_ui_5.Visible = false;
-            this.back_ui_5.Click += new System.EventHandler(this.back_ui_5_Click);
+            this.label_interface.AutoSize = true;
+            this.label_interface.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_interface.ForeColor = System.Drawing.Color.White;
+            this.label_interface.Location = new System.Drawing.Point(3, 23);
+            this.label_interface.Name = "label_interface";
+            this.label_interface.Size = new System.Drawing.Size(76, 13);
+            this.label_interface.TabIndex = 30;
+            this.label_interface.Text = "2. Интерфейс";
+            this.label_interface.Click += new System.EventHandler(this.label_interface_Click);
             // 
-            // back_ui_4
+            // label_pc
             // 
-            this.back_ui_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_4.BackgroundImage")));
-            this.back_ui_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_4.Location = new System.Drawing.Point(0, 65);
-            this.back_ui_4.Name = "back_ui_4";
-            this.back_ui_4.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_4.TabIndex = 11;
-            this.back_ui_4.TabStop = false;
-            this.back_ui_4.Visible = false;
-            this.back_ui_4.Click += new System.EventHandler(this.back_ui_4_Click);
+            this.label_pc.AutoSize = true;
+            this.label_pc.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_pc.ForeColor = System.Drawing.Color.White;
+            this.label_pc.Location = new System.Drawing.Point(3, 103);
+            this.label_pc.Name = "label_pc";
+            this.label_pc.Size = new System.Drawing.Size(56, 13);
+            this.label_pc.TabIndex = 29;
+            this.label_pc.Text = "6. PC Info";
+            this.label_pc.Click += new System.EventHandler(this.label8_Click);
             // 
-            // back_ui_3
+            // label_progs
             // 
-            this.back_ui_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_3.BackgroundImage")));
-            this.back_ui_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_3.Location = new System.Drawing.Point(0, 45);
-            this.back_ui_3.Name = "back_ui_3";
-            this.back_ui_3.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_3.TabIndex = 11;
-            this.back_ui_3.TabStop = false;
-            this.back_ui_3.Visible = false;
-            this.back_ui_3.Click += new System.EventHandler(this.back_ui_3_Click);
+            this.label_progs.AutoSize = true;
+            this.label_progs.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_progs.ForeColor = System.Drawing.Color.White;
+            this.label_progs.Location = new System.Drawing.Point(3, 83);
+            this.label_progs.Name = "label_progs";
+            this.label_progs.Size = new System.Drawing.Size(95, 13);
+            this.label_progs.TabIndex = 28;
+            this.label_progs.Text = "5. Скачать проги";
+            this.label_progs.Click += new System.EventHandler(this.label6_Click);
             // 
-            // back_ui_2
+            // label_dop
             // 
-            this.back_ui_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_2.BackgroundImage")));
-            this.back_ui_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_2.Location = new System.Drawing.Point(0, 25);
-            this.back_ui_2.Name = "back_ui_2";
-            this.back_ui_2.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_2.TabIndex = 11;
-            this.back_ui_2.TabStop = false;
-            this.back_ui_2.Visible = false;
-            this.back_ui_2.Click += new System.EventHandler(this.back_ui_2_Click);
+            this.label_dop.AutoSize = true;
+            this.label_dop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_dop.ForeColor = System.Drawing.Color.White;
+            this.label_dop.Location = new System.Drawing.Point(3, 63);
+            this.label_dop.Name = "label_dop";
+            this.label_dop.Size = new System.Drawing.Size(100, 13);
+            this.label_dop.TabIndex = 25;
+            this.label_dop.Text = "4. Дополнительно";
+            this.label_dop.Click += new System.EventHandler(this.label3_Click);
             // 
-            // back_ui_1
+            // label_gpu
             // 
-            this.back_ui_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_1.BackgroundImage")));
-            this.back_ui_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_1.Location = new System.Drawing.Point(0, 5);
-            this.back_ui_1.Name = "back_ui_1";
-            this.back_ui_1.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_1.TabIndex = 11;
-            this.back_ui_1.TabStop = false;
-            this.back_ui_1.Visible = false;
-            this.back_ui_1.Click += new System.EventHandler(this.back_ui_1_Click);
+            this.label_gpu.AutoSize = true;
+            this.label_gpu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_gpu.ForeColor = System.Drawing.Color.White;
+            this.label_gpu.Location = new System.Drawing.Point(3, 43);
+            this.label_gpu.Name = "label_gpu";
+            this.label_gpu.Size = new System.Drawing.Size(40, 13);
+            this.label_gpu.TabIndex = 24;
+            this.label_gpu.Text = "3. GPU";
+            this.label_gpu.Click += new System.EventHandler(this.label2_Click);
             // 
-            // checkBox_ffmpeg
+            // label_main
             // 
-            this.checkBox_ffmpeg.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_ffmpeg.ForeColor = System.Drawing.Color.White;
-            this.checkBox_ffmpeg.Location = new System.Drawing.Point(20, 212);
-            this.checkBox_ffmpeg.Name = "checkBox_ffmpeg";
-            this.checkBox_ffmpeg.Size = new System.Drawing.Size(227, 22);
-            this.checkBox_ffmpeg.TabIndex = 22;
-            this.checkBox_ffmpeg.Tag = "";
-            this.checkBox_ffmpeg.Text = "Добавить ffmpeg в контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео\r\n(Работает для файлов avi," +
-        " flac, mov,mkv,mp4,wav,weba)");
-            this.checkBox_ffmpeg.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_explorer
-            // 
-            this.checkBox_explorer.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_explorer.ForeColor = System.Drawing.Color.White;
-            this.checkBox_explorer.Location = new System.Drawing.Point(20, 181);
-            this.checkBox_explorer.Name = "checkBox_explorer";
-            this.checkBox_explorer.Size = new System.Drawing.Size(244, 30);
-            this.checkBox_explorer.TabIndex = 22;
-            this.checkBox_explorer.Tag = "";
-            this.checkBox_explorer.Text = "Добавить перезапуск explorer.exe в контекстное меню";
-            this.checkBox_explorer.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_wotboincontex
-            // 
-            this.checkBox_wotboincontex.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_wotboincontex.ForeColor = System.Drawing.Color.White;
-            this.checkBox_wotboincontex.Location = new System.Drawing.Point(20, 145);
-            this.checkBox_wotboincontex.Name = "checkBox_wotboincontex";
-            this.checkBox_wotboincontex.Size = new System.Drawing.Size(244, 30);
-            this.checkBox_wotboincontex.TabIndex = 22;
-            this.checkBox_wotboincontex.Tag = "";
-            this.checkBox_wotboincontex.Text = "Добавить WOTBO в контекстное меню\r\n на рабочем столе";
-            this.checkBox_wotboincontex.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_shapka
-            // 
-            this.checkBox_shapka.AutoSize = true;
-            this.checkBox_shapka.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_shapka.ForeColor = System.Drawing.Color.White;
-            this.checkBox_shapka.Location = new System.Drawing.Point(20, 125);
-            this.checkBox_shapka.Name = "checkBox_shapka";
-            this.checkBox_shapka.Size = new System.Drawing.Size(208, 17);
-            this.checkBox_shapka.TabIndex = 22;
-            this.checkBox_shapka.Tag = "";
-            this.checkBox_shapka.Text = "Вернуть старую шапку проводника";
-            this.toolTip1.SetToolTip(this.checkBox_shapka, "Возвращает человеческую шапку меню\r\n");
-            this.checkBox_shapka.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_bluefolders
-            // 
-            this.checkBox_bluefolders.AutoSize = true;
-            this.checkBox_bluefolders.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_bluefolders.ForeColor = System.Drawing.Color.White;
-            this.checkBox_bluefolders.Location = new System.Drawing.Point(20, 85);
-            this.checkBox_bluefolders.Name = "checkBox_bluefolders";
-            this.checkBox_bluefolders.Size = new System.Drawing.Size(151, 17);
-            this.checkBox_bluefolders.TabIndex = 21;
-            this.checkBox_bluefolders.Tag = "";
-            this.checkBox_bluefolders.Text = "Установить синие папки";
-            this.toolTip1.SetToolTip(this.checkBox_bluefolders, "Устанавлиает синие папки в проводнике, на замену жёлтых");
-            this.checkBox_bluefolders.UseVisualStyleBackColor = false;
-            // 
-            // checkBoxUI_Buttons_4
-            // 
-            this.checkBoxUI_Buttons_4.AutoSize = true;
-            this.checkBoxUI_Buttons_4.BackColor = System.Drawing.Color.Transparent;
-            this.checkBoxUI_Buttons_4.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUI_Buttons_4.Location = new System.Drawing.Point(20, 65);
-            this.checkBoxUI_Buttons_4.Name = "checkBoxUI_Buttons_4";
-            this.checkBoxUI_Buttons_4.Size = new System.Drawing.Size(240, 17);
-            this.checkBoxUI_Buttons_4.TabIndex = 13;
-            this.checkBoxUI_Buttons_4.Tag = "";
-            this.checkBoxUI_Buttons_4.Text = "Отключить сжатие обоев рабочего стола";
-            this.checkBoxUI_Buttons_4.UseVisualStyleBackColor = false;
-            // 
-            // checkBoxUI_Buttons_3
-            // 
-            this.checkBoxUI_Buttons_3.AutoSize = true;
-            this.checkBoxUI_Buttons_3.BackColor = System.Drawing.Color.Transparent;
-            this.checkBoxUI_Buttons_3.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUI_Buttons_3.Location = new System.Drawing.Point(20, 45);
-            this.checkBoxUI_Buttons_3.Name = "checkBoxUI_Buttons_3";
-            this.checkBoxUI_Buttons_3.Size = new System.Drawing.Size(178, 17);
-            this.checkBoxUI_Buttons_3.TabIndex = 3;
-            this.checkBoxUI_Buttons_3.Tag = "";
-            this.checkBoxUI_Buttons_3.Text = "Настроить контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_3, "Добавляет полезные пункты для контекстного меню");
-            this.checkBoxUI_Buttons_3.UseVisualStyleBackColor = false;
-            // 
-            // checkBoxUI_Buttons_2
-            // 
-            this.checkBoxUI_Buttons_2.AutoSize = true;
-            this.checkBoxUI_Buttons_2.BackColor = System.Drawing.Color.Transparent;
-            this.checkBoxUI_Buttons_2.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUI_Buttons_2.Location = new System.Drawing.Point(20, 25);
-            this.checkBoxUI_Buttons_2.Name = "checkBoxUI_Buttons_2";
-            this.checkBoxUI_Buttons_2.Size = new System.Drawing.Size(184, 17);
-            this.checkBoxUI_Buttons_2.TabIndex = 3;
-            this.checkBoxUI_Buttons_2.Tag = "";
-            this.checkBoxUI_Buttons_2.Text = "Мелкие настройки проводника";
-            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_2, "Делает проводник более приятным в использовании\r\n(Убирает ненужные папки, пункты " +
-        "и т.д)");
-            this.checkBoxUI_Buttons_2.UseVisualStyleBackColor = false;
-            // 
-            // checkBoxUI_Buttons_1
-            // 
-            this.checkBoxUI_Buttons_1.AutoSize = true;
-            this.checkBoxUI_Buttons_1.BackColor = System.Drawing.Color.Transparent;
-            this.checkBoxUI_Buttons_1.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUI_Buttons_1.Location = new System.Drawing.Point(20, 5);
-            this.checkBoxUI_Buttons_1.Name = "checkBoxUI_Buttons_1";
-            this.checkBoxUI_Buttons_1.Size = new System.Drawing.Size(231, 17);
-            this.checkBoxUI_Buttons_1.TabIndex = 3;
-            this.checkBoxUI_Buttons_1.Tag = "";
-            this.checkBoxUI_Buttons_1.Text = "Уменьшение кнопок Закрыть, Свернуть";
-            this.checkBoxUI_Buttons_1.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_contex
-            // 
-            this.checkBox_contex.AutoSize = true;
-            this.checkBox_contex.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_contex.ForeColor = System.Drawing.Color.White;
-            this.checkBox_contex.Location = new System.Drawing.Point(20, 105);
-            this.checkBox_contex.Name = "checkBox_contex";
-            this.checkBox_contex.Size = new System.Drawing.Size(204, 17);
-            this.checkBox_contex.TabIndex = 7;
-            this.checkBox_contex.Tag = "";
-            this.checkBox_contex.Text = "Вернуть старое контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBox_contex, "Возвращает человеческое контекстное меню");
-            this.checkBox_contex.UseVisualStyleBackColor = false;
-            // 
-            // panel_ui_navigate
-            // 
-            this.panel_ui_navigate.Controls.Add(this.button_ui_new_2);
-            this.panel_ui_navigate.Controls.Add(this.button_ui_new_1);
-            this.panel_ui_navigate.Location = new System.Drawing.Point(819, 265);
-            this.panel_ui_navigate.Name = "panel_ui_navigate";
-            this.panel_ui_navigate.Size = new System.Drawing.Size(50, 20);
-            this.panel_ui_navigate.TabIndex = 38;
-            // 
-            // button_ui_new_2
-            // 
-            this.button_ui_new_2.FlatAppearance.BorderSize = 0;
-            this.button_ui_new_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_ui_new_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_ui_new_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_ui_new_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_ui_new_2.Location = new System.Drawing.Point(26, 0);
-            this.button_ui_new_2.Name = "button_ui_new_2";
-            this.button_ui_new_2.Size = new System.Drawing.Size(20, 20);
-            this.button_ui_new_2.TabIndex = 2;
-            this.button_ui_new_2.TabStop = false;
-            this.button_ui_new_2.Text = "2";
-            this.button_ui_new_2.UseVisualStyleBackColor = true;
-            this.button_ui_new_2.Click += new System.EventHandler(this.button_ui_2_Click);
-            // 
-            // button_ui_new_1
-            // 
-            this.button_ui_new_1.FlatAppearance.BorderSize = 0;
-            this.button_ui_new_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_ui_new_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_ui_new_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_ui_new_1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_ui_new_1.Location = new System.Drawing.Point(0, 0);
-            this.button_ui_new_1.Name = "button_ui_new_1";
-            this.button_ui_new_1.Size = new System.Drawing.Size(20, 20);
-            this.button_ui_new_1.TabIndex = 2;
-            this.button_ui_new_1.TabStop = false;
-            this.button_ui_new_1.Text = "1";
-            this.button_ui_new_1.UseVisualStyleBackColor = true;
-            this.button_ui_new_1.Click += new System.EventHandler(this.button_ui_1_Click);
-            // 
-            // button_ui_2
-            // 
-            this.button_ui_2.Location = new System.Drawing.Point(910, 265);
-            this.button_ui_2.Name = "button_ui_2";
-            this.button_ui_2.Size = new System.Drawing.Size(20, 20);
-            this.button_ui_2.TabIndex = 0;
-            this.button_ui_2.Text = "2";
-            this.button_ui_2.UseVisualStyleBackColor = true;
-            this.button_ui_2.Click += new System.EventHandler(this.button_ui_2_Click);
-            // 
-            // button_ui_1
-            // 
-            this.button_ui_1.Location = new System.Drawing.Point(884, 265);
-            this.button_ui_1.Name = "button_ui_1";
-            this.button_ui_1.Size = new System.Drawing.Size(20, 20);
-            this.button_ui_1.TabIndex = 0;
-            this.button_ui_1.Text = "1";
-            this.button_ui_1.UseVisualStyleBackColor = true;
-            this.button_ui_1.Click += new System.EventHandler(this.button_ui_1_Click);
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.AutoPopDelay = 50000;
-            this.toolTip1.InitialDelay = 100;
-            this.toolTip1.ReshowDelay = 100;
-            this.toolTip1.ShowAlways = true;
-            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.toolTip1.ToolTipTitle = "Краткое описании функции:";
+            this.label_main.AutoSize = true;
+            this.label_main.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_main.ForeColor = System.Drawing.Color.White;
+            this.label_main.Location = new System.Drawing.Point(3, 3);
+            this.label_main.Name = "label_main";
+            this.label_main.Size = new System.Drawing.Size(69, 13);
+            this.label_main.TabIndex = 23;
+            this.label_main.Text = "1. Основное";
+            this.label_main.Click += new System.EventHandler(this.label1_Click);
             // 
             // WOTBO
             // 
@@ -2782,8 +2782,8 @@ namespace Project
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.PanelMain.ResumeLayout(false);
-            this.PanelMain.PerformLayout();
+            this.panel_pro_navigate.ResumeLayout(false);
+            this.panel_ui_navigate.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).EndInit();
@@ -2798,9 +2798,18 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_1)).EndInit();
-            this.PanelHead.ResumeLayout(false);
-            this.PanelHead.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
+            this.panel_ui_1.ResumeLayout(false);
+            this.panel_ui_1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).EndInit();
             this.panel_ui_2.ResumeLayout(false);
             this.panel_ui_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_12)).EndInit();
@@ -2840,20 +2849,11 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_1)).EndInit();
-            this.panel_pro_navigate.ResumeLayout(false);
-            this.panel_ui_1.ResumeLayout(false);
-            this.panel_ui_1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).EndInit();
-            this.panel_ui_navigate.ResumeLayout(false);
+            this.PanelHead.ResumeLayout(false);
+            this.PanelHead.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
+            this.PanelMain.ResumeLayout(false);
+            this.PanelMain.PerformLayout();
             this.ResumeLayout(false);
 
         }

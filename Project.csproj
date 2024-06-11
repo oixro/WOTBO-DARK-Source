@@ -175,9 +175,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BackgroundMonitoringServices.exe" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\MSI_util_v3.exe" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gear_clog_system_configuration_setup_icon-icons.com_55348.ico" />
+    <None Include="Resources\BackgroundMonitoringServices.exe" />
     <None Include="Resources\aaaaaaaaaaaaaaaa.png" />
   </ItemGroup>
   <ItemGroup>
