@@ -272,7 +272,7 @@ namespace Project
             //checkBox_pro_7.Text = "";
             toolTip1.SetToolTip(checkBox_pro_7, "Automatically allocates devices (usb, video card) to different processor cores");
             //checkBox_pro_8.Text = "";
-            toolTip1.SetToolTip(checkBox_pro_8, "Gives high priority to a Windows component that allows you to control most of the graphics instruction sets in Windows");
+            toolTip1.SetToolTip(checkBox_CSRSS, "Gives high priority to a Windows component that allows you to control most of the graphics instruction sets in Windows");
             checkBox_pro_9.Text = "Optimize Windows memory settings";
             toolTip1.SetToolTip(checkBox_pro_9, "Configures the system file management utility in Windows");
             checkBox_pro_10.Text = "Advanced Windows Cleanup";
@@ -493,11 +493,6 @@ namespace Project
 
                 checkBox_pro_9.Enabled = false;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_8")) == 1)
-            {
-                checkBox_pro_8.Enabled = false;
-
-            }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_7")) == 1)
             {
                 checkBox_pro_7.Enabled = false;
@@ -598,6 +593,16 @@ namespace Project
             {
                 checkBox_explorer.Enabled = false;
                 back_ui_9.Visible = true;
+            }
+            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe") != null)
+            {
+                checkBox_dwm.Enabled = false;
+                back_dop_6.Visible = true;
+            }
+            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe") != null)
+            {
+                checkBox_CSRSS.Enabled = false;
+                back_dop_7.Visible = true;
             }
             #endregion
             #region получаем инфу о видеодырке
@@ -1576,6 +1581,26 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_zalipanie.Enabled = false;
                 back_dop_4.Visible = true;
             }
+            if (checkBox_microphone.Checked)
+            {
+                checkBox_microphone.Checked = false;
+                checkBox_microphone.Enabled = false;
+                back_dop_5.Visible = true;
+            }
+            if (checkBox_dwm.Checked)
+            {
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options",true)
+                    .CreateSubKey("dwm.exe");
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe",true)
+                    .CreateSubKey("PerfOptions");
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe\PerfOptions", true)
+                    .SetValue("CpuPriorityClass", "1",RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe\PerfOptions", true)
+    .SetValue("IoPriority", "0", RegistryValueKind.DWord);
+                checkBox_dwm.Checked = false;
+                checkBox_dwm.Enabled = false;
+                back_dop_6.Visible = true;
+            }
             #endregion
             #region pro
             if (checkBox_pro_1.Checked)
@@ -1634,12 +1659,26 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_pro_7.Enabled = false;
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("pro_7", 1);
             } //affinity
-            if (checkBox_pro_8.Checked)
+            if (checkBox_CSRSS.Checked)
             {
-                hcmd($"{tempfolder}\\csrss.bat");
-                checkBox_pro_8.Checked = false;
-                checkBox_pro_8.Enabled = false;
-                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("pro_8", 1);
+                //hcmd($"{tempfolder}\\csrss.bat");
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
+    .CreateSubKey("csrss.exe");
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe", true)
+                    .CreateSubKey("PerfOptions");
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions", true)
+                    .SetValue("CpuPriorityClass", "3", RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions", true)
+    .SetValue("IoPriority", "3", RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", true)
+.SetValue("NoLazyMode", "1", RegistryValueKind.DWord);
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", true)
+.SetValue("AlwaysOn", "1", RegistryValueKind.DWord);
+
+                checkBox_CSRSS.Checked = false;
+                checkBox_CSRSS.Enabled = false;
+                back_dop_7.Visible = true;
+                //Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("pro_8", 1);
             } //csrss
             if (checkBox_pro_9.Checked)
             {
@@ -1823,16 +1862,14 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
-            PanelHead.Visible = true;
-            PanelMain.Visible = true;
             panel1.Visible = true;
 
         } //main        
@@ -1868,16 +1905,14 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
-            PanelHead.Visible = true;
-            PanelMain.Visible = true;
             panel2.Visible = true;
             panel2.Location = panel1.Location;
 
@@ -1887,21 +1922,45 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
-                {
-                    continue; // Пропускает текущую итерацию
-                }
+                    continue; 
                 if (pnl == PanelHead)
-                {
-                    continue; // Пропускает текущую итерацию
-                }
+                    continue; 
                 pnl.Visible = false;
             }
-
             panel_dop.Visible = true;
             panel_dop.Location = panel1.Location;
-            PanelHead.Visible = true;
-            PanelMain.Visible = true;
-
+            button_dop_new_1.Visible = true;
+            button_dop_new_2.Visible = true;
+            panel_dop_navigate.Visible = true;
+            panel_dop_navigate.Location = new Point(panel1.Location.X * 2, panel1.Location.Y + panel1.Height);
+        }
+        void button_dop_new_1_Click(object sender, EventArgs e)
+        {
+            foreach (Panel pnl in Controls.OfType<Panel>())
+            {
+                if (pnl == PanelMain)
+                    continue;
+                if (pnl == PanelHead)
+                    continue;
+                pnl.Visible = false;
+            }
+            panel_dop.Visible = true;
+            panel_dop.Location = panel1.Location;
+            panel_dop_navigate.Visible = true;
+        }
+        void button_dop_new_2_Click(object sender, EventArgs e)
+        {
+            foreach (Panel pnl in Controls.OfType<Panel>())
+            {
+                if (pnl == PanelMain)
+                    continue;
+                if (pnl == PanelHead)
+                    continue;
+                pnl.Visible = false;
+            }
+            panel_dop_2.Visible = true;
+            panel_dop_2.Location = panel1.Location;
+            panel_dop_navigate.Visible = true;
         }
         void label6_Click(object sender, EventArgs e) // проги
         {
@@ -1909,11 +1968,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -1947,11 +2006,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -1965,11 +2024,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -1994,17 +2053,17 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
 
         }//ui
-        private void button_ui_1_Click(object sender, EventArgs e)
+        void button_ui_1_Click(object sender, EventArgs e)
         {
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -2012,17 +2071,17 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             panel_ui_1.Location = panel1.Location;
             panel_ui_navigate.Visible = true;
         }
-        private void button_ui_2_Click(object sender, EventArgs e)
+        void button_ui_2_Click(object sender, EventArgs e)
         {
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -2051,7 +2110,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                     try
                     {
                         File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
-                        File.WriteAllText(tempfolder + @"\csrss.bat", Resources.csrss);
                         File.WriteAllBytes(tempfolder + @"\MSI_util_v3.exe", Resources.MSI_util_v3);
                         File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
                     }
@@ -2060,11 +2118,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                     {
                         if (pnl == PanelMain)
                         {
-                            continue; // Пропускает текущую итерацию
+                            continue; 
                         }
                         if (pnl == PanelHead)
                         {
-                            continue; // Пропускает текущую итерацию
+                            continue; 
                         }
                         pnl.Visible = false;
                     }
@@ -2114,17 +2172,17 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                     }
                 }
         }
-        private void button_pro_1_Click(object sender, EventArgs e)
+        void button_pro_1_Click(object sender, EventArgs e)
         {
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -2132,17 +2190,17 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             panel_pro.Location = panel1.Location;
             panel_pro_navigate.Visible = true;
         }
-        private void button_pro_2_Click(object sender, EventArgs e)
+        void button_pro_2_Click(object sender, EventArgs e)
         {
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -2203,11 +2261,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; // Пропускает текущую итерацию
+                    continue; 
                 }
                 pnl.Visible = false;
             }
@@ -2749,7 +2807,14 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void back_pro_8_Click(object sender, EventArgs e)
         {
-
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true).DeleteSubKeyTree("csrss.exe");
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", true)
+.DeleteValue("NoLazyMode");
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", true)
+.DeleteValue("AlwaysOn");
+            checkBox_CSRSS.Checked = false;
+            checkBox_CSRSS.Enabled = true;
+            back_dop_7.Visible = false;
         }
         void back_pro_9_Click(object sender, EventArgs e)
         {
@@ -2826,6 +2891,20 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             checkBox_zalipanie.Enabled = true;
             back_dop_4.Visible = false;
         }
+        void back_dop_5_Click(object sender, EventArgs e)
+        {
+            checkBox_microphone.Checked = false;
+            checkBox_microphone.Enabled = true;
+            back_dop_5.Visible = false;
+        }
+
+        void back_dop_6_Click(object sender, EventArgs e)
+        {
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true).DeleteSubKeyTree("dwm.exe");
+            checkBox_dwm.Checked = false;
+            checkBox_dwm.Enabled = true;
+            back_dop_6.Visible = false;
+        }
         #endregion
         #region installcursors
         public void InstallCursor(string installerFilePath)
@@ -2872,6 +2951,9 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 }
             }
         }
+
         #endregion
+
+
     }
 }

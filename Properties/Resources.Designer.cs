@@ -144,19 +144,6 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на @echo off
-        ///reg add &quot;HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions&quot; /v CpuPriorityClass /t Reg_DWORD /d &quot;4&quot; /f
-        ///reg add &quot;HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions&quot; /v IoPriority /t Reg_DWORD /d &quot;3&quot; /f
-        ///reg add &quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile&quot; /v &quot;NoLazyMode&quot; /t REG_DWORD /d &quot;1&quot; /f
-        ///reg add &quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\Sy [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string csrss {
-            get {
-                return ResourceManager.GetString("csrss", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\nircmd.exe execmd&quot;
         ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
         ///
