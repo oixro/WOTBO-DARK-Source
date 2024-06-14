@@ -1,23 +1,23 @@
-set "TI=%windir%\oixro\nircmd.exe execmd"
+set "TI=%windir%\oixro\su.exe /wrs cmd.exe /c "
 taskkill /f /im explorer.exe >nul 2>&1
 
 del "%APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools\File Explorer.lnk" >nul 2>&1
 del "%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer.lnk" >nul 2>&1
 
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% ren "%windir%\SystemResources\imageres.dll.mun" imageres.dll.mun_bak
+%TI% ren "%windir%\SystemResources\imageres.dll.mun" imageres.dll.mun_bak
 
 timeout /t 1 /nobreak >nul
 
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% copy "%windir%\oixro\BlueIcon Minimal\imageres.dll.mun" "%windir%\SystemResources"
+%TI% copy "%windir%\oixro\BlueIcon Minimal\imageres.dll.mun" "%windir%\SystemResources"
 
 reg add "HKCR\CompressedFolder\DefaultIcon" /v "" /t REG_EXPAND_SZ /d "%windir%\system32\imageres.dll,165" /f >nul
 
 xcopy "%windir%\oixro\BlueIcon Minimal\File Explorer.lnk" "%APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools" /y >nul
 xcopy "%windir%\oixro\BlueIcon Minimal\File Explorer.lnk" "%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" /y >nul
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% xcopy "%windir%\oixro\BlueIcon Minimal\x64" "%ProgramFiles%" /y >nul
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% xcopy "%windir%\oixro\BlueIcon Minimal\x86" "%ProgramFiles(x86)%" /y >nul
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% xcopy "%windir%\oixro\BlueIcon Minimal\users" "%SystemDrive%\Users" /y >nul
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% xcopy "%windir%\oixro\BlueIcon Minimal\windows" "%windir%" /y >nul
+%TI% xcopy "%windir%\oixro\BlueIcon Minimal\x64" "%ProgramFiles%" /y >nul
+%TI% xcopy "%windir%\oixro\BlueIcon Minimal\x86" "%ProgramFiles(x86)%" /y >nul
+%TI% xcopy "%windir%\oixro\BlueIcon Minimal\users" "%SystemDrive%\Users" /y >nul
+%TI% xcopy "%windir%\oixro\BlueIcon Minimal\windows" "%windir%" /y >nul
 
 cd /d "%ProgramFiles%" & attrib +h x64.ico >nul & cd /d "%ProgramFiles%" & attrib +h desktop.ini >nul
 cd /d "%ProgramFiles(x86)%" & attrib +h x86.ico >nul & cd /d "%ProgramFiles(x86)%" & attrib +h desktop.ini >nul
@@ -41,8 +41,5 @@ del /f /a:s thumbcache* >nul 2>&1
 del /f IconCache* >nul 2>&1
 del /f thumbcache* >nul 2>&1
 popd
-timeout /t 3 /nobreak >nul
-start explorer
-taskkill /f /im explorer.exe >nul 2>&1
-timeout /t 3 /nobreak >nul
+timeout /t 1 /nobreak >nul
 start explorer

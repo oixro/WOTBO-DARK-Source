@@ -118,88 +118,76 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="explor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\explor.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="defblueicons" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\defblueicons.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="mousefix" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\mousefix.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="prefetcher_ssd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\prefetcher ssd.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="blueicons" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blueicons.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="unusbpowersaving" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\unusbpowersaving.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="TrInstaller" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TrInstaller.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BackgroundMonitoringServices" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BackgroundMonitoringServices.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="nircmd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nircmd.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="back" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="affinity" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\affinity.cmd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
-  <data name="back" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ui" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ui.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="su" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\su.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="usbpowersaving" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\usbpowersaving.cmd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="updates" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\updates.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
-  </data>
-  <data name="deficonsw10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\deficonsw10.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="scheme" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\scheme.pow;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="blueicons" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blueicons.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
   <data name="blueiconsw10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\blueiconsw10.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
-  <data name="restoreWINDEF10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\restoreWINDEF10.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  <data name="defblueicons" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defblueicons.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
-  <data name="unmousefix" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\unmousefix.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  <data name="deficonsw10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deficonsw10.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
-  <data name="services_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\services_off.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="NVidiaProfileInspectorDmW" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NVidiaProfileInspectorDmW.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="UWP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UWP.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="regpack" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\regpack.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="MSI_util_v3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MSI_util_v3.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="explor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\explor.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
   <data name="gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gear.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="mousefix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mousefix.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  </data>
   <data name="prefetcher_hdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\prefetcher hdd.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
+  <data name="prefetcher_ssd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\prefetcher ssd.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  </data>
+  <data name="profiles" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\profiles.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="regpack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\regpack.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="restoreWINDEF10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\restoreWINDEF10.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  </data>
   <data name="restoreWINDEF11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\restoreWINDEF11.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  </data>
+  <data name="scheme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheme.pow;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="services_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\services_off.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="su" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\su.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ui" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ui.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="unmousefix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unmousefix.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
+  <data name="unusbpowersaving" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unusbpowersaving.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  </data>
+  <data name="updates" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\updates.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
+  <data name="usbpowersaving" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\usbpowersaving.cmd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
+  </data>
+  <data name="UWP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UWP.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

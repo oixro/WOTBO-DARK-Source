@@ -1,11 +1,11 @@
-set "TI=%windir%\oixro\nircmd.exe execmd"
+set "TI=%windir%\oixro\su.exe /wrs cmd.exe /c "
 taskkill /f /im explorer.exe >nul 2>&1
 
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% del /q "%windir%\SystemResources\imageres.dll.mun"
+%TI% del /q "%windir%\SystemResources\imageres.dll.mun"
 
 timeout /t 2 /nobreak >nul
 
-%TI% %windir%\oixro\TrInstaller.exe /c %TI% ren "%windir%\SystemResources\imageres.dll.mun_bak" imageres.dll.mun
+%TI% ren "%windir%\SystemResources\imageres.dll.mun_bak" imageres.dll.mun
 
 del /q /f /a:h "%windir%\windows.ico" >nul
 del /q /f /a:h "%windir%\desktop.ini" >nul
@@ -32,5 +32,3 @@ del /f thumbcache* >nul 2>&1
 popd
 timeout /t 1 /nobreak >nul
 start explorer
-timeout /t 1 /nobreak >nul
-start explorer.exe

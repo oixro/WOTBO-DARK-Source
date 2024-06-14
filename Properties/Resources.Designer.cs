@@ -92,27 +92,19 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] BackgroundMonitoringServices {
-            get {
-                object obj = ResourceManager.GetObject("BackgroundMonitoringServices", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\nircmd.exe execmd&quot;
+        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
         ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
         ///
         ///del &quot;%APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools\File Explorer.lnk&quot; &gt;nul 2&gt;&amp;1
         ///del &quot;%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer.lnk&quot; &gt;nul 2&gt;&amp;1
         ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% ren &quot;%windir%\SystemResources\imageres.dll.mun&quot; imageres.dll.mun_bak
+        ///%TI% ren &quot;%windir%\SystemResources\imageres.dll.mun&quot; imageres.dll.mun_bak
         ///
         ///timeout /t 1 /nobreak &gt;nul
         ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% copy &quot;%windir%\oixro\BlueIcon Min [остаток строки не уместился]&quot;;.
+        ///%TI% copy &quot;%windir%\oixro\BlueIcon Minimal\imageres.dll.mun&quot; &quot;%windir%\SystemResources&quot;
+        ///
+        ///reg add &quot;HKCR\Compr [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string blueicons {
             get {
@@ -121,21 +113,21 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\nircmd.exe execmd&quot;
+        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
         ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
         ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% ren &quot;%windir%\System32\imageres.dll&quot; &quot;imageres.dll_bak&quot;
-        ///
-        ///timeout /t 2 /nobreak &gt;nul
-        ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% copy &quot;%windir%\oixro\imageres.dll&quot; &quot;%windir%\System32&quot;
+        ///%TI% ren &quot;%windir%\System32\imageres.dll&quot; &quot;imageres.dll_bak&quot;
+        ///timeout /t 1 /nobreak &gt;nul
+        ///%TI% copy &quot;%windir%\oixro\imageres.dll&quot; &quot;%windir%\System32&quot;
         ///
         ///pushd &quot;%userprofile%\AppData\Local\Microsoft\Windows\Explorer&quot;
         ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1
         ///del /f /a:s thumbcache* &gt;nul 2&gt;&amp;1
         ///del /f IconCache* &gt;nul 2&gt;&amp;1
         ///del /f thumbcache* &gt;nul 2&gt;&amp;1
-        /// [остаток строки не уместился]&quot;;.
+        ///popd
+        ///pushd &quot;%userprofile%\AppData\Local&quot;
+        ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1        /// [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string blueiconsw10 {
             get {
@@ -144,19 +136,21 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\nircmd.exe execmd&quot;
+        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
         ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
         ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% del /q &quot;%windir%\SystemResources\imageres.dll.mun&quot;
+        ///%TI% del /q &quot;%windir%\SystemResources\imageres.dll.mun&quot;
         ///
         ///timeout /t 2 /nobreak &gt;nul
         ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% ren &quot;%windir%\SystemResources\imageres.dll.mun_bak&quot; imageres.dll.mun
+        ///%TI% ren &quot;%windir%\SystemResources\imageres.dll.mun_bak&quot; imageres.dll.mun
         ///
         ///del /q /f /a:h &quot;%windir%\windows.ico&quot; &gt;nul
         ///del /q /f /a:h &quot;%windir%\desktop.ini&quot; &gt;nul
         ///del /q /f /a:h &quot;%ProgramFiles%\x64.ico&quot; &gt;nul
-        ///del /q /f /a:h &quot;%ProgramFiles%\desktop.ini&quot; &gt;nul        /// [остаток строки не уместился]&quot;;.
+        ///del /q /f /a:h &quot;%ProgramFiles%\desktop.ini&quot; &gt;nul
+        ///del /q /f /a:h &quot;%ProgramFiles(x86)%\x86.ico&quot; &gt;nul
+        ///del /q /f /a:h &quot;%Pro [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string defblueicons {
             get {
@@ -165,12 +159,12 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\nircmd.exe execmd&quot;
+        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
         ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
         ///
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% del /q &quot;%windir%\System32\imageres.dll&quot;
-        ///timeout /t 2 /nobreak &gt;nul
-        ///%TI% %windir%\oixro\TrInstaller.exe /c %TI% ren &quot;%windir%\System32\imageres.dll_bak&quot; imageres.dll
+        ///%TI% del /q &quot;%windir%\System32\imageres.dll&quot;
+        ///timeout /t 1 /nobreak &gt;nul
+        ///%TI% ren &quot;%windir%\System32\imageres.dll_bak&quot; imageres.dll
         ///
         ///pushd &quot;%userprofile%\AppData\Local\Microsoft\Windows\Explorer&quot;
         ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1
@@ -178,7 +172,9 @@ namespace WOTBO.Properties {
         ///del /f IconCache* &gt;nul 2&gt;&amp;1
         ///del /f thumbcache* &gt;nul 2&gt;&amp;1
         ///popd
-        ///timeout /t 1 /n [остаток строки не уместился]&quot;;.
+        ///timeout /t 1 /nobreak &gt;nul
+        ///pushd &quot;%userprofile%\AppData\Local&quot;
+        ///del /f /a:s IconCache* [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string deficonsw10 {
             get {
@@ -236,36 +232,6 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] MSI_util_v3 {
-            get {
-                object obj = ResourceManager.GetObject("MSI_util_v3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] nircmd {
-            get {
-                object obj = ResourceManager.GetObject("nircmd", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] NVidiaProfileInspectorDmW {
-            get {
-                object obj = ResourceManager.GetObject("NVidiaProfileInspectorDmW", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
         ///[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters]
         ///&quot;EnablePrefetcher&quot;=dword:0
@@ -292,6 +258,16 @@ namespace WOTBO.Properties {
         internal static string prefetcher_ssd {
             get {
                 return ResourceManager.GetString("prefetcher_ssd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] profiles {
+            get {
+                object obj = ResourceManager.GetObject("profiles", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -381,16 +357,6 @@ namespace WOTBO.Properties {
         internal static byte[] su {
             get {
                 object obj = ResourceManager.GetObject("su", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] TrInstaller {
-            get {
-                object obj = ResourceManager.GetObject("TrInstaller", resourceCulture);
                 return ((byte[])(obj));
             }
         }

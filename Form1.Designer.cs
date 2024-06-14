@@ -213,6 +213,7 @@ namespace Project
             this.panel_dop_2 = new System.Windows.Forms.Panel();
             this.back_dop_6 = new System.Windows.Forms.PictureBox();
             this.back_dop_5 = new System.Windows.Forms.PictureBox();
+            this.checkBox_edge = new System.Windows.Forms.CheckBox();
             this.panel_pro_navigate.SuspendLayout();
             this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -1085,7 +1086,7 @@ namespace Project
             // 
             this.checkBox_CSRSS.AutoSize = true;
             this.checkBox_CSRSS.ForeColor = System.Drawing.Color.White;
-            this.checkBox_CSRSS.Location = new System.Drawing.Point(20, 46);
+            this.checkBox_CSRSS.Location = new System.Drawing.Point(20, 45);
             this.checkBox_CSRSS.Name = "checkBox_CSRSS";
             this.checkBox_CSRSS.Size = new System.Drawing.Size(190, 17);
             this.checkBox_CSRSS.TabIndex = 19;
@@ -2839,6 +2840,7 @@ namespace Project
             // panel_dop_2
             // 
             this.panel_dop_2.BackColor = System.Drawing.Color.Transparent;
+            this.panel_dop_2.Controls.Add(this.checkBox_edge);
             this.panel_dop_2.Controls.Add(this.back_dop_6);
             this.panel_dop_2.Controls.Add(this.back_dop_5);
             this.panel_dop_2.Controls.Add(this.checkBox_dwm);
@@ -2883,6 +2885,20 @@ namespace Project
             this.back_dop_5.TabStop = false;
             this.back_dop_5.Visible = false;
             this.back_dop_5.Click += new System.EventHandler(this.back_dop_5_Click);
+            // 
+            // checkBox_edge
+            // 
+            this.checkBox_edge.AutoSize = true;
+            this.checkBox_edge.ForeColor = System.Drawing.Color.White;
+            this.checkBox_edge.Location = new System.Drawing.Point(20, 65);
+            this.checkBox_edge.Name = "checkBox_edge";
+            this.checkBox_edge.Size = new System.Drawing.Size(202, 17);
+            this.checkBox_edge.TabIndex = 20;
+            this.checkBox_edge.Tag = "";
+            this.checkBox_edge.Text = "Уменьшить амбиции Microsoft Edge";
+            this.toolTip1.SetToolTip(this.checkBox_edge, "Задаёт высокий приоритет компоненту Windows,\r\n который позволяет управлять больши" +
+        "нством наборов графических инструкций в Windows");
+            this.checkBox_edge.UseVisualStyleBackColor = true;
             // 
             // WOTBO
             // 
@@ -3187,6 +3203,7 @@ namespace Project
         private System.Windows.Forms.PictureBox back_dop_6;
         private System.Windows.Forms.CheckBox checkBox_dwm;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBox_edge;
     }
 }
 

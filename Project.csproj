@@ -159,6 +159,7 @@
     <None Include="Resources\NVidiaProfileInspectorDmW.zip" />
     <None Include="Resources\prefetcher hdd.reg" />
     <None Include="Resources\prefetcher ssd.reg" />
+    <None Include="Resources\profiles.zip" />
     <None Include="Resources\regpack.zip" />
     <None Include="Resources\restoreWINDEF10.reg" />
     <None Include="Resources\restoreWINDEF11.reg" />
