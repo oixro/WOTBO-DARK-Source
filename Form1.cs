@@ -835,6 +835,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             ZipFile.ExtractToDirectory(tempfolder + @"\services.zip", $"{tempfolder}");
 
             File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
+            File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
             #endregion
             try
             {
@@ -3026,7 +3027,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         } //restoreDEF
         void back_main_13_Click(object sender, EventArgs e) //Audio_Lantency_delete.reg
         {
-            File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
             supercmd($@"regedit /s {tempfolder}\Audio_Lantency_delete.reg");
             checkBox_audio.Checked = false;
             checkBox_audio.Enabled = true;
