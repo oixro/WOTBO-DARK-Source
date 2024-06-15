@@ -63,7 +63,6 @@ namespace WOTBO
 "6. Если ты мне напишешь - \"Я НАЖЫМАЮ НА ПРИНЯТЬ, ОНО НЕ РАБОТАЕТ\" - читай лучше этот текст!\n" +
 $"7. Чтобы принять - нажмите правой кнопкой мыши по {button1.Text}" +
 "7.1 В программе имеется авто ввод промокода на Evolve-RP, при принятии соглашения он будет установлен. " +
-"\nДля его отключения - купите PRO версию" +
 "\n8.За большинство настроек спасибо ТехноШахте - (discord.gg/GUC7ckWtmn)" +
 "\n9. И Win 10 Tweaker (win10tweaker.ru)\n" +
 "10. Работоспособность проверна только на оригинальных версиях Windows\n" +
@@ -80,7 +79,6 @@ $"7. Чтобы принять - нажмите правой кнопкой мы
 "6. If you write to me - “I'm pressing accept, it's not working” - read this text better!\n" +
 $"7. To accept, right-click on \"Accept\"" +
 "\n7.1 The program has auto-entry of a promo code for Evolve-RP, when you accept the agreement it will be set. " +
-"\nTo disable it - buy the PRO version" +
 "\n8. For most of the tweaks thanks to - (discord.gg/GUC7ckWtmn)" +
 "\n9. And Win 10 Tweaker\n" +
 "10. Workability is tested only on original versions of Windows\n" +

@@ -157,8 +157,6 @@ namespace Project
             label_dop.Text = "4.Additional settings";
             label_progs.Text = "5.Download Apps";
             label_pc.Text = "6.PC Info";
-            label_pro.Text = "7.PRO Mode";
-            delete_UWP.Text = "8.Delete UWP crap";
             button1.Text = "Apply";
             button_new.Text = "Apply";
             //label_language.Text = "9. Language";
@@ -328,7 +326,7 @@ namespace Project
                 {
                     MessageBox.Show("It is not recommended to have two copies of the program open.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                //hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
+                hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
             }
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
             {
@@ -739,7 +737,6 @@ namespace Project
                 checkBox_activate.Enabled = false;
                 label_ddu.Enabled = false;
                 label_progs.Enabled = false;
-                label_pro.Enabled = false;
                 checkBox_killdefender.Enabled = false;
                 checkBox_mmagent.Enabled = false;
                 checkBox_pro_13.Enabled = false;
@@ -903,10 +900,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             hcmd("taskkill /f /im cmd.exe");
             InstanceChecker.ReleaseMemory();
-
         }
-
-
         #endregion
         async void button1_Click(object sender, EventArgs e)
         {
@@ -2507,220 +2501,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             panel_ui_2.Location = panel1.Location;
             panel_ui_navigate.Visible = true;
         }
-        void label_pro_Click(object sender, EventArgs e) // pro mode
-        {
-            hwid = null;
-            //серийник матери
-            foreach (var mo in new ManagementObjectSearcher("select * from win32_baseboard").Get())
-                hwid += (string)mo["serialnumber"];
-            //id проца
-            foreach (var mo in new ManagementObjectSearcher("select * from win32_Processor").Get())
-                hwid += (string)mo["ProcessorID"];
-            //серийники озу
-            foreach (var mo in new ManagementObjectSearcher("select * from win32_PhysicalMemory").Get())
-                hwid += (string)mo["SerialNumber"];
-            //partnumber озу
-            foreach (var mo in new ManagementObjectSearcher("select * from win32_PhysicalMemory").Get())
-                hwid += (string)mo["partnumber"];
-            using (WebClient wc = new WebClient())
-                if ((wc.DownloadString("https://pastebin.com/raw/SC6CaYbe").Trim()).Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid))))
-                {
-
-                    foreach (Panel pnl in Controls.OfType<Panel>())
-                    {
-                        if (pnl == PanelMain)
-                        {
-                            continue;
-                        }
-                        if (pnl == PanelHead)
-                        {
-                            continue;
-                        }
-                        pnl.Visible = false;
-                    }
-                    panel_pro.Visible = true;
-                    //FormPaint(Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55));
-                    panel_pro.Location = panel1.Location;
-                    button_pro_1.Visible = true;
-                    button_pro_2.Visible = true;
-                    panel_pro_navigate.Visible = true;
-                    panel_pro_navigate.Location = new Point(panel1.Location.X * 2, panel1.Location.Y + panel1.Height);
-                    LabelHead.Text = "WOTBO PRO";
-                    LabelHead.Location = new Point((PanelHead.Size.Width / 2) - LabelHead.Width / 2, LabelHead.Location.Y);
-                    logo.Location = new Point(LabelHead.Location.X - logo.Width, logo.Location.Y);
-
-                }
-                else
-                {
-                    if (!isEnglish)
-                    {
-                        if (MessageBox.Show($"Pro версия не куплена!\nДа - открыть страницу покупки?\nНет - просто скопировать уникальный код для привязки.",
-                            "WOTBO PRO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            Clipboard.Clear();
-                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
-                            Process.Start("https://boosty.to/oixro/posts/fbe75ebb-3476-4843-9726-f1702b4db0a3");
-                        }
-                        else
-                        {
-                            Clipboard.Clear();
-                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
-                        }
-                    }
-                    else
-                    {
-                        if (MessageBox.Show($"Pro version is not purchased! \nYes - open the purchase page? \nNo - just copy the unique code for binding.",
-                            "WOTBO PRO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            Clipboard.Clear();
-                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
-                            Process.Start("https://boosty.to/oixro/posts/fbe75ebb-3476-4843-9726-f1702b4db0a3");
-                        }
-                        else
-                        {
-                            Clipboard.Clear();
-                            Clipboard.SetText(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid)));
-                        }
-                    }
-                }
-        }
-        void button_pro_1_Click(object sender, EventArgs e)
-        {
-            foreach (Panel pnl in Controls.OfType<Panel>())
-            {
-                if (pnl == PanelMain)
-                {
-                    continue;
-                }
-                if (pnl == PanelHead)
-                {
-                    continue;
-                }
-                pnl.Visible = false;
-            }
-            panel_pro.Visible = true;
-            panel_pro.Location = panel1.Location;
-            panel_pro_navigate.Visible = true;
-        }
-        void button_pro_2_Click(object sender, EventArgs e)
-        {
-            foreach (Panel pnl in Controls.OfType<Panel>())
-            {
-                if (pnl == PanelMain)
-                {
-                    continue;
-                }
-                if (pnl == PanelHead)
-                {
-                    continue;
-                }
-                pnl.Visible = false;
-            }
-            panel_pro2.Visible = true;
-            panel_pro2.Location = panel1.Location;
-            panel_pro_navigate.Visible = true;
-        }
-        void delete_UWP_Click(object sender, EventArgs e)
-        {
-            //получаем доступ
-            hcmd(@"takeown /f ""%ProgramFiles%\WindowsApps"" /r /d y >nul 2>nul");
-            hcmd(@"icacls ""%ProgramFiles%\WindowsApps"" /grant *S-1-5-32-544:F /t >nul 2>nul");
-
-            //получаем список говна
-            string[] allWinAppFolders = Directory.GetDirectories($@"{Environment.GetEnvironmentVariable("ProgramFiles")}\WindowsApps", "*", SearchOption.TopDirectoryOnly);
-
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.549981C3F5F10"))
-            {
-                checkBox_uwp_cortana.Enabled = false;
-            } //cortana
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Clipchamp.Clipchamp"))
-            {
-                checkBox_uwp_clipchamp.Enabled = false;
-            } //clipchamp
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.YourPhone"))
-            {
-                checkBox_uwp_phone.Enabled = false;
-            } //YourPhone
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.BingNews"))
-            {
-                checkBox_uwp_bingnews.Enabled = false;
-            } //BingNews
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.BingWeather"))
-            {
-                checkBox_uwp_bingweather.Enabled = false;
-            } //BingWeather
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.PowerAutomateDesktop"))
-            {
-                checkBox_uwp_PowerAuto.Enabled = false;
-            } //PowerAutomateDesktop
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.Todos"))
-            {
-                checkBox_uwp_todos.Enabled = false;
-            } //Todos
-            if (!string.Join(Environment.NewLine, allWinAppFolders).Contains("Microsoft.WindowsTerminal"))
-            {
-                checkBox_uwp_terminal.Enabled = false;
-            } //WindowsTerminal
-            //распаковываем чистку
-            if (!Directory.Exists(tempfolder + @"\UWP"))
-            {
-                File.WriteAllBytes(tempfolder + @"\UWP.zip", Resources.UWP);
-                ZipFile.ExtractToDirectory(tempfolder + @"\UWP.zip", tempfolder + @"\UWP");
-                File.Delete(tempfolder + @"\UWP.zip");
-            }
-            //открываем панель
-            foreach (Panel pnl in Controls.OfType<Panel>())
-            {
-                if (pnl == PanelMain)
-                {
-                    continue;
-                }
-                if (pnl == PanelHead)
-                {
-                    continue;
-                }
-                pnl.Visible = false;
-            }
-            panel_uwp.Visible = true;
-            panel_uwp.Location = panel1.Location;
-
-        } //uwp
-        void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F12)
-            {
-                try
-                {
-                    hcmd($"taskkill /f /im BackgroundMonitoringServices.exe");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("block_backgr", 1);
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).DeleteValue("BackgroundMonitoringServices");
-                    MessageBox.Show("Отключено!");
-                    checkBox_pro_2.Enabled = false;
-                    checkBox_pro_2.Checked = false;
-                }
-                catch { }
-
-            } //autopromo
-            if (e.KeyCode == Keys.F5)
-            {
-                try
-                {
-                    hcmd($"taskkill /f /im BackgroundMonitoringServices.exe");
-                    Registry.CurrentUser.DeleteSubKeyTree(@"Software\oixro");
-                    if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run").GetValue("BackgroundMonitoringServices") != null)
-                    {
-                        Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).DeleteValue("BackgroundMonitoringServices");
-                    }
-                    hcmd($"taskkill /f /im \"{exename}\" && rd {tempfolder} /s /q && \"{exepath}\"");
-                }
-                catch { }
-
-            } //clean
-            if (e.KeyCode == Keys.F7)
-            {
-                hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
-            }
-        }// f5 & f12
         #endregion
         #region download progs
         void label_download_1_Click(object sender, EventArgs e)
