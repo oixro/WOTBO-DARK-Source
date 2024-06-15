@@ -81,7 +81,7 @@ namespace Project
             FormPaint(Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55));
 
             // Позволяем таскать за заголовок Label и Panel
-            new List<Control> { LabelHead, PanelHead }.ForEach(x =>
+            new List<Control> { LabelHead, PanelHead, logo }.ForEach(x =>
             {
                 x.MouseDown += (s, a) =>
                 {
@@ -609,7 +609,41 @@ namespace Project
                 checkBox_CSRSS.Enabled = false;
                 back_dop_7.Visible = true;
             }
-
+            if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy")?.GetValue("AllowHeadlessExecution")) == "1")
+            {
+                checkBox_audio.Enabled = false;
+                back_main_13.Visible = true;
+            }
+            if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows")?.GetValue("DwmInputUsesIoCompletionPort")) == "0")
+            {
+                checkBox_dwninput.Enabled = false;
+                back_main_14.Visible = true;
+            }
+            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio")?.GetValue("DisableProtectedAudio") != null)
+            {
+                checkBox_audioDG.Enabled = false;
+                back_main_15.Visible = true;
+            }
+            if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power")?.GetValue("ExitLatency")) == "1")
+            {
+                checkBox_tolerate.Enabled = false;
+                back_main_16.Visible = true;
+            }
+            if (Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\VideoSettings") != null)
+            {
+                checkBox_videoprocess.Enabled = false;
+                back_main_17.Visible = true;
+            }
+            if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Services\usbhub\hubg")?.GetValue("DisableOnSoftRemove") != null)
+            {
+                checkBox_usbport.Enabled = false;
+                back_main_18.Visible = true;
+            }
+            if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\{36fc9e60-c465-11cf-8056-444553540000}\0000")?.GetValue("IdleEnable") != null)
+            {
+                checkBox_usbpollrate.Enabled = false;
+                back_main_19.Visible = true;
+            }
             #endregion
             #region получаем инфу о видеодырке
             foreach (var mo in new ManagementObjectSearcher("select * from win32_VideoController").Get())
@@ -727,7 +761,7 @@ namespace Project
                     MessageBox.Show("No internet access!\nChecking for updates and some features are not available.", "Windows optimization tool by oixro (WOTBO)",
 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                
+
             }
             else
             {
@@ -781,7 +815,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
             #region checkforwin10
-
             if (win10)
             {
                 checkBox_contex.Enabled = false;
@@ -797,10 +830,11 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             File.WriteAllBytes(path_regpack7z, Resources.regpack);
             ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
             File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
-            //File.WriteAllBytes(tempfolder + @"\TrInstaller.exe", Resources.TrInstaller);
-            //File.WriteAllBytes(tempfolder + @"\nircmd.exe", Resources.nircmd);
+
             File.WriteAllBytes(tempfolder + @"\services.zip", Resources.services_off);
             ZipFile.ExtractToDirectory(tempfolder + @"\services.zip", $"{tempfolder}");
+
+            File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
             #endregion
             try
             {
@@ -835,10 +869,10 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     checkBox_pro_2.Enabled = false;
                 }
             }
-                #endregion
-            }
-            #region закрытие
-            private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+            #endregion
+        }
+        #region закрытие
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Directory.Exists(@"C:\Windows\oixro"))
             {
@@ -1190,6 +1224,217 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         checkBox_mousefix.Checked = false;
                     }
                 }
+            }
+
+            //вторая
+            if (checkBox_audio.Checked)
+            {
+                supercmd($@"regedit /s {tempfolder}\Audio_Lantency.reg");
+                checkBox_audio.Checked = false;
+                checkBox_audio.Enabled = false;
+                back_main_13.Visible = true;
+            }
+            if (checkBox_dwninput.Checked)
+            {
+                RegistryKey key;
+                key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows");
+                key?.SetValue("DesktopHeapLogging", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("DwmInputUsesIoCompletionPort", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("EnableDwmInputProcessing", 0x00000000, RegistryValueKind.DWord);
+                key.Close();
+                checkBox_dwninput.Checked = false;
+                checkBox_dwninput.Enabled = false;
+                back_main_14.Visible = true;
+            }
+            if (checkBox_audioDG.Checked)
+            {
+                RegistryKey key;
+                key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Audio");
+                key?.SetValue("DisableSpatialOnComboEndpoints", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DisableProtectedAudioDG", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DisableProtectedAudio", 0x00000001, RegistryValueKind.DWord);
+                key.Close();
+                checkBox_audioDG.Checked = false;
+                checkBox_audioDG.Enabled = false;
+                back_main_15.Visible = true;
+            }
+            if (checkBox_tolerate.Checked)
+            {
+                RegistryKey key;
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Power");
+                key?.SetValue("ExitLatency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DisableVsyncLatencyUpdate", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DisableSensorWatchdog", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("ExitLatencyCheckEnabled", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("Latency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LatencyToleranceDefault", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LatencyToleranceFSVP", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LatencyToleranceIdleResiliency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LatencyTolerancePerfOverride", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LatencyToleranceScreenOffIR", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LatencyToleranceVSyncEnabled", 0x000000001, RegistryValueKind.DWord);
+                key?.SetValue("RtlCapabilityCheckLatency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("MfBufferingThreshold", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("CsEnabled", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("QosManagesIdleProcessors", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("SleepReliabilityDetailedDiagnostics", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("EventProcessorEnabled", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\Power");
+                key?.SetValue("RmGpsPsEnablePerCpuCoreDpc", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("PowerSavingTweaks", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("DisableWriteCombining", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("EnableRuntimePowerManagement", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("PrimaryPushBufferSize", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("FlTransitionLatency", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("D3PCLatency", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("RMDeepLlEntryLatencyUsec", 0x00000000, RegistryValueKind.DWord);
+                key?.SetValue("PciLatencyTimerControl", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("Node3DLowLatency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("LOWLATENCY", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("RmDisableRegistryCaching", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("RMDisablePostL2Compression", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultMemoryRefreshLatencyToleranceNoContext", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultMemoryRefreshLatencyToleranceMonitorOff", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultMemoryRefreshLatencyToleranceActivelyUsed", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyIdleShortTime", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyIdleNoContext", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyIdleMonitorOff", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceTimerPeriod", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceOther", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceNoContextMonitorOff", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceNoContext", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceMemory", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceIdle1MonitorOff", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceIdle1", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceIdle0MonitorOff", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultLatencyToleranceIdle0", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyIdleVeryLongTime", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyIdleLongTime", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyActivelyUsed", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("Latency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("DefaultD3TransitionLatencyActivelyUsed", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("TransitionLatency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("MonitorRefreshLatencyTolerance", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("MonitorLatencyTolerance", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("MiracastPerfTrackGraphicsLatency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("MaxIAverageGraphicsLatencyInOneBucket", 0x00000001, RegistryValueKind.DWord);
+                key.Close();
+                checkBox_tolerate.Checked = false;
+                checkBox_tolerate.Enabled = false;
+                back_main_16.Visible = true;
+            }
+            if (checkBox_videoprocess.Checked)
+            {
+                RegistryKey key;
+                key = Registry.CurrentUser.CreateSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
+                key?.SetValue("EnableAutoEnhanceDuringPlayback", 0x00000000, RegistryValueKind.DWord);
+                key.Close();
+                checkBox_videoprocess.Checked = false;
+                checkBox_videoprocess.Enabled = false;
+                back_main_17.Visible = true;
+            }
+            if (checkBox_usbport.Checked)
+            {
+                RegistryKey key;
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\hubg");
+                key?.SetValue("DisableOnSoftRemove", 0x00000001, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\xusb22\\Parameters");
+                key?.SetValue("IoQueueWorkItem", 0x0000000a, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\USBXHCI\\Parameters");
+                key?.SetValue("IoQueueWorkItem", 0x0000000a, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\Parameters");
+                key?.SetValue("IoQueueWorkItem", 0x0000000a, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Enum\\USB");
+                key?.SetValue("AllowIdleIrpInD3", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("EnhancedPowerManagementEnabled", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\USBXHCI\\Parameters\\Wdf");
+                key?.SetValue("NoExtraBufferRoom", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\usbflags");
+                key?.SetValue("fid_D1Latency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("fid_D2Latency", 0x00000001, RegistryValueKind.DWord);
+                key?.SetValue("fid_D3Latency", 0x00000001, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\Performance");
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\hubg");
+                key?.SetValue("DisableOnSoftRemove", 0x00000001, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Windows\\EnhancedStorageDevices");
+                key?.SetValue("TCGSecurityActivationDisabled", 0x00000001, RegistryValueKind.DWord);
+                key.Close();
+                checkBox_usbport.Checked = false;
+                checkBox_usbport.Enabled = false;
+                back_main_18.Visible = true;
+            }
+            if (checkBox_usbpollrate.Checked)
+            {
+                RegistryKey key;
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}");
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0000");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0001");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0002");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0003");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0004");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0045");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0005");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0006");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0007");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0008");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0009");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0010");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0011");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0012");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0013");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0014");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0015");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0016");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0017");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0018");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0019");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0020");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0021");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0022");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0023");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0024");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0025");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0026");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0027");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0028");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0029");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0030");
+                key?.SetValue("IdleEnable", 0x00000000, RegistryValueKind.DWord);
+                key.Close();
+                checkBox_usbpollrate.Checked = false;
+                checkBox_usbpollrate.Enabled = false;
+                back_main_19.Visible = true;
             }
             #endregion
             #region gpu
@@ -1604,12 +1849,12 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             if (checkBox_dwm.Checked)
             {
-                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options",true)
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
                     .CreateSubKey("dwm.exe");
-                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe",true)
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe", true)
                     .CreateSubKey("PerfOptions");
                 Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe\PerfOptions", true)
-                    .SetValue("CpuPriorityClass", "1",RegistryValueKind.DWord);
+                    .SetValue("CpuPriorityClass", "1", RegistryValueKind.DWord);
                 Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe\PerfOptions", true)
     .SetValue("IoPriority", "0", RegistryValueKind.DWord);
                 checkBox_dwm.Checked = false;
@@ -2006,18 +2251,54 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
-                {
-                    continue; 
-                }
+                    continue;
                 if (pnl == PanelHead)
-                {
-                    continue; 
-                }
+                    continue;
                 pnl.Visible = false;
             }
             panel1.Visible = true;
+            panel1.Location = panel1.Location;
+            button_main_1.Visible = true;
+            button_main_2.Visible = true;
+            panel_main_navigate.Visible = true;
+            panel_main_navigate.Location = new Point(panel1.Location.X * 2, panel1.Location.Y + panel1.Height);
 
         } //main        
+        void button_main_1_Click(object sender, EventArgs e)
+        {
+            foreach (Panel pnl in Controls.OfType<Panel>())
+            {
+                if (pnl == PanelMain)
+                    continue;
+                if (pnl == PanelHead)
+                    continue;
+                pnl.Visible = false;
+            }
+            panel1.Visible = true;
+            panel1.Location = panel1.Location;
+            button_main_1.Visible = true;
+            button_main_2.Visible = true;
+            panel_main_navigate.Visible = true;
+            panel_main_navigate.Location = new Point(panel1.Location.X * 2, panel1.Location.Y + panel1.Height);
+        }
+
+        void button_main_2_Click(object sender, EventArgs e)
+        {
+            foreach (Panel pnl in Controls.OfType<Panel>())
+            {
+                if (pnl == PanelMain)
+                    continue;
+                if (pnl == PanelHead)
+                    continue;
+                pnl.Visible = false;
+            }
+            panel_main_2.Visible = true;
+            panel_main_2.Location = panel1.Location;
+            button_main_1.Visible = true;
+            button_main_2.Visible = true;
+            panel_main_navigate.Visible = true;
+            panel_main_navigate.Location = new Point(panel1.Location.X * 2, panel1.Location.Y + panel1.Height);
+        }
         void label2_Click(object sender, EventArgs e)
         {
             try
@@ -2050,11 +2331,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2067,9 +2348,9 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             foreach (Panel pnl in Controls.OfType<Panel>())
             {
                 if (pnl == PanelMain)
-                    continue; 
+                    continue;
                 if (pnl == PanelHead)
-                    continue; 
+                    continue;
                 pnl.Visible = false;
             }
             panel_dop.Visible = true;
@@ -2113,11 +2394,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2151,11 +2432,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2169,11 +2450,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2204,11 +2485,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2222,11 +2503,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2270,11 +2551,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                     {
                         if (pnl == PanelMain)
                         {
-                            continue; 
+                            continue;
                         }
                         if (pnl == PanelHead)
                         {
-                            continue; 
+                            continue;
                         }
                         pnl.Visible = false;
                     }
@@ -2330,11 +2611,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2348,11 +2629,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2413,11 +2694,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             {
                 if (pnl == PanelMain)
                 {
-                    continue; 
+                    continue;
                 }
                 if (pnl == PanelHead)
                 {
-                    continue; 
+                    continue;
                 }
                 pnl.Visible = false;
             }
@@ -2425,7 +2706,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             panel_uwp.Location = panel1.Location;
 
         } //uwp
-        async void Form1_KeyDown(object sender, KeyEventArgs e)
+        void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F12)
             {
@@ -2743,6 +3024,214 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             MessageBox.Show("Для восстановления работы защитника выполните перезагрузку!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         } //restoreDEF
+        void back_main_13_Click(object sender, EventArgs e) //Audio_Lantency_delete.reg
+        {
+            File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
+            supercmd($@"regedit /s {tempfolder}\Audio_Lantency_delete.reg");
+            checkBox_audio.Checked = false;
+            checkBox_audio.Enabled = true;
+            back_main_13.Visible = false;
+        }
+
+        void back_main_14_Click(object sender, EventArgs e)
+        {
+            RegistryKey key;
+            key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows");
+            key?.SetValue("DesktopHeapLogging", 0x00000001, RegistryValueKind.DWord);
+            key?.SetValue("DwmInputUsesIoCompletionPort", 0x00000001, RegistryValueKind.DWord);
+            key?.SetValue("EnableDwmInputProcessing", 0x00000007, RegistryValueKind.DWord);
+            key.Close();
+            checkBox_dwninput.Checked = false;
+            checkBox_dwninput.Enabled = true;
+            back_main_14.Visible = false;
+        }
+
+        void back_main_15_Click(object sender, EventArgs e)
+        {
+            RegistryKey key;
+            key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio");
+            key?.SetValue("DisableSpatialOnComboEndpoints", 0x00000000, RegistryValueKind.DWord);
+            key?.DeleteValue("DisableProtectedAudioDG");
+            key?.DeleteValue("DisableProtectedAudio");
+            key.Close();
+            checkBox_audioDG.Checked = false;
+            checkBox_audioDG.Enabled = true;
+            back_main_15.Visible = false;
+        }
+
+        void back_main_16_Click(object sender, EventArgs e)
+        {
+            RegistryKey key;
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Power");
+            key?.DeleteValue("ExitLatency");
+            key?.DeleteValue("DisableVsyncLatencyUpdate");
+            key?.DeleteValue("DisableSensorWatchdog");
+            key?.DeleteValue("ExitLatencyCheckEnabled");
+            key?.DeleteValue("Latency");
+            key?.DeleteValue("LatencyToleranceDefault");
+            key?.DeleteValue("LatencyToleranceFSVP");
+            key?.DeleteValue("LatencyToleranceIdleResiliency");
+            key?.DeleteValue("LatencyTolerancePerfOverride");
+            key?.DeleteValue("LatencyToleranceScreenOffIR");
+            key?.DeleteValue("RtlCapabilityCheckLatency");
+            key?.DeleteValue("CsEnabled");
+            key?.DeleteValue("QosManagesIdleProcessors");
+            key?.DeleteValue("SleepReliabilityDetailedDiagnostics");
+            key?.SetValue("EventProcessorEnabled", 0x00000001, RegistryValueKind.DWord);
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\GraphicsDrivers\\Power");
+            key?.DeleteValue("RmGpsPsEnablePerCpuCoreDpc");
+            key?.DeleteValue("PowerSavingTweaks");
+            key?.DeleteValue("DisableWriteCombining");
+            key?.DeleteValue("EnableRuntimePowerManagement");
+            key?.DeleteValue("PrimaryPushBufferSize");
+            key?.DeleteValue("FlTransitionLatency");
+            key?.DeleteValue("D3PCLatency");
+            key?.DeleteValue("RMDeepLlEntryLatencyUsec");
+            key?.DeleteValue("PciLatencyTimerControl");
+            key?.DeleteValue("Node3DLowLatency");
+            key?.DeleteValue("LOWLATENCY");
+            key?.DeleteValue("RmDisableRegistryCaching");
+            key?.DeleteValue("RMDisablePostL2Compression");
+            key?.DeleteValue("DefaultMemoryRefreshLatencyToleranceNoContext");
+            key?.DeleteValue("DefaultMemoryRefreshLatencyToleranceMonitorOff");
+            key?.DeleteValue("DefaultMemoryRefreshLatencyToleranceActivelyUsed");
+            key?.DeleteValue("DefaultD3TransitionLatencyIdleShortTime");
+            key?.DeleteValue("DefaultD3TransitionLatencyIdleNoContext");
+            key?.DeleteValue("DefaultD3TransitionLatencyIdleMonitorOff");
+            key?.DeleteValue("DefaultLatencyToleranceTimerPeriod");
+            key?.DeleteValue("DefaultLatencyToleranceOther");
+            key?.DeleteValue("DefaultLatencyToleranceNoContextMonitorOff");
+            key?.DeleteValue("DefaultLatencyToleranceNoContext");
+            key?.DeleteValue("DefaultLatencyToleranceMemory");
+            key?.DeleteValue("DefaultLatencyToleranceIdle1MonitorOff");
+            key?.DeleteValue("DefaultLatencyToleranceIdle1");
+            key?.DeleteValue("DefaultLatencyToleranceIdle0MonitorOff");
+            key?.DeleteValue("DefaultLatencyToleranceIdle0");
+            key?.DeleteValue("DefaultD3TransitionLatencyIdleVeryLongTime");
+            key?.DeleteValue("DefaultD3TransitionLatencyIdleLongTime");
+            key?.DeleteValue("DefaultD3TransitionLatencyActivelyUsed");
+            key?.DeleteValue("Latency");
+            key?.DeleteValue("TransitionLatency");
+            key?.DeleteValue("MonitorRefreshLatencyTolerance");
+            key?.DeleteValue("MonitorLatencyTolerance");
+            key?.DeleteValue("MiracastPerfTrackGraphicsLatency");
+            key?.DeleteValue("MaxIAverageGraphicsLatencyInOneBucket");
+            key.Close();
+            checkBox_tolerate.Checked = false;
+            checkBox_tolerate.Enabled = true;
+            back_main_16.Visible = false;
+        }
+
+        void back_main_17_Click(object sender, EventArgs e)
+        {
+            Registry.CurrentUser.DeleteSubKeyTree($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
+            checkBox_videoprocess.Checked = false;
+            checkBox_videoprocess.Enabled = true;
+            back_main_17.Visible = false;
+        }
+
+        void back_main_18_Click(object sender, EventArgs e)
+        {
+            RegistryKey key;
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\usbhub\\hubg");
+            key?.DeleteValue("DisableOnSoftRemove");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\xusb22\\Parameters");
+            key?.DeleteValue("IoQueueWorkItem");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\USBXHCI\\Parameters");
+            key?.DeleteValue("IoQueueWorkItem");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\usbhub\\Parameters");
+            key?.DeleteValue("IoQueueWorkItem");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Enum\\USB");
+            key?.DeleteValue("AllowIdleIrpInD3");
+            key?.DeleteValue("EnhancedPowerManagementEnabled");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\USBXHCI\\Parameters\\Wdf");
+            key?.DeleteValue("NoExtraBufferRoom");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\usbflags");
+            key?.DeleteValue("fid_D1Latency");
+            key?.DeleteValue("fid_D2Latency");
+            key?.DeleteValue("fid_D3Latency");
+            key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Windows\\EnhancedStorageDevices");
+            key?.SetValue("TCGSecurityActivationDisabled", 0x00000000, RegistryValueKind.DWord);
+            key.Close();
+            checkBox_usbport.Checked = false;
+            checkBox_usbport.Enabled = true;
+            back_main_18.Visible = false;
+        }
+
+        void back_main_19_Click(object sender, EventArgs e)
+        {
+            RegistryKey key;
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0000");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0001");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0002");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0003");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0004");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0045");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0005");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0006");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0007");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0008");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0009");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0010");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0011");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0012");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0013");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0014");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0015");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0016");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0017");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0018");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0019");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0020");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0021");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0022");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0023");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0024");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0025");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0026");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0027");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0028");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0029");
+            key?.DeleteValue("IdleEnable");
+            key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\Class\\{{36fc9e60-c465-11cf-8056-444553540000}}\\0030");
+            key?.DeleteValue("IdleEnable");
+            key.Close();
+            checkBox_usbpollrate.Checked = false;
+            checkBox_usbpollrate.Enabled = true;
+            back_main_19.Visible = false;
+        }
+
+
         void back_ui_1_Click(object sender, EventArgs e)
         {
             Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop\\WindowMetrics", true).SetValue("CaptionHeight", "-330");
@@ -3077,6 +3566,8 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 }
             }
         }
+
+
 
         #endregion
 

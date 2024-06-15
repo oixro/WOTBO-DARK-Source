@@ -190,4 +190,10 @@
   <data name="UWP" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UWP.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Audio_Lantency" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio Lantency.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Audio_Lantency_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio Lantency_delete.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
 </root>

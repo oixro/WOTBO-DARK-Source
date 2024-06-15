@@ -82,6 +82,36 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
+        ///
+        ///;Audio Latency
+        ///
+        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy]
+        ///&quot;AllowHeadlessExecution&quot;=dword:00000001
+        ///&quot;AllowMultipleBackgroundTasks&quot;=dword:00000001
+        ///&quot;InactivityTimeoutMs&quot;=dword:FFFFFFFF.
+        /// </summary>
+        internal static string Audio_Lantency {
+            get {
+                return ResourceManager.GetString("Audio_Lantency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
+        ///
+        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy]
+        ///&quot;AllowHeadlessExecution&quot;=dword:00000000
+        ///&quot;InactivityTimeoutMs&quot;=dword:0000ea60
+        ///.
+        /// </summary>
+        internal static string Audio_Lantency_delete {
+            get {
+                return ResourceManager.GetString("Audio_Lantency_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap back {

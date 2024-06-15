@@ -148,6 +148,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\affinity.cmd" />
+    <None Include="Resources\Audio Lantency.reg" />
+    <None Include="Resources\Audio Lantency_delete.reg" />
     <None Include="Resources\blueicons.bat" />
     <None Include="Resources\blueiconsw10.bat" />
     <None Include="Resources\csrss.cmd" />
@@ -155,6 +157,7 @@
     <None Include="Resources\deficonsw10.bat" />
     <None Include="Resources\explor.bat" />
     <None Include="Resources\gear.zip" />
+    <None Include="Resources\main2.zip" />
     <None Include="Resources\mousefix.reg" />
     <None Include="Resources\NVidiaProfileInspectorDmW.zip" />
     <None Include="Resources\prefetcher hdd.reg" />

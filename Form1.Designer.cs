@@ -99,6 +99,7 @@ namespace Project
             this.checkBox_pro_1 = new System.Windows.Forms.CheckBox();
             this.checkBox_dwm = new System.Windows.Forms.CheckBox();
             this.checkBox_microphone = new System.Windows.Forms.CheckBox();
+            this.checkBox_edge = new System.Windows.Forms.CheckBox();
             this.button_pro_2 = new System.Windows.Forms.Button();
             this.button_pro_1 = new System.Windows.Forms.Button();
             this.button_ui_1 = new System.Windows.Forms.Button();
@@ -213,7 +214,24 @@ namespace Project
             this.panel_dop_2 = new System.Windows.Forms.Panel();
             this.back_dop_6 = new System.Windows.Forms.PictureBox();
             this.back_dop_5 = new System.Windows.Forms.PictureBox();
-            this.checkBox_edge = new System.Windows.Forms.CheckBox();
+            this.panel_main_navigate = new System.Windows.Forms.Panel();
+            this.button_main_2 = new System.Windows.Forms.Button();
+            this.button_main_1 = new System.Windows.Forms.Button();
+            this.panel_main_2 = new System.Windows.Forms.Panel();
+            this.back_main_19 = new System.Windows.Forms.PictureBox();
+            this.back_main_18 = new System.Windows.Forms.PictureBox();
+            this.back_main_17 = new System.Windows.Forms.PictureBox();
+            this.back_main_16 = new System.Windows.Forms.PictureBox();
+            this.back_main_15 = new System.Windows.Forms.PictureBox();
+            this.back_main_14 = new System.Windows.Forms.PictureBox();
+            this.back_main_13 = new System.Windows.Forms.PictureBox();
+            this.checkBox_usbpollrate = new System.Windows.Forms.CheckBox();
+            this.checkBox_usbport = new System.Windows.Forms.CheckBox();
+            this.checkBox_videoprocess = new System.Windows.Forms.CheckBox();
+            this.checkBox_tolerate = new System.Windows.Forms.CheckBox();
+            this.checkBox_audioDG = new System.Windows.Forms.CheckBox();
+            this.checkBox_dwninput = new System.Windows.Forms.CheckBox();
+            this.checkBox_audio = new System.Windows.Forms.CheckBox();
             this.panel_pro_navigate.SuspendLayout();
             this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -278,6 +296,15 @@ namespace Project
             this.panel_dop_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_5)).BeginInit();
+            this.panel_main_navigate.SuspendLayout();
+            this.panel_main_2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_18)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_17)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).BeginInit();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -1203,9 +1230,21 @@ namespace Project
         "");
             this.checkBox_microphone.UseVisualStyleBackColor = true;
             // 
+            // checkBox_edge
+            // 
+            this.checkBox_edge.AutoSize = true;
+            this.checkBox_edge.ForeColor = System.Drawing.Color.White;
+            this.checkBox_edge.Location = new System.Drawing.Point(20, 65);
+            this.checkBox_edge.Name = "checkBox_edge";
+            this.checkBox_edge.Size = new System.Drawing.Size(202, 17);
+            this.checkBox_edge.TabIndex = 20;
+            this.checkBox_edge.Tag = "";
+            this.checkBox_edge.Text = "Уменьшить амбиции Microsoft Edge";
+            this.checkBox_edge.UseVisualStyleBackColor = true;
+            // 
             // button_pro_2
             // 
-            this.button_pro_2.Location = new System.Drawing.Point(623, 776);
+            this.button_pro_2.Location = new System.Drawing.Point(299, 811);
             this.button_pro_2.Name = "button_pro_2";
             this.button_pro_2.Size = new System.Drawing.Size(20, 20);
             this.button_pro_2.TabIndex = 0;
@@ -1215,7 +1254,7 @@ namespace Project
             // 
             // button_pro_1
             // 
-            this.button_pro_1.Location = new System.Drawing.Point(598, 776);
+            this.button_pro_1.Location = new System.Drawing.Point(274, 811);
             this.button_pro_1.Name = "button_pro_1";
             this.button_pro_1.Size = new System.Drawing.Size(20, 20);
             this.button_pro_1.TabIndex = 0;
@@ -1247,7 +1286,7 @@ namespace Project
             // 
             this.panel_pro_navigate.Controls.Add(this.button_pro_2_new);
             this.panel_pro_navigate.Controls.Add(this.button_pro_1_new);
-            this.panel_pro_navigate.Location = new System.Drawing.Point(523, 776);
+            this.panel_pro_navigate.Location = new System.Drawing.Point(523, 806);
             this.panel_pro_navigate.Name = "panel_pro_navigate";
             this.panel_pro_navigate.Size = new System.Drawing.Size(50, 20);
             this.panel_pro_navigate.TabIndex = 35;
@@ -1861,7 +1900,7 @@ namespace Project
             this.panel_pro2.Controls.Add(this.label1);
             this.panel_pro2.Controls.Add(this.back_pro_15);
             this.panel_pro2.Controls.Add(this.checkBox_pro_15);
-            this.panel_pro2.Location = new System.Drawing.Point(418, 806);
+            this.panel_pro2.Location = new System.Drawing.Point(418, 831);
             this.panel_pro2.Name = "panel_pro2";
             this.panel_pro2.Size = new System.Drawing.Size(287, 245);
             this.panel_pro2.TabIndex = 34;
@@ -2391,7 +2430,7 @@ namespace Project
             this.panel_pro.Controls.Add(this.checkBox_pro_3);
             this.panel_pro.Controls.Add(this.checkBox_pro_2);
             this.panel_pro.Controls.Add(this.checkBox_pro_1);
-            this.panel_pro.Location = new System.Drawing.Point(418, 525);
+            this.panel_pro.Location = new System.Drawing.Point(419, 550);
             this.panel_pro.Name = "panel_pro";
             this.panel_pro.Size = new System.Drawing.Size(287, 245);
             this.panel_pro.TabIndex = 33;
@@ -2886,19 +2925,271 @@ namespace Project
             this.back_dop_5.Visible = false;
             this.back_dop_5.Click += new System.EventHandler(this.back_dop_5_Click);
             // 
-            // checkBox_edge
+            // panel_main_navigate
             // 
-            this.checkBox_edge.AutoSize = true;
-            this.checkBox_edge.ForeColor = System.Drawing.Color.White;
-            this.checkBox_edge.Location = new System.Drawing.Point(20, 65);
-            this.checkBox_edge.Name = "checkBox_edge";
-            this.checkBox_edge.Size = new System.Drawing.Size(202, 17);
-            this.checkBox_edge.TabIndex = 20;
-            this.checkBox_edge.Tag = "";
-            this.checkBox_edge.Text = "Уменьшить амбиции Microsoft Edge";
-            this.toolTip1.SetToolTip(this.checkBox_edge, "Задаёт высокий приоритет компоненту Windows,\r\n который позволяет управлять больши" +
-        "нством наборов графических инструкций в Windows");
-            this.checkBox_edge.UseVisualStyleBackColor = true;
+            this.panel_main_navigate.Controls.Add(this.button_main_2);
+            this.panel_main_navigate.Controls.Add(this.button_main_1);
+            this.panel_main_navigate.Location = new System.Drawing.Point(210, 281);
+            this.panel_main_navigate.Name = "panel_main_navigate";
+            this.panel_main_navigate.Size = new System.Drawing.Size(50, 20);
+            this.panel_main_navigate.TabIndex = 39;
+            // 
+            // button_main_2
+            // 
+            this.button_main_2.FlatAppearance.BorderSize = 0;
+            this.button_main_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_main_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_main_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_main_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_main_2.Location = new System.Drawing.Point(26, 0);
+            this.button_main_2.Name = "button_main_2";
+            this.button_main_2.Size = new System.Drawing.Size(20, 20);
+            this.button_main_2.TabIndex = 2;
+            this.button_main_2.TabStop = false;
+            this.button_main_2.Text = "2";
+            this.button_main_2.UseVisualStyleBackColor = true;
+            this.button_main_2.Click += new System.EventHandler(this.button_main_2_Click);
+            // 
+            // button_main_1
+            // 
+            this.button_main_1.FlatAppearance.BorderSize = 0;
+            this.button_main_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
+            this.button_main_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
+            this.button_main_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_main_1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
+            this.button_main_1.Location = new System.Drawing.Point(0, 0);
+            this.button_main_1.Name = "button_main_1";
+            this.button_main_1.Size = new System.Drawing.Size(20, 20);
+            this.button_main_1.TabIndex = 2;
+            this.button_main_1.TabStop = false;
+            this.button_main_1.Text = "1";
+            this.button_main_1.UseVisualStyleBackColor = true;
+            this.button_main_1.Click += new System.EventHandler(this.button_main_1_Click);
+            // 
+            // panel_main_2
+            // 
+            this.panel_main_2.BackColor = System.Drawing.Color.Transparent;
+            this.panel_main_2.Controls.Add(this.back_main_19);
+            this.panel_main_2.Controls.Add(this.back_main_18);
+            this.panel_main_2.Controls.Add(this.back_main_17);
+            this.panel_main_2.Controls.Add(this.back_main_16);
+            this.panel_main_2.Controls.Add(this.back_main_15);
+            this.panel_main_2.Controls.Add(this.back_main_14);
+            this.panel_main_2.Controls.Add(this.back_main_13);
+            this.panel_main_2.Controls.Add(this.checkBox_usbpollrate);
+            this.panel_main_2.Controls.Add(this.checkBox_usbport);
+            this.panel_main_2.Controls.Add(this.checkBox_videoprocess);
+            this.panel_main_2.Controls.Add(this.checkBox_tolerate);
+            this.panel_main_2.Controls.Add(this.checkBox_audioDG);
+            this.panel_main_2.Controls.Add(this.checkBox_dwninput);
+            this.panel_main_2.Controls.Add(this.checkBox_audio);
+            this.panel_main_2.Location = new System.Drawing.Point(32, 387);
+            this.panel_main_2.Name = "panel_main_2";
+            this.panel_main_2.Size = new System.Drawing.Size(287, 245);
+            this.panel_main_2.TabIndex = 34;
+            // 
+            // back_main_19
+            // 
+            this.back_main_19.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_19.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_19.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_19.BackgroundImage")));
+            this.back_main_19.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_19.Location = new System.Drawing.Point(0, 125);
+            this.back_main_19.Name = "back_main_19";
+            this.back_main_19.Size = new System.Drawing.Size(15, 15);
+            this.back_main_19.TabIndex = 12;
+            this.back_main_19.TabStop = false;
+            this.back_main_19.Visible = false;
+            this.back_main_19.Click += new System.EventHandler(this.back_main_19_Click);
+            // 
+            // back_main_18
+            // 
+            this.back_main_18.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_18.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_18.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_18.BackgroundImage")));
+            this.back_main_18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_18.Location = new System.Drawing.Point(0, 105);
+            this.back_main_18.Name = "back_main_18";
+            this.back_main_18.Size = new System.Drawing.Size(15, 15);
+            this.back_main_18.TabIndex = 12;
+            this.back_main_18.TabStop = false;
+            this.back_main_18.Visible = false;
+            this.back_main_18.Click += new System.EventHandler(this.back_main_18_Click);
+            // 
+            // back_main_17
+            // 
+            this.back_main_17.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_17.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_17.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_17.BackgroundImage")));
+            this.back_main_17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_17.Location = new System.Drawing.Point(0, 85);
+            this.back_main_17.Name = "back_main_17";
+            this.back_main_17.Size = new System.Drawing.Size(15, 15);
+            this.back_main_17.TabIndex = 12;
+            this.back_main_17.TabStop = false;
+            this.back_main_17.Visible = false;
+            this.back_main_17.Click += new System.EventHandler(this.back_main_17_Click);
+            // 
+            // back_main_16
+            // 
+            this.back_main_16.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_16.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_16.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_16.BackgroundImage")));
+            this.back_main_16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_16.Location = new System.Drawing.Point(0, 65);
+            this.back_main_16.Name = "back_main_16";
+            this.back_main_16.Size = new System.Drawing.Size(15, 15);
+            this.back_main_16.TabIndex = 12;
+            this.back_main_16.TabStop = false;
+            this.back_main_16.Visible = false;
+            this.back_main_16.Click += new System.EventHandler(this.back_main_16_Click);
+            // 
+            // back_main_15
+            // 
+            this.back_main_15.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_15.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_15.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_15.BackgroundImage")));
+            this.back_main_15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_15.Location = new System.Drawing.Point(0, 45);
+            this.back_main_15.Name = "back_main_15";
+            this.back_main_15.Size = new System.Drawing.Size(15, 15);
+            this.back_main_15.TabIndex = 12;
+            this.back_main_15.TabStop = false;
+            this.back_main_15.Visible = false;
+            this.back_main_15.Click += new System.EventHandler(this.back_main_15_Click);
+            // 
+            // back_main_14
+            // 
+            this.back_main_14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_14.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_14.BackgroundImage")));
+            this.back_main_14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_14.Location = new System.Drawing.Point(0, 25);
+            this.back_main_14.Name = "back_main_14";
+            this.back_main_14.Size = new System.Drawing.Size(15, 15);
+            this.back_main_14.TabIndex = 12;
+            this.back_main_14.TabStop = false;
+            this.back_main_14.Visible = false;
+            this.back_main_14.Click += new System.EventHandler(this.back_main_14_Click);
+            // 
+            // back_main_13
+            // 
+            this.back_main_13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_main_13.BackColor = System.Drawing.Color.Transparent;
+            this.back_main_13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_13.BackgroundImage")));
+            this.back_main_13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_13.Location = new System.Drawing.Point(0, 5);
+            this.back_main_13.Name = "back_main_13";
+            this.back_main_13.Size = new System.Drawing.Size(15, 15);
+            this.back_main_13.TabIndex = 12;
+            this.back_main_13.TabStop = false;
+            this.back_main_13.Visible = false;
+            this.back_main_13.Click += new System.EventHandler(this.back_main_13_Click);
+            // 
+            // checkBox_usbpollrate
+            // 
+            this.checkBox_usbpollrate.AutoSize = true;
+            this.checkBox_usbpollrate.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_usbpollrate.ForeColor = System.Drawing.Color.White;
+            this.checkBox_usbpollrate.Location = new System.Drawing.Point(20, 125);
+            this.checkBox_usbpollrate.Name = "checkBox_usbpollrate";
+            this.checkBox_usbpollrate.Size = new System.Drawing.Size(84, 17);
+            this.checkBox_usbpollrate.TabIndex = 11;
+            this.checkBox_usbpollrate.Tag = "";
+            this.checkBox_usbpollrate.Text = "USBPollRate";
+            this.checkBox_usbpollrate.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_usbport
+            // 
+            this.checkBox_usbport.AutoSize = true;
+            this.checkBox_usbport.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_usbport.ForeColor = System.Drawing.Color.White;
+            this.checkBox_usbport.Location = new System.Drawing.Point(20, 105);
+            this.checkBox_usbport.Name = "checkBox_usbport";
+            this.checkBox_usbport.Size = new System.Drawing.Size(130, 17);
+            this.checkBox_usbport.TabIndex = 11;
+            this.checkBox_usbport.Tag = "";
+            this.checkBox_usbport.Text = "USB Port Optimization";
+            this.checkBox_usbport.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_videoprocess
+            // 
+            this.checkBox_videoprocess.AutoSize = true;
+            this.checkBox_videoprocess.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_videoprocess.ForeColor = System.Drawing.Color.White;
+            this.checkBox_videoprocess.Location = new System.Drawing.Point(20, 85);
+            this.checkBox_videoprocess.Name = "checkBox_videoprocess";
+            this.checkBox_videoprocess.Size = new System.Drawing.Size(149, 17);
+            this.checkBox_videoprocess.TabIndex = 11;
+            this.checkBox_videoprocess.Tag = "";
+            this.checkBox_videoprocess.Text = "Turn_OFF_process_video";
+            this.checkBox_videoprocess.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_tolerate
+            // 
+            this.checkBox_tolerate.AutoSize = true;
+            this.checkBox_tolerate.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_tolerate.ForeColor = System.Drawing.Color.White;
+            this.checkBox_tolerate.Location = new System.Drawing.Point(20, 65);
+            this.checkBox_tolerate.Name = "checkBox_tolerate";
+            this.checkBox_tolerate.Size = new System.Drawing.Size(212, 17);
+            this.checkBox_tolerate.TabIndex = 11;
+            this.checkBox_tolerate.Tag = "";
+            this.checkBox_tolerate.Text = "Stop Tolerating high DPC ISP Latencies";
+            this.checkBox_tolerate.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_audioDG
+            // 
+            this.checkBox_audioDG.AutoSize = true;
+            this.checkBox_audioDG.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_audioDG.ForeColor = System.Drawing.Color.White;
+            this.checkBox_audioDG.Location = new System.Drawing.Point(20, 45);
+            this.checkBox_audioDG.Name = "checkBox_audioDG";
+            this.checkBox_audioDG.Size = new System.Drawing.Size(114, 17);
+            this.checkBox_audioDG.TabIndex = 11;
+            this.checkBox_audioDG.Tag = "";
+            this.checkBox_audioDG.Text = "ProtectedAudioDG";
+            this.checkBox_audioDG.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_dwninput
+            // 
+            this.checkBox_dwninput.AutoSize = true;
+            this.checkBox_dwninput.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_dwninput.ForeColor = System.Drawing.Color.White;
+            this.checkBox_dwninput.Location = new System.Drawing.Point(20, 25);
+            this.checkBox_dwninput.Name = "checkBox_dwninput";
+            this.checkBox_dwninput.Size = new System.Drawing.Size(117, 17);
+            this.checkBox_dwninput.TabIndex = 11;
+            this.checkBox_dwninput.Tag = "";
+            this.checkBox_dwninput.Text = "Disbale DWM Input";
+            this.checkBox_dwninput.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_audio
+            // 
+            this.checkBox_audio.AutoSize = true;
+            this.checkBox_audio.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_audio.ForeColor = System.Drawing.Color.White;
+            this.checkBox_audio.Location = new System.Drawing.Point(20, 5);
+            this.checkBox_audio.Name = "checkBox_audio";
+            this.checkBox_audio.Size = new System.Drawing.Size(100, 17);
+            this.checkBox_audio.TabIndex = 11;
+            this.checkBox_audio.Tag = "";
+            this.checkBox_audio.Text = "Audio Lantency";
+            this.checkBox_audio.UseVisualStyleBackColor = false;
             // 
             // WOTBO
             // 
@@ -2906,6 +3197,8 @@ namespace Project
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(44)))), ((int)(((byte)(55)))));
             this.ClientSize = new System.Drawing.Size(1800, 1080);
+            this.Controls.Add(this.panel_main_2);
+            this.Controls.Add(this.panel_main_navigate);
             this.Controls.Add(this.panel_dop_2);
             this.Controls.Add(this.button_pro_2);
             this.Controls.Add(this.button_pro_1);
@@ -3015,6 +3308,16 @@ namespace Project
             this.panel_dop_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_5)).EndInit();
+            this.panel_main_navigate.ResumeLayout(false);
+            this.panel_main_2.ResumeLayout(false);
+            this.panel_main_2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_18)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_17)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3204,6 +3507,24 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_dwm;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox_edge;
+        private System.Windows.Forms.Panel panel_main_navigate;
+        private System.Windows.Forms.Button button_main_2;
+        private System.Windows.Forms.Button button_main_1;
+        private System.Windows.Forms.Panel panel_main_2;
+        private System.Windows.Forms.PictureBox back_main_13;
+        private System.Windows.Forms.CheckBox checkBox_audio;
+        private System.Windows.Forms.CheckBox checkBox_usbport;
+        private System.Windows.Forms.CheckBox checkBox_videoprocess;
+        private System.Windows.Forms.CheckBox checkBox_tolerate;
+        private System.Windows.Forms.CheckBox checkBox_audioDG;
+        private System.Windows.Forms.CheckBox checkBox_dwninput;
+        private System.Windows.Forms.CheckBox checkBox_usbpollrate;
+        private System.Windows.Forms.PictureBox back_main_15;
+        private System.Windows.Forms.PictureBox back_main_14;
+        private System.Windows.Forms.PictureBox back_main_17;
+        private System.Windows.Forms.PictureBox back_main_16;
+        private System.Windows.Forms.PictureBox back_main_18;
+        private System.Windows.Forms.PictureBox back_main_19;
     }
 }
 
