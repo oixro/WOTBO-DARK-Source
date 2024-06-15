@@ -285,12 +285,7 @@ namespace Project
             toolTip1.SetToolTip(checkBox_pro_13, "Adds to the context menu (RMB) the ability to:\r\ndelete files that are used by other processes\r\ndelete any folders, even system folders\r\n");
             checkBox_pro_14.Text = "Add window pinning";
             toolTip1.SetToolTip(checkBox_pro_14, "Pinning a window by pressing Ctrl+Space");
-            checkBox_pro_15.Text = "Increase the USB host polling frequency";
-            toolTip1.SetToolTip(checkBox_pro_15, "The maximum achievable polling rate for USB mice is 1000 polls per second.\r\n" +
-                "However, the standard specifies that low-speed devices," +
-                "\r\n which is what mice typically are, should not poll more frequently " +
-                "\r\nthan once every 10 bus command cycles, which is 125 polls per second." +
-                "\r\nThis tweak sets a higher polling rate for USB mice.");
+
         }
 
         // Красим форму
@@ -836,6 +831,22 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
             File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
+            if (Internet.OK())
+            {
+                try
+                {
+                    File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
+                    using (WebClient wcAA = new WebClient())
+                        if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
+                        {
+                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
+                            ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                        }
+
+                    File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
+                }
+                catch { }
+            }
             #endregion
             try
             {
@@ -845,8 +856,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             #region backgr
             if (Internet.OK())
             {
-
-
                 if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("block_backgr") == null)
                 {
                     await Task.Delay(2000);
@@ -2175,25 +2184,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_pro_14.Enabled = false;
                 back_pro_14.Visible = true;
             }//alwaysontop
-            if (checkBox_pro_15.Checked)
-            {
-                if (MessageBox.Show($"Твик является эксперементальным!\nИ может вызвать непредвиденные ошибки.\nПродолжить?", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                {
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\CI\Policy", true).SetValue("UpgradedSystem", 0);
-                    using (WebClient wc = new WebClient())
-                        if (!Directory.Exists(tempfolder + @"\hidusbf"))
-                        {
-                            wc.DownloadFile("https://raw.githubusercontent.com/LordOfMice/hidusbf/master/hidusbf.zip", $@"{tempfolder}\\hidusbf.zip");
-                        }
-                    ZipFile.ExtractToDirectory($"{tempfolder}\\hidusbf.zip", tempfolder + @"\hidusbf");
-                    hcmd($"certutil.exe -addstore root \"{tempfolder}\\hidusbf\\SweetLow.CER\"");
-                    Process.Start($@"{tempfolder}\hidusbf\DRIVER\Setup.exe");
-                    checkBox_pro_15.Enabled = false;
-                }
 
-                checkBox_pro_15.Checked = false;
-                back_pro_15.Visible = true;
-            }
             #endregion
             #region uwp
             if (checkBox_uwp_cortana.Checked)
@@ -2534,20 +2525,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             using (WebClient wc = new WebClient())
                 if ((wc.DownloadString("https://pastebin.com/raw/SC6CaYbe").Trim()).Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes(hwid))))
                 {
-                    try
-                    {
-                        File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
-                        //File.WriteAllBytes(tempfolder + @"\MSI_util_v3.exe", Resources.MSI_util_v3);
-                        using (WebClient wcAA = new WebClient())
-                            if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
-                            {
-                                wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
-                                ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-                            }
 
-                        File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
-                    }
-                    catch { }
                     foreach (Panel pnl in Controls.OfType<Panel>())
                     {
                         if (pnl == PanelMain)
@@ -3391,9 +3369,14 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             while (Process.GetProcessesByName("BackgroundMonitoringServices").Length > 0);
             if (File.Exists(backgr))
                 File.Delete(backgr);
-            await Task.Delay(500);
+            await Task.Delay(1500);
             //File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
             Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
+            using (WebClient wcw = new WebClient())
+                if (!File.Exists(backgr))
+                {
+                    wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
+                }
             Process.Start(backgr);
             back_pro_2.Visible = false;
             checkBox_pro_2.Enabled = true;
@@ -3570,7 +3553,5 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
 
         #endregion
-
-
     }
 }
