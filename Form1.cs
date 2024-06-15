@@ -188,6 +188,24 @@ namespace Project
             checkBox_page.Text = "Configure the swap file";
             toolTip1.SetToolTip(checkBox_page, "Applies optimal settings for the swap file\r\n(Ranges from 16 mb to 32 gb)");
             checkBox_dism.Text = "Disable reserved storage";
+            toolTip1.SetToolTip(checkBox_dism, "Disable reserved space for Windows updates\r\n(Takes up ~7GB)");
+            checkBox_audio.Text = "Lower Audio latency";
+            toolTip1.SetToolTip(checkBox_audio, "This tweak reduces audio latency.\r\nIt positively affects all delays in the system.");
+            checkBox_dwninput.Text = "Disable DWM Input";
+            toolTip1.SetToolTip(checkBox_dwninput, "Makes adjustments in Desktop Window Manager (DWM)\r\nPositively affects mouse movements, making them more responsive.");
+            checkBox_audioDG.Text = "Disable audio protection against copy";
+            toolTip1.SetToolTip(checkBox_audioDG, "Disables a feature built into Windows\r\nthat prevents you from \"pirating\" audio files.");
+            checkBox_tolerate.Text = "Stop Tolerating high DPC ISP Latencies";
+            toolTip1.SetToolTip(checkBox_tolerate, "These registry settings are designed to improve the system's handling of DPC, ISR \r\n" +
+                "by reducing tolerance to high latency." +
+                "\r\nThis results in improved responsiveness of the mouse and the system as a whole.");
+            checkBox_videoprocess.Text = "Turn off video enhance";
+            toolTip1.SetToolTip(checkBox_videoprocess, "Disables automatic video processing in Windows.\r\n" +
+                "Useful for HDR and non-HDR monitors.\r\nAlso has a positive effect on system responsiveness.");
+            checkBox_usbport.Text = "USB Port Optimization";
+            toolTip1.SetToolTip(checkBox_usbport, "Disables the power saving state of USB ports.\r\nPositive effect on the behaviour of all devices connected via USB.");
+            checkBox_usbpollrate.Text = "Increase USB Polling Rate";
+            toolTip1.SetToolTip(checkBox_usbpollrate, "Increases driver polling speed of USB ports.\r\nAlso has a positive effect on system and mouse responsiveness.");
 
 
 
@@ -255,7 +273,12 @@ namespace Project
             toolTip1.SetToolTip(checkBox_nastroyka, "Disables the annoying prompt at Windows startup to finish customization");
             checkBox_zalipanie.Text = "Disable key sticking";
             toolTip1.SetToolTip(checkBox_zalipanie, "Disables notification when Shift is pressed five times and that very Shift is stuck.");
-
+            checkBox_dwm.Text = "Decrease the priority of dwm.exe";
+            toolTip1.SetToolTip(checkBox_dwm, "dwm.exe is a system process responsible for window display effects in the system: \r\n" +
+                "transparency effects, shadows, animation, etc.\r\nDecreasing the priority of the process allows you to reduce the \"jelly\" of the mouse.");
+            checkBox_CSRSS.Text = "Increase the priority of CSRSS.exe";
+            toolTip1.SetToolTip(checkBox_CSRSS, "Sets a high priority to a Windows component,\r\n which allows you to control most of the graphics instruction sets in Windows");
+            checkBox_edge.Text = "Reduce Microsoft Edge's ambitions";
             //pro
             checkBox_pro_1.Text = "Remove Home and Gallery (W11)";
             toolTip1.SetToolTip(checkBox_pro_1, "Removes useless two folders in explorer from explorer");
@@ -1845,12 +1868,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_zalipanie.Enabled = false;
                 back_dop_4.Visible = true;
             }
-            if (checkBox_microphone.Checked)
-            {
-                checkBox_microphone.Checked = false;
-                checkBox_microphone.Enabled = false;
-                back_dop_5.Visible = true;
-            }
             if (checkBox_dwm.Checked)
             {
                 Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
@@ -2024,7 +2041,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).DeleteValue("BackgroundMonitoringServices");
                 checkBox_pro_2.Checked = false;
                 checkBox_pro_2.Enabled = false;
-                File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
+                File.Delete(backgr);
             } //#oixro
             if (checkBox_pro_3.Checked)
             {
@@ -3269,13 +3286,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             checkBox_zalipanie.Enabled = true;
             back_dop_4.Visible = false;
         }
-        void back_dop_5_Click(object sender, EventArgs e)
-        {
-            checkBox_microphone.Checked = false;
-            checkBox_microphone.Enabled = true;
-            back_dop_5.Visible = false;
-        }
-
         void back_dop_6_Click(object sender, EventArgs e)
         {
             Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true).DeleteSubKeyTree("dwm.exe");
