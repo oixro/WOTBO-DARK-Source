@@ -69,6 +69,7 @@ namespace Project
         static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
         #endregion
+        #region default crap
         public WOTBO()
         {
             InitializeComponent();
@@ -86,6 +87,7 @@ namespace Project
                 };
             });
         }
+        #endregion
         #region my void's
         void hcmd(string line)
         {
@@ -322,6 +324,7 @@ namespace Project
             Invalidate();
         }
         #endregion
+        #region открытие
         async void Form1_Load(object sender, EventArgs e)
         {
             #region version
@@ -910,6 +913,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
         }
+        #endregion
         #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -934,6 +938,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             InstanceChecker.ReleaseMemory();
         }
         #endregion
+        #region все твики
         async void button1_Click(object sender, EventArgs e)
         {
             #region main
@@ -2258,6 +2263,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             #endregion
         }
+        #endregion
         #region перемещение по пунктам
         void label1_Click(object sender, EventArgs e)
         {
