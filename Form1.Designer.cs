@@ -138,6 +138,7 @@ namespace Project
             this.checkBoxUI_Buttons_4 = new System.Windows.Forms.CheckBox();
             this.checkBoxUI_Buttons_1 = new System.Windows.Forms.CheckBox();
             this.panel_ui_2 = new System.Windows.Forms.Panel();
+            this.label_cursors = new System.Windows.Forms.Label();
             this.back_pro_14 = new System.Windows.Forms.PictureBox();
             this.checkBox_mica = new System.Windows.Forms.CheckBox();
             this.back_pro_13 = new System.Windows.Forms.PictureBox();
@@ -216,7 +217,6 @@ namespace Project
             this.back_main_15 = new System.Windows.Forms.PictureBox();
             this.back_main_14 = new System.Windows.Forms.PictureBox();
             this.back_main_13 = new System.Windows.Forms.PictureBox();
-            this.label_cursors = new System.Windows.Forms.Label();
             this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).BeginInit();
@@ -1829,6 +1829,18 @@ namespace Project
             this.panel_ui_2.Size = new System.Drawing.Size(287, 235);
             this.panel_ui_2.TabIndex = 36;
             // 
+            // label_cursors
+            // 
+            this.label_cursors.AutoSize = true;
+            this.label_cursors.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_cursors.ForeColor = System.Drawing.Color.White;
+            this.label_cursors.Location = new System.Drawing.Point(20, 25);
+            this.label_cursors.Name = "label_cursors";
+            this.label_cursors.Size = new System.Drawing.Size(148, 13);
+            this.label_cursors.TabIndex = 22;
+            this.label_cursors.Text = "Установить новые курсоры";
+            this.label_cursors.Click += new System.EventHandler(this.label_cursors_Click_1);
+            // 
             // back_pro_14
             // 
             this.back_pro_14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -2981,16 +2993,6 @@ namespace Project
             this.back_main_13.TabStop = false;
             this.back_main_13.Visible = false;
             this.back_main_13.Click += new System.EventHandler(this.back_main_13_Click);
-            // 
-            // label_cursors
-            // 
-            this.label_cursors.AutoSize = true;
-            this.label_cursors.ForeColor = System.Drawing.Color.White;
-            this.label_cursors.Location = new System.Drawing.Point(20, 25);
-            this.label_cursors.Name = "label_cursors";
-            this.label_cursors.Size = new System.Drawing.Size(148, 13);
-            this.label_cursors.TabIndex = 22;
-            this.label_cursors.Text = "Установить новые курсоры";
             // 
             // WOTBO
             // 

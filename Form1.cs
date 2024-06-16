@@ -2228,7 +2228,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             #endregion
         }
-        void label_cursors_Click(object sender, EventArgs e)
+        void label_cursors_Click_1(object sender, EventArgs e)
         {
             using (WebClient wc = new WebClient())
                 if (!File.Exists($"{tempfolder}\\cursors.zip"))
@@ -3487,8 +3487,9 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
 
 
+
         #endregion
 
-
+        
     }
 }
