@@ -217,6 +217,7 @@ namespace Project
             this.checkBox_audioDG = new System.Windows.Forms.CheckBox();
             this.checkBox_dwninput = new System.Windows.Forms.CheckBox();
             this.checkBox_audio = new System.Windows.Forms.CheckBox();
+            this.back_dop_edge = new System.Windows.Forms.PictureBox();
             this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).BeginInit();
@@ -285,6 +286,7 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).BeginInit();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -2693,6 +2695,7 @@ namespace Project
             this.panel_dop_2.Controls.Add(this.checkBox_dwm);
             this.panel_dop_2.Controls.Add(this.checkBox_pro_2);
             this.panel_dop_2.Controls.Add(this.checkBox_pro_10);
+            this.panel_dop_2.Controls.Add(this.back_dop_edge);
             this.panel_dop_2.Controls.Add(this.back_dop_7);
             this.panel_dop_2.Controls.Add(this.back_pro_12);
             this.panel_dop_2.Controls.Add(this.checkBox_pro_12);
@@ -2993,6 +2996,22 @@ namespace Project
         "еме.\r\n");
             this.checkBox_audio.UseVisualStyleBackColor = false;
             // 
+            // back_dop_edge
+            // 
+            this.back_dop_edge.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_dop_edge.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_edge.BackgroundImage")));
+            this.back_dop_edge.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_edge.Location = new System.Drawing.Point(0, 45);
+            this.back_dop_edge.Name = "back_dop_edge";
+            this.back_dop_edge.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_edge.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_dop_edge.TabIndex = 12;
+            this.back_dop_edge.TabStop = false;
+            this.back_dop_edge.Visible = false;
+            this.back_dop_edge.Click += new System.EventHandler(this.back_dop_edge_Click);
+            // 
             // WOTBO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3107,6 +3126,7 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3299,6 +3319,7 @@ namespace Project
         private System.Windows.Forms.PictureBox back_main_16;
         private System.Windows.Forms.PictureBox back_main_18;
         private System.Windows.Forms.PictureBox back_main_19;
+        private System.Windows.Forms.PictureBox back_dop_edge;
     }
 }
 

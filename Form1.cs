@@ -73,14 +73,11 @@ namespace Project
         {
             InitializeComponent();
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
-            // Плавное закрытие программы
             async void Exit() { for (Opacity = 1; Opacity > .0; Opacity -= .2) await Task.Delay(7); Close(); }
             ButtonClose.Click += (s, a) => Exit();
 
-            // Красим форму
             FormPaint(Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55));
 
-            // Позволяем таскать за заголовок Label и Panel
             new List<Control> { LabelHead, PanelHead, logo }.ForEach(x =>
             {
                 x.MouseDown += (s, a) =>
@@ -88,11 +85,6 @@ namespace Project
                     x.Capture = false; Capture = false; Message m = Message.Create(Handle, 0xA1, new IntPtr(2), IntPtr.Zero); base.WndProc(ref m);
                 };
             });
-
-
-
-
-
         }
         #region my void's
         void hcmd(string line)
@@ -332,7 +324,9 @@ namespace Project
         #endregion
         async void Form1_Load(object sender, EventArgs e)
         {
+            #region version
             label_ver.Text = $"{version}";
+            #endregion
             #region позиция и размеры
             Size = new System.Drawing.Size(390, 305);
             CenterToScreen();
@@ -660,6 +654,18 @@ namespace Project
                 checkBox_usbpollrate.Enabled = false;
                 back_main_19.Visible = true;
             }
+            if (Registry.LocalMachine.OpenSubKey($@"SOFTWARE\Policies\Microsoft\Edge") != null)
+            {
+                back_dop_edge.Visible = true;
+                checkBox_edge.Checked = false;
+                checkBox_edge.Enabled = false;
+            }
+            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU") != null)
+            {
+                checkBox_pro_3.Checked = false;
+                checkBox_pro_3.Enabled = false;
+                back_pro_3.Visible = true;
+            }
             #endregion
             #region получаем инфу о видеодырке
             foreach (var mo in new ManagementObjectSearcher("select * from win32_VideoController").Get())
@@ -863,16 +869,19 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
                         }
 
-                    File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
+                    
                 }
                 catch { }
             }
+            File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
             #endregion
+            #region bitlocker
             try
             {
                 hcmd("manage-bde -off C: & manage-bde -off D: & manage-bde -off E: & manage-bde -off F: & manage-bde -off G:");
             }
             catch { }
+            #endregion
             #region backgr
             if (Internet.OK())
             {
@@ -2009,6 +2018,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 edge?.SetValue("LocalBrowserDataShareEnabled", 0x00000000, RegistryValueKind.DWord);
                 edge = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge\\RestoreOnStartupURLs");
                 edge?.SetValue("1", "www.google.com");
+                back_dop_edge.Visible = true;
                 checkBox_edge.Checked = false;
                 checkBox_edge.Enabled = false;
             }
@@ -3272,7 +3282,140 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             checkBox_mobile_traffic.Enabled = true;
             back_dop_2.Visible = false;
         }
-
+        void back_dop_edge_Click(object sender, EventArgs e)
+        {
+            RegistryKey key;
+            key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge");
+            key?.DeleteValue("EdgeEnhanceImagesEnabled");
+            key?.DeleteValue("EdgeWorkspacesEnabled");
+            key?.DeleteValue("TyposquattingCheckerEnabled");
+            key?.DeleteValue("RemoveDesktopShortcutDefault");
+            key?.DeleteValue("AlternateErrorPagesEnabled");
+            key?.DeleteValue("SpotlightExperiencesAndRecommendationsEnabled");
+            key?.DeleteValue("NewTabPageSearchBox");
+            key?.DeleteValue("DefaultSearchProviderEnabled");
+            key?.DeleteValue("DefaultSearchProviderName");
+            key?.DeleteValue("DefaultSearchProviderSearchURL");
+            key?.DeleteValue("DefaultSearchProviderSuggestURL");
+            key?.DeleteValue("DefaultSearchProviderImageURL");
+            key?.DeleteValue("BasicAuthOverHttpEnabled");
+            key?.DeleteValue("AllowCrossOriginAuthPrompt");
+            key?.DeleteValue("DisableAuthNegotiateCnameLookup");
+            key?.DeleteValue("NativeMessagingUserLevelHosts");
+            key?.DeleteValue("PasswordMonitorAllowed");
+            key?.DeleteValue("StartupBoostEnabled");
+            key?.DeleteValue("UseSystemPrintDialog");
+            key?.DeleteValue("SleepingTabsEnabled");
+            key?.DeleteValue("RestoreOnStartup");
+            key?.DeleteValue("HomepageLocation");
+            key?.DeleteValue("NewTabPageLocation");
+            key?.DeleteValue("NewTabPagePrerenderEnabled");
+            key?.DeleteValue("NewTabPageHideDefaultTopSites");
+            key?.DeleteValue("AdsSettingForIntrusiveAdsSites");
+            key?.DeleteValue("DownloadRestrictions");
+            key?.DeleteValue("TabFreezingEnabled");
+            key?.DeleteValue("InternetExplorerIntegrationTestingAllowed");
+            key?.DeleteValue("InternetExplorerIntegrationLocalFileAllowed");
+            key?.DeleteValue("PersonalizationReportingEnabled");
+            key?.DeleteValue("BrowserNetworkTimeQueriesEnabled");
+            key?.DeleteValue("LocalProvidersEnabled");
+            key?.DeleteValue("AudioSandboxEnabled");
+            key?.DeleteValue("WebWidgetIsEnabledOnStartup");
+            key?.DeleteValue("UserFeedbackAllowed");
+            key?.DeleteValue("FamilySafetySettingsEnabled");
+            key?.DeleteValue("ClickOnceEnabled");
+            key?.DeleteValue("DirectInvokeEnabled");
+            key?.DeleteValue("SSLErrorOverrideAllowed");
+            key?.DeleteValue("BingAdsSuppression");
+            key?.DeleteValue("TrackingPrevention");
+            key?.DeleteValue("BrowserSignin");
+            key?.DeleteValue("InternetExplorerIntegrationEnhancedHangDetection");
+            key?.DeleteValue("InternetExplorerIntegrationLevel");
+            key?.DeleteValue("ConfigureOnlineTextToSpeech");
+            key?.DeleteValue("VerticalTabsAllowed");
+            key?.DeleteValue("ConfigureFriendlyURLFormat");
+            key?.DeleteValue("ExperimentationAndConfigurationServiceControl");
+            key?.DeleteValue("IntensiveWakeUpThrottlingEnabled");
+            key?.DeleteValue("DnsOverHttpsMode");
+            key?.DeleteValue("DNSInterceptionChecksEnabled");
+            key?.DeleteValue("TargetBlankImpliesNoOpener");
+            key?.DeleteValue("ComponentUpdatesEnabled");
+            key?.DeleteValue("EnableDomainActionsDownload");
+            key?.DeleteValue("NetworkPredictionOptions");
+            key?.DeleteValue("EnableOnlineRevocationChecks");
+            key?.DeleteValue("RendererCodeIntegrityEnabled");
+            key?.DeleteValue("ResolveNavigationErrorsUseWebService");
+            key?.DeleteValue("BackgroundTemplateListUpdatesEnabled");
+            key?.DeleteValue("SearchSuggestEnabled");
+            key?.DeleteValue("CommandLineFlagSecurityWarningsEnabled");
+            key?.DeleteValue("SitePerProcess");
+            key?.DeleteValue("SpellcheckEnabled");
+            key?.DeleteValue("EdgeCollectionsEnabled");
+            key?.DeleteValue("WebWidgetAllowed");
+            key?.DeleteValue("MetricsReportingEnabled");
+            key?.DeleteValue("ForceEphemeralProfiles");
+            key?.DeleteValue("ForceGoogleSafeSearch");
+            key?.DeleteValue("GoToIntranetSiteForSingleWordEntryInAddressBar");
+            key?.DeleteValue("HideFirstRunExperience");
+            key?.DeleteValue("HideInternetExplorerRedirectUXForIncompatibleSitesEnabled");
+            key?.DeleteValue("RelaunchNotification");
+            key?.DeleteValue("RedirectSitesFromInternetExplorerPreventBHOInstall");
+            key?.DeleteValue("PromotionalTabsEnabled");
+            key?.DeleteValue("DiagnosticData");
+            key?.DeleteValue("SendSiteInfoToImproveServices");
+            key?.DeleteValue("TotalMemoryLimitMb");
+            key?.DeleteValue("WPADQuickCheckEnabled");
+            key?.DeleteValue("EdgeShoppingAssistantEnabled");
+            key?.DeleteValue("InternetExplorerIntegrationLocalFileShowContextMenu");
+            key?.DeleteValue("AddressBarMicrosoftSearchInBingProviderEnabled");
+            key?.DeleteValue("ShowOfficeShortcutInFavoritesBar");
+            key?.DeleteValue("ShowMicrosoftRewards");
+            key?.DeleteValue("BuiltInDnsClientEnabled");
+            key?.DeleteValue("ClearCachedImagesAndFilesOnExit");
+            key?.DeleteValue("ConfigureDoNotTrack");
+            key?.DeleteValue("ApplicationGuardFavoritesSyncEnabled");
+            key?.DeleteValue("ApplicationGuardTrafficIdentificationEnabled");
+            key?.DeleteValue("ApplicationGuardUploadBlockingEnabled");
+            key?.DeleteValue("EnableMediaRouter");
+            key?.DeleteValue("ShowCastIconInToolbar");
+            key?.DeleteValue("DefaultCookiesSetting");
+            key?.DeleteValue("DefaultFileSystemReadGuardSetting");
+            key?.DeleteValue("DefaultFileSystemWriteGuardSetting");
+            key?.DeleteValue("DefaultGeolocationSetting");
+            key?.DeleteValue("DefaultImagesSetting");
+            key?.DeleteValue("DefaultInsecureContentSetting");
+            key?.DeleteValue("DefaultJavaScriptJitSetting");
+            key?.DeleteValue("DefaultJavaScriptSetting");
+            key?.DeleteValue("DefaultNotificationsSetting");
+            key?.DeleteValue("DefaultPluginsSetting");
+            key?.DeleteValue("DefaultPopupsSetting");
+            key?.DeleteValue("DefaultWebBluetoothGuardSetting");
+            key?.DeleteValue("DefaultWebHidGuardSetting");
+            key?.DeleteValue("DefaultWebUsbGuardSetting");
+            key?.DeleteValue("LegacySameSiteCookieBehaviorEnabled");
+            key?.DeleteValue("PreventSmartScreenPromptOverrideForFiles");
+            key?.DeleteValue("PreventSmartScreenPromptOverride");
+            key?.DeleteValue("SmartScreenForTrustedDownloadsEnabled");
+            key?.DeleteValue("NewSmartScreenLibraryEnabled");
+            key?.DeleteValue("SmartScreenDnsRequestsEnabled");
+            key?.DeleteValue("SmartScreenPuaEnabled");
+            key?.DeleteValue("SmartScreenEnabled");
+            key?.DeleteValue("NewTabPageContentEnabled");
+            key?.DeleteValue("NewTabPageQuickLinksEnabled");
+            key?.DeleteValue("NewTabPageAllowedBackgroundTypes");
+            key?.DeleteValue("BackgroundModeEnabled");
+            key?.DeleteValue("EfficiencyMode");
+            key?.DeleteValue("SuppressUnsupportedOSWarning");
+            key?.DeleteValue("HubsSidebarEnabled");
+            key?.DeleteValue("SiteSafetyServicesEnabled");
+            key?.DeleteValue("EdgeFollowEnabled");
+            key?.DeleteValue("LocalBrowserDataShareEnabled");
+            key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge\\RestoreOnStartupURLs");
+            key?.DeleteValue("1");
+            back_dop_edge.Visible = false;
+            checkBox_edge.Checked = false;
+            checkBox_edge.Enabled = true;
+        }
         void back_dop_3_Click(object sender, EventArgs e)
         {
             Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement", true).DeleteValue("ScoobeSystemSettingEnabled");
@@ -3343,5 +3486,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
 
         #endregion
+
+        
     }
 }

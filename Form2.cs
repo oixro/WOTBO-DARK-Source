@@ -47,12 +47,7 @@ namespace WOTBO
                 Registry.CurrentUser.DeleteSubKeyTree(@"Software\oixro\out");
                 hcmd($"taskkill /f /im \"{exename}\" & timeout /t 1 && \"{exepath}\"");
             }
-            //if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("banned") != null)
-            //{
-            //    MessageBox.Show("Тебе нельзя этим пользоватся. Программа не откроется!");
-            //    hcmd($"taskkill /f /im \"{exename}\" && timeout /t 1 && del \"{exepath}\" /f /q");
-            //}
-            if (uilanguage == "Ru")
+            if (uilanguage == "ru")
             {
                 label1.Text = $"Перед использованием программы прочитай:\n" +
 "1. Программа не является идеальной, и не обязана дать вам 5000fps на днищенском компе\n" +
@@ -95,9 +90,9 @@ $"7. To accept, right-click on \"Accept\"" +
                 k++;
                 if (k >= 2)
                 {
-                    if (uilanguage == "Ru")
+                    if (uilanguage == "ru")
                         MessageBox.Show("Иди читай");
-                    if (uilanguage != "Ru")
+                    if (uilanguage != "ru")
                         MessageBox.Show("Read more");
                 }
 
