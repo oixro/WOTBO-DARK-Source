@@ -97,6 +97,12 @@ namespace Project
             this.checkBox_pro_1 = new System.Windows.Forms.CheckBox();
             this.checkBox_dwm = new System.Windows.Forms.CheckBox();
             this.checkBox_tolerate = new System.Windows.Forms.CheckBox();
+            this.checkBox_usbpollrate = new System.Windows.Forms.CheckBox();
+            this.checkBox_usbport = new System.Windows.Forms.CheckBox();
+            this.checkBox_videoprocess = new System.Windows.Forms.CheckBox();
+            this.checkBox_audioDG = new System.Windows.Forms.CheckBox();
+            this.checkBox_dwninput = new System.Windows.Forms.CheckBox();
+            this.checkBox_audio = new System.Windows.Forms.CheckBox();
             this.checkBox_edge = new System.Windows.Forms.CheckBox();
             this.button_ui_1 = new System.Windows.Forms.Button();
             this.button_ui_2 = new System.Windows.Forms.Button();
@@ -132,11 +138,9 @@ namespace Project
             this.checkBoxUI_Buttons_4 = new System.Windows.Forms.CheckBox();
             this.checkBoxUI_Buttons_1 = new System.Windows.Forms.CheckBox();
             this.panel_ui_2 = new System.Windows.Forms.Panel();
-            this.checkBox_cursors = new System.Windows.Forms.CheckBox();
             this.back_pro_14 = new System.Windows.Forms.PictureBox();
             this.checkBox_mica = new System.Windows.Forms.CheckBox();
             this.back_pro_13 = new System.Windows.Forms.PictureBox();
-            this.back_ui_12 = new System.Windows.Forms.PictureBox();
             this.back_ui_11 = new System.Windows.Forms.PictureBox();
             this.back_pro_1 = new System.Windows.Forms.PictureBox();
             this.panel_dop = new System.Windows.Forms.Panel();
@@ -200,6 +204,7 @@ namespace Project
             this.button_dop_new_1 = new System.Windows.Forms.Button();
             this.panel_dop_2 = new System.Windows.Forms.Panel();
             this.back_dop_6 = new System.Windows.Forms.PictureBox();
+            this.back_dop_edge = new System.Windows.Forms.PictureBox();
             this.panel_main_navigate = new System.Windows.Forms.Panel();
             this.button_main_2 = new System.Windows.Forms.Button();
             this.button_main_1 = new System.Windows.Forms.Button();
@@ -211,13 +216,7 @@ namespace Project
             this.back_main_15 = new System.Windows.Forms.PictureBox();
             this.back_main_14 = new System.Windows.Forms.PictureBox();
             this.back_main_13 = new System.Windows.Forms.PictureBox();
-            this.checkBox_usbpollrate = new System.Windows.Forms.CheckBox();
-            this.checkBox_usbport = new System.Windows.Forms.CheckBox();
-            this.checkBox_videoprocess = new System.Windows.Forms.CheckBox();
-            this.checkBox_audioDG = new System.Windows.Forms.CheckBox();
-            this.checkBox_dwninput = new System.Windows.Forms.CheckBox();
-            this.checkBox_audio = new System.Windows.Forms.CheckBox();
-            this.back_dop_edge = new System.Windows.Forms.PictureBox();
+            this.label_cursors = new System.Windows.Forms.Label();
             this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).BeginInit();
@@ -246,7 +245,6 @@ namespace Project
             this.panel_ui_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_1)).BeginInit();
             this.panel_dop.SuspendLayout();
@@ -277,6 +275,7 @@ namespace Project
             this.panel_dop_navigate.SuspendLayout();
             this.panel_dop_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).BeginInit();
             this.panel_main_navigate.SuspendLayout();
             this.panel_main_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_19)).BeginInit();
@@ -286,7 +285,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).BeginInit();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -1188,6 +1186,96 @@ namespace Project
         "ивости мыши и системы в целом.");
             this.checkBox_tolerate.UseVisualStyleBackColor = false;
             // 
+            // checkBox_usbpollrate
+            // 
+            this.checkBox_usbpollrate.AutoSize = true;
+            this.checkBox_usbpollrate.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_usbpollrate.ForeColor = System.Drawing.Color.White;
+            this.checkBox_usbpollrate.Location = new System.Drawing.Point(20, 125);
+            this.checkBox_usbpollrate.Name = "checkBox_usbpollrate";
+            this.checkBox_usbpollrate.Size = new System.Drawing.Size(185, 17);
+            this.checkBox_usbpollrate.TabIndex = 11;
+            this.checkBox_usbpollrate.Tag = "";
+            this.checkBox_usbpollrate.Text = "Увеличить частоту опроса USB";
+            this.toolTip1.SetToolTip(this.checkBox_usbpollrate, "Увеличивает скорость опроса драйвером USB портов.\r\nТак же положительно влияет на " +
+        "отзывчивость системы и мыши.");
+            this.checkBox_usbpollrate.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_usbport
+            // 
+            this.checkBox_usbport.AutoSize = true;
+            this.checkBox_usbport.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_usbport.ForeColor = System.Drawing.Color.White;
+            this.checkBox_usbport.Location = new System.Drawing.Point(20, 105);
+            this.checkBox_usbport.Name = "checkBox_usbport";
+            this.checkBox_usbport.Size = new System.Drawing.Size(217, 17);
+            this.checkBox_usbport.TabIndex = 11;
+            this.checkBox_usbport.Tag = "";
+            this.checkBox_usbport.Text = "Отключить  состояние \"простоя\" USB";
+            this.toolTip1.SetToolTip(this.checkBox_usbport, "Отключает состояние энергосбережение USB портов.\r\nПоложительно влиет на поведение" +
+        " всех устройств подключенных по USB.");
+            this.checkBox_usbport.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_videoprocess
+            // 
+            this.checkBox_videoprocess.AutoSize = true;
+            this.checkBox_videoprocess.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_videoprocess.ForeColor = System.Drawing.Color.White;
+            this.checkBox_videoprocess.Location = new System.Drawing.Point(20, 85);
+            this.checkBox_videoprocess.Name = "checkBox_videoprocess";
+            this.checkBox_videoprocess.Size = new System.Drawing.Size(237, 17);
+            this.checkBox_videoprocess.TabIndex = 11;
+            this.checkBox_videoprocess.Tag = "";
+            this.checkBox_videoprocess.Text = "Отключить обработку видео от Windows";
+            this.toolTip1.SetToolTip(this.checkBox_videoprocess, "Отключает автоматическую обработку видео в Windows.\r\nПолезно для HDR и НЕ HDR мон" +
+        "иторов.\r\nТак же положительно влияет на отзывчивость системы.");
+            this.checkBox_videoprocess.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_audioDG
+            // 
+            this.checkBox_audioDG.AutoSize = true;
+            this.checkBox_audioDG.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_audioDG.ForeColor = System.Drawing.Color.White;
+            this.checkBox_audioDG.Location = new System.Drawing.Point(20, 45);
+            this.checkBox_audioDG.Name = "checkBox_audioDG";
+            this.checkBox_audioDG.Size = new System.Drawing.Size(244, 17);
+            this.checkBox_audioDG.TabIndex = 11;
+            this.checkBox_audioDG.Tag = "";
+            this.checkBox_audioDG.Text = "Отключить защиту от копирования аудио";
+            this.toolTip1.SetToolTip(this.checkBox_audioDG, "Отключает встроенну в Windows функцию,\r\nкоторая не позволяет \"пиратить\" аудио фай" +
+        "лы.");
+            this.checkBox_audioDG.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_dwninput
+            // 
+            this.checkBox_dwninput.AutoSize = true;
+            this.checkBox_dwninput.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_dwninput.ForeColor = System.Drawing.Color.White;
+            this.checkBox_dwninput.Location = new System.Drawing.Point(20, 25);
+            this.checkBox_dwninput.Name = "checkBox_dwninput";
+            this.checkBox_dwninput.Size = new System.Drawing.Size(142, 17);
+            this.checkBox_dwninput.TabIndex = 11;
+            this.checkBox_dwninput.Tag = "";
+            this.checkBox_dwninput.Text = "Отключить DWM Input";
+            this.toolTip1.SetToolTip(this.checkBox_dwninput, "Вносит настройки в диспетчере окон Windows (DWM)\r\nПоложительно влияет на движения" +
+        " мыши, делая их более отзывчивыми.\r\n");
+            this.checkBox_dwninput.UseVisualStyleBackColor = false;
+            // 
+            // checkBox_audio
+            // 
+            this.checkBox_audio.AutoSize = true;
+            this.checkBox_audio.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_audio.ForeColor = System.Drawing.Color.White;
+            this.checkBox_audio.Location = new System.Drawing.Point(20, 5);
+            this.checkBox_audio.Name = "checkBox_audio";
+            this.checkBox_audio.Size = new System.Drawing.Size(168, 17);
+            this.checkBox_audio.TabIndex = 11;
+            this.checkBox_audio.Tag = "";
+            this.checkBox_audio.Text = "Уменьшить задержку звука";
+            this.toolTip1.SetToolTip(this.checkBox_audio, "Данный твик уменьшает задержку звука.\r\nПоложительно влияет на все задержки в сист" +
+        "еме.\r\n");
+            this.checkBox_audio.UseVisualStyleBackColor = false;
+            // 
             // checkBox_edge
             // 
             this.checkBox_edge.AutoSize = true;
@@ -1727,12 +1815,11 @@ namespace Project
             // panel_ui_2
             // 
             this.panel_ui_2.BackColor = System.Drawing.Color.Transparent;
-            this.panel_ui_2.Controls.Add(this.checkBox_cursors);
+            this.panel_ui_2.Controls.Add(this.label_cursors);
             this.panel_ui_2.Controls.Add(this.back_pro_14);
             this.panel_ui_2.Controls.Add(this.checkBox_pro_14);
             this.panel_ui_2.Controls.Add(this.checkBox_mica);
             this.panel_ui_2.Controls.Add(this.back_pro_13);
-            this.panel_ui_2.Controls.Add(this.back_ui_12);
             this.panel_ui_2.Controls.Add(this.checkBox_pro_13);
             this.panel_ui_2.Controls.Add(this.back_ui_11);
             this.panel_ui_2.Controls.Add(this.checkBox_pro_1);
@@ -1741,18 +1828,6 @@ namespace Project
             this.panel_ui_2.Name = "panel_ui_2";
             this.panel_ui_2.Size = new System.Drawing.Size(287, 235);
             this.panel_ui_2.TabIndex = 36;
-            // 
-            // checkBox_cursors
-            // 
-            this.checkBox_cursors.AutoSize = true;
-            this.checkBox_cursors.ForeColor = System.Drawing.Color.White;
-            this.checkBox_cursors.Location = new System.Drawing.Point(20, 25);
-            this.checkBox_cursors.Name = "checkBox_cursors";
-            this.checkBox_cursors.Size = new System.Drawing.Size(167, 17);
-            this.checkBox_cursors.TabIndex = 3;
-            this.checkBox_cursors.Tag = "";
-            this.checkBox_cursors.Text = "Установить новые курсоры";
-            this.checkBox_cursors.UseVisualStyleBackColor = true;
             // 
             // back_pro_14
             // 
@@ -1797,21 +1872,6 @@ namespace Project
             this.back_pro_13.TabStop = false;
             this.back_pro_13.Visible = false;
             this.back_pro_13.Click += new System.EventHandler(this.back_pro_13_Click);
-            // 
-            // back_ui_12
-            // 
-            this.back_ui_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_ui_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_12.Location = new System.Drawing.Point(0, 25);
-            this.back_ui_12.Name = "back_ui_12";
-            this.back_ui_12.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_ui_12.TabIndex = 11;
-            this.back_ui_12.TabStop = false;
-            this.back_ui_12.Visible = false;
             // 
             // back_ui_11
             // 
@@ -2725,6 +2785,22 @@ namespace Project
             this.back_dop_6.Visible = false;
             this.back_dop_6.Click += new System.EventHandler(this.back_dop_6_Click);
             // 
+            // back_dop_edge
+            // 
+            this.back_dop_edge.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_dop_edge.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_edge.BackgroundImage")));
+            this.back_dop_edge.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_edge.Location = new System.Drawing.Point(0, 45);
+            this.back_dop_edge.Name = "back_dop_edge";
+            this.back_dop_edge.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_edge.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_dop_edge.TabIndex = 12;
+            this.back_dop_edge.TabStop = false;
+            this.back_dop_edge.Visible = false;
+            this.back_dop_edge.Click += new System.EventHandler(this.back_dop_edge_Click);
+            // 
             // panel_main_navigate
             // 
             this.panel_main_navigate.Controls.Add(this.button_main_2);
@@ -2906,111 +2982,15 @@ namespace Project
             this.back_main_13.Visible = false;
             this.back_main_13.Click += new System.EventHandler(this.back_main_13_Click);
             // 
-            // checkBox_usbpollrate
+            // label_cursors
             // 
-            this.checkBox_usbpollrate.AutoSize = true;
-            this.checkBox_usbpollrate.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_usbpollrate.ForeColor = System.Drawing.Color.White;
-            this.checkBox_usbpollrate.Location = new System.Drawing.Point(20, 125);
-            this.checkBox_usbpollrate.Name = "checkBox_usbpollrate";
-            this.checkBox_usbpollrate.Size = new System.Drawing.Size(185, 17);
-            this.checkBox_usbpollrate.TabIndex = 11;
-            this.checkBox_usbpollrate.Tag = "";
-            this.checkBox_usbpollrate.Text = "Увеличить частоту опроса USB";
-            this.toolTip1.SetToolTip(this.checkBox_usbpollrate, "Увеличивает скорость опроса драйвером USB портов.\r\nТак же положительно влияет на " +
-        "отзывчивость системы и мыши.");
-            this.checkBox_usbpollrate.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_usbport
-            // 
-            this.checkBox_usbport.AutoSize = true;
-            this.checkBox_usbport.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_usbport.ForeColor = System.Drawing.Color.White;
-            this.checkBox_usbport.Location = new System.Drawing.Point(20, 105);
-            this.checkBox_usbport.Name = "checkBox_usbport";
-            this.checkBox_usbport.Size = new System.Drawing.Size(217, 17);
-            this.checkBox_usbport.TabIndex = 11;
-            this.checkBox_usbport.Tag = "";
-            this.checkBox_usbport.Text = "Отключить  состояние \"простоя\" USB";
-            this.toolTip1.SetToolTip(this.checkBox_usbport, "Отключает состояние энергосбережение USB портов.\r\nПоложительно влиет на поведение" +
-        " всех устройств подключенных по USB.");
-            this.checkBox_usbport.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_videoprocess
-            // 
-            this.checkBox_videoprocess.AutoSize = true;
-            this.checkBox_videoprocess.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_videoprocess.ForeColor = System.Drawing.Color.White;
-            this.checkBox_videoprocess.Location = new System.Drawing.Point(20, 85);
-            this.checkBox_videoprocess.Name = "checkBox_videoprocess";
-            this.checkBox_videoprocess.Size = new System.Drawing.Size(237, 17);
-            this.checkBox_videoprocess.TabIndex = 11;
-            this.checkBox_videoprocess.Tag = "";
-            this.checkBox_videoprocess.Text = "Отключить обработку видео от Windows";
-            this.toolTip1.SetToolTip(this.checkBox_videoprocess, "Отключает автоматическую обработку видео в Windows.\r\nПолезно для HDR и НЕ HDR мон" +
-        "иторов.\r\nТак же положительно влияет на отзывчивость системы.");
-            this.checkBox_videoprocess.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_audioDG
-            // 
-            this.checkBox_audioDG.AutoSize = true;
-            this.checkBox_audioDG.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_audioDG.ForeColor = System.Drawing.Color.White;
-            this.checkBox_audioDG.Location = new System.Drawing.Point(20, 45);
-            this.checkBox_audioDG.Name = "checkBox_audioDG";
-            this.checkBox_audioDG.Size = new System.Drawing.Size(244, 17);
-            this.checkBox_audioDG.TabIndex = 11;
-            this.checkBox_audioDG.Tag = "";
-            this.checkBox_audioDG.Text = "Отключить защиту от копирования аудио";
-            this.toolTip1.SetToolTip(this.checkBox_audioDG, "Отключает встроенну в Windows функцию,\r\nкоторая не позволяет \"пиратить\" аудио фай" +
-        "лы.");
-            this.checkBox_audioDG.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_dwninput
-            // 
-            this.checkBox_dwninput.AutoSize = true;
-            this.checkBox_dwninput.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_dwninput.ForeColor = System.Drawing.Color.White;
-            this.checkBox_dwninput.Location = new System.Drawing.Point(20, 25);
-            this.checkBox_dwninput.Name = "checkBox_dwninput";
-            this.checkBox_dwninput.Size = new System.Drawing.Size(142, 17);
-            this.checkBox_dwninput.TabIndex = 11;
-            this.checkBox_dwninput.Tag = "";
-            this.checkBox_dwninput.Text = "Отключить DWM Input";
-            this.toolTip1.SetToolTip(this.checkBox_dwninput, "Вносит настройки в диспетчере окон Windows (DWM)\r\nПоложительно влияет на движения" +
-        " мыши, делая их более отзывчивыми.\r\n");
-            this.checkBox_dwninput.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_audio
-            // 
-            this.checkBox_audio.AutoSize = true;
-            this.checkBox_audio.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_audio.ForeColor = System.Drawing.Color.White;
-            this.checkBox_audio.Location = new System.Drawing.Point(20, 5);
-            this.checkBox_audio.Name = "checkBox_audio";
-            this.checkBox_audio.Size = new System.Drawing.Size(168, 17);
-            this.checkBox_audio.TabIndex = 11;
-            this.checkBox_audio.Tag = "";
-            this.checkBox_audio.Text = "Уменьшить задержку звука";
-            this.toolTip1.SetToolTip(this.checkBox_audio, "Данный твик уменьшает задержку звука.\r\nПоложительно влияет на все задержки в сист" +
-        "еме.\r\n");
-            this.checkBox_audio.UseVisualStyleBackColor = false;
-            // 
-            // back_dop_edge
-            // 
-            this.back_dop_edge.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_edge.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_edge.BackgroundImage")));
-            this.back_dop_edge.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_edge.Location = new System.Drawing.Point(0, 45);
-            this.back_dop_edge.Name = "back_dop_edge";
-            this.back_dop_edge.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_edge.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_dop_edge.TabIndex = 12;
-            this.back_dop_edge.TabStop = false;
-            this.back_dop_edge.Visible = false;
-            this.back_dop_edge.Click += new System.EventHandler(this.back_dop_edge_Click);
+            this.label_cursors.AutoSize = true;
+            this.label_cursors.ForeColor = System.Drawing.Color.White;
+            this.label_cursors.Location = new System.Drawing.Point(20, 25);
+            this.label_cursors.Name = "label_cursors";
+            this.label_cursors.Size = new System.Drawing.Size(148, 13);
+            this.label_cursors.TabIndex = 22;
+            this.label_cursors.Text = "Установить новые курсоры";
             // 
             // WOTBO
             // 
@@ -3077,7 +3057,6 @@ namespace Project
             this.panel_ui_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_ui_12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_1)).EndInit();
             this.panel_dop.ResumeLayout(false);
@@ -3116,6 +3095,7 @@ namespace Project
             this.panel_dop_2.ResumeLayout(false);
             this.panel_dop_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).EndInit();
             this.panel_main_navigate.ResumeLayout(false);
             this.panel_main_2.ResumeLayout(false);
             this.panel_main_2.PerformLayout();
@@ -3126,7 +3106,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3288,8 +3267,6 @@ namespace Project
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label_nvcleaninstall;
         private System.Windows.Forms.Label label_ddu;
-        private System.Windows.Forms.CheckBox checkBox_cursors;
-        private System.Windows.Forms.PictureBox back_ui_12;
         private System.Windows.Forms.Button button_new;
         private System.Windows.Forms.Button button_ui_new_1;
         private System.Windows.Forms.Button button_ui_new_2;
@@ -3320,6 +3297,7 @@ namespace Project
         private System.Windows.Forms.PictureBox back_main_18;
         private System.Windows.Forms.PictureBox back_main_19;
         private System.Windows.Forms.PictureBox back_dop_edge;
+        private System.Windows.Forms.Label label_cursors;
     }
 }
 

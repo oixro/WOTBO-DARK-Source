@@ -226,7 +226,7 @@ namespace Project
             toolTip1.SetToolTip(checkBox_ffmpeg, "Adds useful items to the context menu for videos\r\n(Works for avi, flac, mov,mkv,mp4,wav,weba)");
             checkBox_mica.Text = "Make the explorer translucent";
             toolTip1.SetToolTip(checkBox_mica, "");
-            checkBox_cursors.Text = "Install new cursors";
+            label_cursors.Text = "Install new cursors";
 
             //gpu
             label_nvcleaninstall.Text = "Download NVCleanInstall";
@@ -300,7 +300,6 @@ namespace Project
             toolTip1.SetToolTip(checkBox_pro_13, "Adds to the context menu (RMB) the ability to:\r\ndelete files that are used by other processes\r\ndelete any folders, even system folders\r\n");
             checkBox_pro_14.Text = "Add window pinning";
             toolTip1.SetToolTip(checkBox_pro_14, "Pinning a window by pressing Ctrl+Space");
-
         }
 
         // Красим форму
@@ -774,7 +773,7 @@ namespace Project
                 checkBox_pro_13.Enabled = false;
                 checkBox_ffmpeg.Enabled = false;
                 checkBox_mica.Enabled = false;
-                checkBox_cursors.Enabled = false;
+                label_cursors.Enabled = false;
                 if (!isEnglish)
                 {
                     MessageBox.Show("Нет доступа в интернет!\nПроврека на обновления, и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
@@ -1693,40 +1692,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 checkBox_mica.Checked = false;
                 back_ui_11.Visible = true;
             }
-            if (checkBox_cursors.Checked)
-            {
-                using (WebClient wc = new WebClient())
-                    if (!File.Exists($"{tempfolder}\\cursors.zip"))
-                    {
-                        wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
-                        ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-                    }
-                if (!isEnglish)
-                {
-                    if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
-                    }
-                    else
-                    {
-                        InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
-                    }
-                }
-                else
-                {
-                    if (MessageBox.Show($"Set a light or dark cursor?\nYes, light. \nNo, dark.", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
-                    }
-                    else
-                    {
-                        InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
-                    }
-                }
-                checkBox_cursors.Checked = false;
-                checkBox_cursors.Enabled = false;
-                back_ui_12.Visible = true;
-            }
             #endregion
             #region dop
             if (checkBox_activate.Checked)
@@ -2262,6 +2227,37 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 checkBox_uwp_terminal.Enabled = false;
             }
             #endregion
+        }
+        void label_cursors_Click(object sender, EventArgs e)
+        {
+            using (WebClient wc = new WebClient())
+                if (!File.Exists($"{tempfolder}\\cursors.zip"))
+                {
+                    wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
+                    ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                }
+            if (!isEnglish)
+            {
+                if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+                }
+                else
+                {
+                    InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+                }
+            }
+            else
+            {
+                if (MessageBox.Show($"Set a light or dark cursor?\nYes, light. \nNo, dark.", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+                }
+                else
+                {
+                    InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+                }
+            }
         }
         #endregion
         #region перемещение по пунктам
@@ -3492,5 +3488,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
 
         #endregion
+
+
     }
 }
