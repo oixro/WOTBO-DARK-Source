@@ -303,9 +303,9 @@ namespace Project
             this.checkBox_disabledefender.ForeColor = System.Drawing.Color.White;
             this.checkBox_disabledefender.Location = new System.Drawing.Point(20, 25);
             this.checkBox_disabledefender.Name = "checkBox_disabledefender";
-            this.checkBox_disabledefender.Size = new System.Drawing.Size(133, 17);
+            this.checkBox_disabledefender.Size = new System.Drawing.Size(184, 17);
             this.checkBox_disabledefender.TabIndex = 9;
-            this.checkBox_disabledefender.Text = "Отключить Defender";
+            this.checkBox_disabledefender.Text = "Отключить зищитник Windows";
             this.toolTip1.SetToolTip(this.checkBox_disabledefender, "Отключает защитник Windows\r\n(Значительно понижает падение FPS, уменьшает нагрузку" +
         " на процессор)\r\n");
             this.checkBox_disabledefender.UseVisualStyleBackColor = false;
