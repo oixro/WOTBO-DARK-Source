@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO;
 using WOTBO.Properties;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 
 namespace Project
@@ -348,7 +347,7 @@ namespace Project
             panel1.Location = new System.Drawing.Point(105, 36);
             #endregion
             #region проверка запущенна ли, eula и язык
-            
+
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
             {
                 writelog("eula null");
@@ -531,7 +530,7 @@ namespace Project
             } //shapka11
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_1")) == 1)
             {
-                writelog("pro_1 был применён"); 
+                writelog("pro_1 был применён");
                 checkBox_pro_1.Enabled = false;
 
             }
@@ -3412,6 +3411,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
         #endregion
 
-        
+
     }
 }
