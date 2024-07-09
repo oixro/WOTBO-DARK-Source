@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace Project
     public class FormShadow : Form
     {
         #region Тень формы + перетаскивание окна + предотвращение разворачивания
-        #if !DEBUG
+#if !DEBUG
         [DllImport("dwmapi.dll")] public static extern int DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
         [DllImport("dwmapi.dll")] public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
         [DllImport("dwmapi.dll")] public static extern int DwmIsCompositionEnabled(ref int pfEnabled); readonly bool m_aeroEnabled;
@@ -71,7 +72,6 @@ namespace Project
             this.Name = "FormShadow";
             this.Text = "WOTBO";
             this.ResumeLayout(false);
-
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO;
 using WOTBO.Properties;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 
 namespace Project
@@ -40,21 +41,9 @@ namespace Project
         string exepath = Assembly.GetEntryAssembly().Location;
         string contexpath = @"C:\Windows\wotbo.exe";
         int mmMemory = 0;
-
-
         public bool isEnglish = true;
         public string uilanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-        private void ChangeToolTipsForAllPictureBoxes(string newTooltipText)
-        {
-            foreach (Control control in this.Controls)
-            {
-                if (control is PictureBox)
-                {
-                    toolTip1.SetToolTip(control, newTooltipText);
-
-                }
-            }
-        }
+        string logfile = $@"{Environment.ExpandEnvironmentVariables("%temp%")}\wotbo.log";
         public static string gpu;
         public bool nvidia;
         public static string hwid;
@@ -86,6 +75,8 @@ namespace Project
                     x.Capture = false; Capture = false; Message m = Message.Create(Handle, 0xA1, new IntPtr(2), IntPtr.Zero); base.WndProc(ref m);
                 };
             });
+
+
         }
         #endregion
         #region my void's
@@ -301,7 +292,26 @@ namespace Project
             checkBox_pro_14.Text = "Add window pinning";
             toolTip1.SetToolTip(checkBox_pro_14, "Pinning a window by pressing Ctrl+Space");
         }
+        void writelog(string line)
+        {
+            using (StreamWriter logs = new StreamWriter(logfile, true))
+            {
+                // Получение текущего времени
+                DateTime now = DateTime.Now;
 
+                // Форматирование времени с миллисекундами
+                string formattedTime = now.ToString("yyyy-MM-dd HH:mm:ss.ffff");
+                logs.WriteLine($"{formattedTime} - {line}");
+            }
+        }
+        void CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            System.Windows.Forms.CheckBox checkBox = sender as System.Windows.Forms.CheckBox;
+            if (checkBox != null)
+            {
+                writelog($"{checkBox.Text} изменен на {checkBox.CheckState}");
+            }
+        }
         // Красим форму
         public void FormPaint(Color color1, Color color2)
         {
@@ -326,6 +336,9 @@ namespace Project
         #region открытие
         async void Form1_Load(object sender, EventArgs e)
         {
+            #region logs
+            writelog($"==============Launched==============");
+            #endregion
             #region version
             label_ver.Text = $"{version}";
             #endregion
@@ -335,8 +348,48 @@ namespace Project
             panel1.Location = new System.Drawing.Point(105, 36);
             #endregion
             #region проверка запущенна ли, eula и язык
+            
+            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
+            {
+                writelog("eula null");
+                Form2 eula = new Form2();
+                eula.ShowDialog();
+            }
+            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("Language") == null)
+            {
+                writelog("language null");
+                if (uilanguage == "ru")
+                {
+                    writelog($"ui lanuage - {uilanguage}");
+                    Registry.CurrentUser.CreateSubKey(@"Software\oixro\wotbo", true).SetValue("Language", uilanguage);
+                    isEnglish = false;
+                }
+                else
+                {
+                    writelog($"ui lanuage - {uilanguage}");
+                    Registry.CurrentUser.CreateSubKey(@"Software\oixro\wotbo", true).SetValue("Language", uilanguage);
+                    isEnglish = true;
+                    english();
+                }
+            }
+            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("Language") != null)
+            {
+                writelog("language не null");
+                if ((Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language").ToString()) == "en")
+                {
+                    writelog("language - en");
+                    isEnglish = true;
+                    english();
+                }
+                else
+                {
+                    writelog("language - ru");
+                    isEnglish = false;
+                }
+            }
             if (!InstanceChecker.TakeMemory())
             {
+                writelog("InstanceExists, relaunch");
                 if (!isEnglish)
                 {
                     MessageBox.Show("Другая копия программы уже запущена\nИметь две открытии копии программы не рекомендуется.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -347,139 +400,119 @@ namespace Project
                 }
                 hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
             }
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
-            {
-                Form2 eula = new Form2();
-                eula.ShowDialog();
-            }
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("Language") == null)
-            {
-                //MessageBox.Show("null сука");
-                if (uilanguage == "ru")
-                {
-                    //MessageBox.Show("null сука и мы ру");
-                    Registry.CurrentUser.CreateSubKey(@"Software\oixro\wotbo", true).SetValue("Language", uilanguage);
-                    isEnglish = false;
-                }
-                else
-                {
-                    //MessageBox.Show("null сука и мы не ру");
-                    Registry.CurrentUser.CreateSubKey(@"Software\oixro\wotbo", true).SetValue("Language", uilanguage);
-                    isEnglish = true;
-                    english();
-                }
-            }
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("Language") != null)
-            {
-                //MessageBox.Show("не null ебать");
-                if ((Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language").ToString()) == "en")
-                {
-                    //MessageBox.Show("не null ебать и мы en");
-                    isEnglish = true;
-                    english();
-                }
-                else
-                {
-                    //MessageBox.Show("не null ебать и мы РУ");
-                    isEnglish = false;
-                }
-            }
             #endregion
             #region temp
             if (Directory.Exists(tempfolder))
             {
-                tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}";
-                path_regpack7z = tempfolder + @"\regpack.zip";
-                path_regpack = tempfolder + @"\regpack";
-                path_services = tempfolder + @"\services";
-                path_uizip = tempfolder + @"\ui.zip";
-                path_ui = tempfolder + @"\ui";
-                path_dfkiller = tempfolder + @"\DFKiller";
-                path_scheme = tempfolder + @"\scheme.pow";
-                smartctl = tempfolder + @"\smartctl.exe";
+                writelog($"tempfolder - {tempfolder} exists");
+                tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; writelog($"new tempfolder - {tempfolder}");
+                path_regpack7z = tempfolder + @"\regpack.zip"; writelog($"new path_regpack7z - {path_regpack7z}");
+                path_regpack = tempfolder + @"\regpack"; writelog($"new path_regpack - {path_regpack}");
+                path_services = tempfolder + @"\services"; writelog($"new path_services - {path_services}");
+                path_uizip = tempfolder + @"\ui.zip"; writelog($"new path_uizip - {path_uizip}");
+                path_ui = tempfolder + @"\ui"; writelog($"new path_ui - {path_ui}");
+                path_dfkiller = tempfolder + @"\DFKiller"; writelog($"new path_dfkiller - {path_dfkiller}");
+                path_scheme = tempfolder + @"\scheme.pow"; writelog($"new path_scheme - {path_scheme}");
+                smartctl = tempfolder + @"\smartctl.exe"; writelog($"new smartctl - {smartctl}");
             }
             #endregion
             #region ебашим backrg
-            hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1");
+            hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1"); writelog("ебашим backrg");
             #endregion
             #region отключаем чеки
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("regpack")) == 1)
             {
+                writelog("regpack был применён");
                 checkBox_reg.Enabled = false;
                 back_main_1.Visible = true;
             }//regpack
             if (ReservedStorage.Contains("Reserved storage is disabled.") | ReservedStorage.Contains("‡ аҐ§ҐаўЁа®ў ­­®Ґ еа ­Ё«ЁйҐ ®вЄ«озҐ­®."))
             {
+                writelog("ReservedStorage был применён");
                 checkBox_dism.Enabled = false;
                 back_main_2.Visible = true;
             } //reserved
             if (!File.Exists(@"C:\hiberfil.sys"))
             {
+                writelog("hiberfil был применён");
                 checkBox_gibernate.Enabled = false;
                 back_main_3.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("imported_powerscheme")) == 1)
             {
+                writelog("imported_powerscheme был применён");
                 checkBox_scheme.Enabled = false;
                 back_main_4.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("mousefix")) == 1)
             {
+                writelog("mousefix был применён");
                 checkBox_mousefix.Enabled = false;
                 back_main_5.Visible = true;
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Dwm").GetValue("OverlayTestMode")) == 5)
             {
+                writelog("MPO был применён");
                 checkBox_mpo.Enabled = false;
                 back_main_6.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("usbpowersaving")) == 1)
             {
+                writelog("usbpowersaving был применён");
                 checkBox_usb.Enabled = false;
                 back_main_7.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("bcdedit")) == 1)
             {
+                writelog("bcdedit был применён");
                 checkBox_bcdedit.Enabled = false;
                 back_main_8.Visible = true;
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management")?.GetValue("FeatureSettings")) == 1)
             {
+                writelog("spectre and meltdown был применён");
                 checkBox_mtiititit.Enabled = false;
                 back_main_9.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("mmagent")) == 1)
             {
+                writelog("mmagent был применён");
                 checkBox_mmagent.Enabled = false;
                 back_main_10.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pagefile")) == 1)
             {
+                writelog("pagefile был применён");
                 checkBox_page.Enabled = false;
                 back_main_11.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("buttons")) == 1)
             {
+                writelog("buttons был применён");
                 checkBoxUI_Buttons_1.Enabled = false;
                 back_ui_1.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("litle_explorer_things")) == 1)
             {
+                writelog("litle_explorer_things был применён");
                 checkBoxUI_Buttons_2.Enabled = false;
                 back_ui_2.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("contex")) == 1)
             {
+                writelog("contex был применён");
                 checkBoxUI_Buttons_3.Enabled = false;
                 back_ui_3.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop").GetValue("JPEGImportQuality")) == 100)
             {
+                writelog("JPEGImportQuality был применён");
                 checkBoxUI_Buttons_4.Enabled = false;
                 back_ui_4.Visible = true;
             } //wallpapers
             if (Registry.CurrentUser.OpenSubKey(@"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32") != null)
             {
+                writelog("contex11 был применён");
                 checkBox_contex.Enabled = false;
                 back_ui_6.Visible = true;
             } //contex11
@@ -487,6 +520,7 @@ namespace Project
             {
                 if (Registry.ClassesRoot.OpenSubKey(@"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32").GetValue("").ToString().Contains("FixByVlado"))
                 {
+                    writelog("shapka11 был применён");
                     checkBox_shapka.Enabled = false;
                     back_ui_7.Visible = true;
                 }//shapka11
@@ -497,173 +531,206 @@ namespace Project
             } //shapka11
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_1")) == 1)
             {
+                writelog("pro_1 был применён"); 
                 checkBox_pro_1.Enabled = false;
 
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_9")) == 1)
             {
-
+                writelog("pro_9 был применён");
                 checkBox_pro_9.Enabled = false;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_7")) == 1)
             {
+                writelog("pro_7 был применён");
                 checkBox_pro_7.Enabled = false;
 
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Control\PriorityControl").GetValue("Win32PrioritySeparation")) != 0x00000002)
             {
+                writelog("Win32PrioritySeparation был применён");
                 checkBox_pro_11.Enabled = false;
                 back_pro_11.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("block_backgr")) == 1)
             {
+                writelog("block_backgr был применён");
                 checkBox_pro_2.Enabled = false;
 
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")?.GetValue("NoAutoUpdate")) == 1)
             {
+                writelog("NoAutoUpdate был применён");
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
 
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("defenderdisabled")) == 1)
             {
+                writelog("defenderdisabled был применён");
                 checkBox_disabledefender.Enabled = false;
                 checkBox_killdefender.Enabled = true;
                 back_main_12.Visible = true;
             }
             if (File.Exists($@"C:\Windows\System32\imageres.dll_bak"))
             {
+                writelog("синие папки win 10 были применены");
                 checkBox_bluefolders.Enabled = false;
                 back_ui_5.Visible = true;
             }
             if (File.Exists($@"C:\Windows\SystemResources\imageres.dll.mun_bak"))
             {
+                writelog("синие папки win 11 были применены");
                 checkBox_bluefolders.Enabled = false;
                 back_ui_5.Visible = true;
             }
             if (Registry.ClassesRoot.OpenSubKey(@"DesktopBackground\Shell\WOTBO")?.GetValue("") != null)
             {
+                writelog("wotbo in contex был применён");
                 checkBox_wotboincontex.Enabled = false;
                 back_ui_8.Visible = true;
             }
             if (!Directory.Exists(@"C:\ProgramData\Microsoft\Windows Defender"))
             {
-                checkBox_disabledefender.Visible = false;
+                writelog("defender удалён");
+                //checkBox_disabledefender.Visible = false;
                 checkBox_disabledefender.Enabled = false;
                 back_main_12.Visible = false;
             }
             if (!Directory.Exists($@"{Environment.GetEnvironmentVariable("userprofile")}\OneDrive"))
             {
+                writelog("OneDrive был удалён");
                 checkBox_onedrive.Enabled = false;
             }
             if (exepath == contexpath)
             {
+                writelog("запущены из конткестного");
                 back_ui_8.Visible = false;
             }
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("buffer") != null)
             {
+                writelog("bufferbloat был применён");
                 checkBox_pro_12.Enabled = false;
                 back_pro_12.Visible = true;
             }
             if (File.Exists(@"C:\Windows\unlocker\Unlocker.exe"))
             {
+                writelog("unclockewr был применён");
                 checkBox_pro_13.Enabled = false;
                 back_pro_13.Visible = true;
             }
             if (File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
             {
+                writelog("AlwaysOnTop был применён");
                 checkBox_pro_14.Enabled = false;
                 back_pro_14.Visible = true;
             }
             if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Classes\SystemFileAssociations\.mp4\shell\FFmpeg")?.GetValue("icon") != null)
             {
+                writelog("FFmpeg был применён");
                 checkBox_ffmpeg.Enabled = false;
                 back_ui_10.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer", true)?.GetValue("Max Cached Icons") != null)
             {
+                writelog("Max Cached Icons был применён");
                 checkBox_picture_cache.Enabled = false;
                 back_dop_1.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", true)?.GetValue("DefaultTTL") != null)
             {
+                writelog("DefaultTTL был применён");
                 checkBox_mobile_traffic.Enabled = false;
                 back_dop_2.Visible = true;
             }
             if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement", true)?.GetValue("ScoobeSystemSettingEnabled") != null)
             {
+                writelog("ScoobeSystemSettingEnabled был применён");
                 checkBox_nastroyka.Enabled = false;
                 back_dop_3.Visible = true;
             }
             if (Convert.ToString(Registry.CurrentUser.OpenSubKey(@"Control Panel\Accessibility\StickyKeys", true)?.GetValue("Flags")) == "506")
             {
+                writelog("StickyKeys был применён");
                 checkBox_zalipanie.Enabled = false;
                 back_dop_4.Visible = true;
             }
             if (File.Exists(@"C:\Windows\ExplorerBlurMica.dll"))
             {
+                writelog("ExplorerBlurMica был применён");
                 checkBox_mica.Enabled = false;
                 back_ui_11.Visible = true;
             }
             if (Registry.ClassesRoot.OpenSubKey(@"DesktopBackground\Shell\explorer\") != null)
             {
+                writelog("restart explorer был применён");
                 checkBox_explorer.Enabled = false;
                 back_ui_9.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe") != null)
             {
+                writelog("dwm.exe priority был применён");
                 checkBox_dwm.Enabled = false;
                 back_dop_6.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe") != null)
             {
+                writelog("csrss.exe priority был применён");
                 checkBox_CSRSS.Enabled = false;
                 back_dop_7.Visible = true;
             }
             if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy")?.GetValue("AllowHeadlessExecution")) == "1")
             {
+                writelog("AllowHeadlessExecution BackgroundAudioPolicy был применён");
                 checkBox_audio.Enabled = false;
                 back_main_13.Visible = true;
             }
             if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows")?.GetValue("DwmInputUsesIoCompletionPort")) == "0")
             {
+                writelog("DwmInputUsesIoCompletionPort был применён");
                 checkBox_dwninput.Enabled = false;
                 back_main_14.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio")?.GetValue("DisableProtectedAudio") != null)
             {
+                writelog("DisableProtectedAudio был применён");
                 checkBox_audioDG.Enabled = false;
                 back_main_15.Visible = true;
             }
             if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power")?.GetValue("ExitLatency")) == "1")
             {
+                writelog("Power\\ExitLatency был применён");
                 checkBox_tolerate.Enabled = false;
                 back_main_16.Visible = true;
             }
             if (Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\VideoSettings") != null)
             {
+                writelog("VideoSettings был применён");
                 checkBox_videoprocess.Enabled = false;
                 back_main_17.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Services\usbhub\hubg")?.GetValue("DisableOnSoftRemove") != null)
             {
+                writelog("Services\\usbhub\\hubg\\DisableOnSoftRemove был применён");
                 checkBox_usbport.Enabled = false;
                 back_main_18.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\{36fc9e60-c465-11cf-8056-444553540000}\0000")?.GetValue("IdleEnable") != null)
             {
+                writelog("IdleEnable был применён");
                 checkBox_usbpollrate.Enabled = false;
                 back_main_19.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey($@"SOFTWARE\Policies\Microsoft\Edge") != null)
             {
+                writelog("Edge был применён");
                 back_dop_edge.Visible = true;
                 checkBox_edge.Checked = false;
                 checkBox_edge.Enabled = false;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU") != null)
             {
+                writelog("WindowsUpdate\\AU был применён");
                 checkBox_pro_3.Checked = false;
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
@@ -675,14 +742,17 @@ namespace Project
             if (gpu.Contains("NVIDIA"))
             {
                 nvidia = true;
+                writelog($"GPU IS NVIDIA - {nvidia}");
                 if (Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000")?.GetValue("RMHdcpKeyglobZero") != null)
                 {
+                    writelog($"hdcp disabled");
                     checkBox_hdcp.Checked = false;
                     checkBox_hdcp.Enabled = false;
                     back_gpu_2.Visible = true;
                 } //hdcp check
                 if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak", true)?.GetValue("DisplayPowerSaving") != null)
                 {
+                    writelog($"DisplayPowerSaving disabled");
                     checkBox_dopNVIDIA_tweaks.Enabled = false;
                     back_gpu_3.Visible = true;
                 }//tweaksnvidia
@@ -702,6 +772,7 @@ namespace Project
                         string anselstate = (getanselstate.StandardOutput.ReadToEnd().Trim());
                         if (anselstate == "0")
                         {
+                            writelog($"anselstate == \"0\"");
                             checkBox_ansel.Enabled = false;
                             back_gpu_4.Visible = true;
                         }
@@ -715,6 +786,7 @@ namespace Project
             }
             else
             {
+                writelog("не nvidia");
                 nvidia = false;
                 checkBox_ansel.Visible = false;
                 checkBox_pro_4.Enabled = false;
@@ -729,9 +801,11 @@ namespace Project
             if (Convert.ToUInt16(buildnumber) > 22000) // проверка на Windows 11
             {
                 win10 = false;
+                writelog($"Windows is win 10? {win10}");
                 label_winver.Text = "Windows 11 " + DisplayVersion + " Build:" + buildnumber;
                 if (Convert.ToUInt16(buildnumber) >= 26100)
                 {
+                    writelog($"Windows 11 build : {buildnumber}");
                     //MessageBox.Show("Корректная работа программы на Windows 11 24H2 не гарантирована!","Windows optimization tool by oixro",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     //checkBox_mtiititit.Text += " (Не работает на 24H2)";
                     //checkBox_mtiititit.Enabled = false;
@@ -741,6 +815,7 @@ namespace Project
             }
             else if (Convert.ToUInt16(buildnumber) < 19042) // проверка на Windows 10 <20H2 
             {
+                writelog($"Windows 10 <20H2 ");
                 win10 = true;
                 MessageBox.Show("Рекомендуется использовать Windows 10 20H2 и выше! \nЭффективность настройки не гарантирована",
                     "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -748,6 +823,7 @@ namespace Project
             }
             else if (Convert.ToUInt16(buildnumber) >= 19042) // проверка на Windows 10
             {
+                writelog($"Windows 10 {buildnumber} ");
                 win10 = true;
                 label_winver.Text = "Windows 10 " + DisplayVersion + " Build:" + buildnumber;
             }
@@ -762,6 +838,7 @@ namespace Project
             #region инет + обнова
             if (!Internet.OK())
             {
+                writelog($"инета нету");
                 checkBox_bluefolders.Enabled = false;
                 label_nvcleaninstall.Enabled = false;
                 checkBox_edgedelete.Enabled = false;
@@ -797,6 +874,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             string verjson = (wc.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
                             if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                             {
+                                writelog($"версия новая");
                                 label_ver.Text = $"{version}";
                             }
                             else
@@ -814,6 +892,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                         MessageBox.Show($"Current version - {curver}\nA new one is available - {verjson}\nAn update will be performed\n\n" +
                                         $"Changelog:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
                                     }
+                                    writelog($"скачиваем новую");
                                     wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
                                     hcmd($"taskkill /f /im \"{exename}\" &&" +
                                         $" timeout /t 1 &&" +
@@ -828,6 +907,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                             if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) > (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                             {
+                                writelog($"версия dev");
                                 label_ver.Text = $"d{version}";
                             }
 
@@ -843,43 +923,37 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 checkBox_contex.Enabled = false;
                 checkBox_pro_1.Enabled = false;
                 checkBox_shapka.Enabled = false;
+                writelog($"чеки под win 11 для win10 отключены");
             }
             #endregion
             #region планый запуск
             for (Opacity = 0; Opacity < 1; Opacity += .2) await Task.Delay(10);
+            writelog($"плавно открылись");
             #endregion
             #region распаковка в temp
             Directory.CreateDirectory(tempfolder);
+            writelog($"tempfolder создан - {tempfolder}");
             File.WriteAllBytes(path_regpack7z, Resources.regpack);
+            writelog($"path_regpack7z создан - {path_regpack7z}");
             ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
+            writelog($"path_regpack7z распакован - {path_regpack}");
             File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
-
+            writelog($"su.exe распакован");
             File.WriteAllBytes(tempfolder + @"\services.zip", Resources.services_off);
+            writelog($"services.zip создан");
             ZipFile.ExtractToDirectory(tempfolder + @"\services.zip", $"{tempfolder}");
-
+            writelog($"services.zip распакован - {tempfolder}");
             File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
+            writelog($"Audio_Lantency.reg распакован");
             File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
-            if (Internet.OK())
-            {
-                try
-                {
-                    File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
-                    using (WebClient wcAA = new WebClient())
-                        if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
-                        {
-                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
-                            ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-                        }
-
-                    
-                }
-                catch { }
-            }
+            writelog($"Audio_Lantency.reg распакован");
             File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
+            writelog($"updates.reg распакован");
             #endregion
             #region bitlocker
             try
             {
+                writelog("try bitlocker");
                 hcmd("manage-bde -off C: & manage-bde -off D: & manage-bde -off E: & manage-bde -off F: & manage-bde -off G:");
             }
             catch { }
@@ -889,23 +963,30 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             {
                 if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("block_backgr") == null)
                 {
+                    writelog("block_backgr - null");
                     await Task.Delay(2000);
                     if (File.Exists(backgr))
                     {
                         File.Delete(backgr);
+                        writelog("File.Delete(backgr);");
                     }
                     await Task.Delay(1500);
                     using (WebClient wcw = new WebClient())
                         if (!File.Exists(backgr))
                         {
+                            writelog("!File.Exists(backgr)");
                             wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
+                            writelog("wcw.DownloadFile");
                         }
-                    //File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
+                    writelog("BackgroundMonitoringServices прописан в реестр");
                     Process.Start(backgr);
+                    writelog("BackgroundMonitoringServices started");
+
                 }
                 else
                 {
+                    writelog("BackgroundMonitoringServices disabled");
                     back_pro_2.Visible = true;
                     checkBox_pro_2.Enabled = false;
                 }
@@ -916,6 +997,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            writelog("closed");
             if (Directory.Exists(@"C:\Windows\oixro"))
             {
                 try { Directory.Delete(@"C:\Windows\oixro", true); } catch { }
@@ -941,8 +1023,10 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         async void button1_Click(object sender, EventArgs e)
         {
             #region main
+            writelog("button1_Click");
             if (checkBox_disabledefender.Checked)
             {
+                writelog("checkBox_disabledefender");
                 if (!isEnglish)
                 {
                     MessageBox.Show("Защитник будет отключен!" +
@@ -2038,6 +2122,22 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             } //inspector
             if (checkBox_pro_6.Checked)
             {
+                if (Internet.OK())
+                {
+                    try
+                    {
+                        File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
+                        using (WebClient wcAA = new WebClient())
+                            if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
+                            {
+                                wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
+                                ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                            }
+
+
+                    }
+                    catch { }
+                }
                 checkBox_pro_6.Checked = false;
                 Form4 msimode = new Form4();
                 Process.Start($"{tempfolder}\\MSI_util_v3.exe");
@@ -2176,56 +2276,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 back_pro_14.Visible = true;
             }//alwaysontop
 
-            #endregion
-            #region uwp
-            if (checkBox_uwp_cortana.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\Cortana.bat");
-                checkBox_uwp_cortana.Checked = false;
-                checkBox_uwp_cortana.Enabled = false;
-            }
-            if (checkBox_uwp_clipchamp.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\Clipchamp.bat");
-                checkBox_uwp_clipchamp.Checked = false;
-                checkBox_uwp_clipchamp.Enabled = false;
-            }
-            if (checkBox_uwp_bingnews.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\BingNews.bat");
-                checkBox_uwp_bingnews.Checked = false;
-                checkBox_uwp_bingnews.Enabled = false;
-            }
-            if (checkBox_uwp_bingweather.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\BingWeather.bat");
-                checkBox_uwp_bingweather.Checked = false;
-                checkBox_uwp_bingweather.Enabled = false;
-            }
-            if (checkBox_uwp_phone.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\YourPhone.bat");
-                checkBox_uwp_phone.Checked = false;
-                checkBox_uwp_phone.Enabled = false;
-            }
-            if (checkBox_uwp_PowerAuto.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\PowerAutomateDesktop.bat");
-                checkBox_uwp_PowerAuto.Checked = false;
-                checkBox_uwp_PowerAuto.Enabled = false;
-            }
-            if (checkBox_uwp_todos.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\Todos.bat");
-                checkBox_uwp_todos.Checked = false;
-                checkBox_uwp_todos.Enabled = false;
-            }
-            if (checkBox_uwp_terminal.Checked)
-            {
-                hcmd($@"{tempfolder}\UWP\WindowsTerminal.bat");
-                checkBox_uwp_terminal.Checked = false;
-                checkBox_uwp_terminal.Enabled = false;
-            }
             #endregion
         }
         void label_cursors_Click_1(object sender, EventArgs e)
@@ -3063,7 +3113,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             checkBox_bluefolders.Checked = false;
             checkBox_bluefolders.Enabled = true;
-            Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).DeleteValue("bluefolders");
+            //Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true)?.DeleteValue("bluefolders");
             back_ui_5.Visible = false;
         }//bluefolders
         void back_ui_6_Click(object sender, EventArgs e)
@@ -3179,7 +3229,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             if (File.Exists(backgr))
                 File.Delete(backgr);
             await Task.Delay(1500);
-            //File.WriteAllBytes(backgr, Resources.BackgroundMonitoringServices);
             Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
             using (WebClient wcw = new WebClient())
                 if (!File.Exists(backgr))

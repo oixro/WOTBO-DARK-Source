@@ -1,6 +1,7 @@
-﻿using Project;
-using System;
+﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -23,11 +24,17 @@ namespace test1
         static void Exception(object sender, ThreadExceptionEventArgs e)
         {
             Clipboard.Clear();
-            Clipboard.SetText(e.Exception.ToString());
-            MessageBox.Show($"{e.Exception.Message}\n\nПолный лог был скопирован в буфер\nОтправьте его в тг @oixro");
+            string logfile = $@"{Environment.ExpandEnvironmentVariables("%temp%")}\wotbo.log";
+            using (StreamWriter logs = new StreamWriter(logfile, true))
+            {
+                logs.WriteLine("Exception: " + e.Exception.Message);
+            }
+            StringCollection files = new StringCollection();
+            files.Add(logfile);
+            Clipboard.SetFileDropList(files);
+            MessageBox.Show($"Информация о ошибке была скопирована в буфер обмена\nОтправьте её в telegram @oixro","Exception");
             try
             {
-
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
