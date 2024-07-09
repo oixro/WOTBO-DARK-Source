@@ -747,6 +747,7 @@ namespace Project
             this.label_download_23.Text = "22. CrystallDiskInfo";
             this.toolTip1.SetToolTip(this.label_download_23, "Программа для мониторинга состояния дисков");
             this.label_download_23.Click += new System.EventHandler(this.label_download_23_Click);
+            this.label_download_23.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_21
             // 
@@ -760,6 +761,7 @@ namespace Project
             this.label_download_21.Text = "20. FastStone Image Viewer";
             this.toolTip1.SetToolTip(this.label_download_21, "Лучшая программа для просмотра фотографий");
             this.label_download_21.Click += new System.EventHandler(this.label_download_21_Click);
+            this.label_download_21.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_20
             // 
@@ -773,6 +775,7 @@ namespace Project
             this.label_download_20.Text = "19. AnyDesk";
             this.toolTip1.SetToolTip(this.label_download_20, "Лучшая программа для удалённого управления компьютером");
             this.label_download_20.Click += new System.EventHandler(this.label_download_20_Click);
+            this.label_download_20.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_18
             // 
@@ -786,6 +789,7 @@ namespace Project
             this.label_download_18.Text = "17. WizTree";
             this.toolTip1.SetToolTip(this.label_download_18, "Программа позволяющая опрелить чем занято место на диске");
             this.label_download_18.Click += new System.EventHandler(this.label_download_18_Click);
+            this.label_download_18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_17
             // 
@@ -799,6 +803,7 @@ namespace Project
             this.label_download_17.Text = "16. Cent Browser";
             this.toolTip1.SetToolTip(this.label_download_17, "Лучший браузер\r\n(Прокаченный Google Chrome, имеющий больше настроек)");
             this.label_download_17.Click += new System.EventHandler(this.label_download_17_Click);
+            this.label_download_17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_15
             // 
@@ -812,6 +817,7 @@ namespace Project
             this.label_download_15.Text = "14. HWINFO64";
             this.toolTip1.SetToolTip(this.label_download_15, "Одна из лучших программ для мониторинга состояния компьютера");
             this.label_download_15.Click += new System.EventHandler(this.label_download_15_Click);
+            this.label_download_15.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_14
             // 
@@ -825,6 +831,7 @@ namespace Project
             this.label_download_14.Text = "13. qBitTorrent";
             this.toolTip1.SetToolTip(this.label_download_14, "Лучший торрент клиент");
             this.label_download_14.Click += new System.EventHandler(this.label_download_14_Click);
+            this.label_download_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_13
             // 
@@ -838,6 +845,7 @@ namespace Project
             this.label_download_13.Text = "12. K-Lite Codec Pack";
             this.toolTip1.SetToolTip(this.label_download_13, "Лучший плеер для Windows");
             this.label_download_13.Click += new System.EventHandler(this.label_download_13_Click);
+            this.label_download_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_11
             // 
@@ -851,6 +859,7 @@ namespace Project
             this.label_download_11.Text = "11. OBS";
             this.toolTip1.SetToolTip(this.label_download_11, "Лучшая программа для записи");
             this.label_download_11.Click += new System.EventHandler(this.label_download_11_Click);
+            this.label_download_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_8
             // 
@@ -864,6 +873,7 @@ namespace Project
             this.label_download_8.Text = "8. ShareX";
             this.toolTip1.SetToolTip(this.label_download_8, "Лучшая программа для скриншотов");
             this.label_download_8.Click += new System.EventHandler(this.label_download_8_Click);
+            this.label_download_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_6
             // 
@@ -877,6 +887,7 @@ namespace Project
             this.label_download_6.Text = "6. C++ Redists pack";
             this.toolTip1.SetToolTip(this.label_download_6, "Необходимая библиотека для работы игр и программ");
             this.label_download_6.Click += new System.EventHandler(this.label_download_6_Click);
+            this.label_download_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_5
             // 
@@ -890,6 +901,7 @@ namespace Project
             this.label_download_5.Text = "5. DirectX";
             this.toolTip1.SetToolTip(this.label_download_5, "Необходимая библиотека для работы игр и программ");
             this.label_download_5.Click += new System.EventHandler(this.label_download_5_Click);
+            this.label_download_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_4
             // 
@@ -903,6 +915,7 @@ namespace Project
             this.label_download_4.Text = "4. 7-Zip";
             this.toolTip1.SetToolTip(this.label_download_4, "Лучший архиватор");
             this.label_download_4.Click += new System.EventHandler(this.label_download_4_Click);
+            this.label_download_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_3
             // 
@@ -916,6 +929,7 @@ namespace Project
             this.label_download_3.Text = "3. Msi Afterburner";
             this.toolTip1.SetToolTip(this.label_download_3, "Программа для настройки видеокарты");
             this.label_download_3.Click += new System.EventHandler(this.label_download_3_Click);
+            this.label_download_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_2
             // 
@@ -929,6 +943,7 @@ namespace Project
             this.label_download_2.Text = "2, Notepad++";
             this.toolTip1.SetToolTip(this.label_download_2, "Лучшая замена блокнота с расширенным функционалом");
             this.label_download_2.Click += new System.EventHandler(this.label_download_2_Click);
+            this.label_download_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_1
             // 
@@ -942,6 +957,7 @@ namespace Project
             this.label_download_1.Text = "1. Win 10 Tweaker";
             this.toolTip1.SetToolTip(this.label_download_1, "Программа по расширенной настройке Windows");
             this.label_download_1.Click += new System.EventHandler(this.label_download_1_Click);
+            this.label_download_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_ddu
             // 
@@ -955,6 +971,7 @@ namespace Project
             this.label_ddu.Text = "Скачать DDU";
             this.toolTip1.SetToolTip(this.label_ddu, "Лучшая программа для удаления драйвера на видеокарту");
             this.label_ddu.Click += new System.EventHandler(this.label_ddu_Click);
+            this.label_ddu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_nvcleaninstall
             // 
@@ -968,6 +985,7 @@ namespace Project
             this.label_nvcleaninstall.Text = "Скачать NVCleanInstall";
             this.toolTip1.SetToolTip(this.label_nvcleaninstall, "Лучшая программа для установки драйвера на видеокарту.\r\n(Только для NVIDIA)");
             this.label_nvcleaninstall.Click += new System.EventHandler(this.label_nvcleaninstall_Click);
+            this.label_nvcleaninstall.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // checkBox_dopNVIDIA_tweaks
             // 
@@ -1439,6 +1457,7 @@ namespace Project
             this.back_main_12.TabStop = false;
             this.back_main_12.Visible = false;
             this.back_main_12.Click += new System.EventHandler(this.back_main_12_Click);
+            this.back_main_12.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_11
             // 
@@ -1455,6 +1474,7 @@ namespace Project
             this.back_main_11.TabStop = false;
             this.back_main_11.Visible = false;
             this.back_main_11.Click += new System.EventHandler(this.back_main_11_Click);
+            this.back_main_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_10
             // 
@@ -1471,6 +1491,7 @@ namespace Project
             this.back_main_10.TabStop = false;
             this.back_main_10.Visible = false;
             this.back_main_10.Click += new System.EventHandler(this.back_main_10_Click);
+            this.back_main_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_9
             // 
@@ -1487,6 +1508,7 @@ namespace Project
             this.back_main_9.TabStop = false;
             this.back_main_9.Visible = false;
             this.back_main_9.Click += new System.EventHandler(this.back_main_9_Click);
+            this.back_main_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_8
             // 
@@ -1503,6 +1525,7 @@ namespace Project
             this.back_main_8.TabStop = false;
             this.back_main_8.Visible = false;
             this.back_main_8.Click += new System.EventHandler(this.back_main_8_Click);
+            this.back_main_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_7
             // 
@@ -1519,6 +1542,7 @@ namespace Project
             this.back_main_7.TabStop = false;
             this.back_main_7.Visible = false;
             this.back_main_7.Click += new System.EventHandler(this.back_main_7_Click);
+            this.back_main_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_6
             // 
@@ -1535,6 +1559,7 @@ namespace Project
             this.back_main_6.TabStop = false;
             this.back_main_6.Visible = false;
             this.back_main_6.Click += new System.EventHandler(this.back_main_6_Click);
+            this.back_main_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_5
             // 
@@ -1551,6 +1576,7 @@ namespace Project
             this.back_main_5.TabStop = false;
             this.back_main_5.Visible = false;
             this.back_main_5.Click += new System.EventHandler(this.back_main_5_Click);
+            this.back_main_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_4
             // 
@@ -1567,6 +1593,7 @@ namespace Project
             this.back_main_4.TabStop = false;
             this.back_main_4.Visible = false;
             this.back_main_4.Click += new System.EventHandler(this.back_main_4_Click);
+            this.back_main_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_3
             // 
@@ -1583,6 +1610,7 @@ namespace Project
             this.back_main_3.TabStop = false;
             this.back_main_3.Visible = false;
             this.back_main_3.Click += new System.EventHandler(this.back_main_3_Click);
+            this.back_main_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_2
             // 
@@ -1599,6 +1627,7 @@ namespace Project
             this.back_main_2.TabStop = false;
             this.back_main_2.Visible = false;
             this.back_main_2.Click += new System.EventHandler(this.back_main_2_Click);
+            this.back_main_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_1
             // 
@@ -1615,6 +1644,7 @@ namespace Project
             this.back_main_1.TabStop = false;
             this.back_main_1.Visible = false;
             this.back_main_1.Click += new System.EventHandler(this.back_main_1_Click);
+            this.back_main_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // panel_ui_1
             // 
@@ -1660,6 +1690,7 @@ namespace Project
             this.back_ui_10.TabStop = false;
             this.back_ui_10.Visible = false;
             this.back_ui_10.Click += new System.EventHandler(this.back_ui_10_Click);
+            this.back_ui_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_9
             // 
@@ -1676,6 +1707,7 @@ namespace Project
             this.back_ui_9.TabStop = false;
             this.back_ui_9.Visible = false;
             this.back_ui_9.Click += new System.EventHandler(this.back_ui_9_Click);
+            this.back_ui_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_8
             // 
@@ -1692,6 +1724,7 @@ namespace Project
             this.back_ui_8.TabStop = false;
             this.back_ui_8.Visible = false;
             this.back_ui_8.Click += new System.EventHandler(this.back_ui_8_Click);
+            this.back_ui_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_7
             // 
@@ -1708,6 +1741,7 @@ namespace Project
             this.back_ui_7.TabStop = false;
             this.back_ui_7.Visible = false;
             this.back_ui_7.Click += new System.EventHandler(this.back_ui_7_Click);
+            this.back_ui_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_6
             // 
@@ -1724,6 +1758,7 @@ namespace Project
             this.back_ui_6.TabStop = false;
             this.back_ui_6.Visible = false;
             this.back_ui_6.Click += new System.EventHandler(this.back_ui_6_Click);
+            this.back_ui_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_5
             // 
@@ -1740,6 +1775,7 @@ namespace Project
             this.back_ui_5.TabStop = false;
             this.back_ui_5.Visible = false;
             this.back_ui_5.Click += new System.EventHandler(this.back_ui_5_Click);
+            this.back_ui_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_4
             // 
@@ -1756,6 +1792,7 @@ namespace Project
             this.back_ui_4.TabStop = false;
             this.back_ui_4.Visible = false;
             this.back_ui_4.Click += new System.EventHandler(this.back_ui_4_Click);
+            this.back_ui_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_3
             // 
@@ -1772,6 +1809,7 @@ namespace Project
             this.back_ui_3.TabStop = false;
             this.back_ui_3.Visible = false;
             this.back_ui_3.Click += new System.EventHandler(this.back_ui_3_Click);
+            this.back_ui_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_2
             // 
@@ -1788,6 +1826,7 @@ namespace Project
             this.back_ui_2.TabStop = false;
             this.back_ui_2.Visible = false;
             this.back_ui_2.Click += new System.EventHandler(this.back_ui_2_Click);
+            this.back_ui_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_1
             // 
@@ -1804,6 +1843,7 @@ namespace Project
             this.back_ui_1.TabStop = false;
             this.back_ui_1.Visible = false;
             this.back_ui_1.Click += new System.EventHandler(this.back_ui_1_Click);
+            this.back_ui_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_explorer
             // 
@@ -1887,6 +1927,7 @@ namespace Project
             this.label_cursors.TabIndex = 22;
             this.label_cursors.Text = "Установить новые курсоры";
             this.label_cursors.Click += new System.EventHandler(this.label_cursors_Click_1);
+            this.label_cursors.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // back_pro_14
             // 
@@ -1903,6 +1944,7 @@ namespace Project
             this.back_pro_14.TabStop = false;
             this.back_pro_14.Visible = false;
             this.back_pro_14.Click += new System.EventHandler(this.back_pro_14_Click);
+            this.back_pro_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_mica
             // 
@@ -1932,6 +1974,7 @@ namespace Project
             this.back_pro_13.TabStop = false;
             this.back_pro_13.Visible = false;
             this.back_pro_13.Click += new System.EventHandler(this.back_pro_13_Click);
+            this.back_pro_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_11
             // 
@@ -1948,6 +1991,7 @@ namespace Project
             this.back_ui_11.TabStop = false;
             this.back_ui_11.Visible = false;
             this.back_ui_11.Click += new System.EventHandler(this.back_ui_11_Click);
+            this.back_ui_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_1
             // 
@@ -1964,6 +2008,7 @@ namespace Project
             this.back_pro_1.TabStop = false;
             this.back_pro_1.Visible = false;
             this.back_pro_1.Click += new System.EventHandler(this.back_pro_1_Click);
+            this.back_pro_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // panel_dop
             // 
@@ -2007,6 +2052,7 @@ namespace Project
             this.back_dop_4.TabStop = false;
             this.back_dop_4.Visible = false;
             this.back_dop_4.Click += new System.EventHandler(this.back_dop_4_Click);
+            this.back_dop_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_3
             // 
@@ -2023,6 +2069,7 @@ namespace Project
             this.back_dop_3.TabStop = false;
             this.back_dop_3.Visible = false;
             this.back_dop_3.Click += new System.EventHandler(this.back_dop_3_Click);
+            this.back_dop_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_2
             // 
@@ -2039,6 +2086,7 @@ namespace Project
             this.back_dop_2.TabStop = false;
             this.back_dop_2.Visible = false;
             this.back_dop_2.Click += new System.EventHandler(this.back_dop_2_Click);
+            this.back_dop_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_1
             // 
@@ -2055,6 +2103,7 @@ namespace Project
             this.back_dop_1.TabStop = false;
             this.back_dop_1.Visible = false;
             this.back_dop_1.Click += new System.EventHandler(this.back_dop_1_Click);
+            this.back_dop_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_onedrive
             // 
@@ -2158,6 +2207,7 @@ namespace Project
             this.label_download_22.TabIndex = 0;
             this.label_download_22.Text = "21. .NET 6.0 Runtime";
             this.label_download_22.Click += new System.EventHandler(this.label_download_22_Click);
+            this.label_download_22.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_19
             // 
@@ -2170,6 +2220,7 @@ namespace Project
             this.label_download_19.TabIndex = 0;
             this.label_download_19.Text = "18. EpicGamesLauncher";
             this.label_download_19.Click += new System.EventHandler(this.label_download_19_Click);
+            this.label_download_19.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_16
             // 
@@ -2182,6 +2233,7 @@ namespace Project
             this.label_download_16.TabIndex = 0;
             this.label_download_16.Text = "15. Google Chrome";
             this.label_download_16.Click += new System.EventHandler(this.label_download_16_Click);
+            this.label_download_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_10
             // 
@@ -2194,6 +2246,7 @@ namespace Project
             this.label_download_10.TabIndex = 0;
             this.label_download_10.Text = "10. Discord";
             this.label_download_10.Click += new System.EventHandler(this.label_download_10_Click);
+            this.label_download_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_9
             // 
@@ -2206,6 +2259,7 @@ namespace Project
             this.label_download_9.TabIndex = 0;
             this.label_download_9.Text = "9. Telegram";
             this.label_download_9.Click += new System.EventHandler(this.label_download_9_Click);
+            this.label_download_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_7
             // 
@@ -2218,6 +2272,7 @@ namespace Project
             this.label_download_7.TabIndex = 0;
             this.label_download_7.Text = "7. Steam";
             this.label_download_7.Click += new System.EventHandler(this.label_download_7_Click);
+            this.label_download_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // panel2
             // 
@@ -2253,6 +2308,7 @@ namespace Project
             this.back_gpu_4.TabStop = false;
             this.back_gpu_4.Visible = false;
             this.back_gpu_4.Click += new System.EventHandler(this.back_gpu_4_Click);
+            this.back_gpu_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_gpu_3
             // 
@@ -2269,6 +2325,7 @@ namespace Project
             this.back_gpu_3.TabStop = false;
             this.back_gpu_3.Visible = false;
             this.back_gpu_3.Click += new System.EventHandler(this.back_gpu_3_Click);
+            this.back_gpu_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_gpu_2
             // 
@@ -2285,6 +2342,7 @@ namespace Project
             this.back_gpu_2.TabStop = false;
             this.back_gpu_2.Visible = false;
             this.back_gpu_2.Click += new System.EventHandler(this.back_gpu_2_Click);
+            this.back_gpu_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_gpu_1
             // 
@@ -2301,6 +2359,7 @@ namespace Project
             this.back_gpu_1.TabStop = false;
             this.back_gpu_1.Visible = false;
             this.back_gpu_1.Click += new System.EventHandler(this.back_gpu_1_Click);
+            this.back_gpu_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_directplay
             // 
@@ -2331,6 +2390,7 @@ namespace Project
             this.back_pro_9.TabStop = false;
             this.back_pro_9.Visible = false;
             this.back_pro_9.Click += new System.EventHandler(this.back_pro_9_Click);
+            this.back_pro_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_12
             // 
@@ -2347,6 +2407,7 @@ namespace Project
             this.back_pro_12.TabStop = false;
             this.back_pro_12.Visible = false;
             this.back_pro_12.Click += new System.EventHandler(this.back_pro_12_Click);
+            this.back_pro_12.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_4
             // 
@@ -2363,6 +2424,7 @@ namespace Project
             this.back_pro_4.TabStop = false;
             this.back_pro_4.Visible = false;
             this.back_pro_4.Click += new System.EventHandler(this.back_pro_4_Click);
+            this.back_pro_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_3
             // 
@@ -2379,6 +2441,7 @@ namespace Project
             this.back_pro_3.TabStop = false;
             this.back_pro_3.Visible = false;
             this.back_pro_3.Click += new System.EventHandler(this.back_pro_3_Click);
+            this.back_pro_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_2
             // 
@@ -2395,6 +2458,7 @@ namespace Project
             this.back_pro_2.TabStop = false;
             this.back_pro_2.Visible = false;
             this.back_pro_2.Click += new System.EventHandler(this.back_pro_2_Click);
+            this.back_pro_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_7
             // 
@@ -2411,6 +2475,7 @@ namespace Project
             this.back_pro_7.TabStop = false;
             this.back_pro_7.Visible = false;
             this.back_pro_7.Click += new System.EventHandler(this.back_pro_7_Click);
+            this.back_pro_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_6
             // 
@@ -2427,6 +2492,7 @@ namespace Project
             this.back_pro_6.TabStop = false;
             this.back_pro_6.Visible = false;
             this.back_pro_6.Click += new System.EventHandler(this.back_pro_6_Click);
+            this.back_pro_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_11
             // 
@@ -2443,6 +2509,7 @@ namespace Project
             this.back_pro_11.TabStop = false;
             this.back_pro_11.Visible = false;
             this.back_pro_11.Click += new System.EventHandler(this.back_pro_11_Click);
+            this.back_pro_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_7
             // 
@@ -2459,6 +2526,7 @@ namespace Project
             this.back_dop_7.TabStop = false;
             this.back_dop_7.Visible = false;
             this.back_dop_7.Click += new System.EventHandler(this.back_pro_8_Click);
+            this.back_dop_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // PanelHead
             // 
@@ -2484,6 +2552,7 @@ namespace Project
             this.logo.Size = new System.Drawing.Size(20, 20);
             this.logo.TabIndex = 11;
             this.logo.TabStop = false;
+            this.logo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // LabelHead
             // 
@@ -2495,6 +2564,7 @@ namespace Project
             this.LabelHead.TabIndex = 1;
             this.LabelHead.Text = "Windows optimization tool by oixro";
             this.LabelHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LabelHead.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // ButtonClose
             // 
@@ -2556,6 +2626,7 @@ namespace Project
             this.label_language.TabIndex = 24;
             this.label_language.Text = "7. RU/EN";
             this.label_language.Click += new System.EventHandler(this.label_language_Click);
+            this.label_language.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_winver
             // 
@@ -2570,6 +2641,7 @@ namespace Project
             this.label_winver.TabIndex = 27;
             this.label_winver.Text = "Winver";
             this.label_winver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_winver.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_ver
             // 
@@ -2584,6 +2656,7 @@ namespace Project
             this.label_ver.TabIndex = 34;
             this.label_ver.Text = "dbuild - 9.99";
             this.label_ver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label_ver.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_interface
             // 
@@ -2596,6 +2669,7 @@ namespace Project
             this.label_interface.TabIndex = 30;
             this.label_interface.Text = "2. Интерфейс";
             this.label_interface.Click += new System.EventHandler(this.label_interface_Click);
+            this.label_interface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_pc
             // 
@@ -2608,6 +2682,7 @@ namespace Project
             this.label_pc.TabIndex = 29;
             this.label_pc.Text = "6. PC Info";
             this.label_pc.Click += new System.EventHandler(this.label8_Click);
+            this.label_pc.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_progs
             // 
@@ -2620,6 +2695,7 @@ namespace Project
             this.label_progs.TabIndex = 28;
             this.label_progs.Text = "5. Скачать проги";
             this.label_progs.Click += new System.EventHandler(this.label6_Click);
+            this.label_progs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_dop
             // 
@@ -2632,6 +2708,7 @@ namespace Project
             this.label_dop.TabIndex = 25;
             this.label_dop.Text = "4. Дополнительно";
             this.label_dop.Click += new System.EventHandler(this.label3_Click);
+            this.label_dop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_gpu
             // 
@@ -2644,6 +2721,7 @@ namespace Project
             this.label_gpu.TabIndex = 24;
             this.label_gpu.Text = "3. GPU";
             this.label_gpu.Click += new System.EventHandler(this.label2_Click);
+            this.label_gpu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_main
             // 
@@ -2656,6 +2734,7 @@ namespace Project
             this.label_main.TabIndex = 23;
             this.label_main.Text = "1. Основное";
             this.label_main.Click += new System.EventHandler(this.label1_Click);
+            this.label_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // panel_dop_navigate
             // 
@@ -2740,6 +2819,7 @@ namespace Project
             this.back_dop_6.TabStop = false;
             this.back_dop_6.Visible = false;
             this.back_dop_6.Click += new System.EventHandler(this.back_dop_6_Click);
+            this.back_dop_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_edge
             // 
@@ -2756,6 +2836,7 @@ namespace Project
             this.back_dop_edge.TabStop = false;
             this.back_dop_edge.Visible = false;
             this.back_dop_edge.Click += new System.EventHandler(this.back_dop_edge_Click);
+            this.back_dop_edge.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // panel_main_navigate
             // 
@@ -2841,6 +2922,7 @@ namespace Project
             this.back_main_19.TabStop = false;
             this.back_main_19.Visible = false;
             this.back_main_19.Click += new System.EventHandler(this.back_main_19_Click);
+            this.back_main_19.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_18
             // 
@@ -2857,6 +2939,7 @@ namespace Project
             this.back_main_18.TabStop = false;
             this.back_main_18.Visible = false;
             this.back_main_18.Click += new System.EventHandler(this.back_main_18_Click);
+            this.back_main_18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_17
             // 
@@ -2873,6 +2956,7 @@ namespace Project
             this.back_main_17.TabStop = false;
             this.back_main_17.Visible = false;
             this.back_main_17.Click += new System.EventHandler(this.back_main_17_Click);
+            this.back_main_17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_16
             // 
@@ -2889,6 +2973,7 @@ namespace Project
             this.back_main_16.TabStop = false;
             this.back_main_16.Visible = false;
             this.back_main_16.Click += new System.EventHandler(this.back_main_16_Click);
+            this.back_main_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_15
             // 
@@ -2905,6 +2990,7 @@ namespace Project
             this.back_main_15.TabStop = false;
             this.back_main_15.Visible = false;
             this.back_main_15.Click += new System.EventHandler(this.back_main_15_Click);
+            this.back_main_15.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_14
             // 
@@ -2921,6 +3007,7 @@ namespace Project
             this.back_main_14.TabStop = false;
             this.back_main_14.Visible = false;
             this.back_main_14.Click += new System.EventHandler(this.back_main_14_Click);
+            this.back_main_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_13
             // 
@@ -2937,6 +3024,7 @@ namespace Project
             this.back_main_13.TabStop = false;
             this.back_main_13.Visible = false;
             this.back_main_13.Click += new System.EventHandler(this.back_main_13_Click);
+            this.back_main_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // WOTBO
             // 

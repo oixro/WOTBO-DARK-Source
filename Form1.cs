@@ -16,8 +16,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO;
 using WOTBO.Properties;
-
-
 namespace Project
 {
     public partial class WOTBO : FormShadow
@@ -45,7 +43,6 @@ namespace Project
         string logfile = $@"{Environment.ExpandEnvironmentVariables("%temp%")}\wotbo.log";
         public static string gpu;
         public bool nvidia;
-        public static string hwid;
         public static Process getReservedStorage = Process.Start(new ProcessStartInfo
         {
             FileName = "cmd",
@@ -56,6 +53,28 @@ namespace Project
         });
         static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
+        public static bool IsFileLocked(string filePath)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                // Файл используется другой программой
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+            }
+            // Файл не используется
+            return false;
+        }
         #endregion
         #region default crap
         public WOTBO()
@@ -74,8 +93,16 @@ namespace Project
                     x.Capture = false; Capture = false; Message m = Message.Create(Handle, 0xA1, new IntPtr(2), IntPtr.Zero); base.WndProc(ref m);
                 };
             });
-
-
+            KeyPreview = true;
+            //KeyDown += (s, e) => { if (e.KeyValue == (char)Keys.F12) Process.Start(logfile); };
+            KeyDown += (s, e) =>
+            {
+                if (e.KeyValue == (char)Keys.F12) Process.Start(new ProcessStartInfo
+                {
+                    FileName = "powershell",
+                    Arguments = $"/command Get-Content -Path \"{logfile}\" -Wait -Encoding UTF8",
+                });
+            };
         }
         #endregion
         #region my void's
@@ -308,7 +335,27 @@ namespace Project
             System.Windows.Forms.CheckBox checkBox = sender as System.Windows.Forms.CheckBox;
             if (checkBox != null)
             {
-                writelog($"{checkBox.Text} изменен на {checkBox.CheckState}");
+                writelog($"{checkBox.Text} ({checkBox.Name}) изменен на {checkBox.CheckState}");
+            }
+        }
+        void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Обработчик события Click для PictureBox
+            PictureBox clickedPictureBox = sender as PictureBox;
+            if (clickedPictureBox != null)
+            {
+                // Здесь можно написать код для выполнения действия при клике на картинку
+                writelog($"{clickedPictureBox.Name} нажат");
+            }
+        }
+        void Label_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Обработчик события Click для PictureBox
+            Label Lbl = sender as Label;
+            if (Lbl != null)
+            {
+                // Здесь можно написать код для выполнения действия при клике на картинку
+                writelog($"Label {Lbl.Text} был нажат");
             }
         }
         // Красим форму
@@ -336,7 +383,17 @@ namespace Project
         async void Form1_Load(object sender, EventArgs e)
         {
             #region logs
+            if (File.Exists(logfile))
+            {
+                if ((File.ReadAllLines(logfile).Length) > 3000)
+                {
+                    File.Delete(logfile);
+                }
+            }
+
+            writelog($"                                    ");
             writelog($"==============Launched==============");
+            writelog($"                                    ");
             #endregion
             #region version
             label_ver.Text = $"{version}";
@@ -347,7 +404,8 @@ namespace Project
             panel1.Location = new System.Drawing.Point(105, 36);
             #endregion
             #region проверка запущенна ли, eula и язык
-
+            writelog("");
+            writelog("Язык");
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
             {
                 writelog("eula null");
@@ -386,39 +444,64 @@ namespace Project
                     isEnglish = false;
                 }
             }
+            writelog("");
+            writelog("InstanceChecker");
             if (!InstanceChecker.TakeMemory())
             {
                 writelog("InstanceExists, relaunch");
-                if (!isEnglish)
-                {
-                    MessageBox.Show("Другая копия программы уже запущена\nИметь две открытии копии программы не рекомендуется.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    MessageBox.Show("It is not recommended to have two copies of the program open.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                //if (!isEnglish)
+                //{
+                //    MessageBox.Show("Другая копия программы уже запущена\nИметь две открытии копии программы не рекомендуется.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
+                //else
+                //{
+                //    MessageBox.Show("It is not recommended to have two copies of the program open.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
                 hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
+                writelog("cmd на перезапуск вызван, ждём когда приебашит меня");
             }
             #endregion
             #region temp
+            writelog("");
+            writelog("tempfolder");
             if (Directory.Exists(tempfolder))
             {
-                writelog($"tempfolder - {tempfolder} exists");
-                tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; writelog($"new tempfolder - {tempfolder}");
-                path_regpack7z = tempfolder + @"\regpack.zip"; writelog($"new path_regpack7z - {path_regpack7z}");
-                path_regpack = tempfolder + @"\regpack"; writelog($"new path_regpack - {path_regpack}");
-                path_services = tempfolder + @"\services"; writelog($"new path_services - {path_services}");
-                path_uizip = tempfolder + @"\ui.zip"; writelog($"new path_uizip - {path_uizip}");
-                path_ui = tempfolder + @"\ui"; writelog($"new path_ui - {path_ui}");
-                path_dfkiller = tempfolder + @"\DFKiller"; writelog($"new path_dfkiller - {path_dfkiller}");
-                path_scheme = tempfolder + @"\scheme.pow"; writelog($"new path_scheme - {path_scheme}");
-                smartctl = tempfolder + @"\smartctl.exe"; writelog($"new smartctl - {smartctl}");
+                writelog($"tempfolder - \"{tempfolder}\" exists");
+                string[] files = Directory.GetFiles(tempfolder);
+                writelog($"пытаюсь всё удалить из {tempfolder}");
+                try
+                {
+                    Directory.Delete(tempfolder, true);
+                    writelog($"Удалена папка: {tempfolder}");
+                }
+                catch (Exception ex)
+                {
+                    writelog($"не удалось очистить {tempfolder}");
+                    writelog(ex.Message);
+                    tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; writelog($"я теперь тут ошиваюсь - {tempfolder}");
+                    path_regpack7z = tempfolder + @"\regpack.zip"; writelog($"new path_regpack7z - {path_regpack7z}");
+                    path_regpack = tempfolder + @"\regpack"; writelog($"new path_regpack - {path_regpack}");
+                    path_services = tempfolder + @"\services"; writelog($"new path_services - {path_services}");
+                    path_uizip = tempfolder + @"\ui.zip"; writelog($"new path_uizip - {path_uizip}");
+                    path_ui = tempfolder + @"\ui"; writelog($"new path_ui - {path_ui}");
+                    path_dfkiller = tempfolder + @"\DFKiller"; writelog($"new path_dfkiller - {path_dfkiller}");
+                    path_scheme = tempfolder + @"\scheme.pow"; writelog($"new path_scheme - {path_scheme}");
+                    smartctl = tempfolder + @"\smartctl.exe"; writelog($"new smartctl - {smartctl}");
+                }
             }
+            else
+            {
+                writelog("tempfolder нету");
+            }
+
             #endregion
             #region ебашим backrg
-            hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1"); writelog("ебашим backrg");
+            writelog("");
+            hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1"); writelog("taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1");
             #endregion
             #region отключаем чеки
+            writelog("");
+            writelog("отключаем чеки");
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("regpack")) == 1)
             {
                 writelog("regpack был применён");
@@ -736,12 +819,14 @@ namespace Project
             }
             #endregion
             #region получаем инфу о видеодырке
+            writelog("");
+            writelog("gpu info");
             foreach (var mo in new ManagementObjectSearcher("select * from win32_VideoController").Get())
                 gpu = (string)mo["name"];
             if (gpu.Contains("NVIDIA"))
             {
                 nvidia = true;
-                writelog($"GPU IS NVIDIA - {nvidia}");
+                writelog($"GPU IS NVIDIA? - {nvidia}, gpu is - {gpu}");
                 if (Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000")?.GetValue("RMHdcpKeyglobZero") != null)
                 {
                     writelog($"hdcp disabled");
@@ -794,6 +879,8 @@ namespace Project
             }//не nvidia
             #endregion
             #region проверка версии Windows
+            writelog("");
+            writelog("windows info");
             RegistryKey winver = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion");
             string buildnumber = (string)winver.GetValue("CurrentBuild");
             string DisplayVersion = (string)winver.GetValue("DisplayVersion");
@@ -835,6 +922,8 @@ namespace Project
             winver.Close();
             #endregion
             #region инет + обнова
+            writelog("");
+            writelog("проверка инет + обнов");
             if (!Internet.OK())
             {
                 writelog($"инета нету");
@@ -873,7 +962,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             string verjson = (wc.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
                             if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                             {
-                                writelog($"версия новая");
+                                writelog($"версия актуальная");
                                 label_ver.Text = $"{version}";
                             }
                             else
@@ -917,6 +1006,8 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
             #region checkforwin10
+            writelog("");
+            writelog("checkforwin10");
             if (win10)
             {
                 checkBox_contex.Enabled = false;
@@ -926,15 +1017,19 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
             #region планый запуск
+            writelog("");
             for (Opacity = 0; Opacity < 1; Opacity += .2) await Task.Delay(10);
             writelog($"плавно открылись");
             #endregion
             #region распаковка в temp
+            writelog("");
+            writelog("распаковка в temp");
             Directory.CreateDirectory(tempfolder);
             writelog($"tempfolder создан - {tempfolder}");
             File.WriteAllBytes(path_regpack7z, Resources.regpack);
             writelog($"path_regpack7z создан - {path_regpack7z}");
-            ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
+            if (!Directory.Exists(path_regpack))
+                ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
             writelog($"path_regpack7z распакован - {path_regpack}");
             File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
             writelog($"su.exe распакован");
@@ -952,6 +1047,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             #region bitlocker
             try
             {
+                writelog("");
                 writelog("try bitlocker");
                 hcmd("manage-bde -off C: & manage-bde -off D: & manage-bde -off E: & manage-bde -off F: & manage-bde -off G:");
             }
@@ -960,22 +1056,27 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             #region backgr
             if (Internet.OK())
             {
+                writelog("");
+                writelog("backgr");
                 if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("block_backgr") == null)
                 {
-                    writelog("block_backgr - null");
-                    await Task.Delay(2000);
+                    writelog("block_backgr == null");
+                    writelog("backgr - жду 5000 мс");
+                    await Task.Delay(5000);
                     if (File.Exists(backgr))
                     {
                         File.Delete(backgr);
-                        writelog("File.Delete(backgr);");
+                        writelog($"File deleted - {backgr}");
                     }
-                    await Task.Delay(1500);
+                    writelog("backgr - жду 3500 мс");
+                    await Task.Delay(3500);
                     using (WebClient wcw = new WebClient())
                         if (!File.Exists(backgr))
                         {
-                            writelog("!File.Exists(backgr)");
-                            wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
-                            writelog("wcw.DownloadFile");
+                            writelog("backgr - файла нету");
+                            //wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
+                            await wcw.DownloadFileTaskAsync(new Uri("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe"), backgr);
+                            writelog("backgr - скачал");
                         }
                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
                     writelog("BackgroundMonitoringServices прописан в реестр");
@@ -992,6 +1093,8 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
         }
+
+
         #endregion
         #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -1743,8 +1846,8 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 using (WebClient wc = new WebClient())
                     if (!File.Exists($"{tempfolder}\\ffmpeg.zip"))
                     {
-                        wc.DownloadFile("https://github.com/GyanD/codexffmpeg/releases/download/7.0.1/ffmpeg-7.0.1-essentials_build.zip", $"{tempfolder}\\ffmpeg.zip");
-                        wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg", $"{tempfolder}\\ffmpeg.reg");
+                        await wc.DownloadFileTaskAsync(new Uri("https://github.com/GyanD/codexffmpeg/releases/download/7.0.1/ffmpeg-7.0.1-essentials_build.zip"), $"{tempfolder}\\ffmpeg.zip");
+                        await wc.DownloadFileTaskAsync(new Uri("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg"), $"{tempfolder}\\ffmpeg.reg");
                         ZipFile.ExtractToDirectory($"{tempfolder}\\ffmpeg.zip", tempfolder);
                     }
                 if (File.Exists(@"C:\Windows\ffmpeg.exe"))
@@ -2471,7 +2574,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
         void label8_Click(object sender, EventArgs e) //pc info
         {
-            Process getvideoserial = Process.Start(new ProcessStartInfo
+            Process Win32_Processor_GET_Name = Process.Start(new ProcessStartInfo
             {
                 FileName = "cmd",
                 Arguments = "/c wmic PATH Win32_Processor GET Name",
@@ -2479,7 +2582,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
             });
-            label7.Text = "CPU: " + ((getvideoserial.StandardOutput.ReadToEnd()).Replace("Name", "")).Trim();
+            label7.Text = "CPU: " + ((Win32_Processor_GET_Name.StandardOutput.ReadToEnd()).Replace("Name", "")).Trim();
 
             foreach (var mo in new ManagementObjectSearcher("select * from win32_VideoController").Get())
                 label7.Text += "\nGPU: " + (string)mo["name"];
@@ -2506,6 +2609,7 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             panel_5.Visible = true;
             panel_5.Location = panel1.Location;
+            writelog(label7.Text);
         }
         void label_interface_Click(object sender, EventArgs e)
         {
@@ -3406,11 +3510,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
         }
 
-
-
-
         #endregion
-
-
     }
 }

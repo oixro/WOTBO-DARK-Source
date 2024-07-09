@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -72,6 +71,7 @@ namespace Project
             this.Name = "FormShadow";
             this.Text = "WOTBO";
             this.ResumeLayout(false);
+
         }
     }
 }
