@@ -53,28 +53,7 @@ namespace Project
         });
         static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
-        public static bool IsFileLocked(string filePath)
-        {
-            FileStream stream = null;
-            try
-            {
-                stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                // Файл используется другой программой
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-            }
-            // Файл не используется
-            return false;
-        }
+        
         #endregion
         #region default crap
         public WOTBO()
@@ -260,8 +239,8 @@ namespace Project
             toolTip1.SetToolTip(checkBox_ansel, "Disables NVIDIA Ansel, a “productivity” tool, \r\nthat allows you to create “professional-grade” in-game photos.");
 
             //dop
-            checkBox_activate.Text = "Activate Windows";
-            toolTip1.SetToolTip(checkBox_activate, "Opens the Windows activator");
+            label_main.Text = "Activate Windows";
+            toolTip1.SetToolTip(label_main, "Opens the Windows activator");
             checkBox_killdefender.Text = "Remove the defender completely";
             toolTip1.SetToolTip(checkBox_killdefender, "Utility that allows you to remove the defender completely");
             checkBox_edgedelete.Text = "Remove Edge browser";
@@ -358,6 +337,16 @@ namespace Project
                 writelog($"Label {Lbl.Text} был нажат");
             }
         }
+        void Button_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Обработчик события Click для PictureBox
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                // Здесь можно написать код для выполнения действия при клике на картинку
+                writelog($"Button {btn.Text},{btn.Name} был нажат");
+            }
+        }
         // Красим форму
         public void FormPaint(Color color1, Color color2)
         {
@@ -397,6 +386,7 @@ namespace Project
             #endregion
             #region version
             label_ver.Text = $"{version}";
+            writelog(version);
             #endregion
             #region позиция и размеры
             Size = new System.Drawing.Size(390, 305);
@@ -516,7 +506,7 @@ namespace Project
             } //reserved
             if (!File.Exists(@"C:\hiberfil.sys"))
             {
-                writelog("hiberfil был применён");
+                writelog("hiberfila нету");
                 checkBox_gibernate.Enabled = false;
                 back_main_3.Visible = true;
             }
@@ -930,7 +920,7 @@ namespace Project
                 checkBox_bluefolders.Enabled = false;
                 label_nvcleaninstall.Enabled = false;
                 checkBox_edgedelete.Enabled = false;
-                checkBox_activate.Enabled = false;
+                label_main.Enabled = false;
                 label_ddu.Enabled = false;
                 label_progs.Enabled = false;
                 checkBox_killdefender.Enabled = false;
@@ -1880,13 +1870,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
             #region dop
-            if (checkBox_activate.Checked)
-            {
-
-                powershell(@"irm https://massgrave.dev/get | iex");
-                checkBox_activate.Checked = false;
-                //MessageBox.Show("Ожидайте открытия активатора");
-            }
             if (checkBox_killdefender.Checked)
             {
                 if (MessageBox.Show("DefenderKiller полностью удалит защитник.\nВосстановить его не получится!\nЗапустить DefenderKiller?", "",
@@ -3511,5 +3494,11 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
         }
 
         #endregion
+
+        private void label_activate_Click(object sender, EventArgs e)
+        {
+            powershell("irm https://get.activated.win | iex");
+        }
+
     }
 }

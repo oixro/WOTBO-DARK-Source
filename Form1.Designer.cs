@@ -60,7 +60,6 @@ namespace Project
             this.checkBox_WinSxS = new System.Windows.Forms.CheckBox();
             this.checkBox_edgedelete = new System.Windows.Forms.CheckBox();
             this.checkBox_killdefender = new System.Windows.Forms.CheckBox();
-            this.checkBox_activate = new System.Windows.Forms.CheckBox();
             this.checkBox_picture_cache = new System.Windows.Forms.CheckBox();
             this.label_download_23 = new System.Windows.Forms.Label();
             this.label_download_21 = new System.Windows.Forms.Label();
@@ -149,6 +148,7 @@ namespace Project
             this.back_dop_3 = new System.Windows.Forms.PictureBox();
             this.back_dop_2 = new System.Windows.Forms.PictureBox();
             this.back_dop_1 = new System.Windows.Forms.PictureBox();
+            this.label_activate = new System.Windows.Forms.Label();
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel_5 = new System.Windows.Forms.Panel();
@@ -703,21 +703,6 @@ namespace Project
             this.toolTip1.SetToolTip(this.checkBox_killdefender, "Утилита позволяющая удалить защитник полностью");
             this.checkBox_killdefender.UseVisualStyleBackColor = false;
             this.checkBox_killdefender.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox_activate
-            // 
-            this.checkBox_activate.AutoSize = true;
-            this.checkBox_activate.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_activate.ForeColor = System.Drawing.Color.White;
-            this.checkBox_activate.Location = new System.Drawing.Point(20, 5);
-            this.checkBox_activate.Name = "checkBox_activate";
-            this.checkBox_activate.Size = new System.Drawing.Size(145, 17);
-            this.checkBox_activate.TabIndex = 3;
-            this.checkBox_activate.Tag = "";
-            this.checkBox_activate.Text = "Активировать Windows";
-            this.toolTip1.SetToolTip(this.checkBox_activate, "Открывает активатор Windows");
-            this.checkBox_activate.UseVisualStyleBackColor = false;
-            this.checkBox_activate.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_picture_cache
             // 
@@ -1393,6 +1378,7 @@ namespace Project
             this.button_ui_new_2.Text = "2";
             this.button_ui_new_2.UseVisualStyleBackColor = true;
             this.button_ui_new_2.Click += new System.EventHandler(this.button_ui_2_Click);
+            this.button_ui_new_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // button_ui_new_1
             // 
@@ -1409,6 +1395,7 @@ namespace Project
             this.button_ui_new_1.Text = "1";
             this.button_ui_new_1.UseVisualStyleBackColor = true;
             this.button_ui_new_1.Click += new System.EventHandler(this.button_ui_1_Click);
+            this.button_ui_new_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel1
             // 
@@ -2022,12 +2009,12 @@ namespace Project
             this.panel_dop.Controls.Add(this.back_dop_2);
             this.panel_dop.Controls.Add(this.checkBox_compactos);
             this.panel_dop.Controls.Add(this.back_dop_1);
+            this.panel_dop.Controls.Add(this.label_activate);
             this.panel_dop.Controls.Add(this.checkBox_mobile_traffic);
             this.panel_dop.Controls.Add(this.checkBox_WinSxS);
             this.panel_dop.Controls.Add(this.checkBox_onedrive);
             this.panel_dop.Controls.Add(this.checkBox_edgedelete);
             this.panel_dop.Controls.Add(this.checkBox_killdefender);
-            this.panel_dop.Controls.Add(this.checkBox_activate);
             this.panel_dop.Controls.Add(this.checkBox1);
             this.panel_dop.Controls.Add(this.checkBox_picture_cache);
             this.panel_dop.ForeColor = System.Drawing.Color.White;
@@ -2104,6 +2091,19 @@ namespace Project
             this.back_dop_1.Visible = false;
             this.back_dop_1.Click += new System.EventHandler(this.back_dop_1_Click);
             this.back_dop_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // label_activate
+            // 
+            this.label_activate.AutoSize = true;
+            this.label_activate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_activate.ForeColor = System.Drawing.Color.White;
+            this.label_activate.Location = new System.Drawing.Point(20, 5);
+            this.label_activate.Name = "label_activate";
+            this.label_activate.Size = new System.Drawing.Size(126, 13);
+            this.label_activate.TabIndex = 23;
+            this.label_activate.Text = "Активировать Windows";
+            this.label_activate.Click += new System.EventHandler(this.label_activate_Click);
+            this.label_activate.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // checkBox_onedrive
             // 
@@ -2614,6 +2614,7 @@ namespace Project
             this.button_new.Text = "Применить";
             this.button_new.UseVisualStyleBackColor = true;
             this.button_new.Click += new System.EventHandler(this.button1_Click);
+            this.button_new.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // label_language
             // 
@@ -2760,6 +2761,7 @@ namespace Project
             this.button_dop_new_2.Text = "2";
             this.button_dop_new_2.UseVisualStyleBackColor = true;
             this.button_dop_new_2.Click += new System.EventHandler(this.button_dop_new_2_Click);
+            this.button_dop_new_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // button_dop_new_1
             // 
@@ -2776,6 +2778,7 @@ namespace Project
             this.button_dop_new_1.Text = "1";
             this.button_dop_new_1.UseVisualStyleBackColor = true;
             this.button_dop_new_1.Click += new System.EventHandler(this.button_dop_new_1_Click);
+            this.button_dop_new_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel_dop_2
             // 
@@ -2862,6 +2865,7 @@ namespace Project
             this.button_main_2.Text = "2";
             this.button_main_2.UseVisualStyleBackColor = true;
             this.button_main_2.Click += new System.EventHandler(this.button_main_2_Click);
+            this.button_main_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // button_main_1
             // 
@@ -2878,6 +2882,7 @@ namespace Project
             this.button_main_1.Text = "1";
             this.button_main_1.UseVisualStyleBackColor = true;
             this.button_main_1.Click += new System.EventHandler(this.button_main_1_Click);
+            this.button_main_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel_main_2
             // 
@@ -3200,7 +3205,6 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_onedrive;
         private System.Windows.Forms.CheckBox checkBox_edgedelete;
         private System.Windows.Forms.CheckBox checkBox_killdefender;
-        private System.Windows.Forms.CheckBox checkBox_activate;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox_picture_cache;
         private System.Windows.Forms.Panel panel_5;
@@ -3320,6 +3324,7 @@ namespace Project
         private System.Windows.Forms.PictureBox back_main_19;
         private System.Windows.Forms.PictureBox back_dop_edge;
         private System.Windows.Forms.Label label_cursors;
+        private System.Windows.Forms.Label label_activate;
     }
 }
 
