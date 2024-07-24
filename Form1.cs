@@ -278,8 +278,8 @@ namespace Project
             toolTip1.SetToolTip(checkBox_pro_3, "Disables automatic downloading and installation of updates,\r\nOnce applied, updates will only be installed at the user's request.");
             checkBox_pro_4.Text = "Configure Nvidia Profile Inspector";
             toolTip1.SetToolTip(checkBox_pro_4, "Applies my personal Nvidia Profile Inspector settings.");
-            checkBox_pro_6.Text = "Configure MSI Mode";
-            toolTip1.SetToolTip(checkBox_pro_6, "Allows you to customize device interrupts\r\n(Increases FPS, reduces latency)");
+            label_msimode.Text = "Configure MSI Mode";
+            toolTip1.SetToolTip(label_msimode, "Allows you to customize device interrupts\r\n(Increases FPS, reduces latency)");
             //checkBox_pro_7.Text = "";
             toolTip1.SetToolTip(checkBox_pro_7, "Automatically allocates devices (usb, video card) to different processor cores");
             //checkBox_pro_8.Text = "";
@@ -1083,8 +1083,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
         }
-
-
         #endregion
         #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -1202,7 +1200,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 hcmd($"regedit.exe /s {path_regpack}/menushowdelay.reg");
                 hcmd($"regedit.exe /s {path_regpack}/3dedit.reg");
                 supercmd($"regedit.exe /s {path_regpack}/tweaker.reg");
-                hcmd(@"taskkill /f /im OneDrive.exe & %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall");
+                //hcmd(@"taskkill /f /im OneDrive.exe & %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall");
                 hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
                 hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
                 hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DriverSearching"" /v ""SearchOrderConfig"" /t REG_DWORD /d 0 /f");
@@ -1952,12 +1950,42 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             if (checkBox_onedrive.Checked)
             {
-                hcmd(@"TASKKILL /f /im OneDrive.exe && %SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall & timeout /t 1 && rd %userprofile%\OneDrive");
-                supercmd(@"reg delete HKCR\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6} /f &
-reg delete HKCR\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6} /f &
-rd /s /q %userprofile%\OneDrive &
-rd /s /q %userprofile%\AppData\Local\Microsoft\OneDrive &
-rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
+                void ExecutePowerShellCommand(string command)
+                {
+                    ProcessStartInfo processInfo = new ProcessStartInfo("powershell.exe", "-Command " + command);
+                    processInfo.CreateNoWindow = true;
+                    processInfo.UseShellExecute = false;
+                    processInfo.RedirectStandardError = true;
+                    processInfo.RedirectStandardOutput = true;
+
+                    Process process = Process.Start(processInfo);
+                    process.WaitForExit();
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    if (!string.IsNullOrEmpty(output))
+                    {
+                        Console.WriteLine("OUTPUT: " + output);
+                    }
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        Console.WriteLine("ERROR: " + error);
+                    }
+                }
+                try
+                {
+                    // Удаление UWP приложения OneDrive
+                    ExecutePowerShellCommand("Get-AppxPackage *OneDrive* | Remove-AppxPackage");
+                    writelog("UWP версия OneDrive успешно удалена.");
+                    hcmd($"{Environment.ExpandEnvironmentVariables(@"%SystemRoot%\SysWOW64\OneDriveSetup.exe")} /uninstall");
+                    writelog("не UWP onedrive удалён");
+                }
+                catch (Exception ex)
+                {
+                    writelog("Произошла ошибка: " + ex.Message);
+                }
                 checkBox_onedrive.Checked = false;
                 checkBox_onedrive.Enabled = false;
             }
@@ -1973,8 +2001,35 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
             }
             if (checkBox_temp.Checked)
             {
-                hcmd(@"rd /q /s %temp%\ >nul");
-                hcmd(@"del /q /f /s %temp%*.* >nul");
+                string tempPath = Path.GetTempPath();
+
+                // Удаление всех файлов
+                foreach (string file in Directory.GetFiles(tempPath))
+                {
+                    try
+                    {
+                        File.Delete(file);
+                        writelog($"Файл {file} успешно удален.");
+                    }
+                    catch (Exception ex)
+                    {
+                        writelog($"Ошибка при удалении файла {file}: {ex.Message}");
+                    }
+                }
+
+                // Удаление всех папок и их содержимого
+                foreach (string dir in Directory.GetDirectories(tempPath))
+                {
+                    try
+                    {
+                        Directory.Delete(dir, true);
+                        writelog($"Папка {dir} успешно удалена.");
+                    }
+                    catch (Exception ex)
+                    {
+                        writelog($"Ошибка при удалении папки {dir}: {ex.Message}");
+                    }
+                }
                 checkBox_temp.Checked = false;
             }
             if (checkBox_updclean.Checked)
@@ -2205,29 +2260,6 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                 inspector.ShowDialog();
                 checkBox_pro_4.Checked = false;
             } //inspector
-            if (checkBox_pro_6.Checked)
-            {
-                if (Internet.OK())
-                {
-                    try
-                    {
-                        File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
-                        using (WebClient wcAA = new WebClient())
-                            if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
-                            {
-                                wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
-                                ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-                            }
-
-
-                    }
-                    catch { }
-                }
-                checkBox_pro_6.Checked = false;
-                Form4 msimode = new Form4();
-                Process.Start($"{tempfolder}\\MSI_util_v3.exe");
-                msimode.ShowDialog();
-            } //msi mode
             if (checkBox_pro_7.Checked)
             {
                 hcmd($"{tempfolder}\\affinity.bat");
@@ -2393,6 +2425,10 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
                     InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
                 }
             }
+        }
+        void label_activate_Click(object sender, EventArgs e)
+        {
+            powershell("irm https://get.activated.win | iex");
         }
         #endregion
         #region перемещение по пунктам
@@ -3495,10 +3531,25 @@ rd /s /q ""%allusersprofile%\Microsoft OneDrive""");
 
         #endregion
 
-        private void label_activate_Click(object sender, EventArgs e)
+        void label_msimode_Click(object sender, EventArgs e)
         {
-            powershell("irm https://get.activated.win | iex");
+            if (Internet.OK())
+            {
+                try
+                {
+                    File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
+                    using (WebClient wcAA = new WebClient())
+                        if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
+                        {
+                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
+                            ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                        }
+                }
+                catch { }
+            }
+            Form4 msimode = new Form4();
+            Process.Start($"{tempfolder}\\MSI_util_v3.exe");
+            msimode.ShowDialog();
         }
-
     }
 }

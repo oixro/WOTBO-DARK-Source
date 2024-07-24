@@ -89,7 +89,6 @@ namespace Project
             this.checkBox_pro_9 = new System.Windows.Forms.CheckBox();
             this.checkBox_CSRSS = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_7 = new System.Windows.Forms.CheckBox();
-            this.checkBox_pro_6 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_4 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_3 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_2 = new System.Windows.Forms.CheckBox();
@@ -172,8 +171,6 @@ namespace Project
             this.back_pro_4 = new System.Windows.Forms.PictureBox();
             this.back_pro_3 = new System.Windows.Forms.PictureBox();
             this.back_pro_2 = new System.Windows.Forms.PictureBox();
-            this.back_pro_7 = new System.Windows.Forms.PictureBox();
-            this.back_pro_6 = new System.Windows.Forms.PictureBox();
             this.back_pro_11 = new System.Windows.Forms.PictureBox();
             this.back_dop_7 = new System.Windows.Forms.PictureBox();
             this.PanelHead = new System.Windows.Forms.Panel();
@@ -201,6 +198,7 @@ namespace Project
             this.button_main_2 = new System.Windows.Forms.Button();
             this.button_main_1 = new System.Windows.Forms.Button();
             this.panel_main_2 = new System.Windows.Forms.Panel();
+            this.label_msimode = new System.Windows.Forms.Label();
             this.back_main_19 = new System.Windows.Forms.PictureBox();
             this.back_main_18 = new System.Windows.Forms.PictureBox();
             this.back_main_17 = new System.Windows.Forms.PictureBox();
@@ -255,8 +253,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_7)).BeginInit();
             this.PanelHead.SuspendLayout();
@@ -1111,7 +1107,7 @@ namespace Project
             // 
             this.checkBox_pro_7.AutoSize = true;
             this.checkBox_pro_7.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_7.Location = new System.Drawing.Point(20, 185);
+            this.checkBox_pro_7.Location = new System.Drawing.Point(20, 165);
             this.checkBox_pro_7.Name = "checkBox_pro_7";
             this.checkBox_pro_7.Size = new System.Drawing.Size(135, 17);
             this.checkBox_pro_7.TabIndex = 18;
@@ -1121,20 +1117,6 @@ namespace Project
         "ра.");
             this.checkBox_pro_7.UseVisualStyleBackColor = true;
             this.checkBox_pro_7.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox_pro_6
-            // 
-            this.checkBox_pro_6.AutoSize = true;
-            this.checkBox_pro_6.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_6.Location = new System.Drawing.Point(20, 165);
-            this.checkBox_pro_6.Name = "checkBox_pro_6";
-            this.checkBox_pro_6.Size = new System.Drawing.Size(73, 17);
-            this.checkBox_pro_6.TabIndex = 17;
-            this.checkBox_pro_6.Tag = "";
-            this.checkBox_pro_6.Text = "MSI Mode";
-            this.toolTip1.SetToolTip(this.checkBox_pro_6, "Позволяет настроить прерывания устройств\r\n(Повышает FPS, снижает задержку)");
-            this.checkBox_pro_6.UseVisualStyleBackColor = true;
-            this.checkBox_pro_6.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_pro_4
             // 
@@ -2460,40 +2442,6 @@ namespace Project
             this.back_pro_2.Click += new System.EventHandler(this.back_pro_2_Click);
             this.back_pro_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
-            // back_pro_7
-            // 
-            this.back_pro_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_7.BackgroundImage")));
-            this.back_pro_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_7.Location = new System.Drawing.Point(0, 185);
-            this.back_pro_7.Name = "back_pro_7";
-            this.back_pro_7.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_pro_7.TabIndex = 12;
-            this.back_pro_7.TabStop = false;
-            this.back_pro_7.Visible = false;
-            this.back_pro_7.Click += new System.EventHandler(this.back_pro_7_Click);
-            this.back_pro_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
-            // back_pro_6
-            // 
-            this.back_pro_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_6.BackgroundImage")));
-            this.back_pro_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_6.Location = new System.Drawing.Point(0, 165);
-            this.back_pro_6.Name = "back_pro_6";
-            this.back_pro_6.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_pro_6.TabIndex = 12;
-            this.back_pro_6.TabStop = false;
-            this.back_pro_6.Visible = false;
-            this.back_pro_6.Click += new System.EventHandler(this.back_pro_6_Click);
-            this.back_pro_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
             // back_pro_11
             // 
             this.back_pro_11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -2887,6 +2835,7 @@ namespace Project
             // panel_main_2
             // 
             this.panel_main_2.BackColor = System.Drawing.Color.Transparent;
+            this.panel_main_2.Controls.Add(this.label_msimode);
             this.panel_main_2.Controls.Add(this.back_main_19);
             this.panel_main_2.Controls.Add(this.back_main_18);
             this.panel_main_2.Controls.Add(this.back_main_17);
@@ -2895,9 +2844,7 @@ namespace Project
             this.panel_main_2.Controls.Add(this.back_main_14);
             this.panel_main_2.Controls.Add(this.back_main_13);
             this.panel_main_2.Controls.Add(this.checkBox_usbpollrate);
-            this.panel_main_2.Controls.Add(this.back_pro_7);
             this.panel_main_2.Controls.Add(this.back_pro_11);
-            this.panel_main_2.Controls.Add(this.back_pro_6);
             this.panel_main_2.Controls.Add(this.checkBox_usbport);
             this.panel_main_2.Controls.Add(this.checkBox_videoprocess);
             this.panel_main_2.Controls.Add(this.checkBox_tolerate);
@@ -2905,12 +2852,24 @@ namespace Project
             this.panel_main_2.Controls.Add(this.checkBox_pro_11);
             this.panel_main_2.Controls.Add(this.checkBox_audioDG);
             this.panel_main_2.Controls.Add(this.checkBox_dwninput);
-            this.panel_main_2.Controls.Add(this.checkBox_pro_6);
             this.panel_main_2.Controls.Add(this.checkBox_audio);
             this.panel_main_2.Location = new System.Drawing.Point(401, 287);
             this.panel_main_2.Name = "panel_main_2";
             this.panel_main_2.Size = new System.Drawing.Size(287, 245);
             this.panel_main_2.TabIndex = 34;
+            // 
+            // label_msimode
+            // 
+            this.label_msimode.AutoSize = true;
+            this.label_msimode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_msimode.ForeColor = System.Drawing.Color.White;
+            this.label_msimode.Location = new System.Drawing.Point(20, 185);
+            this.label_msimode.Name = "label_msimode";
+            this.label_msimode.Size = new System.Drawing.Size(54, 13);
+            this.label_msimode.TabIndex = 0;
+            this.label_msimode.Text = "MSI Mode";
+            this.label_msimode.Click += new System.EventHandler(this.label_msimode_Click);
+            this.label_msimode.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // back_main_19
             // 
@@ -3118,8 +3077,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_7)).EndInit();
             this.PanelHead.ResumeLayout(false);
@@ -3249,8 +3206,6 @@ namespace Project
         private System.Windows.Forms.PictureBox back_pro_12;
         private System.Windows.Forms.CheckBox checkBox_pro_12;
         private System.Windows.Forms.PictureBox back_pro_11;
-        private System.Windows.Forms.PictureBox back_pro_7;
-        private System.Windows.Forms.PictureBox back_pro_6;
         private System.Windows.Forms.PictureBox back_pro_4;
         private System.Windows.Forms.CheckBox checkBox_pro_11;
         private System.Windows.Forms.PictureBox back_pro_3;
@@ -3259,7 +3214,6 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_pro_9;
         private System.Windows.Forms.CheckBox checkBox_CSRSS;
         private System.Windows.Forms.CheckBox checkBox_pro_7;
-        private System.Windows.Forms.CheckBox checkBox_pro_6;
         private System.Windows.Forms.CheckBox checkBox_pro_4;
         private System.Windows.Forms.CheckBox checkBox_pro_3;
         private System.Windows.Forms.CheckBox checkBox_pro_2;
@@ -3325,6 +3279,7 @@ namespace Project
         private System.Windows.Forms.PictureBox back_dop_edge;
         private System.Windows.Forms.Label label_cursors;
         private System.Windows.Forms.Label label_activate;
+        private System.Windows.Forms.Label label_msimode;
     }
 }
 
