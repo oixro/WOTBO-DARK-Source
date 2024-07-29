@@ -59,7 +59,6 @@ namespace Project
             this.checkBox_mobile_traffic = new System.Windows.Forms.CheckBox();
             this.checkBox_WinSxS = new System.Windows.Forms.CheckBox();
             this.checkBox_edgedelete = new System.Windows.Forms.CheckBox();
-            this.checkBox_killdefender = new System.Windows.Forms.CheckBox();
             this.checkBox_picture_cache = new System.Windows.Forms.CheckBox();
             this.label_download_23 = new System.Windows.Forms.Label();
             this.label_download_21 = new System.Windows.Forms.Label();
@@ -147,6 +146,7 @@ namespace Project
             this.back_dop_3 = new System.Windows.Forms.PictureBox();
             this.back_dop_2 = new System.Windows.Forms.PictureBox();
             this.back_dop_1 = new System.Windows.Forms.PictureBox();
+            this.label_delete_defender = new System.Windows.Forms.Label();
             this.label_activate = new System.Windows.Forms.Label();
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -684,21 +684,6 @@ namespace Project
             this.toolTip1.SetToolTip(this.checkBox_edgedelete, "Утилита позволяющая удалить встроенный браузер Edge");
             this.checkBox_edgedelete.UseVisualStyleBackColor = false;
             this.checkBox_edgedelete.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox_killdefender
-            // 
-            this.checkBox_killdefender.AutoSize = true;
-            this.checkBox_killdefender.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_killdefender.ForeColor = System.Drawing.Color.White;
-            this.checkBox_killdefender.Location = new System.Drawing.Point(20, 25);
-            this.checkBox_killdefender.Name = "checkBox_killdefender";
-            this.checkBox_killdefender.Size = new System.Drawing.Size(182, 17);
-            this.checkBox_killdefender.TabIndex = 4;
-            this.checkBox_killdefender.Tag = "";
-            this.checkBox_killdefender.Text = "Удалить защитник полностью";
-            this.toolTip1.SetToolTip(this.checkBox_killdefender, "Утилита позволяющая удалить защитник полностью");
-            this.checkBox_killdefender.UseVisualStyleBackColor = false;
-            this.checkBox_killdefender.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_picture_cache
             // 
@@ -1991,12 +1976,12 @@ namespace Project
             this.panel_dop.Controls.Add(this.back_dop_2);
             this.panel_dop.Controls.Add(this.checkBox_compactos);
             this.panel_dop.Controls.Add(this.back_dop_1);
+            this.panel_dop.Controls.Add(this.label_delete_defender);
             this.panel_dop.Controls.Add(this.label_activate);
             this.panel_dop.Controls.Add(this.checkBox_mobile_traffic);
             this.panel_dop.Controls.Add(this.checkBox_WinSxS);
             this.panel_dop.Controls.Add(this.checkBox_onedrive);
             this.panel_dop.Controls.Add(this.checkBox_edgedelete);
-            this.panel_dop.Controls.Add(this.checkBox_killdefender);
             this.panel_dop.Controls.Add(this.checkBox1);
             this.panel_dop.Controls.Add(this.checkBox_picture_cache);
             this.panel_dop.ForeColor = System.Drawing.Color.White;
@@ -2073,6 +2058,19 @@ namespace Project
             this.back_dop_1.Visible = false;
             this.back_dop_1.Click += new System.EventHandler(this.back_dop_1_Click);
             this.back_dop_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // label_delete_defender
+            // 
+            this.label_delete_defender.AutoSize = true;
+            this.label_delete_defender.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_delete_defender.ForeColor = System.Drawing.Color.White;
+            this.label_delete_defender.Location = new System.Drawing.Point(20, 25);
+            this.label_delete_defender.Name = "label_delete_defender";
+            this.label_delete_defender.Size = new System.Drawing.Size(163, 13);
+            this.label_delete_defender.TabIndex = 23;
+            this.label_delete_defender.Text = "Удалить защитник полностью";
+            this.label_delete_defender.Click += new System.EventHandler(this.label_delete_defender_Click);
+            this.label_delete_defender.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_activate
             // 
@@ -2869,7 +2867,7 @@ namespace Project
             this.label_msimode.TabIndex = 0;
             this.label_msimode.Text = "MSI Mode";
             this.label_msimode.Click += new System.EventHandler(this.label_msimode_Click);
-            this.label_msimode.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
+            this.label_msimode.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // back_main_19
             // 
@@ -3161,7 +3159,6 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_WinSxS;
         private System.Windows.Forms.CheckBox checkBox_onedrive;
         private System.Windows.Forms.CheckBox checkBox_edgedelete;
-        private System.Windows.Forms.CheckBox checkBox_killdefender;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox_picture_cache;
         private System.Windows.Forms.Panel panel_5;
@@ -3280,6 +3277,7 @@ namespace Project
         private System.Windows.Forms.Label label_cursors;
         private System.Windows.Forms.Label label_activate;
         private System.Windows.Forms.Label label_msimode;
+        private System.Windows.Forms.Label label_delete_defender;
     }
 }
 

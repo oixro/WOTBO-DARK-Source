@@ -239,10 +239,10 @@ namespace Project
             toolTip1.SetToolTip(checkBox_ansel, "Disables NVIDIA Ansel, a “productivity” tool, \r\nthat allows you to create “professional-grade” in-game photos.");
 
             //dop
-            label_main.Text = "Activate Windows";
-            toolTip1.SetToolTip(label_main, "Opens the Windows activator");
-            checkBox_killdefender.Text = "Remove the defender completely";
-            toolTip1.SetToolTip(checkBox_killdefender, "Utility that allows you to remove the defender completely");
+            label_activate.Text = "Activate Windows";
+            toolTip1.SetToolTip(label_activate, "Opens the Windows activator");
+            label_delete_defender.Text = "Remove the defender completely";
+            toolTip1.SetToolTip(label_delete_defender, "Utility that allows you to remove the defender completely");
             checkBox_edgedelete.Text = "Remove Edge browser";
             toolTip1.SetToolTip(checkBox_edgedelete, "A utility that allows you to remove the built-in Edge browser");
             checkBox_onedrive.Text = "Delete OneDrive";
@@ -641,7 +641,7 @@ namespace Project
             {
                 writelog("defenderdisabled был применён");
                 checkBox_disabledefender.Enabled = false;
-                checkBox_killdefender.Enabled = true;
+                label_delete_defender.Enabled = true;
                 back_main_12.Visible = true;
             }
             if (File.Exists($@"C:\Windows\System32\imageres.dll_bak"))
@@ -874,7 +874,7 @@ namespace Project
             RegistryKey winver = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion");
             string buildnumber = (string)winver.GetValue("CurrentBuild");
             string DisplayVersion = (string)winver.GetValue("DisplayVersion");
-            if (Convert.ToUInt16(buildnumber) > 22000) // проверка на Windows 11
+            if (Convert.ToUInt16(buildnumber) >= 22000) // проверка на Windows 11
             {
                 win10 = false;
                 writelog($"Windows is win 10? {win10}");
@@ -882,14 +882,9 @@ namespace Project
                 if (Convert.ToUInt16(buildnumber) >= 26100)
                 {
                     writelog($"Windows 11 build : {buildnumber}");
-                    //MessageBox.Show("Корректная работа программы на Windows 11 24H2 не гарантирована!","Windows optimization tool by oixro",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    //checkBox_mtiititit.Text += " (Не работает на 24H2)";
-                    //checkBox_mtiititit.Enabled = false;
                 }
-
-
             }
-            else if (Convert.ToUInt16(buildnumber) < 19042) // проверка на Windows 10 <20H2 
+            else if (Convert.ToUInt16(buildnumber) <= 19042) // проверка на Windows 10 <20H2 
             {
                 writelog($"Windows 10 <20H2 ");
                 win10 = true;
@@ -923,7 +918,7 @@ namespace Project
                 label_main.Enabled = false;
                 label_ddu.Enabled = false;
                 label_progs.Enabled = false;
-                checkBox_killdefender.Enabled = false;
+                label_delete_defender.Enabled = false;
                 checkBox_mmagent.Enabled = false;
                 checkBox_pro_13.Enabled = false;
                 checkBox_ffmpeg.Enabled = false;
@@ -1868,32 +1863,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
             #region dop
-            if (checkBox_killdefender.Checked)
-            {
-                if (MessageBox.Show("DefenderKiller полностью удалит защитник.\nВосстановить его не получится!\nЗапустить DefenderKiller?", "",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                {
-                    checkBox_killdefender.Checked = false;
-                    using (WebClient wc = new WebClient())
-                        if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
-                        {
-                            wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip", $"{tempfolder}\\DefenderKiller.zip");
-                            ZipFile.ExtractToDirectory(tempfolder + @"\DefenderKiller.zip", path_dfkiller);
-                        }
-                        else
-                        {
-                            File.Delete(tempfolder + @"\DefenderKiller.zip");
-                            Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
-                        }
-                    Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
-                    checkBox_disabledefender.Visible = false;
-                    back_main_12.Visible = false;
-                }
-                else
-                {
-                    checkBox_killdefender.Checked = false;
-                }
-            }
+
             if (checkBox_edgedelete.Checked)
             {
                 if (!isEnglish)
@@ -2429,6 +2399,51 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         void label_activate_Click(object sender, EventArgs e)
         {
             powershell("irm https://get.activated.win | iex");
+        }
+        void label_msimode_Click(object sender, EventArgs e)
+        {
+            if (Internet.OK())
+            {
+                try
+                {
+                    File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
+                    using (WebClient wcAA = new WebClient())
+                        if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
+                        {
+                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
+                            ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
+                        }
+                }
+                catch { }
+            }
+            Form4 msimode = new Form4();
+            Process.Start($"{tempfolder}\\MSI_util_v3.exe");
+            msimode.ShowDialog();
+        }
+        void label_delete_defender_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("DefenderKiller полностью удалит защитник.\nВосстановить его не получится!\nЗапустить DefenderKiller?", "",
+    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                using (WebClient wc = new WebClient())
+                    if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
+                    {
+                        wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip", $"{tempfolder}\\DefenderKiller.zip");
+                        ZipFile.ExtractToDirectory(tempfolder + @"\DefenderKiller.zip", path_dfkiller);
+                    }
+                    else
+                    {
+                        File.Delete(tempfolder + @"\DefenderKiller.zip");
+                        Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
+                    }
+                Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
+                checkBox_disabledefender.Visible = false;
+                back_main_12.Visible = false;
+            }
+            else
+            {
+                //label_delete_defender.Enabled = false;
+            }
         }
         #endregion
         #region перемещение по пунктам
@@ -3529,27 +3544,9 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
+
         #endregion
 
-        void label_msimode_Click(object sender, EventArgs e)
-        {
-            if (Internet.OK())
-            {
-                try
-                {
-                    File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
-                    using (WebClient wcAA = new WebClient())
-                        if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
-                        {
-                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
-                            ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-                        }
-                }
-                catch { }
-            }
-            Form4 msimode = new Form4();
-            Process.Start($"{tempfolder}\\MSI_util_v3.exe");
-            msimode.ShowDialog();
-        }
+        
     }
 }
