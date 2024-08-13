@@ -100,6 +100,8 @@ namespace Project
             this.checkBox_audioDG = new System.Windows.Forms.CheckBox();
             this.checkBox_dwninput = new System.Windows.Forms.CheckBox();
             this.checkBox_audio = new System.Windows.Forms.CheckBox();
+            this.checkBox_move_temp = new System.Windows.Forms.CheckBox();
+            this.checkBox_Enabled_old = new System.Windows.Forms.CheckBox();
             this.checkBox_edge = new System.Windows.Forms.CheckBox();
             this.button_ui_1 = new System.Windows.Forms.Button();
             this.button_ui_2 = new System.Windows.Forms.Button();
@@ -192,6 +194,7 @@ namespace Project
             this.button_dop_new_2 = new System.Windows.Forms.Button();
             this.button_dop_new_1 = new System.Windows.Forms.Button();
             this.panel_dop_2 = new System.Windows.Forms.Panel();
+            this.back_dop_movetemp = new System.Windows.Forms.PictureBox();
             this.back_dop_6 = new System.Windows.Forms.PictureBox();
             this.back_dop_edge = new System.Windows.Forms.PictureBox();
             this.panel_main_navigate = new System.Windows.Forms.Panel();
@@ -206,6 +209,7 @@ namespace Project
             this.back_main_15 = new System.Windows.Forms.PictureBox();
             this.back_main_14 = new System.Windows.Forms.PictureBox();
             this.back_main_13 = new System.Windows.Forms.PictureBox();
+            this.back_dop_Enabled_old = new System.Windows.Forms.PictureBox();
             this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).BeginInit();
@@ -260,6 +264,7 @@ namespace Project
             this.PanelMain.SuspendLayout();
             this.panel_dop_navigate.SuspendLayout();
             this.panel_dop_2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_movetemp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).BeginInit();
             this.panel_main_navigate.SuspendLayout();
@@ -271,6 +276,7 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_Enabled_old)).BeginInit();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -1287,6 +1293,35 @@ namespace Project
         "еме.\r\n");
             this.checkBox_audio.UseVisualStyleBackColor = false;
             this.checkBox_audio.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // checkBox_move_temp
+            // 
+            this.checkBox_move_temp.AutoSize = true;
+            this.checkBox_move_temp.ForeColor = System.Drawing.Color.White;
+            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 185);
+            this.checkBox_move_temp.Name = "checkBox_move_temp";
+            this.checkBox_move_temp.Size = new System.Drawing.Size(190, 17);
+            this.checkBox_move_temp.TabIndex = 20;
+            this.checkBox_move_temp.Tag = "";
+            this.checkBox_move_temp.Text = "Перенести TEMP в корень диска";
+            this.toolTip1.SetToolTip(this.checkBox_move_temp, "Перености папку temp в корень диска C");
+            this.checkBox_move_temp.UseVisualStyleBackColor = true;
+            this.checkBox_move_temp.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // checkBox_Enabled_old
+            // 
+            this.checkBox_Enabled_old.AutoSize = true;
+            this.checkBox_Enabled_old.ForeColor = System.Drawing.Color.White;
+            this.checkBox_Enabled_old.Location = new System.Drawing.Point(20, 205);
+            this.checkBox_Enabled_old.Name = "checkBox_Enabled_old";
+            this.checkBox_Enabled_old.Size = new System.Drawing.Size(177, 17);
+            this.checkBox_Enabled_old.TabIndex = 20;
+            this.checkBox_Enabled_old.Tag = "";
+            this.checkBox_Enabled_old.Text = "Ускорить запуск компьютера";
+            this.toolTip1.SetToolTip(this.checkBox_Enabled_old, "Windows может загружаться быстрее, если перевести некоторые автоматические службы" +
+        " на отложенный запуск");
+            this.checkBox_Enabled_old.UseVisualStyleBackColor = true;
+            this.checkBox_Enabled_old.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_edge
             // 
@@ -2729,7 +2764,11 @@ namespace Project
             // panel_dop_2
             // 
             this.panel_dop_2.BackColor = System.Drawing.Color.Transparent;
+            this.panel_dop_2.Controls.Add(this.back_dop_Enabled_old);
+            this.panel_dop_2.Controls.Add(this.back_dop_movetemp);
             this.panel_dop_2.Controls.Add(this.back_pro_9);
+            this.panel_dop_2.Controls.Add(this.checkBox_Enabled_old);
+            this.panel_dop_2.Controls.Add(this.checkBox_move_temp);
             this.panel_dop_2.Controls.Add(this.checkBox_pro_9);
             this.panel_dop_2.Controls.Add(this.checkBox_edge);
             this.panel_dop_2.Controls.Add(this.back_pro_4);
@@ -2752,6 +2791,23 @@ namespace Project
             this.panel_dop_2.Size = new System.Drawing.Size(287, 245);
             this.panel_dop_2.TabIndex = 32;
             this.panel_dop_2.Visible = false;
+            // 
+            // back_dop_movetemp
+            // 
+            this.back_dop_movetemp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_dop_movetemp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_movetemp.BackgroundImage")));
+            this.back_dop_movetemp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 185);
+            this.back_dop_movetemp.Name = "back_dop_movetemp";
+            this.back_dop_movetemp.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_movetemp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_dop_movetemp.TabIndex = 12;
+            this.back_dop_movetemp.TabStop = false;
+            this.back_dop_movetemp.Visible = false;
+            this.back_dop_movetemp.Click += new System.EventHandler(this.back_dop_movetemp_Click);
+            this.back_dop_movetemp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_6
             // 
@@ -2988,6 +3044,22 @@ namespace Project
             this.back_main_13.Click += new System.EventHandler(this.back_main_13_Click);
             this.back_main_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
+            // back_dop_Enabled_old
+            // 
+            this.back_dop_Enabled_old.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_dop_Enabled_old.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_Enabled_old.BackgroundImage")));
+            this.back_dop_Enabled_old.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_Enabled_old.Location = new System.Drawing.Point(0, 205);
+            this.back_dop_Enabled_old.Name = "back_dop_Enabled_old";
+            this.back_dop_Enabled_old.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_Enabled_old.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.back_dop_Enabled_old.TabIndex = 12;
+            this.back_dop_Enabled_old.TabStop = false;
+            this.back_dop_Enabled_old.Visible = false;
+            this.back_dop_Enabled_old.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
             // WOTBO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3085,6 +3157,7 @@ namespace Project
             this.panel_dop_navigate.ResumeLayout(false);
             this.panel_dop_2.ResumeLayout(false);
             this.panel_dop_2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_movetemp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).EndInit();
             this.panel_main_navigate.ResumeLayout(false);
@@ -3097,6 +3170,7 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_main_15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.back_dop_Enabled_old)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3278,6 +3352,10 @@ namespace Project
         private System.Windows.Forms.Label label_activate;
         private System.Windows.Forms.Label label_msimode;
         private System.Windows.Forms.Label label_delete_defender;
+        private System.Windows.Forms.CheckBox checkBox_move_temp;
+        private System.Windows.Forms.PictureBox back_dop_movetemp;
+        private System.Windows.Forms.CheckBox checkBox_Enabled_old;
+        private System.Windows.Forms.PictureBox back_dop_Enabled_old;
     }
 }
 

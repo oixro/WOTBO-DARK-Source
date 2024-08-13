@@ -138,6 +138,7 @@ namespace Project
             }
             catch { }
         }
+
         void english()
         {
             //?
@@ -807,6 +808,12 @@ namespace Project
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
             }
+            if ((Convert.ToString(Registry.CurrentUser.OpenSubKey("Environment").GetValue("TEMP")) == "%systemdrive%\\Temp"))
+            {
+                checkBox_move_temp.Enabled = false;
+                back_dop_movetemp.Visible = true;
+            }
+
             #endregion
             #region получаем инфу о видеодырке
             writelog("");
@@ -1171,37 +1178,65 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             if (checkBox_reg.Checked)
             {
-                hcmd($"regedit.exe /s {path_regpack}/accessibility.reg");
-                hcmd($"regedit.exe /s {path_regpack}/appcompatibility.reg");
-                hcmd($"regedit.exe /s {path_regpack}/attachmentmanager.reg");
-                hcmd($"regedit.exe /s {path_regpack}/backgroundapps.reg");
-                hcmd($"regedit.exe /s {path_regpack}/cloudcontent.reg");
-                hcmd($"regedit.exe /s {path_regpack}/driversearching.reg");
-                hcmd($"regedit.exe /s {path_regpack}/edgeupdate.reg");
-                hcmd($"regedit.exe /s {path_regpack}/filesystem.reg");
-                hcmd($"regedit.exe /s {path_regpack}/fse_test.reg");
-                hcmd($"regedit.exe /s {path_regpack}/gamebar.reg");
-                hcmd($"regedit.exe /s {path_regpack}/inspectre.reg");
-                hcmd($"regedit.exe /s {path_regpack}/largesystemcache.reg");
-                hcmd($"regedit.exe /s {path_regpack}/latestclr.reg");
-                hcmd($"regedit.exe /s {path_regpack}/maintenance.reg");
-                hcmd($"regedit.exe /s {path_regpack}/oldphotoviewer.reg");
-                hcmd($"regedit.exe /s {path_regpack}/priority.reg");
-                hcmd($"regedit.exe /s {path_regpack}/responsiveness.reg");
-                hcmd($"regedit.exe /s {path_regpack}/search.reg");
-                hcmd($"regedit.exe /s {path_regpack}/systemrestore.reg");
-                supercmd($"regedit.exe /s {path_regpack}/uac.reg");
-                hcmd($"regedit.exe /s {path_regpack}/explorer.reg");
-                hcmd($"regedit.exe /s {path_regpack}/menushowdelay.reg");
-                hcmd($"regedit.exe /s {path_regpack}/3dedit.reg");
-                supercmd($"regedit.exe /s {path_regpack}/tweaker.reg");
-                //hcmd(@"taskkill /f /im OneDrive.exe & %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall");
-                hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
-                hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
-                hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DriverSearching"" /v ""SearchOrderConfig"" /t REG_DWORD /d 0 /f");
-                hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate"" /v ""ExcludeWUDriversInQualityUpdate"" /t REG_DWORD /d 1 /f");
+                //hcmd($"regedit.exe /s {path_regpack}/accessibility.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/appcompatibility.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/attachmentmanager.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/backgroundapps.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/cloudcontent.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/driversearching.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/edgeupdate.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/filesystem.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/fse_test.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/gamebar.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/inspectre.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/largesystemcache.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/latestclr.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/maintenance.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/oldphotoviewer.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/priority.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/responsiveness.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/search.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/systemrestore.reg");
+                //supercmd($"regedit.exe /s {path_regpack}/uac.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/explorer.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/menushowdelay.reg");
+                //hcmd($"regedit.exe /s {path_regpack}/3dedit.reg");
+                //supercmd($"regedit.exe /s {path_regpack}/tweaker.reg");
+                ////hcmd(@"taskkill /f /im OneDrive.exe & %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall");
+                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
+                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
+                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DriverSearching"" /v ""SearchOrderConfig"" /t REG_DWORD /d 0 /f");
+                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate"" /v ""ExcludeWUDriversInQualityUpdate"" /t REG_DWORD /d 1 /f");
+
+                //accessibility
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\Keyboard Response", true)?.SetValue("Flags", "122");
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\SlateLaunch", true)?.SetValue("ATapp", "");
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\SlateLaunch", true)?.SetValue("LaunchAT", 0);
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\StickyKeys", true)?.SetValue("Flags", "482");
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\ToggleKeys", true)?.SetValue("Flags", "34");
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Keyboard", true)?.SetValue("KeyboardDelay", "0");
+                Registry.CurrentUser.OpenSubKey("Control Panel\\Keyboard", true)?.SetValue("KeyboardSpeed", "31");
+                Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Narrator\\NoRoam", true)?.SetValue("WinEnterLaunchEnabled", 0);
+
+                //appcompatibility
+                RegistryKey key;
+                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat");
+                key.CreateSubKey("AITEnable")?.SetValue("",0,RegistryValueKind.DWord);
+                key.CreateSubKey("DisableEngine")?.SetValue("", 1, RegistryValueKind.DWord);
+                key.CreateSubKey("DisablePCA")?.SetValue("", 1, RegistryValueKind.DWord);
+                key.CreateSubKey("DisableInventory")?.SetValue("", 1, RegistryValueKind.DWord);
+                key.CreateSubKey("SbEnable")?.SetValue("", 0, RegistryValueKind.DWord);
+                key.Close();
+
+                //attachmentmanager
+                //Software\Microsoft\Windows\CurrentVersion\Policies\Attachments
+                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Attachments", true)?.SetValue("SaveZoneInformation", 1,RegistryValueKind.DWord);
+
+
+
+
                 hcmd("netsh advfirewall set allprofiles state off");
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Mouse", true);
+                key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Mouse", true);
                 key.SetValue("EnhancePointerPrecision", "0");
                 key.SetValue("MouseSpeed", "0");
                 key.SetValue("MouseThreshold1", "0");
@@ -1215,7 +1250,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 checkBox_reg.Enabled = false;
                 checkBox_reg.Checked = false;
                 back_main_1.Visible = true;
-
             }
             if (checkBox_dism.Checked)
             {
@@ -2185,6 +2219,18 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 back_dop_edge.Visible = true;
                 checkBox_edge.Checked = false;
                 checkBox_edge.Enabled = false;
+            }
+            if (checkBox_move_temp.Checked)
+            {
+                Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TEMP", "%systemdrive%\\Temp",RegistryValueKind.ExpandString);
+                Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TMP", "%systemdrive%\\Temp", RegistryValueKind.ExpandString);
+                checkBox_move_temp.Checked = false;
+                checkBox_move_temp.Enabled = false;
+                back_dop_movetemp.Visible = true;
+            }
+            if (checkBox_Enabled_old.Checked)
+            {
+
             }
             #endregion
             #region pro
@@ -3545,8 +3591,16 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
 
+
         #endregion
 
-        
+        void back_dop_movetemp_Click(object sender, EventArgs e)
+        {
+            Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TEMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
+            checkBox_move_temp.Checked = false;
+            checkBox_move_temp.Enabled = true;
+            back_dop_movetemp.Visible = false;
+        }
     }
 }
