@@ -122,6 +122,16 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] Base_Profile {
+            get {
+                object obj = ResourceManager.GetObject("Base_Profile", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
         ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
         ///
@@ -288,16 +298,6 @@ namespace WOTBO.Properties {
         internal static string prefetcher_ssd {
             get {
                 return ResourceManager.GetString("prefetcher_ssd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] profiles {
-            get {
-                object obj = ResourceManager.GetObject("profiles", resourceCulture);
-                return ((byte[])(obj));
             }
         }
         

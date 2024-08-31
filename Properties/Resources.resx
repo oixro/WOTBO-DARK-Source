@@ -151,9 +151,6 @@
   <data name="prefetcher_ssd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\prefetcher ssd.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
-  <data name="profiles" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\profiles.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="regpack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\regpack.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -192,5 +189,8 @@
   </data>
   <data name="Audio_Lantency_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Audio Lantency_delete.reg;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
+  <data name="Base_Profile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Base Profile.nip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

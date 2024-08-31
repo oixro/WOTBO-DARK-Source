@@ -57,11 +57,10 @@ namespace WOTBO
 "5. На фразу \"не работает!\" - cразу игнор! Уважайте своё и моё время.\n" +
 "6. Если ты мне напишешь - \"Я НАЖЫМАЮ НА ПРИНЯТЬ, ОНО НЕ РАБОТАЕТ\" - читай лучше этот текст!\n" +
 $"7. Чтобы принять - нажмите правой кнопкой мыши по {button1.Text}" +
-"7.1 В программе имеется авто ввод промокода на Evolve-RP, при принятии соглашения он будет установлен. " +
 "\n8.За большинство настроек спасибо ТехноШахте - (discord.gg/GUC7ckWtmn)" +
 "\n9. И Win 10 Tweaker (win10tweaker.ru)\n" +
 "10. Работоспособность проверна только на оригинальных версиях Windows\n" +
-"11. За ошибки на говносборках я ответсвенности не несу!";
+"11. За ошибки на сборках, отличных от оригинальных я ответсвенности не несу!";
             }
             else
             {
@@ -73,7 +72,6 @@ $"7. Чтобы принять - нажмите правой кнопкой мы
 "5. On the phrase ”does not work!” - immediately ignore! Respect your time and mine. \n" +
 "6. If you write to me - “I'm pressing accept, it's not working” - read this text better!\n" +
 $"7. To accept, right-click on \"Accept\"" +
-"\n7.1 The program has auto-entry of a promo code for Evolve-RP, when you accept the agreement it will be set. " +
 "\n8. For most of the tweaks thanks to - (discord.gg/GUC7ckWtmn)" +
 "\n9. And Win 10 Tweaker\n" +
 "10. Workability is tested only on original versions of Windows\n" +

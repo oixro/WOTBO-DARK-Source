@@ -12,7 +12,6 @@ using System.Management;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO;
@@ -32,7 +31,6 @@ namespace Project
         static string path_ui = tempfolder + @"\ui";
         static string path_dfkiller = tempfolder + @"\DFKiller";
         static string path_scheme = tempfolder + @"\scheme.pow";
-        static string backgr = @"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe";
         static string smartctl = tempfolder + @"\smartctl.exe";
         string curver = (Assembly.GetExecutingAssembly().GetName().Version.ToString(2)).Trim();
         string exename = AppDomain.CurrentDomain.FriendlyName;
@@ -54,6 +52,7 @@ namespace Project
         });
         static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
+        static string path_NVidiaProfileInspectorDmW = tempfolder + @"\NVidiaProfileInspectorDmW";
 
         #endregion
         #region default crap
@@ -275,8 +274,6 @@ namespace Project
             //pro
             checkBox_pro_1.Text = "Remove Home and Gallery (W11)";
             toolTip1.SetToolTip(checkBox_pro_1, "Removes useless two folders in explorer from explorer");
-            checkBox_pro_2.Text = "Disable auto-promo";
-            toolTip1.SetToolTip(checkBox_pro_2, "Disables auto-entry of promo code #oixro when registering for Evolve RP");
             checkBox_pro_3.Text = "Disable Windows Auto Update";
             toolTip1.SetToolTip(checkBox_pro_3, "Disables automatic downloading and installation of updates,\r\nOnce applied, updates will only be installed at the user's request.");
             checkBox_pro_4.Text = "Configure Nvidia Profile Inspector";
@@ -488,10 +485,6 @@ namespace Project
             }
 
             #endregion
-            #region ебашим backrg
-            writelog("");
-            hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1"); writelog("taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1");
-            #endregion
             #region отключаем чеки
             writelog("");
             writelog("отключаем чеки");
@@ -626,12 +619,6 @@ namespace Project
                 writelog("Win32PrioritySeparation был применён");
                 checkBox_pro_11.Enabled = false;
                 back_pro_11.Visible = true;
-            }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("block_backgr")) == 1)
-            {
-                writelog("block_backgr был применён");
-                checkBox_pro_2.Enabled = false;
-
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")?.GetValue("NoAutoUpdate")) == 1)
             {
@@ -932,6 +919,7 @@ namespace Project
                 checkBox_ffmpeg.Enabled = false;
                 checkBox_mica.Enabled = false;
                 label_cursors.Enabled = false;
+                checkBox_pro_4.Enabled = false;
                 if (!isEnglish)
                 {
                     MessageBox.Show("Нет доступа в интернет!\nПроврека на обновления, и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
@@ -1042,42 +1030,19 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch { }
             #endregion
-            #region backgr
-            if (Internet.OK())
+            #region old_crap_uninstaller
+            if (File.Exists(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe"))
             {
-                writelog("");
-                writelog("backgr");
-                if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("block_backgr") == null)
+                Process[] processes = Process.GetProcessesByName("BackgroundMonitoringServices"); 
+                if (processes.Length > 0)
                 {
-                    writelog("block_backgr == null");
-                    writelog("backgr - жду 5000 мс");
-                    await Task.Delay(5000);
-                    if (File.Exists(backgr))
-                    {
-                        File.Delete(backgr);
-                        writelog($"File deleted - {backgr}");
-                    }
-                    writelog("backgr - жду 3500 мс");
-                    await Task.Delay(3500);
-                    using (WebClient wcw = new WebClient())
-                        if (!File.Exists(backgr))
-                        {
-                            writelog("backgr - файла нету");
-                            //wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
-                            await wcw.DownloadFileTaskAsync(new Uri("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe"), backgr);
-                            writelog("backgr - скачал");
-                        }
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
-                    writelog("BackgroundMonitoringServices прописан в реестр");
-                    Process.Start(backgr);
-                    writelog("BackgroundMonitoringServices started");
-
+                    writelog($"BackgroundMonitoringServices был найден - {processes.Length}");
+                    hcmd("taskkill /f /im BackgroundMonitoringServices.exe");
+                    File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
                 }
                 else
                 {
-                    writelog("BackgroundMonitoringServices disabled");
-                    back_pro_2.Visible = true;
-                    checkBox_pro_2.Enabled = false;
+                    File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
                 }
             }
             #endregion
@@ -1130,7 +1095,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
     "\nBut you can restore the defender through the advanced tab.\n" +
     "", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                
+
                 #region new method
                 if (win10)
                 {
@@ -2172,7 +2137,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 {
                     Directory.CreateDirectory($@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp");
                 }
-                
+
                 checkBox_move_temp.Checked = false;
                 checkBox_move_temp.Enabled = false;
                 back_dop_movetemp.Visible = true;
@@ -2194,20 +2159,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     checkBox_pro_1.Enabled = false;
                 }
             } //disable main & gallery folder in explorer.exe
-            if (checkBox_pro_2.Checked)
-            {
-                back_pro_2.Visible = true;
-                do
-                {
-                    hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1");
-                }
-                while (Process.GetProcessesByName("BackgroundMonitoringServices").Length > 0);
-                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("block_backgr", 1);
-                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).DeleteValue("BackgroundMonitoringServices");
-                checkBox_pro_2.Checked = false;
-                checkBox_pro_2.Enabled = false;
-                File.Delete(backgr);
-            } //#oixro
             if (checkBox_pro_3.Checked)
             {
                 hcmd($"regedit /s {tempfolder}\\updates.reg");
@@ -2217,8 +2168,18 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             } //winupdates
             if (checkBox_pro_4.Checked)
             {
-                Form3 inspector = new Form3();
-                inspector.ShowDialog();
+                if (!Directory.Exists(path_NVidiaProfileInspectorDmW))
+                {
+                    File.WriteAllBytes(tempfolder + @"\Base_Profile.nip", Resources.Base_Profile);
+                    using (WebClient wcAA = new WebClient())
+                        if (!File.Exists($"{tempfolder}\\NVidiaProfileInspectorDmW.zip"))
+                        {
+                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/NVidiaProfileInspectorDmW.zip",
+                                $"{tempfolder}\\NVidiaProfileInspectorDmW.zip");
+                        }
+                    ZipFile.ExtractToDirectory(tempfolder + @"\NVidiaProfileInspectorDmW.zip", tempfolder);
+                    hcmd($"{path_NVidiaProfileInspectorDmW}\\nvidiaProfileInspector.exe \"{tempfolder}\\Base_Profile.nip\"");
+                }
                 checkBox_pro_4.Checked = false;
             } //inspector
             if (checkBox_pro_7.Checked)
@@ -3412,28 +3373,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         void back_pro_1_Click(object sender, EventArgs e)
         {
 
-        }
-        async void back_pro_2_Click(object sender, EventArgs e)
-        {
-            do
-            {
-                hcmd($"taskkill /f /im BackgroundMonitoringServices.exe >nul 2>&1");
-            }
-            while (Process.GetProcessesByName("BackgroundMonitoringServices").Length > 0);
-            if (File.Exists(backgr))
-                File.Delete(backgr);
-            await Task.Delay(1500);
-            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true).SetValue("BackgroundMonitoringServices", backgr);
-            using (WebClient wcw = new WebClient())
-                if (!File.Exists(backgr))
-                {
-                    wcw.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BackgroundMonitoringServices.exe", backgr);
-                }
-            Process.Start(backgr);
-            back_pro_2.Visible = false;
-            checkBox_pro_2.Enabled = true;
-            checkBox_pro_2.Checked = false;
-            Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).DeleteValue("block_backgr");
         }
         void back_pro_3_Click(object sender, EventArgs e)
         {

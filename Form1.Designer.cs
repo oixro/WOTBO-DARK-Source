@@ -90,7 +90,6 @@ namespace Project
             this.checkBox_pro_7 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_4 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_3 = new System.Windows.Forms.CheckBox();
-            this.checkBox_pro_2 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_1 = new System.Windows.Forms.CheckBox();
             this.checkBox_dwm = new System.Windows.Forms.CheckBox();
             this.checkBox_tolerate = new System.Windows.Forms.CheckBox();
@@ -171,7 +170,6 @@ namespace Project
             this.back_pro_12 = new System.Windows.Forms.PictureBox();
             this.back_pro_4 = new System.Windows.Forms.PictureBox();
             this.back_pro_3 = new System.Windows.Forms.PictureBox();
-            this.back_pro_2 = new System.Windows.Forms.PictureBox();
             this.back_pro_11 = new System.Windows.Forms.PictureBox();
             this.back_dop_7 = new System.Windows.Forms.PictureBox();
             this.PanelHead = new System.Windows.Forms.Panel();
@@ -255,7 +253,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_7)).BeginInit();
             this.PanelHead.SuspendLayout();
@@ -1067,7 +1064,7 @@ namespace Project
             // 
             this.checkBox_pro_9.AutoSize = true;
             this.checkBox_pro_9.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_9.Location = new System.Drawing.Point(20, 165);
+            this.checkBox_pro_9.Location = new System.Drawing.Point(20, 145);
             this.checkBox_pro_9.Name = "checkBox_pro_9";
             this.checkBox_pro_9.Size = new System.Drawing.Size(228, 17);
             this.checkBox_pro_9.TabIndex = 20;
@@ -1111,12 +1108,12 @@ namespace Project
             // 
             this.checkBox_pro_4.AutoSize = true;
             this.checkBox_pro_4.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_4.Location = new System.Drawing.Point(20, 145);
+            this.checkBox_pro_4.Location = new System.Drawing.Point(20, 125);
             this.checkBox_pro_4.Name = "checkBox_pro_4";
-            this.checkBox_pro_4.Size = new System.Drawing.Size(136, 17);
+            this.checkBox_pro_4.Size = new System.Drawing.Size(161, 17);
             this.checkBox_pro_4.TabIndex = 15;
             this.checkBox_pro_4.Tag = "";
-            this.checkBox_pro_4.Text = "Настроить инспектор";
+            this.checkBox_pro_4.Text = "Настроить Nvidia Inspector";
             this.toolTip1.SetToolTip(this.checkBox_pro_4, "Применяет мои личные настройки Nvidia Profile Inspector.");
             this.checkBox_pro_4.UseVisualStyleBackColor = true;
             this.checkBox_pro_4.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
@@ -1135,20 +1132,6 @@ namespace Project
         "s will only be installed at the user\'s request.");
             this.checkBox_pro_3.UseVisualStyleBackColor = true;
             this.checkBox_pro_3.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox_pro_2
-            // 
-            this.checkBox_pro_2.AutoSize = true;
-            this.checkBox_pro_2.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_2.Location = new System.Drawing.Point(20, 125);
-            this.checkBox_pro_2.Name = "checkBox_pro_2";
-            this.checkBox_pro_2.Size = new System.Drawing.Size(142, 17);
-            this.checkBox_pro_2.TabIndex = 13;
-            this.checkBox_pro_2.Tag = "";
-            this.checkBox_pro_2.Text = "Отключить автопромо";
-            this.toolTip1.SetToolTip(this.checkBox_pro_2, "Отключает авто ввод промокода #oixro при регистрации на Evolve RP");
-            this.checkBox_pro_2.UseVisualStyleBackColor = true;
-            this.checkBox_pro_2.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_pro_1
             // 
@@ -1296,7 +1279,7 @@ namespace Project
             // 
             this.checkBox_move_temp.AutoSize = true;
             this.checkBox_move_temp.ForeColor = System.Drawing.Color.White;
-            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 185);
+            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 165);
             this.checkBox_move_temp.Name = "checkBox_move_temp";
             this.checkBox_move_temp.Size = new System.Drawing.Size(190, 17);
             this.checkBox_move_temp.TabIndex = 20;
@@ -2380,7 +2363,7 @@ namespace Project
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_9.BackgroundImage")));
             this.back_pro_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_9.Location = new System.Drawing.Point(0, 165);
+            this.back_pro_9.Location = new System.Drawing.Point(0, 144);
             this.back_pro_9.Name = "back_pro_9";
             this.back_pro_9.Size = new System.Drawing.Size(15, 15);
             this.back_pro_9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -2414,7 +2397,7 @@ namespace Project
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_4.BackgroundImage")));
             this.back_pro_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_4.Location = new System.Drawing.Point(0, 145);
+            this.back_pro_4.Location = new System.Drawing.Point(0, 124);
             this.back_pro_4.Name = "back_pro_4";
             this.back_pro_4.Size = new System.Drawing.Size(15, 15);
             this.back_pro_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -2440,23 +2423,6 @@ namespace Project
             this.back_pro_3.Visible = false;
             this.back_pro_3.Click += new System.EventHandler(this.back_pro_3_Click);
             this.back_pro_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
-            // back_pro_2
-            // 
-            this.back_pro_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_2.BackgroundImage")));
-            this.back_pro_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_2.Location = new System.Drawing.Point(0, 125);
-            this.back_pro_2.Name = "back_pro_2";
-            this.back_pro_2.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_pro_2.TabIndex = 12;
-            this.back_pro_2.TabStop = false;
-            this.back_pro_2.Visible = false;
-            this.back_pro_2.Click += new System.EventHandler(this.back_pro_2_Click);
-            this.back_pro_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_11
             // 
@@ -2769,9 +2735,7 @@ namespace Project
             this.panel_dop_2.Controls.Add(this.back_pro_4);
             this.panel_dop_2.Controls.Add(this.back_dop_6);
             this.panel_dop_2.Controls.Add(this.checkBox_pro_4);
-            this.panel_dop_2.Controls.Add(this.back_pro_2);
             this.panel_dop_2.Controls.Add(this.checkBox_dwm);
-            this.panel_dop_2.Controls.Add(this.checkBox_pro_2);
             this.panel_dop_2.Controls.Add(this.checkBox_pro_10);
             this.panel_dop_2.Controls.Add(this.back_dop_edge);
             this.panel_dop_2.Controls.Add(this.back_dop_7);
@@ -2794,7 +2758,7 @@ namespace Project
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_movetemp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_movetemp.BackgroundImage")));
             this.back_dop_movetemp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 185);
+            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 164);
             this.back_dop_movetemp.Name = "back_dop_movetemp";
             this.back_dop_movetemp.Size = new System.Drawing.Size(15, 15);
             this.back_dop_movetemp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -3125,7 +3089,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_7)).EndInit();
             this.PanelHead.ResumeLayout(false);
@@ -3258,14 +3221,12 @@ namespace Project
         private System.Windows.Forms.PictureBox back_pro_4;
         private System.Windows.Forms.CheckBox checkBox_pro_11;
         private System.Windows.Forms.PictureBox back_pro_3;
-        private System.Windows.Forms.PictureBox back_pro_2;
         private System.Windows.Forms.PictureBox back_pro_1;
         private System.Windows.Forms.CheckBox checkBox_pro_9;
         private System.Windows.Forms.CheckBox checkBox_CSRSS;
         private System.Windows.Forms.CheckBox checkBox_pro_7;
         private System.Windows.Forms.CheckBox checkBox_pro_4;
         private System.Windows.Forms.CheckBox checkBox_pro_3;
-        private System.Windows.Forms.CheckBox checkBox_pro_2;
         private System.Windows.Forms.CheckBox checkBox_pro_1;
         private System.Windows.Forms.Label label_ver;
         private System.Windows.Forms.Panel panel_ui_1;

@@ -150,6 +150,7 @@
     <None Include="Resources\affinity.cmd" />
     <None Include="Resources\Audio Lantency.reg" />
     <None Include="Resources\Audio Lantency_delete.reg" />
+    <None Include="Resources\Base Profile.nip" />
     <None Include="Resources\blueicons.bat" />
     <None Include="Resources\blueiconsw10.bat" />
     <None Include="Resources\csrss.cmd" />
