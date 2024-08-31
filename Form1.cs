@@ -1710,7 +1710,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             {
                 if (!win10)
                 {
-                    //hcmd($"regedit.exe /s {tempfolder}\\win11contextmenu.reg");
                     Registry.CurrentUser.CreateSubKey(@"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", true).SetValue("", " ");
                     hcmd(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                     checkBox_contex.Checked = false;
