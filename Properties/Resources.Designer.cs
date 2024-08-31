@@ -374,16 +374,6 @@ namespace WOTBO.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] services_off {
-            get {
-                object obj = ResourceManager.GetObject("services_off", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
         internal static byte[] su {
             get {
                 object obj = ResourceManager.GetObject("su", resourceCulture);

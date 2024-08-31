@@ -12,6 +12,7 @@ using System.Management;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO;
@@ -53,7 +54,7 @@ namespace Project
         });
         static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
-        
+
         #endregion
         #region default crap
         public WOTBO()
@@ -150,8 +151,8 @@ namespace Project
             label_pc.Text = "6.PC Info";
             button1.Text = "Apply";
             button_new.Text = "Apply";
-            //label_language.Text = "9. Language";
             toolTip1.ToolTipTitle = "Brief description of the function:";
+            label_site.Text = "8. Site";
 
             //main
             checkBox_disabledefender.Text = "Disable Windows Defender";
@@ -270,6 +271,7 @@ namespace Project
             checkBox_CSRSS.Text = "Increase the priority of CSRSS.exe";
             toolTip1.SetToolTip(checkBox_CSRSS, "Sets a high priority to a Windows component,\r\n which allows you to control most of the graphics instruction sets in Windows");
             checkBox_edge.Text = "Reduce Microsoft Edge's ambitions";
+            checkBox_move_temp.Text = "Move TEMP to the root of the disk";
             //pro
             checkBox_pro_1.Text = "Remove Home and Gallery (W11)";
             toolTip1.SetToolTip(checkBox_pro_1, "Removes useless two folders in explorer from explorer");
@@ -808,12 +810,11 @@ namespace Project
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
             }
-            if ((Convert.ToString(Registry.CurrentUser.OpenSubKey("Environment").GetValue("TEMP")) == "%systemdrive%\\Temp"))
+            if (Convert.ToString(Registry.CurrentUser.OpenSubKey("Environment")?.GetValue("TEMP")) == $@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp")
             {
                 checkBox_move_temp.Enabled = false;
                 back_dop_movetemp.Visible = true;
             }
-
             #endregion
             #region получаем инфу о видеодырке
             writelog("");
@@ -922,7 +923,7 @@ namespace Project
                 checkBox_bluefolders.Enabled = false;
                 label_nvcleaninstall.Enabled = false;
                 checkBox_edgedelete.Enabled = false;
-                label_main.Enabled = false;
+                label_activate.Enabled = false;
                 label_ddu.Enabled = false;
                 label_progs.Enabled = false;
                 label_delete_defender.Enabled = false;
@@ -1025,10 +1026,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             writelog($"path_regpack7z распакован - {path_regpack}");
             File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
             writelog($"su.exe распакован");
-            File.WriteAllBytes(tempfolder + @"\services.zip", Resources.services_off);
-            writelog($"services.zip создан");
-            ZipFile.ExtractToDirectory(tempfolder + @"\services.zip", $"{tempfolder}");
-            writelog($"services.zip распакован - {tempfolder}");
             File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
             writelog($"Audio_Lantency.reg распакован");
             File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
@@ -1115,10 +1112,8 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         async void button1_Click(object sender, EventArgs e)
         {
             #region main
-            writelog("button1_Click");
             if (checkBox_disabledefender.Checked)
             {
-                writelog("checkBox_disabledefender");
                 if (!isEnglish)
                 {
                     MessageBox.Show("Защитник будет отключен!" +
@@ -1135,117 +1130,67 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
     "\nBut you can restore the defender through the advanced tab.\n" +
     "", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-            waitforexit:
-                int tamperstatus = Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Features").GetValue("TamperProtection"));
-                if (tamperstatus == 5 | tamperstatus == 1)
+                
+                #region new method
+                if (win10)
                 {
-                    Process.Start(new ProcessStartInfo { FileName = "explorer", Arguments = $"windowsdefender://ThreatSettings" });
-                    if (!isEnglish)
-                    {
-                        MessageBox.Show("Защиты в Windows Defender не отключены!\nОтлючите их!", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                    else
-                    {
-                        MessageBox.Show("The protections in Windows Defender are not disabled! Disable them!", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-
-
-                    await Task.Delay(1000);
-                    goto waitforexit;
+                    supercmd($"regedit.exe /s {path_regpack}/w10/win10defenderX.reg");
                 }
                 else
                 {
-                    supercmd("taskkill /f /im SecHealthUI.exe");
-                    if (win10)
+                    supercmd($"regedit.exe /s {path_regpack}/w11/win11defenderX.reg");
+                    #region webthreatdefusersvc_XXXXX
+                    // Путь к основной ветке реестра
+                    string baseKeyPath = @"SYSTEM\CurrentControlSet\Services";
+
+                    // Открываем основную ветку реестра
+                    using (RegistryKey baseKey = Registry.LocalMachine.OpenSubKey(baseKeyPath))
                     {
-                        supercmd($"regedit.exe /s {path_regpack}\\win10defenderX.reg");
+                        if (baseKey != null)
+                        {
+                            // Ищем подветку с нужным префиксом
+                            foreach (string subKeyName in baseKey.GetSubKeyNames())
+                            {
+                                if (subKeyName.StartsWith("webthreatdefusersvc_"))
+                                {
+                                    // Открываем найденную ветку
+                                    using (RegistryKey targetKey = baseKey.OpenSubKey(subKeyName, true))
+                                    {
+                                        if (targetKey != null)
+                                        {
+                                            // Устанавливаем параметры в ветке
+                                            targetKey.SetValue("LaunchProtected", "00000004", RegistryValueKind.DWord);
+                                            targetKey.SetValue("Start", "00000004", RegistryValueKind.DWord);
+                                            targetKey.SetValue("Start_old", "00000004", RegistryValueKind.DWord);
+                                            writelog($"Параметр установлен в ветке {subKeyName}");
+                                        }
+                                    }
+                                    break; // Предполагаем, что нужная ветка одна, и можно прекратить поиск
+                                }
+                            }
+                        }
                     }
-                    else
-                    {
-                        supercmd($"regedit.exe /s {path_regpack}\\win11defenderX.reg");
-                        supercmd($"regedit.exe /s {path_regpack}\\win11defsubsvcX.bat");
-                        supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\webthreatdefsvc\\webthreatdefsvc_OFF.reg");
-                        supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\webthreatdefusersvc\\webthreatdefusersvc_OFF.reg");
-                        supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\!webthreatdefusersvc_XXX\\win11defsubsvcX.bat");
-                    }
-                    supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_10_11\\AIO_OFF.reg");
-                    supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\MDCoreSvc\\MDCoreSvc_OFF.reg");
-                    checkBox_disabledefender.Enabled = false;
-                    checkBox_disabledefender.Checked = false;
-                    back_main_12.Visible = true;
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("defenderdisabled", 1);
+                    #endregion
                 }
+                supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
+                checkBox_disabledefender.Enabled = false;
+                checkBox_disabledefender.Checked = false;
+                back_main_12.Visible = true;
+                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("defenderdisabled", 1);
+                #endregion
             }
             if (checkBox_reg.Checked)
             {
-                //hcmd($"regedit.exe /s {path_regpack}/accessibility.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/appcompatibility.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/attachmentmanager.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/backgroundapps.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/cloudcontent.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/driversearching.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/edgeupdate.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/filesystem.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/fse_test.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/gamebar.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/inspectre.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/largesystemcache.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/latestclr.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/maintenance.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/oldphotoviewer.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/priority.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/responsiveness.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/search.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/systemrestore.reg");
-                //supercmd($"regedit.exe /s {path_regpack}/uac.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/explorer.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/menushowdelay.reg");
-                //hcmd($"regedit.exe /s {path_regpack}/3dedit.reg");
-                //supercmd($"regedit.exe /s {path_regpack}/tweaker.reg");
-                ////hcmd(@"taskkill /f /im OneDrive.exe & %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall");
-                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
-                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Device Metadata"" /v ""PreventDeviceMetadataFromNetwork"" /t REG_DWORD /d 1 /f");
-                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DriverSearching"" /v ""SearchOrderConfig"" /t REG_DWORD /d 0 /f");
-                //hcmd(@"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate"" /v ""ExcludeWUDriversInQualityUpdate"" /t REG_DWORD /d 1 /f");
-
-                //accessibility
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\Keyboard Response", true)?.SetValue("Flags", "122");
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\SlateLaunch", true)?.SetValue("ATapp", "");
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\SlateLaunch", true)?.SetValue("LaunchAT", 0);
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\StickyKeys", true)?.SetValue("Flags", "482");
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Accessibility\\ToggleKeys", true)?.SetValue("Flags", "34");
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Keyboard", true)?.SetValue("KeyboardDelay", "0");
-                Registry.CurrentUser.OpenSubKey("Control Panel\\Keyboard", true)?.SetValue("KeyboardSpeed", "31");
-                Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Narrator\\NoRoam", true)?.SetValue("WinEnterLaunchEnabled", 0);
-
-                //appcompatibility
-                RegistryKey key;
-                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat");
-                key.CreateSubKey("AITEnable")?.SetValue("",0,RegistryValueKind.DWord);
-                key.CreateSubKey("DisableEngine")?.SetValue("", 1, RegistryValueKind.DWord);
-                key.CreateSubKey("DisablePCA")?.SetValue("", 1, RegistryValueKind.DWord);
-                key.CreateSubKey("DisableInventory")?.SetValue("", 1, RegistryValueKind.DWord);
-                key.CreateSubKey("SbEnable")?.SetValue("", 0, RegistryValueKind.DWord);
-                key.Close();
-
-                //attachmentmanager
-                //Software\Microsoft\Windows\CurrentVersion\Policies\Attachments
-                Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Attachments", true)?.SetValue("SaveZoneInformation", 1,RegistryValueKind.DWord);
-
-
-
-
-                hcmd("netsh advfirewall set allprofiles state off");
-                key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Mouse", true);
-                key.SetValue("EnhancePointerPrecision", "0");
-                key.SetValue("MouseSpeed", "0");
-                key.SetValue("MouseThreshold1", "0");
-                key.SetValue("MouseThreshold2", "0");
-                key.Close();
-                if (!win10)
+                if (win10)
                 {
-                    supercmd($"regedit.exe /s {path_regpack}/win11widgets.bat");
+                    hcmd($"regedit.exe /s {path_regpack}/w10/w10_AIO.reg");
                 }
+                else
+                {
+                    supercmd($"regedit.exe /s {path_regpack}/w11/w11_AIO.reg");
+                }
+                supercmd($"regedit.exe /s {path_regpack}/foldernetworkX.reg");
+                hcmd($"regedit.exe /s {path_regpack}/REG_AIO.reg");
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("regpack", 1);
                 checkBox_reg.Enabled = false;
                 checkBox_reg.Checked = false;
@@ -1897,7 +1842,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             #endregion
             #region dop
-
             if (checkBox_edgedelete.Checked)
             {
                 if (!isEnglish)
@@ -2222,15 +2166,16 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             if (checkBox_move_temp.Checked)
             {
-                Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TEMP", "%systemdrive%\\Temp",RegistryValueKind.ExpandString);
+                Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TEMP", "%systemdrive%\\Temp", RegistryValueKind.ExpandString);
                 Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TMP", "%systemdrive%\\Temp", RegistryValueKind.ExpandString);
+                if (!Directory.Exists($@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp"))
+                {
+                    Directory.CreateDirectory($@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp");
+                }
+                
                 checkBox_move_temp.Checked = false;
                 checkBox_move_temp.Enabled = false;
                 back_dop_movetemp.Visible = true;
-            }
-            if (checkBox_Enabled_old.Checked)
-            {
-
             }
             #endregion
             #region pro
@@ -2408,7 +2353,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 checkBox_pro_14.Enabled = false;
                 back_pro_14.Visible = true;
             }//alwaysontop
-
             #endregion
         }
         void label_cursors_Click_1(object sender, EventArgs e)
@@ -2490,6 +2434,18 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             {
                 //label_delete_defender.Enabled = false;
             }
+        }
+        void back_dop_movetemp_Click(object sender, EventArgs e)
+        {
+            Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TEMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
+            Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
+            checkBox_move_temp.Checked = false;
+            checkBox_move_temp.Enabled = true;
+            back_dop_movetemp.Visible = false;
+        }
+        void label_site_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://wotbo.pro/");
         }
         #endregion
         #region перемещение по пунктам
@@ -2771,7 +2727,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         void label_download_2_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.8/npp.8.6.8.Installer.x64.exe");
+            Process.Start("https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.9/npp.8.6.9.Installer.x64.exe");
         }
         void label_download_3_Click(object sender, EventArgs e)
         {
@@ -2779,7 +2735,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         void label_download_4_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.7-zip.org/a/7z2406-x64.exe");
+            Process.Start("https://www.7-zip.org/a/7z2408-x64.exe");
         }
         void label_download_5_Click(object sender, EventArgs e)
         {
@@ -2787,7 +2743,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         void label_download_6_Click(object sender, EventArgs e)
         {
-            Process.Start("https://dl.comss.org/download/Visual-C-Runtimes-All-in-One-Nov-2023.zip");
+            Process.Start("https://dl.comss.org/download/Visual-C-Runtimes-All-in-One-May-2024.zip");
         }
         void label_download_7_Click(object sender, EventArgs e)
         {
@@ -2807,15 +2763,11 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         void label_download_11_Click(object sender, EventArgs e)
         {
-            Process.Start("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-30.1.2-Full-Installer-x64.exe");
-        }
-        void label_download_12_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://evolve-rp.net/?r=oixro");
+            Process.Start("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-30.2.3-Windows-Installer.exe");
         }
         void label_download_13_Click(object sender, EventArgs e)
         {
-            Process.Start("https://files3.codecguide.com/K-Lite_Codec_Pack_1835_Mega.exe");
+            Process.Start("https://files2.codecguide.com/K-Lite_Codec_Pack_1850_Mega.exe");
         }
         void label_download_14_Click(object sender, EventArgs e)
         {
@@ -2823,7 +2775,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         void label_download_15_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.hwinfo.com/files/hwi_802.zip");
+            Process.Start("https://www.hwinfo.com/files/hwi_810.zip");
         }
         void label_download_16_Click(object sender, EventArgs e)
         {
@@ -2831,11 +2783,11 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         void label_download_17_Click(object sender, EventArgs e)
         {
-            Process.Start("https://static.centbrowser.com/win_stable/5.1.1130.123/centbrowser_5.1.1130.123_x64.exe");
+            Process.Start("https://static.centbrowser.com/win_stable/5.1.1130.129/centbrowser_5.1.1130.129_x64.exe");
         }
         void label_download_18_Click(object sender, EventArgs e)
         {
-            Process.Start("https://diskanalyzer.com/files/wiztree_4_19_portable.zip");
+            Process.Start("https://diskanalyzer.com/files/wiztree_4_20_portable.zip");
         }
         void label_download_19_Click(object sender, EventArgs e)
         {
@@ -2874,6 +2826,7 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         #region откаты
         void back_main_1_Click(object sender, EventArgs e)
         {
+            #region old
             hcmd($"regedit.exe /s {path_regpack}\\restore\\accessibility_restore.reg");
             hcmd($"regedit.exe /s {path_regpack}\\restore\\appcompatibility_restore.reg");
             hcmd($"regedit.exe /s {path_regpack}\\restore\\attachmentmanager_restore.reg");
@@ -2901,6 +2854,19 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
             {
                 supercmd($"regedit.exe /s {path_regpack}\\restore\\win11widgets_restore.bat");
             }
+            #endregion
+            #region new
+            if (win10)
+            {
+                hcmd($"regedit.exe /s {path_regpack}/w10/w10_AIO_RESTORE.reg");
+            }
+            else
+            {
+                supercmd($"regedit.exe /s {path_regpack}/w11/w11_AIO_RESTORE.reg");
+            }
+            supercmd($"regedit.exe /s {path_regpack}/foldernetworkX_restore.reg");
+            hcmd($"regedit.exe /s {path_regpack}/REG_AIO_RESTORE.reg");
+            #endregion
             checkBox_reg.Enabled = true;
             back_main_1.Visible = false;
             Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).DeleteValue("regpack");
@@ -3022,20 +2988,65 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
         } //page file
         void back_main_12_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(tempfolder + @"\restoreWINDEF10.reg", Resources.restoreWINDEF10);
-            File.WriteAllText(tempfolder + @"\restoreWINDEF11.reg", Resources.restoreWINDEF11);
+            #region old
+            //File.WriteAllText(tempfolder + @"\restoreWINDEF10.reg", Resources.restoreWINDEF10);
+            //File.WriteAllText(tempfolder + @"\restoreWINDEF11.reg", Resources.restoreWINDEF11);
+            //if (win10)
+            //{
+            //    supercmd($"regedit.exe /s {tempfolder}\\restoreWINDEF10.reg");
+            //}
+            //else
+            //{
+            //    supercmd($"regedit.exe /s {tempfolder}\\restoreWINDEF11.reg");
+            //}
+            //supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_10_11\\AIO_ON.reg");
+            //supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\webthreatdefsvc\\webthreatdefsvc_ON.reg");
+            //supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\webthreatdefusersvc\\webthreatdefusersvc_ON.reg");
+            //supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\!webthreatdefusersvc_XXX\\win11defsubsvcX_restore.bat");
+            #endregion
+            #region new
             if (win10)
             {
-                supercmd($"regedit.exe /s {tempfolder}\\restoreWINDEF10.reg");
+                supercmd($"regedit.exe /s {path_regpack}/w10/win10defenderX_restore.reg");
             }
             else
             {
-                supercmd($"regedit.exe /s {tempfolder}\\restoreWINDEF11.reg");
+                supercmd($"regedit.exe /s {path_regpack}/w11/win11defenderX_restore.reg");
+                #region webthreatdefusersvc_XXXXX
+                // Путь к основной ветке реестра
+                string baseKeyPath = @"SYSTEM\CurrentControlSet\Services";
+
+                // Открываем основную ветку реестра
+                using (RegistryKey baseKey = Registry.LocalMachine.OpenSubKey(baseKeyPath))
+                {
+                    if (baseKey != null)
+                    {
+                        // Ищем подветку с нужным префиксом
+                        foreach (string subKeyName in baseKey.GetSubKeyNames())
+                        {
+                            if (subKeyName.StartsWith("webthreatdefusersvc_"))
+                            {
+                                // Открываем найденную ветку
+                                using (RegistryKey targetKey = baseKey.OpenSubKey(subKeyName, true))
+                                {
+                                    if (targetKey != null)
+                                    {
+                                        // Устанавливаем параметры в ветке
+                                        targetKey.DeleteValue("LaunchProtected");
+                                        targetKey.SetValue("Start", "00000002", RegistryValueKind.DWord);
+                                        targetKey.DeleteValue("Start_old");
+                                        writelog($"Параметр установлен в ветке {subKeyName}");
+                                    }
+                                }
+                                break; // Предполагаем, что нужная ветка одна, и можно прекратить поиск
+                            }
+                        }
+                    }
+                }
+                #endregion
             }
-            supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_10_11\\AIO_ON.reg");
-            supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\webthreatdefsvc\\webthreatdefsvc_ON.reg");
-            supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\webthreatdefusersvc\\webthreatdefusersvc_ON.reg");
-            supercmd($"regedit.exe /s {tempfolder}\\services_off\\antimalwareserviceexecutable\\Win_11\\!webthreatdefusersvc_XXX\\win11defsubsvcX_restore.bat");
+            supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/AIO_ON.reg");
+            #endregion
             checkBox_disabledefender.Enabled = false;
             checkBox_disabledefender.Checked = false;
             back_main_12.Visible = true;
@@ -3594,13 +3605,6 @@ MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         #endregion
 
-        void back_dop_movetemp_Click(object sender, EventArgs e)
-        {
-            Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TEMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
-            Registry.CurrentUser.OpenSubKey("Environment", true).SetValue("TMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
-            checkBox_move_temp.Checked = false;
-            checkBox_move_temp.Enabled = true;
-            back_dop_movetemp.Visible = false;
-        }
+
     }
 }
