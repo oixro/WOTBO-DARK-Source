@@ -179,7 +179,6 @@ namespace Project
             this.PanelMain = new System.Windows.Forms.Panel();
             this.button_new = new System.Windows.Forms.Button();
             this.label_site = new System.Windows.Forms.Label();
-            this.label_language = new System.Windows.Forms.Label();
             this.label_winver = new System.Windows.Forms.Label();
             this.label_ver = new System.Windows.Forms.Label();
             this.label_interface = new System.Windows.Forms.Label();
@@ -2516,7 +2515,6 @@ namespace Project
             this.PanelMain.BackColor = System.Drawing.Color.Transparent;
             this.PanelMain.Controls.Add(this.button_new);
             this.PanelMain.Controls.Add(this.label_site);
-            this.PanelMain.Controls.Add(this.label_language);
             this.PanelMain.Controls.Add(this.label_winver);
             this.PanelMain.Controls.Add(this.label_ver);
             this.PanelMain.Controls.Add(this.label_interface);
@@ -2552,26 +2550,13 @@ namespace Project
             this.label_site.AutoSize = true;
             this.label_site.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_site.ForeColor = System.Drawing.Color.White;
-            this.label_site.Location = new System.Drawing.Point(3, 144);
+            this.label_site.Location = new System.Drawing.Point(3, 123);
             this.label_site.Name = "label_site";
             this.label_site.Size = new System.Drawing.Size(45, 13);
             this.label_site.TabIndex = 24;
-            this.label_site.Text = "8. Сайт";
+            this.label_site.Text = "7. Сайт";
             this.label_site.Click += new System.EventHandler(this.label_site_Click);
             this.label_site.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
-            // 
-            // label_language
-            // 
-            this.label_language.AutoSize = true;
-            this.label_language.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_language.ForeColor = System.Drawing.Color.White;
-            this.label_language.Location = new System.Drawing.Point(3, 123);
-            this.label_language.Name = "label_language";
-            this.label_language.Size = new System.Drawing.Size(51, 13);
-            this.label_language.TabIndex = 24;
-            this.label_language.Text = "7. RU/EN";
-            this.label_language.Click += new System.EventHandler(this.label_language_Click);
-            this.label_language.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_winver
             // 
@@ -3253,7 +3238,6 @@ namespace Project
         private System.Windows.Forms.Panel panel_ui_navigate;
         private System.Windows.Forms.Button button_ui_2;
         private System.Windows.Forms.Button button_ui_1;
-        private System.Windows.Forms.Label label_language;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label_nvcleaninstall;
         private System.Windows.Forms.Label label_ddu;

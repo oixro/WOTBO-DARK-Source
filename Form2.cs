@@ -13,7 +13,6 @@ namespace WOTBO
     {
         string exepath = Assembly.GetEntryAssembly().Location;
         string exename = AppDomain.CurrentDomain.FriendlyName;
-        public string uilanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         public Form2()
         {
             InitializeComponent();
@@ -47,7 +46,6 @@ namespace WOTBO
                 Registry.CurrentUser.DeleteSubKeyTree(@"Software\oixro\out");
                 hcmd($"taskkill /f /im \"{exename}\" & timeout /t 1 && \"{exepath}\"");
             }
-            if (uilanguage == "ru")
             {
                 label1.Text = $"Перед использованием программы прочитай:\n" +
 "1. Программа не является идеальной, и не обязана дать вам 5000fps на днищенском компе\n" +
@@ -62,23 +60,6 @@ $"7. Чтобы принять - нажмите правой кнопкой мы
 "10. Работоспособность проверна только на оригинальных версиях Windows\n" +
 "11. За ошибки на сборках, отличных от оригинальных я ответсвенности не несу!";
             }
-            else
-            {
-                label1.Text = $"Before using the program, read:\n" +
-"1. The program is not perfect, and is not obligated to give you 5000fps on a crappy computer\n" +
-"2. I am not responsible for the performance of your computer, if there are problems - it's your fault!\n" +
-"3. If you have any questions, you should first look at the guide on the channel, stupid questions in person will be ignored!\n" +
-"4. If the answer is not in the video - give a full description of your computer and the situation in which the problem occurs!\n" +
-"5. On the phrase ”does not work!” - immediately ignore! Respect your time and mine. \n" +
-"6. If you write to me - “I'm pressing accept, it's not working” - read this text better!\n" +
-$"7. To accept, right-click on \"Accept\"" +
-"\n8. For most of the tweaks thanks to - (discord.gg/GUC7ckWtmn)" +
-"\n9. And Win 10 Tweaker\n" +
-"10. Workability is tested only on original versions of Windows\n" +
-"11. I am not responsible for errors on shitty builds!";
-                button1.Text = "Accept";
-                button2.Text = "Exit";
-            }
         }
 
         private void button1_MouseDown(object sender, MouseEventArgs e)
@@ -88,10 +69,7 @@ $"7. To accept, right-click on \"Accept\"" +
                 k++;
                 if (k >= 2)
                 {
-                    if (uilanguage == "ru")
                         MessageBox.Show("Иди читай");
-                    if (uilanguage != "ru")
-                        MessageBox.Show("Read more");
                 }
 
             }
