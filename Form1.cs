@@ -112,6 +112,7 @@ namespace Project
         {
             try
             {
+                writelog("[CMD] Command: "+line);
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
@@ -136,12 +137,12 @@ namespace Project
                     string result = output + error;
 
                     // Выводим результат через функцию writelog
-                    writelog(result);
+                    writelog("[CMD] Output: " + result);
                 }
             }
             catch (Exception ex)
             {
-                writelog("[CMD] Произошла ошибка: " + ex.Message);
+                writelog("[CMD] Error: " + ex.Message);
             }
         }
         void scmd(string line)
@@ -421,25 +422,28 @@ namespace Project
                 back_main_4.Visible = true;
             }
             #region mousefix
-            if (IsMouseFixKeyPresent())
+            void UpdateMouseFixCheckBox()
             {
-                checkBox_mousefix.Enabled = false; // Отключаем чекбокс, если ключ mousefix существует
-                back_main_5.Visible = true;
-                writelog("Чекбокс отключен: параметр mousefix существует в реестре.");
+                if (IsMouseFixKeyPresent())
+                {
+                    // Если ключ "mousefix" существует - отключаем чекбокс
+                    checkBox_mousefix.Enabled = false;
+                    writelog("Чекбокс отключен: параметр mousefix существует в реестре.");
+                }
+                else if (IsScale100Percent())
+                {
+                    // Если ключ "mousefix" не существует и масштаб равен 100% - включаем чекбокс
+                    checkBox_mousefix.Enabled = true;
+                    writelog("Чекбокс включен: параметр mousefix не существует, и масштаб равен 100%.");
+                }
+                else
+                {
+                    // Если ключ "mousefix" не существует и масштаб не равен 100% - отключаем чекбокс
+                    checkBox_mousefix.Enabled = false;
+                    writelog("Чекбокс отключен: параметр mousefix не существует, и масштаб не равен 100%.");
+                }
             }
-            if (IsScale100Percent())
-            {
-                checkBox_mousefix.Enabled = true; // Включаем чекбокс, если ключ не существует и масштаб равен 100%
-                writelog("Чекбокс включен: параметр mousefix не существует, и масштаб равен 100%.");
-            }
-            else
-            {
-                checkBox_mousefix.Enabled = false; // Отключаем чекбокс, если ключ не существует и масштаб не равен 100%
-                ShowNotification(LabelHead.Text,"Рекомендуется использовать масштаб интерфейса Windows - 100%!");
-                writelog("Чекбокс отключен: параметр mousefix не существует, и масштаб не равен 100%.");
-            }
-            // Метод, проверяющий, равен ли масштаб интерфейса 100%
-             bool IsScale100Percent()
+            bool IsScale100Percent()
             {
                 using (Graphics g = this.CreateGraphics())
                 {
@@ -447,14 +451,11 @@ namespace Project
 
                     // Рассчитываем масштаб в процентах
                     float scaleX = dpiX / 96 * 100;
-                    writelog(scaleX.ToString());
 
                     // Возвращаем true, если масштаб равен 100%
                     return Math.Abs(scaleX - 100) < 0.01;
                 }
             }
-
-            // Метод для проверки наличия параметра "mousefix" в реестре
             bool IsMouseFixKeyPresent()
             {
                 const string registryPath = @"Software\oixro\wotbo";
