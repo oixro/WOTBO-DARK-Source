@@ -411,7 +411,7 @@ namespace Project
             } //reserved
             if (!File.Exists(@"C:\hiberfil.sys"))
             {
-                writelog("hiberfila нету");
+                writelog("hiberfil'a нету");
                 checkBox_gibernate.Enabled = false;
                 back_main_3.Visible = true;
             }
@@ -428,6 +428,7 @@ namespace Project
                 {
                     // Если ключ "mousefix" существует - отключаем чекбокс
                     checkBox_mousefix.Enabled = false;
+                    back_main_5.Visible = true;
                     writelog("Чекбокс отключен: параметр mousefix существует в реестре.");
                 }
                 else if (IsScale100Percent())
@@ -479,7 +480,7 @@ namespace Project
 
                 return false; // Возвращаем false, если ключ или значение не найдены
             }
-
+            UpdateMouseFixCheckBox();
             #endregion
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Dwm").GetValue("OverlayTestMode")) == 5)
             {
@@ -627,11 +628,6 @@ namespace Project
                 writelog("pro_1 был применён");
                 checkBox_pro_1.Enabled = false;
 
-            }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_9")) == 1)
-            {
-                writelog("pro_9 был применён");
-                checkBox_pro_9.Enabled = false;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_7")) == 1)
             {
@@ -1030,7 +1026,7 @@ namespace Project
             File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
             writelog($"Audio_Lantency.reg распакован");
             File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
-            writelog($"Audio_Lantency.reg распакован");
+            writelog($"Audio_Lantency_delete.reg распакован");
             File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
             writelog($"updates.reg распакован");
             #endregion
@@ -1065,10 +1061,6 @@ namespace Project
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             writelog("closed");
-            if (Directory.Exists(@"C:\Windows\oixro"))
-            {
-                try { Directory.Delete(@"C:\Windows\oixro", true); } catch { }
-            }
             if (Directory.Exists(tempfolder))
             {
                 try
@@ -1374,8 +1366,6 @@ namespace Project
             if (checkBox_mousefix.Checked)
             {
                 File.WriteAllText(tempfolder + @"\mousefix.reg", Resources.mousefix);
-
-
                     hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
                     Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("mousefix", 1);
                     checkBox_mousefix.Enabled = false;
@@ -1771,11 +1761,11 @@ namespace Project
             }
             if (checkBox_ffmpeg.Checked)
             {
-
+                ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info);
                 using (WebClient wc = new WebClient())
                     if (!File.Exists($"{tempfolder}\\ffmpeg.zip"))
                     {
-                        await wc.DownloadFileTaskAsync(new Uri("https://github.com/GyanD/codexffmpeg/releases/download/7.0.1/ffmpeg-7.0.1-essentials_build.zip"), $"{tempfolder}\\ffmpeg.zip");
+                        await wc.DownloadFileTaskAsync(new Uri("https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-essentials_build.zip"), $"{tempfolder}\\ffmpeg.zip");
                         await wc.DownloadFileTaskAsync(new Uri("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg"), $"{tempfolder}\\ffmpeg.reg");
                         ZipFile.ExtractToDirectory($"{tempfolder}\\ffmpeg.zip", tempfolder);
                     }
@@ -1784,7 +1774,7 @@ namespace Project
                     hcmd("taskkill /f /im ffmpeg.exe");
                     File.Delete(@"C:\Windows\ffmpeg.exe");
                 }
-                File.Copy($@"{tempfolder}\ffmpeg-7.0.1-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
+                File.Copy($@"{tempfolder}\ffmpeg-7.1-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
                 hcmd($@"regedit.exe /s {tempfolder}/ffmpeg.reg");
 
                 checkBox_ffmpeg.Enabled = false;
@@ -2183,27 +2173,6 @@ namespace Project
                 back_dop_7.Visible = true;
                 //Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("pro_8", 1);
             } //csrss
-            if (checkBox_pro_9.Checked)
-            {
-                hcmd("reg add \"HKCU\\Software\\Microsoft\\Windows\\DWM\" /v \"Composition\" /t REG_DWORD /d \"0\" /f");
-                hcmd("reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v \"GlobalUserDisabled\" /t Reg_DWORD /d \"1\" /f");
-                hcmd("reg add \"HKLM\\Software\\Policies\\Microsoft\\Windows\\AppPrivacy\" /v \"LetAppsRunInBackground\" /t Reg_DWORD /d \"2\" /f");
-                hcmd("reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\" /v \"BackgroundAppGlobalToggle\" /t Reg_DWORD /d \"0\" /f");
-                hcmd("reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v \"DisablePagingExecutive\" /t Reg_DWORD /d \"1\" /f");
-                hcmd("reg add \"HKLM\\System\\CurrentControlSet\\Control\\Session Manager\" /v \"HeapDeCommitFreeBlockThreshold\" /t REG_DWORD /d \"262144\" /f");
-                hcmd("reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem\" /v \"DontVerifyRandomDrivers\" /t REG_DWORD /d \"1\" /f");
-                hcmd("reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power\" /v \"HiberbootEnabled\" /t REG_DWORD /d \"0\" /f");
-                hcmd("fsutil behavior set memoryusage 2");
-                hcmd("fsutil behavior set mftzone 2");
-                hcmd("fsutil behavior set disablelastaccess 1");
-                hcmd("fsutil behavior set encryptpagingfile 0");
-                hcmd("fsutil behavior set disable8dot3 1");
-                hcmd("fsutil behavior set disablecompression 1");
-                hcmd("fsutil behavior set disabledeletenotify 0");
-                checkBox_pro_9.Checked = false;
-                checkBox_pro_9.Enabled = false;
-                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("pro_9", 1);
-            } //fsutil
             if (checkBox_pro_10.Checked)
             {
                 Process.Start(new ProcessStartInfo
@@ -2332,9 +2301,7 @@ namespace Project
         }
         void label_delete_defender_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("DefenderKiller полностью удалит защитник.\nВосстановить его не получится!\nЗапустить DefenderKiller?", "",
-    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
+
                 using (WebClient wc = new WebClient())
                     if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
                     {
@@ -2347,13 +2314,6 @@ namespace Project
                         Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
                     }
                 Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
-                checkBox_disabledefender.Visible = false;
-                back_main_12.Visible = false;
-            }
-            else
-            {
-                //label_delete_defender.Enabled = false;
-            }
         }
         void back_dop_movetemp_Click(object sender, EventArgs e)
         {

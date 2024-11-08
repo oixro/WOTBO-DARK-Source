@@ -120,12 +120,25 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="checkBox_mtiititit.ToolTip" xml:space="preserve">
+    <value>Отключает расширенные средства защиты от атак на основе памяти,
+ то есть атак, при которых вредоносные программы управляют памятью для получения контроля над системой.
+(Отключение может добавить 1-3% FPS)</value>
+  </data>
   <data name="checkBox_mpo.ToolTip" xml:space="preserve">
     <value>Отключение многоплоскостного наложения (MPO) может устранить проблемы с мерцанием в некоторых настольных приложениях.
-Мерцание экрана может возникать при воспроизведении видео с использованием аппаратного ускорения в Chrome.
-Черные экраны могут возникать при переходе от игры (или приложения, например Whatsapp) к браузеру с зацикленным видео.
-Некоторые приложения для настольных компьютеров могут мерцать или заикаться при изменении размера окна на некоторых конфигурациях ПК.
-</value>
+Мерцание экрана может возникать при воспроизведении видео с аппаратным ускорением в Chrome.
+Черные экраны могут появляться при переключении от игры (или приложения, такого как WhatsApp) к браузеру с зацикленным видео.
+Некоторые настольные приложения могут мерцать или прерываться при изменении размера окна на определённых конфигурациях ПК.</value>
+  </data>
+  <data name="checkBox_pro_12.ToolTip" xml:space="preserve">
+    <value>Bufferbloat — явление, когда чрезмерная буферизация вызывает увеличение времени прохождения пакетов (Ping) 
+и увеличивает разброс задержки пакетов (Packetloss).
+Данный твик позволит снизить Ping и Packetloss за счёт небольшого падения скорости интернета.</value>
+  </data>
+  <data name="checkBox_dwm.ToolTip" xml:space="preserve">
+    <value>dwm.exe — это системный процесс, отвечающий за визуальные эффекты окон в системе: эффекты прозрачности, тени, анимацию и т. д.
+Снижение приоритета для этого процесса позволяет уменьшить "желейность" движения мыши.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="back_main_12.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -641,22 +654,6 @@
 </value>
   </data>
   <data name="back_gpu_1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
-        4wAAAOMBD+bfpwAAAnBJREFUWEe1102IjVEAxvHxmVCUyGhkpaQsbJDVRMosZGU/G3aUj42NjY0GCwth
-        Q2k2kmYzFBYsJIkkYoFsfDVTPhYYn9f/ub1nOvfc57wfhqd+i3nOObd777znPe/tabVa/8s0zMIczMX8
-        opPJefGCf6EXe3EXvxHnPbrWdBV/qQ8nMYGQ57iMn+2//LopvwF9nXvwBYo+5TGsQT/eQXkMt35Kb2AB
-        rkLRJz+MhdDYVnyDchyzka5vs2UNi3APykOsRhjbgM/QNbCz6LJsWUFX9X0oV6CrO4zpG3gJ5QDidZYt
-        K5yCcgN6M/GYLkTlIuI+y5YltkF5i6WIx1bgBz5A2zEey7Jlxgw8haKLLB0/CuUQ0rEsW2YMQhlFOjYd
-        Y9CVv7joarFlxh0oG5GOrYdyDelYKVsaK6E8gRs/CGUf3HiWLQ3d7ZQhuPFhKLr7ufEsWxoXoGyCGw//
-        ntpXf2BL4xEU3QHd+AsoM+HGs1ypAyWl2+onuPmiQ0dz3NpLcGvaXKnoCP2YOAM3X84hnR+O4Vtwa9pc
-        qYNEp9vaqGtqHb5Dr7Wq6CxX7oKiu948uDlldDg9g6LXcnMmuVIPGbrbKefh5pQ5C2UEbryDLbEEb6Bs
-        h5vj7IDyGrkd08GWhS34hXEsK7oyy6GrXms2F10lW0aOQLmOjsfphE7Km1Byd0vLlhE9cDyAsh9ujoSz
-        QE9K2ec/x5YJPe99RW5r1t5yji2N3VC0NfUrJ/SNtpxjS0P/f/3IUE4j9I22nGPLDG3N8ENDWzNsuVeo
-        teUcW5YYgA4dbc3GW86xZYUTCGm05RxbVtDWvA3t+0Zbrlur5w8UdpTsh9KjqQAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="back_pro_9.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
         4wAAAOMBD+bfpwAAAnBJREFUWEe1102IjVEAxvHxmVCUyGhkpaQsbJDVRMosZGU/G3aUj42NjY0GCwth

@@ -85,7 +85,6 @@ namespace Project
             this.checkBox_pro_13 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_12 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_11 = new System.Windows.Forms.CheckBox();
-            this.checkBox_pro_9 = new System.Windows.Forms.CheckBox();
             this.checkBox_CSRSS = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_7 = new System.Windows.Forms.CheckBox();
             this.checkBox_pro_4 = new System.Windows.Forms.CheckBox();
@@ -166,7 +165,6 @@ namespace Project
             this.back_gpu_2 = new System.Windows.Forms.PictureBox();
             this.back_gpu_1 = new System.Windows.Forms.PictureBox();
             this.checkBox_directplay = new System.Windows.Forms.CheckBox();
-            this.back_pro_9 = new System.Windows.Forms.PictureBox();
             this.back_pro_12 = new System.Windows.Forms.PictureBox();
             this.back_pro_4 = new System.Windows.Forms.PictureBox();
             this.back_pro_3 = new System.Windows.Forms.PictureBox();
@@ -248,7 +246,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_gpu_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_gpu_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_gpu_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).BeginInit();
@@ -289,11 +286,11 @@ namespace Project
             this.checkBox_disabledefender.ForeColor = System.Drawing.Color.White;
             this.checkBox_disabledefender.Location = new System.Drawing.Point(20, 25);
             this.checkBox_disabledefender.Name = "checkBox_disabledefender";
-            this.checkBox_disabledefender.Size = new System.Drawing.Size(184, 17);
+            this.checkBox_disabledefender.Size = new System.Drawing.Size(179, 17);
             this.checkBox_disabledefender.TabIndex = 9;
-            this.checkBox_disabledefender.Text = "Отключить зищитник Windows";
-            this.toolTip1.SetToolTip(this.checkBox_disabledefender, "Отключает защитник Windows\r\n(Значительно понижает падение FPS, уменьшает нагрузку" +
-        " на процессор)\r\n");
+            this.checkBox_disabledefender.Text = "Отключить Windows Defender";
+            this.toolTip1.SetToolTip(this.checkBox_disabledefender, "Отключает защитник Windows\r\n(Значительно снижает падение FPS и уменьшает нагрузку" +
+        " на процессор)");
             this.checkBox_disabledefender.UseVisualStyleBackColor = false;
             this.checkBox_disabledefender.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -307,8 +304,8 @@ namespace Project
             this.checkBox_page.Size = new System.Drawing.Size(161, 17);
             this.checkBox_page.TabIndex = 8;
             this.checkBox_page.Text = "Настроить файл подкачки";
-            this.toolTip1.SetToolTip(this.checkBox_page, "Применяет оптимальные настройки для файла подкачки\r\n(В диапазоне от 16 мб до 32 г" +
-        "б)");
+            this.toolTip1.SetToolTip(this.checkBox_page, "Применяет оптимальные настройки для файла подкачки\n(В пределах от 16 МБ до 32 ГБ)" +
+        "");
             this.checkBox_page.UseVisualStyleBackColor = false;
             this.checkBox_page.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -319,11 +316,11 @@ namespace Project
             this.checkBox_mmagent.ForeColor = System.Drawing.Color.White;
             this.checkBox_mmagent.Location = new System.Drawing.Point(20, 185);
             this.checkBox_mmagent.Name = "checkBox_mmagent";
-            this.checkBox_mmagent.Size = new System.Drawing.Size(127, 17);
+            this.checkBox_mmagent.Size = new System.Drawing.Size(128, 17);
             this.checkBox_mmagent.TabIndex = 7;
-            this.checkBox_mmagent.Text = "Настроить mmagent";
-            this.toolTip1.SetToolTip(this.checkBox_mmagent, "Настраивает агент управления памятью (MMAgent)\r\nв зависимости от количества устан" +
-        "овленной ОЗУ\r\nдля достижения стабильного FPS");
+            this.checkBox_mmagent.Text = "Настроить MMAgent";
+            this.toolTip1.SetToolTip(this.checkBox_mmagent, "Настраивает агент управления памятью (MMAgent) в зависимости от объема установлен" +
+        "ной ОЗУ для достижения стабильного FPS.");
             this.checkBox_mmagent.UseVisualStyleBackColor = false;
             this.checkBox_mmagent.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -337,9 +334,7 @@ namespace Project
             this.checkBox_mtiititit.Size = new System.Drawing.Size(189, 17);
             this.checkBox_mtiititit.TabIndex = 6;
             this.checkBox_mtiititit.Text = "Отключение Meltdown и Spectre";
-            this.toolTip1.SetToolTip(this.checkBox_mtiititit, "Отключает расширенные средства защиты от атак на основе памяти, то есть атак, \r\nк" +
-        "огда вредоносные программы управляют памятью для получения контроля над системой" +
-        ".\r\n(Отнимает 3-5% FPS)\r\n");
+            this.toolTip1.SetToolTip(this.checkBox_mtiititit, resources.GetString("checkBox_mtiititit.ToolTip"));
             this.checkBox_mtiititit.UseVisualStyleBackColor = false;
             this.checkBox_mtiititit.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -352,7 +347,7 @@ namespace Project
             this.checkBox_bcdedit.Name = "checkBox_bcdedit";
             this.checkBox_bcdedit.Size = new System.Drawing.Size(64, 17);
             this.checkBox_bcdedit.TabIndex = 5;
-            this.checkBox_bcdedit.Text = "BCDedit";
+            this.checkBox_bcdedit.Text = "BCDEdit";
             this.toolTip1.SetToolTip(this.checkBox_bcdedit, "Настраивает параметры загрузчика Windows");
             this.checkBox_bcdedit.UseVisualStyleBackColor = false;
             // 
@@ -363,10 +358,10 @@ namespace Project
             this.checkBox_usb.ForeColor = System.Drawing.Color.White;
             this.checkBox_usb.Location = new System.Drawing.Point(20, 125);
             this.checkBox_usb.Name = "checkBox_usb";
-            this.checkBox_usb.Size = new System.Drawing.Size(174, 17);
+            this.checkBox_usb.Size = new System.Drawing.Size(203, 17);
             this.checkBox_usb.TabIndex = 4;
-            this.checkBox_usb.Text = "Отключить USB Power saving";
-            this.toolTip1.SetToolTip(this.checkBox_usb, "Отключает режим энергосбережения на USB портах.");
+            this.checkBox_usb.Text = "Отключить экономию энергии USB";
+            this.toolTip1.SetToolTip(this.checkBox_usb, "Отключает режим энергосбережения на USB-портах");
             this.checkBox_usb.UseVisualStyleBackColor = false;
             this.checkBox_usb.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -394,8 +389,8 @@ namespace Project
             this.checkBox_mousefix.Size = new System.Drawing.Size(104, 17);
             this.checkBox_mousefix.TabIndex = 3;
             this.checkBox_mousefix.Text = "MarkC MouseFix";
-            this.toolTip1.SetToolTip(this.checkBox_mousefix, "Отключает ускорение, акселирацию мыши.\r\nДелает движения мыши более предсказуемыми" +
-        ".");
+            this.toolTip1.SetToolTip(this.checkBox_mousefix, "Отключает ускорение и акселерацию мыши\n(Делает движения мыши более предсказуемыми" +
+        ")");
             this.checkBox_mousefix.UseVisualStyleBackColor = false;
             this.checkBox_mousefix.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -409,7 +404,7 @@ namespace Project
             this.checkBox_scheme.Size = new System.Drawing.Size(182, 17);
             this.checkBox_scheme.TabIndex = 2;
             this.checkBox_scheme.Text = "Импортировать схему питания";
-            this.toolTip1.SetToolTip(this.checkBox_scheme, "Применяет оптимальную схему питания.\r\nПовышает стабильность FPS.");
+            this.toolTip1.SetToolTip(this.checkBox_scheme, "Применение оптимальной схемы питания\n(Повышает стабильность FPS)");
             this.checkBox_scheme.UseVisualStyleBackColor = false;
             this.checkBox_scheme.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -423,8 +418,8 @@ namespace Project
             this.checkBox_gibernate.Size = new System.Drawing.Size(182, 17);
             this.checkBox_gibernate.TabIndex = 1;
             this.checkBox_gibernate.Text = "Отключить режим гибернации";
-            this.toolTip1.SetToolTip(this.checkBox_gibernate, "Гибернация - энергосберегающее состояние компьютера, предназначенное в первую оче" +
-        "редь для ноутбуков.\r\n(Занимает ~2 гб)");
+            this.toolTip1.SetToolTip(this.checkBox_gibernate, "Гибернация — энергосберегающее состояние компьютера, предназначенное в первую оче" +
+        "редь для ноутбуков.\n(Занимает примерно 2 ГБ)");
             this.checkBox_gibernate.UseVisualStyleBackColor = false;
             this.checkBox_gibernate.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -439,7 +434,8 @@ namespace Project
             this.checkBox_dism.TabIndex = 1;
             this.checkBox_dism.Tag = "dism";
             this.checkBox_dism.Text = "Отключить резервное хранилище";
-            this.toolTip1.SetToolTip(this.checkBox_dism, "Отключить зарезервированное место под обновления Windows\r\n(Занимает~7GB)");
+            this.toolTip1.SetToolTip(this.checkBox_dism, "Отключить зарезервированное место под обновления Windows\r\n(Занимает примерно 7 ГБ" +
+        ")");
             this.checkBox_dism.UseVisualStyleBackColor = false;
             this.checkBox_dism.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -468,8 +464,8 @@ namespace Project
             this.checkBox_ffmpeg.TabIndex = 22;
             this.checkBox_ffmpeg.Tag = "";
             this.checkBox_ffmpeg.Text = "Добавить ffmpeg в контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео\r\n(Работает для файлов avi," +
-        " flac, mov,mkv,mp4,wav,weba)");
+            this.toolTip1.SetToolTip(this.checkBox_ffmpeg, "Добавляет полезные пункты в контекстное меню для видео\r\n(Работает для файлов AVI," +
+        " FLAC, MOV, MKV, MP4, WAV, WEBA)");
             this.checkBox_ffmpeg.UseVisualStyleBackColor = false;
             this.checkBox_ffmpeg.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -484,7 +480,7 @@ namespace Project
             this.checkBox_shapka.TabIndex = 22;
             this.checkBox_shapka.Tag = "";
             this.checkBox_shapka.Text = "Вернуть старую шапку проводника";
-            this.toolTip1.SetToolTip(this.checkBox_shapka, "Возвращает человеческую шапку меню\r\n");
+            this.toolTip1.SetToolTip(this.checkBox_shapka, "Возвращает классическую шапку меню");
             this.checkBox_shapka.UseVisualStyleBackColor = false;
             this.checkBox_shapka.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -499,7 +495,7 @@ namespace Project
             this.checkBox_bluefolders.TabIndex = 21;
             this.checkBox_bluefolders.Tag = "";
             this.checkBox_bluefolders.Text = "Установить синие папки";
-            this.toolTip1.SetToolTip(this.checkBox_bluefolders, "Устанавлиает синие папки в проводнике, на замену жёлтых");
+            this.toolTip1.SetToolTip(this.checkBox_bluefolders, "Устанавливает синие папки в проводнике вместо жёлтых");
             this.checkBox_bluefolders.UseVisualStyleBackColor = false;
             this.checkBox_bluefolders.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -514,7 +510,7 @@ namespace Project
             this.checkBoxUI_Buttons_3.TabIndex = 3;
             this.checkBoxUI_Buttons_3.Tag = "";
             this.checkBoxUI_Buttons_3.Text = "Настроить контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_3, "Добавляет полезные пункты для контекстного меню");
+            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_3, "Добавляет полезные пункты в контекстное меню");
             this.checkBoxUI_Buttons_3.UseVisualStyleBackColor = false;
             this.checkBoxUI_Buttons_3.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -529,8 +525,8 @@ namespace Project
             this.checkBoxUI_Buttons_2.TabIndex = 3;
             this.checkBoxUI_Buttons_2.Tag = "";
             this.checkBoxUI_Buttons_2.Text = "Мелкие настройки проводника";
-            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_2, "Делает проводник более приятным в использовании\r\n(Убирает ненужные папки, пункты " +
-        "и т.д)");
+            this.toolTip1.SetToolTip(this.checkBoxUI_Buttons_2, "Делает проводник более удобным в использовании\n(Убирает ненужные папки, пункты и " +
+        "т. д.)");
             this.checkBoxUI_Buttons_2.UseVisualStyleBackColor = false;
             this.checkBoxUI_Buttons_2.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -545,7 +541,7 @@ namespace Project
             this.checkBox_contex.TabIndex = 7;
             this.checkBox_contex.Tag = "";
             this.checkBox_contex.Text = "Вернуть старое контекстное меню";
-            this.toolTip1.SetToolTip(this.checkBox_contex, "Возвращает человеческое контекстное меню");
+            this.toolTip1.SetToolTip(this.checkBox_contex, "Возвращает классическое контекстное меню");
             this.checkBox_contex.UseVisualStyleBackColor = false;
             this.checkBox_contex.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -574,8 +570,7 @@ namespace Project
             this.checkBox_zalipanie.TabIndex = 3;
             this.checkBox_zalipanie.Tag = "";
             this.checkBox_zalipanie.Text = "Отключить залипание клавиш";
-            this.toolTip1.SetToolTip(this.checkBox_zalipanie, "Отключает уведомление при пятикратном нажатии Shift и залипанием этого самого Shi" +
-        "ft.");
+            this.toolTip1.SetToolTip(this.checkBox_zalipanie, "Отключает уведомление и залипание Shift при пятикратном нажатии");
             this.checkBox_zalipanie.UseVisualStyleBackColor = false;
             this.checkBox_zalipanie.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -590,7 +585,7 @@ namespace Project
             this.checkBox_updclean.TabIndex = 11;
             this.checkBox_updclean.Tag = "";
             this.checkBox_updclean.Text = "Очистить кеш обновлений Windows";
-            this.toolTip1.SetToolTip(this.checkBox_updclean, "Очищает скаченные обновления Windows");
+            this.toolTip1.SetToolTip(this.checkBox_updclean, "Очищает загруженные обновления Windows");
             this.checkBox_updclean.UseVisualStyleBackColor = false;
             this.checkBox_updclean.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -605,7 +600,7 @@ namespace Project
             this.checkBox_temp.TabIndex = 10;
             this.checkBox_temp.Tag = "";
             this.checkBox_temp.Text = "Очистить временные файлы";
-            this.toolTip1.SetToolTip(this.checkBox_temp, "Очищает временные файлы, которые уже не используются программами");
+            this.toolTip1.SetToolTip(this.checkBox_temp, "Очищает временные файлы, которые больше не используются программами");
             this.checkBox_temp.UseVisualStyleBackColor = false;
             this.checkBox_temp.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -619,8 +614,8 @@ namespace Project
             this.checkBox_nastroyka.Size = new System.Drawing.Size(249, 17);
             this.checkBox_nastroyka.TabIndex = 3;
             this.checkBox_nastroyka.Tag = "";
-            this.checkBox_nastroyka.Text = "Убрать окно окночания настройки Windows\r\n";
-            this.toolTip1.SetToolTip(this.checkBox_nastroyka, "Отключает назойливое предложение при загрузке Windows закончить настройку");
+            this.checkBox_nastroyka.Text = "Убрать окно окончания настройки Windows";
+            this.toolTip1.SetToolTip(this.checkBox_nastroyka, "Отключает назойливое предложение при загрузке Windows завершить настройку");
             this.checkBox_nastroyka.UseVisualStyleBackColor = false;
             this.checkBox_nastroyka.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -635,7 +630,7 @@ namespace Project
             this.checkBox_compactos.TabIndex = 9;
             this.checkBox_compactos.Tag = "";
             this.checkBox_compactos.Text = "Сжать систему";
-            this.toolTip1.SetToolTip(this.checkBox_compactos, "Сжимает системные файлы Windows, для экономии места");
+            this.toolTip1.SetToolTip(this.checkBox_compactos, "Сжимает системные файлы Windows для экономии места");
             this.checkBox_compactos.UseVisualStyleBackColor = false;
             this.checkBox_compactos.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -650,8 +645,8 @@ namespace Project
             this.checkBox_mobile_traffic.TabIndex = 3;
             this.checkBox_mobile_traffic.Tag = "";
             this.checkBox_mobile_traffic.Text = "Обход отслеживания мобильного трафика\r\n";
-            this.toolTip1.SetToolTip(this.checkBox_mobile_traffic, "Позволяет скрыть для вашего мобильного оператора расход вашего\r\nмобильного трафик" +
-        "а на ПК. Таким образом, вы перестанете оплачивать выход из лимита.");
+            this.toolTip1.SetToolTip(this.checkBox_mobile_traffic, "Позволяет скрыть от мобильного оператора расход трафика на ПК\n(Поможет избежать д" +
+        "ополнительных расходов за превышение лимита)");
             this.checkBox_mobile_traffic.UseVisualStyleBackColor = false;
             this.checkBox_mobile_traffic.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -666,8 +661,8 @@ namespace Project
             this.checkBox_WinSxS.TabIndex = 8;
             this.checkBox_WinSxS.Tag = "";
             this.checkBox_WinSxS.Text = "Очистка хранилища WinSxS";
-            this.toolTip1.SetToolTip(this.checkBox_WinSxS, "Очищает папку, в которой хранятся все остатки обновлений Windows\r\n(Может освободи" +
-        "ть несколько ГБ, в зависимости от количества установленных обновлений)");
+            this.toolTip1.SetToolTip(this.checkBox_WinSxS, "Очищает папку с остатками обновлений Windows\r\n(Может освободить несколько ГБ в за" +
+        "висимости от количества установленных обновлений)\r\n\r\n");
             this.checkBox_WinSxS.UseVisualStyleBackColor = false;
             this.checkBox_WinSxS.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -677,11 +672,11 @@ namespace Project
             this.checkBox_edgedelete.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_edgedelete.Location = new System.Drawing.Point(20, 45);
             this.checkBox_edgedelete.Name = "checkBox_edgedelete";
-            this.checkBox_edgedelete.Size = new System.Drawing.Size(97, 17);
+            this.checkBox_edgedelete.Size = new System.Drawing.Size(144, 17);
             this.checkBox_edgedelete.TabIndex = 5;
             this.checkBox_edgedelete.Tag = "";
-            this.checkBox_edgedelete.Text = "Удалить Edge";
-            this.toolTip1.SetToolTip(this.checkBox_edgedelete, "Утилита позволяющая удалить встроенный браузер Edge");
+            this.checkBox_edgedelete.Text = "Удалить Microsoft Edge";
+            this.toolTip1.SetToolTip(this.checkBox_edgedelete, "Утилита, позволяющая удалить встроенный браузер Edge");
             this.checkBox_edgedelete.UseVisualStyleBackColor = false;
             this.checkBox_edgedelete.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -696,8 +691,8 @@ namespace Project
             this.checkBox_picture_cache.TabIndex = 3;
             this.checkBox_picture_cache.Tag = "";
             this.checkBox_picture_cache.Text = "Увеличить кэш изображений";
-            this.toolTip1.SetToolTip(this.checkBox_picture_cache, "Увеличивает размер кэша превью изображений. \r\nТакимобразом, он (кэш) не будет сли" +
-        "шком часто переписываться (насиловать НDD/SSD).");
+            this.toolTip1.SetToolTip(this.checkBox_picture_cache, "Увеличивает размер кэша превью изображений\n(Таким образом, кэш не будет слишком ч" +
+        "асто перезаписываться, снижая нагрузку на HDD/SSD)");
             this.checkBox_picture_cache.UseVisualStyleBackColor = false;
             this.checkBox_picture_cache.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -935,7 +930,7 @@ namespace Project
             this.label_ddu.Size = new System.Drawing.Size(74, 13);
             this.label_ddu.TabIndex = 13;
             this.label_ddu.Text = "Скачать DDU";
-            this.toolTip1.SetToolTip(this.label_ddu, "Лучшая программа для удаления драйвера на видеокарту");
+            this.toolTip1.SetToolTip(this.label_ddu, "Лучшая программа для удаления драйверов для видеокарты");
             this.label_ddu.Click += new System.EventHandler(this.label_ddu_Click);
             this.label_ddu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -949,7 +944,7 @@ namespace Project
             this.label_nvcleaninstall.Size = new System.Drawing.Size(122, 13);
             this.label_nvcleaninstall.TabIndex = 12;
             this.label_nvcleaninstall.Text = "Скачать NVCleanInstall";
-            this.toolTip1.SetToolTip(this.label_nvcleaninstall, "Лучшая программа для установки драйвера на видеокарту.\r\n(Только для NVIDIA)");
+            this.toolTip1.SetToolTip(this.label_nvcleaninstall, "Лучшая программа для установки драйверов для видеокарты\n(Только для NVIDIA)");
             this.label_nvcleaninstall.Click += new System.EventHandler(this.label_nvcleaninstall_Click);
             this.label_nvcleaninstall.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -964,7 +959,7 @@ namespace Project
             this.checkBox_dopNVIDIA_tweaks.TabIndex = 3;
             this.checkBox_dopNVIDIA_tweaks.Tag = "";
             this.checkBox_dopNVIDIA_tweaks.Text = "Мелкие настройки NVIDIA";
-            this.toolTip1.SetToolTip(this.checkBox_dopNVIDIA_tweaks, "Настраивает драйвер видеокарты\r\n(Отключение энергосбережения и т.д)");
+            this.toolTip1.SetToolTip(this.checkBox_dopNVIDIA_tweaks, "Настраивает драйвер видеокарты\n(Отключает энергосбережение и т. д.)");
             this.checkBox_dopNVIDIA_tweaks.UseVisualStyleBackColor = false;
             this.checkBox_dopNVIDIA_tweaks.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -979,8 +974,8 @@ namespace Project
             this.checkBox_hdcp.TabIndex = 2;
             this.checkBox_hdcp.Tag = "";
             this.checkBox_hdcp.Text = "Отключить HDCP";
-            this.toolTip1.SetToolTip(this.checkBox_hdcp, "Отключает технологию защиты медиаконтента, \r\nпредназначенная для предотвращения н" +
-        "езаконного копирования видеосигнала.");
+            this.toolTip1.SetToolTip(this.checkBox_hdcp, "Отключает технологию защиты медиаконтента, предназначенную для предотвращения нез" +
+        "аконного копирования видеосигнала.");
             this.checkBox_hdcp.UseVisualStyleBackColor = false;
             this.checkBox_hdcp.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -995,8 +990,8 @@ namespace Project
             this.checkBox_ansel.TabIndex = 1;
             this.checkBox_ansel.Tag = "";
             this.checkBox_ansel.Text = "Отключить Ansel";
-            this.toolTip1.SetToolTip(this.checkBox_ansel, "Отключает \"NVIDIA Ansel\" - \"производительный\" инструмент, \r\nпозволяющий создавать" +
-        " внутриигровые фотографии \"профессионального уровня\".");
+            this.toolTip1.SetToolTip(this.checkBox_ansel, "Отключает NVIDIA Ansel — \"производительный\" инструмент,\r\n позволяющий создавать в" +
+        "нутриигровые фотографии \"профессионального уровня\".");
             this.checkBox_ansel.UseVisualStyleBackColor = false;
             this.checkBox_ansel.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1010,7 +1005,7 @@ namespace Project
             this.checkBox_pro_10.TabIndex = 21;
             this.checkBox_pro_10.Tag = "";
             this.checkBox_pro_10.Text = "Расширенная очистка Windows";
-            this.toolTip1.SetToolTip(this.checkBox_pro_10, "Открывает скрытое от обычного пользователя окно очистки системы.");
+            this.toolTip1.SetToolTip(this.checkBox_pro_10, "Открывает скрытое от обычного пользователя окно для очистки системы.");
             this.checkBox_pro_10.UseVisualStyleBackColor = true;
             this.checkBox_pro_10.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1039,8 +1034,7 @@ namespace Project
             this.checkBox_pro_12.TabIndex = 12;
             this.checkBox_pro_12.Tag = "";
             this.checkBox_pro_12.Text = "Bufferbloat";
-            this.toolTip1.SetToolTip(this.checkBox_pro_12, "Bufferbloat - явление, когда чрезмерная буферизация\r\nвызывает увеличение времени " +
-        "прохождения пакетов (Ping)\r\nи разброса задержки пакетов (Packetloss)");
+            this.toolTip1.SetToolTip(this.checkBox_pro_12, resources.GetString("checkBox_pro_12.ToolTip"));
             this.checkBox_pro_12.UseVisualStyleBackColor = true;
             this.checkBox_pro_12.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1050,28 +1044,14 @@ namespace Project
             this.checkBox_pro_11.ForeColor = System.Drawing.Color.White;
             this.checkBox_pro_11.Location = new System.Drawing.Point(20, 145);
             this.checkBox_pro_11.Name = "checkBox_pro_11";
-            this.checkBox_pro_11.Size = new System.Drawing.Size(142, 17);
+            this.checkBox_pro_11.Size = new System.Drawing.Size(199, 17);
             this.checkBox_pro_11.TabIndex = 21;
             this.checkBox_pro_11.Tag = "";
-            this.checkBox_pro_11.Text = "Win32PrioritySeparation";
+            this.checkBox_pro_11.Text = "Настроить Win32PrioritySeparation";
             this.toolTip1.SetToolTip(this.checkBox_pro_11, "Параметр позволяющей настраивать количество времени, \r\nвыделяемых фоновым и актив" +
         "ным процессам.");
             this.checkBox_pro_11.UseVisualStyleBackColor = true;
             this.checkBox_pro_11.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox_pro_9
-            // 
-            this.checkBox_pro_9.AutoSize = true;
-            this.checkBox_pro_9.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_9.Location = new System.Drawing.Point(20, 145);
-            this.checkBox_pro_9.Name = "checkBox_pro_9";
-            this.checkBox_pro_9.Size = new System.Drawing.Size(228, 17);
-            this.checkBox_pro_9.TabIndex = 20;
-            this.checkBox_pro_9.Tag = "";
-            this.checkBox_pro_9.Text = "Оптимизация настроек памяти Windows";
-            this.toolTip1.SetToolTip(this.checkBox_pro_9, "Настраивает системную утилиту по управлению файлами в Windows\r\n");
-            this.checkBox_pro_9.UseVisualStyleBackColor = true;
-            this.checkBox_pro_9.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_CSRSS
             // 
@@ -1083,8 +1063,8 @@ namespace Project
             this.checkBox_CSRSS.TabIndex = 19;
             this.checkBox_CSRSS.Tag = "";
             this.checkBox_CSRSS.Text = "Повысить приоритет CSRSS.exe";
-            this.toolTip1.SetToolTip(this.checkBox_CSRSS, "Задаёт высокий приоритет компоненту Windows,\r\n который позволяет управлять больши" +
-        "нством наборов графических инструкций в Windows");
+            this.toolTip1.SetToolTip(this.checkBox_CSRSS, "Задает высокий приоритет компоненту Windows, который управляет большинством графи" +
+        "ческих инструкций в системе.");
             this.checkBox_CSRSS.UseVisualStyleBackColor = true;
             this.checkBox_CSRSS.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1113,7 +1093,7 @@ namespace Project
             this.checkBox_pro_4.TabIndex = 15;
             this.checkBox_pro_4.Tag = "";
             this.checkBox_pro_4.Text = "Настроить Nvidia Inspector";
-            this.toolTip1.SetToolTip(this.checkBox_pro_4, "Применяет мои личные настройки Nvidia Profile Inspector.");
+            this.toolTip1.SetToolTip(this.checkBox_pro_4, "Применяет мои личные настройки в Nvidia Profile Inspector.");
             this.checkBox_pro_4.UseVisualStyleBackColor = true;
             this.checkBox_pro_4.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1127,8 +1107,8 @@ namespace Project
             this.checkBox_pro_3.TabIndex = 14;
             this.checkBox_pro_3.Tag = "";
             this.checkBox_pro_3.Text = "Отключить автообновление Windows";
-            this.toolTip1.SetToolTip(this.checkBox_pro_3, "Disables automatic downloading and installation of updates,\r\nOnce applied, update" +
-        "s will only be installed at the user\'s request.");
+            this.toolTip1.SetToolTip(this.checkBox_pro_3, "Отключает автоматическое скачивание и установку обновлений\n(После применения обно" +
+        "вления будут устанавливаться только по запросу пользователя.)");
             this.checkBox_pro_3.UseVisualStyleBackColor = true;
             this.checkBox_pro_3.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1138,10 +1118,10 @@ namespace Project
             this.checkBox_pro_1.ForeColor = System.Drawing.Color.White;
             this.checkBox_pro_1.Location = new System.Drawing.Point(20, 45);
             this.checkBox_pro_1.Name = "checkBox_pro_1";
-            this.checkBox_pro_1.Size = new System.Drawing.Size(233, 17);
+            this.checkBox_pro_1.Size = new System.Drawing.Size(235, 17);
             this.checkBox_pro_1.TabIndex = 12;
             this.checkBox_pro_1.Tag = "";
-            this.checkBox_pro_1.Text = "Удалить пункт главная и галерея (W11)";
+            this.checkBox_pro_1.Text = "Удалить пункт Главная и Галерея (W11)";
             this.toolTip1.SetToolTip(this.checkBox_pro_1, "Убирает из проводника бесполезные две папки в проводнике");
             this.checkBox_pro_1.UseVisualStyleBackColor = true;
             this.checkBox_pro_1.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
@@ -1155,9 +1135,7 @@ namespace Project
             this.checkBox_dwm.TabIndex = 3;
             this.checkBox_dwm.Tag = "";
             this.checkBox_dwm.Text = "Снизить приоритет dwm.exe";
-            this.toolTip1.SetToolTip(this.checkBox_dwm, "dwm.exe — это системный процесс, отвечающий за эффекты отображения окон в системе" +
-        ": \r\nэффекты прозрачности, тени, анимация и т.д.\r\nСнижение приоритета процессу по" +
-        "зволяет снизить\"желейность\" мыши.\r\n");
+            this.toolTip1.SetToolTip(this.checkBox_dwm, resources.GetString("checkBox_dwm.ToolTip"));
             this.checkBox_dwm.UseVisualStyleBackColor = true;
             this.checkBox_dwm.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1201,10 +1179,10 @@ namespace Project
             this.checkBox_usbport.ForeColor = System.Drawing.Color.White;
             this.checkBox_usbport.Location = new System.Drawing.Point(20, 105);
             this.checkBox_usbport.Name = "checkBox_usbport";
-            this.checkBox_usbport.Size = new System.Drawing.Size(217, 17);
+            this.checkBox_usbport.Size = new System.Drawing.Size(210, 17);
             this.checkBox_usbport.TabIndex = 11;
             this.checkBox_usbport.Tag = "";
-            this.checkBox_usbport.Text = "Отключить  состояние \"простоя\" USB";
+            this.checkBox_usbport.Text = "Отключить состояние \'простоя\' USB";
             this.toolTip1.SetToolTip(this.checkBox_usbport, "Отключает состояние энергосбережение USB портов.\r\nПоложительно влиет на поведение" +
         " всех устройств подключенных по USB.");
             this.checkBox_usbport.UseVisualStyleBackColor = false;
@@ -1217,12 +1195,12 @@ namespace Project
             this.checkBox_videoprocess.ForeColor = System.Drawing.Color.White;
             this.checkBox_videoprocess.Location = new System.Drawing.Point(20, 85);
             this.checkBox_videoprocess.Name = "checkBox_videoprocess";
-            this.checkBox_videoprocess.Size = new System.Drawing.Size(237, 17);
+            this.checkBox_videoprocess.Size = new System.Drawing.Size(245, 17);
             this.checkBox_videoprocess.TabIndex = 11;
             this.checkBox_videoprocess.Tag = "";
-            this.checkBox_videoprocess.Text = "Отключить обработку видео от Windows";
-            this.toolTip1.SetToolTip(this.checkBox_videoprocess, "Отключает автоматическую обработку видео в Windows.\r\nПолезно для HDR и НЕ HDR мон" +
-        "иторов.\r\nТак же положительно влияет на отзывчивость системы.");
+            this.checkBox_videoprocess.Text = "Отключить \"обработку\" видео от Windows";
+            this.toolTip1.SetToolTip(this.checkBox_videoprocess, "Отключает автоматическую обработку видео в Windows.\r\nПоложительно влияет на отзыв" +
+        "чивость системы.");
             this.checkBox_videoprocess.UseVisualStyleBackColor = false;
             this.checkBox_videoprocess.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1278,7 +1256,7 @@ namespace Project
             // 
             this.checkBox_move_temp.AutoSize = true;
             this.checkBox_move_temp.ForeColor = System.Drawing.Color.White;
-            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 165);
+            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 145);
             this.checkBox_move_temp.Name = "checkBox_move_temp";
             this.checkBox_move_temp.Size = new System.Drawing.Size(190, 17);
             this.checkBox_move_temp.TabIndex = 20;
@@ -1821,7 +1799,7 @@ namespace Project
             this.checkBox_wotboincontex.Size = new System.Drawing.Size(244, 30);
             this.checkBox_wotboincontex.TabIndex = 22;
             this.checkBox_wotboincontex.Tag = "";
-            this.checkBox_wotboincontex.Text = "Добавить WOTBO в контекстное меню\r\n на рабочем столе";
+            this.checkBox_wotboincontex.Text = "Добавить WOTBO в контекстное меню на рабочем столе";
             this.checkBox_wotboincontex.UseVisualStyleBackColor = false;
             this.checkBox_wotboincontex.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -1846,10 +1824,10 @@ namespace Project
             this.checkBoxUI_Buttons_1.ForeColor = System.Drawing.Color.White;
             this.checkBoxUI_Buttons_1.Location = new System.Drawing.Point(20, 5);
             this.checkBoxUI_Buttons_1.Name = "checkBoxUI_Buttons_1";
-            this.checkBoxUI_Buttons_1.Size = new System.Drawing.Size(231, 17);
+            this.checkBoxUI_Buttons_1.Size = new System.Drawing.Size(225, 17);
             this.checkBoxUI_Buttons_1.TabIndex = 3;
             this.checkBoxUI_Buttons_1.Tag = "";
-            this.checkBoxUI_Buttons_1.Text = "Уменьшение кнопок Закрыть, Свернуть";
+            this.checkBoxUI_Buttons_1.Text = "Уменьшить кнопки Закрыть, Свернуть";
             this.checkBoxUI_Buttons_1.UseVisualStyleBackColor = false;
             this.checkBoxUI_Buttons_1.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
@@ -2066,9 +2044,9 @@ namespace Project
             this.label_delete_defender.ForeColor = System.Drawing.Color.White;
             this.label_delete_defender.Location = new System.Drawing.Point(20, 25);
             this.label_delete_defender.Name = "label_delete_defender";
-            this.label_delete_defender.Size = new System.Drawing.Size(163, 13);
+            this.label_delete_defender.Size = new System.Drawing.Size(172, 13);
             this.label_delete_defender.TabIndex = 23;
-            this.label_delete_defender.Text = "Удалить защитник полностью";
+            this.label_delete_defender.Text = "Открыть Windows Defender Killer\r\n";
             this.label_delete_defender.Click += new System.EventHandler(this.label_delete_defender_Click);
             this.label_delete_defender.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -2355,23 +2333,6 @@ namespace Project
             this.checkBox_directplay.UseVisualStyleBackColor = false;
             this.checkBox_directplay.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
-            // back_pro_9
-            // 
-            this.back_pro_9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_9.BackgroundImage")));
-            this.back_pro_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_9.Location = new System.Drawing.Point(0, 144);
-            this.back_pro_9.Name = "back_pro_9";
-            this.back_pro_9.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.back_pro_9.TabIndex = 12;
-            this.back_pro_9.TabStop = false;
-            this.back_pro_9.Visible = false;
-            this.back_pro_9.Click += new System.EventHandler(this.back_pro_9_Click);
-            this.back_pro_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
             // back_pro_12
             // 
             this.back_pro_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -2396,7 +2357,7 @@ namespace Project
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_4.BackgroundImage")));
             this.back_pro_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_4.Location = new System.Drawing.Point(0, 124);
+            this.back_pro_4.Location = new System.Drawing.Point(0, 125);
             this.back_pro_4.Name = "back_pro_4";
             this.back_pro_4.Size = new System.Drawing.Size(15, 15);
             this.back_pro_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -2713,9 +2674,7 @@ namespace Project
             // 
             this.panel_dop_2.BackColor = System.Drawing.Color.Transparent;
             this.panel_dop_2.Controls.Add(this.back_dop_movetemp);
-            this.panel_dop_2.Controls.Add(this.back_pro_9);
             this.panel_dop_2.Controls.Add(this.checkBox_move_temp);
-            this.panel_dop_2.Controls.Add(this.checkBox_pro_9);
             this.panel_dop_2.Controls.Add(this.checkBox_edge);
             this.panel_dop_2.Controls.Add(this.back_pro_4);
             this.panel_dop_2.Controls.Add(this.back_dop_6);
@@ -2743,7 +2702,7 @@ namespace Project
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_movetemp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_movetemp.BackgroundImage")));
             this.back_dop_movetemp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 164);
+            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 145);
             this.back_dop_movetemp.Name = "back_dop_movetemp";
             this.back_dop_movetemp.Size = new System.Drawing.Size(15, 15);
             this.back_dop_movetemp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -3070,7 +3029,6 @@ namespace Project
             ((System.ComponentModel.ISupportInitialize)(this.back_gpu_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_gpu_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_gpu_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_3)).EndInit();
@@ -3195,7 +3153,6 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_dopNVIDIA_tweaks;
         private System.Windows.Forms.CheckBox checkBox_hdcp;
         private System.Windows.Forms.CheckBox checkBox_ansel;
-        private System.Windows.Forms.PictureBox back_pro_9;
         private System.Windows.Forms.PictureBox back_pro_13;
         private System.Windows.Forms.CheckBox checkBox_pro_10;
         private System.Windows.Forms.PictureBox back_dop_7;
@@ -3207,7 +3164,6 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_pro_11;
         private System.Windows.Forms.PictureBox back_pro_3;
         private System.Windows.Forms.PictureBox back_pro_1;
-        private System.Windows.Forms.CheckBox checkBox_pro_9;
         private System.Windows.Forms.CheckBox checkBox_CSRSS;
         private System.Windows.Forms.CheckBox checkBox_pro_7;
         private System.Windows.Forms.CheckBox checkBox_pro_4;
