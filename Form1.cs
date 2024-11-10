@@ -359,6 +359,12 @@ namespace Project
                 hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
                 writelog("cmd на перезапуск вызван, ждём когда приебашит меня");
             }
+            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
+            {
+                writelog("eula null");
+                Form2 eula = new Form2();
+                eula.ShowDialog();
+            }
             #endregion
             #region temp
             writelog("");

@@ -82,7 +82,6 @@
             this.Name = "Win32Priority";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Win32PrioritySeparation";
-            this.Load += new System.EventHandler(this.Win32Priority_Load);
             this.ResumeLayout(false);
 
         }
