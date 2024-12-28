@@ -101,6 +101,94 @@ namespace Project
                         CreateNoWindow = false
                     });
                 }
+
+                if (e.KeyValue == (char)Keys.F11)
+                {
+                    LabelHead.Text = "BRO, TELL ME, ARE YOU INSANE?";
+                    button_new.Text = "LETS GO!";
+                    void ChangeLabelForeColor(Control parent, Color color)
+                    {
+                        foreach (Control control in parent.Controls)
+                        {
+                            if (control is Label label)
+                            {
+                                label.ForeColor = color; // Замените на нужный цвет
+                            }
+                            else if (control is CheckBox CheckBox)
+                            {
+                                CheckBox.ForeColor = color; // Замените на нужный цвет
+                            }
+                            else if (control is Button Button)
+                            {
+                                Button.ForeColor = color; // Замените на нужный цвет
+                            }
+                            else if (control.HasChildren)
+                            {
+                                ChangeLabelForeColor(control, color); // Рекурсивно обрабатываем вложенные элементы
+                            }
+                        }
+                    }
+                    ChangeLabelForeColor(this, Color.Red); // Замените Color.Red на ваш цвет
+
+                    writelog("INSANE MODE!");
+                    //main
+                    checkBox_disabledefender.Checked = true;
+                    checkBox_reg.Checked = true;
+                    checkBox_dism.Checked = true;
+                    checkBox_gibernate.Checked = true;
+                    checkBox_scheme.Checked = true;
+                    checkBox_mpo.Checked = true;
+                    checkBox_usb.Checked = true;
+                    checkBox_bcdedit.Checked = true;
+                    checkBox_mtiititit.Checked = true;
+                    checkBox_mmagent.Checked = true;
+                    checkBox_page.Checked = true;
+                    checkBox_mousefix.Checked = true;
+                    checkBox_audio.Checked = true;
+                    checkBox_dwninput.Checked = true;
+                    checkBox_audioDG.Checked = true;
+                    checkBox_tolerate.Checked = true;
+                    checkBox_videoprocess.Checked = true;
+                    checkBox_usbport.Checked = true;
+                    checkBox_usbpollrate.Checked = true;
+
+                    //gpu
+                    checkBox_directplay.Checked = true;
+
+
+                    //ui
+                    checkBoxUI_Buttons_1.Checked = true;
+                    checkBoxUI_Buttons_2.Checked = true;
+                    checkBoxUI_Buttons_4.Checked = true;
+                    checkBox_wotboincontex.Checked = true;
+                    checkBox_explorer.Checked = true;
+
+                    //dop
+                    checkBox_onedrive.Checked = true;
+                    checkBox_compactos.Checked = true;
+                    checkBox_WinSxS.Checked = true;
+                    checkBox_temp.Checked = true;
+                    checkBox_updclean.Checked = true;
+                    checkBox_picture_cache.Checked = true;
+                    checkBox_mobile_traffic.Checked = true;
+                    checkBox_nastroyka.Checked = true;
+                    checkBox_zalipanie.Checked = true;
+                    checkBox_dwm.Checked = true;
+                    checkBox_edge.Checked = true;
+                    checkBox_move_temp.Checked = true;
+
+                    //pro
+                    checkBox_pro_3.Checked = true;
+                    checkBox_CSRSS.Checked = true;
+                    checkBox_pro_11.Checked = true;
+                    checkBox_pro_13.Checked = true;
+
+
+                    if (!win10)
+                    {
+
+                    }
+                }
             };
             // Инициализируем NotifyIcon один раз при создании формы
             notifyIcon = new NotifyIcon
@@ -108,6 +196,7 @@ namespace Project
                 Icon = SystemIcons.Information, // Устанавливаем иконку (или любую другую)
                 Visible = false // Сначала иконка не видима
             };
+
 
 
         }
@@ -192,12 +281,6 @@ namespace Project
 
                     proc.BeginOutputReadLine();
                     proc.BeginErrorReadLine();
-
-                    if (!proc.WaitForExit(30000)) // 30 секунд
-                    {
-                        proc.Kill();
-                        writelog("[CMD] Command timed out and was killed.");
-                    }
                 }
             }
             catch (Exception ex)
@@ -205,7 +288,6 @@ namespace Project
                 writelog("[CMD] Error: " + ex.Message);
             }
         }
-
         public async Task hcmdAsync(string line)
         {
             await Task.Run(() =>
@@ -1741,7 +1823,7 @@ namespace Project
                 {
                     hcmd($"regedit.exe /s {path_ui}/Taskmgr_win10_new.reg");
                 }
-                    
+
                 hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("litle_explorer_things", 1);
                 checkBoxUI_Buttons_2.Enabled = false;
