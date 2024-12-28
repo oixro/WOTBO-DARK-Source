@@ -1596,7 +1596,7 @@ namespace Project
             this.back_ui_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_10.Location = new System.Drawing.Point(1, 185);
             this.back_ui_10.Name = "back_ui_10";
-            this.back_ui_10.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_10.Size = new System.Drawing.Size(15, 15);
             this.back_ui_10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_10.TabIndex = 23;
             this.back_ui_10.TabStop = false;
@@ -1613,7 +1613,7 @@ namespace Project
             this.back_ui_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_9.Location = new System.Drawing.Point(0, 162);
             this.back_ui_9.Name = "back_ui_9";
-            this.back_ui_9.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_9.Size = new System.Drawing.Size(15, 15);
             this.back_ui_9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_9.TabIndex = 11;
             this.back_ui_9.TabStop = false;
@@ -1630,7 +1630,7 @@ namespace Project
             this.back_ui_8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_8.Location = new System.Drawing.Point(0, 131);
             this.back_ui_8.Name = "back_ui_8";
-            this.back_ui_8.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_8.Size = new System.Drawing.Size(15, 15);
             this.back_ui_8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_8.TabIndex = 11;
             this.back_ui_8.TabStop = false;
@@ -1660,7 +1660,7 @@ namespace Project
             this.back_ui_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_7.Location = new System.Drawing.Point(0, 105);
             this.back_ui_7.Name = "back_ui_7";
-            this.back_ui_7.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_7.Size = new System.Drawing.Size(15, 15);
             this.back_ui_7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_7.TabIndex = 11;
             this.back_ui_7.TabStop = false;
@@ -1677,7 +1677,7 @@ namespace Project
             this.back_ui_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_6.Location = new System.Drawing.Point(0, 85);
             this.back_ui_6.Name = "back_ui_6";
-            this.back_ui_6.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_6.Size = new System.Drawing.Size(15, 15);
             this.back_ui_6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_6.TabIndex = 11;
             this.back_ui_6.TabStop = false;
@@ -1694,7 +1694,7 @@ namespace Project
             this.back_ui_11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_11.Location = new System.Drawing.Point(0, 205);
             this.back_ui_11.Name = "back_ui_11";
-            this.back_ui_11.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_11.Size = new System.Drawing.Size(15, 15);
             this.back_ui_11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_11.TabIndex = 11;
             this.back_ui_11.TabStop = false;
@@ -1711,7 +1711,7 @@ namespace Project
             this.back_ui_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_5.Location = new System.Drawing.Point(0, 65);
             this.back_ui_5.Name = "back_ui_5";
-            this.back_ui_5.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_5.Size = new System.Drawing.Size(15, 15);
             this.back_ui_5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_5.TabIndex = 11;
             this.back_ui_5.TabStop = false;
@@ -1728,7 +1728,7 @@ namespace Project
             this.back_ui_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_4.Location = new System.Drawing.Point(0, 45);
             this.back_ui_4.Name = "back_ui_4";
-            this.back_ui_4.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_4.Size = new System.Drawing.Size(15, 15);
             this.back_ui_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_4.TabIndex = 11;
             this.back_ui_4.TabStop = false;
@@ -1745,7 +1745,7 @@ namespace Project
             this.back_ui_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_2.Location = new System.Drawing.Point(0, 25);
             this.back_ui_2.Name = "back_ui_2";
-            this.back_ui_2.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_2.Size = new System.Drawing.Size(15, 15);
             this.back_ui_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_2.TabIndex = 11;
             this.back_ui_2.TabStop = false;
@@ -1762,7 +1762,7 @@ namespace Project
             this.back_ui_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_1.Location = new System.Drawing.Point(0, 5);
             this.back_ui_1.Name = "back_ui_1";
-            this.back_ui_1.Size = new System.Drawing.Size(15, 20);
+            this.back_ui_1.Size = new System.Drawing.Size(15, 15);
             this.back_ui_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_1.TabIndex = 11;
             this.back_ui_1.TabStop = false;
