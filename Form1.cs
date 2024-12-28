@@ -197,6 +197,7 @@ namespace Project
                     }
                     }
                 }
+
             };
             // Инициализируем NotifyIcon один раз при создании формы
             notifyIcon = new NotifyIcon
@@ -473,28 +474,6 @@ namespace Project
             Invalidate();
         }
 
-        void CheckAndDisableMouseFix()
-        {
-            using (Graphics g = this.CreateGraphics())
-            {
-                float dpiX = g.DpiX;
-
-                // Рассчитываем масштаб в процентах
-                float scaleX = dpiX / 96 * 100;
-
-                // Если масштаб не 100%, отключаем чекбокс
-                if (scaleX != 100)
-                {
-                    checkBox_mousefix.Enabled = false; // Отключаем чекбокс
-                    writelog("Масштаб интерфейса не равен 100%, отключаем чекбокс.");
-                }
-                else
-                {
-                    checkBox_mousefix.Enabled = true; // Включаем чекбокс, если масштаб 100%
-                    writelog("Масштаб интерфейса равен 100%, чекбокс включен.");
-                }
-            }
-        }
         #endregion
         #region открытие
         async void Form1_Load(object sender, EventArgs e)
