@@ -104,6 +104,11 @@ namespace Project
 
                 if (e.KeyValue == (char)Keys.F11)
                 {
+                    DialogResult result = MessageBox.Show("Выбрать все твики? \nОткажись если ты не знаешь что это!","GOD MODE", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+
+                    
                     LabelHead.Text = "BRO, TELL ME, ARE YOU INSANE?";
                     button_new.Text = "LETS GO!";
                     void ChangeLabelForeColor(Control parent, Color color)
@@ -186,7 +191,10 @@ namespace Project
 
                     if (!win10)
                     {
-
+                        checkBox_shapka.Checked = true;
+                        checkBox_contex.Checked = true;
+                        checkBox_pro_1.Checked = true;
+                    }
                     }
                 }
             };
@@ -805,6 +813,7 @@ namespace Project
                 checkBox_disabledefender.Enabled = false;
                 label_delete_defender.Enabled = true;
                 back_main_12.Visible = true;
+                label_kalorant.Visible = true;
             }
             if (File.Exists($@"C:\Windows\System32\imageres.dll_bak"))
             {
@@ -831,11 +840,11 @@ namespace Project
                 checkBox_disabledefender.Enabled = false;
                 back_main_12.Visible = false;
             }
-            //if (!Directory.Exists($@"{Environment.GetEnvironmentVariable("userprofile")}\OneDrive"))
-            //{
-            //    writelog("OneDrive был удалён");
-            //    checkBox_onedrive.Enabled = false;
-            //}
+            if (!File.Exists($@"{SysFolder.UserProfile}\AppData\Local\Microsoft\OneDrive\OneDrive.exe"))
+            {
+                writelog("OneDrive был удалён");
+                checkBox_onedrive.Enabled = false;
+            }
             if (exepath == contexpath)
             {
                 writelog("запущены из конткестного");
@@ -1289,6 +1298,7 @@ namespace Project
                 supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
                 checkBox_disabledefender.Enabled = false;
                 checkBox_disabledefender.Checked = false;
+                label_kalorant.Visible = true;
                 back_main_12.Visible = true;
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("defenderdisabled", 1);
                 ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
@@ -3622,5 +3632,11 @@ namespace Project
             process.WaitForExit();
         }
         #endregion
+
+        void label_kalorant_Click(object sender, EventArgs e)
+        {
+            hcmd($"regedit.exe /s {path_regpack}/exploitscfg.reg");
+            label_kalorant.Visible = false;
+        }
     }
 }
