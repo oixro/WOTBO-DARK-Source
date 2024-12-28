@@ -2014,7 +2014,6 @@ namespace Project
             // 
             this.checkBox_onedrive.AutoSize = true;
             this.checkBox_onedrive.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_onedrive.Enabled = false;
             this.checkBox_onedrive.ForeColor = System.Drawing.Color.White;
             this.checkBox_onedrive.Location = new System.Drawing.Point(20, 65);
             this.checkBox_onedrive.Name = "checkBox_onedrive";

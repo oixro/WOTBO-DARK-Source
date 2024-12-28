@@ -53,6 +53,21 @@ namespace Project
         public static long capacity;
         static string path_NVidiaProfileInspectorDmW = tempfolder + @"\NVidiaProfileInspectorDmW";
         private NotifyIcon notifyIcon;
+        public static class SysFolder
+        {
+            public static string C = Environment.ExpandEnvironmentVariables("%systemdrive%");
+            public static string Temp = Environment.ExpandEnvironmentVariables("%temp%");
+            public static string UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            public static string Local = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\AppData\Local";
+            public static string Roaming = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\AppData\Roaming";
+            public static string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            public static string Windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+            public static string System32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            public static string SysWOW64 = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
+            public static string ProgramFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            public static string ProgramFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            public static string ProgramData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+        }
         #endregion
         #region default crap
         public WOTBO()
@@ -72,14 +87,20 @@ namespace Project
                 };
             });
             KeyPreview = true;
-            //KeyDown += (s, e) => { if (e.KeyValue == (char)Keys.F12) Process.Start(logfile); };
             KeyDown += (s, e) =>
             {
-                if (e.KeyValue == (char)Keys.F12) Process.Start(new ProcessStartInfo
+                if (e.KeyValue == (char)Keys.F12)
                 {
-                    FileName = "powershell",
-                    Arguments = $"/command Get-Content -Path \"{logfile}\" -Wait -Encoding UTF8",
-                });
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "powershell",
+                        Arguments = $"/command chcp 65001; Get-Content -Path \"{logfile}\" -Wait -Encoding UTF8",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = false,
+                        RedirectStandardError = false,
+                        CreateNoWindow = false
+                    });
+                }
             };
             // Инициализируем NotifyIcon один раз при создании формы
             notifyIcon = new NotifyIcon
@@ -92,58 +113,105 @@ namespace Project
         }
         #endregion
         #region my void's
+        #region old cmd method
         //void hcmd(string line)
         //{
-        //    //OLD METHOD
         //    try
         //    {
-        //        Process.Start(new ProcessStartInfo
+        //        writelog("[CMD] Command: " + line);
+        //        ProcessStartInfo psi = new ProcessStartInfo
         //        {
         //            FileName = "cmd.exe",
-        //            Arguments = $"/c {line}",
-        //            WindowStyle = ProcessWindowStyle.Hidden
-        //        });
+        //            Arguments = $"/c chcp 65001 & {line}",
+        //            RedirectStandardOutput = true,
+        //            RedirectStandardError = true,
+        //            UseShellExecute = false,
+        //            CreateNoWindow = true // Скрыть окно CMD
+        //        };
+        //
+        //        using (Process proc = new Process())
+        //        {
+        //            proc.StartInfo = psi;
+        //            proc.Start();
+        //
+        //            // Читаем стандартный вывод и ошибки
+        //            string output = proc.StandardOutput.ReadToEnd();
+        //            string error = proc.StandardError.ReadToEnd();
+        //            proc.WaitForExit();
+        //
+        //            // Объединяем вывод и ошибки
+        //            string result = output + error;
+        //
+        //            // Выводим результат через функцию writelog
+        //            writelog("[CMD] Output: " + result);
+        //        }
         //    }
-        //    catch
+        //    catch (Exception ex)
         //    {
+        //        writelog("[CMD] Error: " + ex.Message);
         //    }
         //}
-        void hcmd(string line)
+        #endregion
+        public void hcmd(string line)
         {
             try
             {
                 writelog("[CMD] Command: " + line);
+
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = $"/c {line}",
+                    Arguments = $"/c chcp 65001 & {line}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
-                    CreateNoWindow = true // Скрыть окно CMD
+                    CreateNoWindow = true
                 };
 
                 using (Process proc = new Process())
                 {
                     proc.StartInfo = psi;
+
+                    proc.OutputDataReceived += (sender, e) =>
+                    {
+                        if (!string.IsNullOrEmpty(e.Data))
+                        {
+                            writelog("[CMD] Output: " + e.Data);
+                        }
+                    };
+
+                    proc.ErrorDataReceived += (sender, e) =>
+                    {
+                        if (!string.IsNullOrEmpty(e.Data))
+                        {
+                            writelog("[CMD] Error: " + e.Data);
+                        }
+                    };
+
                     proc.Start();
 
-                    // Читаем стандартный вывод и ошибки
-                    string output = proc.StandardOutput.ReadToEnd();
-                    string error = proc.StandardError.ReadToEnd();
-                    //proc.WaitForExit();
+                    proc.BeginOutputReadLine();
+                    proc.BeginErrorReadLine();
 
-                    // Объединяем вывод и ошибки
-                    string result = output + error;
-
-                    // Выводим результат через функцию writelog
-                    writelog("[CMD] Output: " + result);
+                    if (!proc.WaitForExit(30000)) // 30 секунд
+                    {
+                        proc.Kill();
+                        writelog("[CMD] Command timed out and was killed.");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 writelog("[CMD] Error: " + ex.Message);
             }
+        }
+
+        public async Task hcmdAsync(string line)
+        {
+            await Task.Run(() =>
+            {
+                hcmd(line); // Вызов вашей команды внутри Task.Run
+            });
         }
         void scmd(string line)
         {
@@ -206,18 +274,31 @@ namespace Project
                 writelog("[CMD] Произошла ошибка: " + ex.Message);
             }
         }
+
         void writelog(string line)
         {
-            using (StreamWriter logs = new StreamWriter(logfile, true))
+            // Запускаем асинхронную запись в лог
+            Task.Run(() =>
             {
-                // Получение текущего времени
-                DateTime now = DateTime.Now;
+                lock (logLock) // Гарантия потокобезопасности
+                {
+                    using (StreamWriter logs = new StreamWriter(logfile, true, Encoding.UTF8))
+                    {
+                        // Получение текущего времени
+                        DateTime now = DateTime.Now;
 
-                // Форматирование времени с миллисекундами
-                string formattedTime = now.ToString("yyyy-MM-dd HH:mm:ss.ffff");
-                logs.WriteLine($"{formattedTime} - {line}");
-            }
+                        // Форматирование времени с миллисекундами
+                        string formattedTime = now.ToString("yyyy-MM-dd HH:mm:ss.ffff");
+                        logs.WriteLine($"{formattedTime} - {line}");
+                    }
+                }
+            });
         }
+
+        // Глобальный объект для блокировки
+        private static readonly object logLock = new object();
+
+
         void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
             System.Windows.Forms.CheckBox checkBox = sender as System.Windows.Forms.CheckBox;
@@ -329,14 +410,6 @@ namespace Project
         async void Form1_Load(object sender, EventArgs e)
         {
             #region logs
-            if (File.Exists(logfile))
-            {
-                if ((File.ReadAllLines(logfile).Length) > 3000)
-                {
-                    File.Delete(logfile);
-                }
-            }
-
             writelog($"                                    ");
             writelog($"==============Launched==============");
             writelog($"                                    ");
@@ -676,11 +749,11 @@ namespace Project
                 checkBox_disabledefender.Enabled = false;
                 back_main_12.Visible = false;
             }
-            if (!Directory.Exists($@"{Environment.GetEnvironmentVariable("userprofile")}\OneDrive"))
-            {
-                writelog("OneDrive был удалён");
-                checkBox_onedrive.Enabled = false;
-            }
+            //if (!Directory.Exists($@"{Environment.GetEnvironmentVariable("userprofile")}\OneDrive"))
+            //{
+            //    writelog("OneDrive был удалён");
+            //    checkBox_onedrive.Enabled = false;
+            //}
             if (exepath == contexpath)
             {
                 writelog("запущены из конткестного");
@@ -1030,9 +1103,9 @@ namespace Project
             #region bitlocker
             try
             {
-                writelog("");
-                writelog("try bitlocker");
-                hcmd("manage-bde -off C:");
+                //writelog("");
+                //writelog("try bitlocker");
+                //hcmd("manage-bde -off C:");
             }
             catch { }
             #endregion
@@ -1057,21 +1130,21 @@ namespace Project
         #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            writelog("closed");
+            writelog("closing");
             if (Directory.Exists(tempfolder))
             {
                 try
                 {
+                    writelog($"удаляем tempfolder -  \"{tempfolder}\"");
                     Directory.Delete(tempfolder, true);
                 }
                 catch
                 {
                     InstanceChecker.ReleaseMemory();
-                    hcmd("taskkill /f /im cmd.exe");
+                    writelog("освобождаем память и убиваемся");
                     hcmd($"taskkill /f /im {exename}");
                 }
             }
-            hcmd("taskkill /f /im cmd.exe");
             InstanceChecker.ReleaseMemory();
         }
         #endregion
@@ -1693,7 +1766,7 @@ namespace Project
                             wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/imageres.zip", $"{tempfolder}\\imageres.zip");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\imageres.zip", tempfolder);
                         }
-                    hcmd($"{tempfolder}\\blueiconsw10.bat");
+                    await hcmdAsync($"{tempfolder}\\blueiconsw10.bat");
                     checkBox_bluefolders.Checked = false;
                     checkBox_bluefolders.Enabled = false;
                     back_ui_5.Visible = true;
@@ -1708,7 +1781,7 @@ namespace Project
                             wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BlueIcon_Minimal.zip", $"{tempfolder}\\BlueIcon_Minimal.zip");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\BlueIcon_Minimal.zip", tempfolder + "\\BlueIcon Minimal");
                         }
-                    hcmd($"{tempfolder}\\blueicons.bat");
+                    await hcmdAsync($"{tempfolder}\\blueicons.bat");
                     checkBox_bluefolders.Checked = false;
                     checkBox_bluefolders.Enabled = false;
                     back_ui_5.Visible = true;
@@ -1843,42 +1916,66 @@ namespace Project
             }
             if (checkBox_onedrive.Checked)
             {
-                void ExecutePowerShellCommand(string command)
+                #region old method
+                //void ExecutePowerShellCommand(string command)
+                //
+                //   ProcessStartInfo processInfo = new ProcessStartInfo("powershell.exe", "-Command " + command);
+                //   processInfo.CreateNoWindow = true;
+                //   processInfo.UseShellExecute = false;
+                //   processInfo.RedirectStandardError = true;
+                //   processInfo.RedirectStandardOutput = true;
+                //
+                //   Process process = Process.Start(processInfo);
+                //   process.WaitForExit();
+                //
+                //   string output = process.StandardOutput.ReadToEnd();
+                //   string error = process.StandardError.ReadToEnd();
+                //
+                //   if (!string.IsNullOrEmpty(output))
+                //   {
+                //       Console.WriteLine("OUTPUT: " + output);
+                //   }
+                //
+                //   if (!string.IsNullOrEmpty(error))
+                //   {
+                //       Console.WriteLine("ERROR: " + error);
+                //   }
+                //
+                //try
+                //{
+                //    // Удаление UWP приложения OneDrive
+                //    ExecutePowerShellCommand("Get-AppxPackage *OneDrive* | Remove-AppxPackage");
+                //    writelog("UWP версия OneDrive успешно удалена.");
+                //    hcmd($"{Environment.ExpandEnvironmentVariables(@"%SystemRoot%\SysWOW64\OneDriveSetup.exe")} /uninstall");
+                //    writelog("не UWP onedrive удалён");
+                //}
+                //catch (Exception ex)
+                //{
+                //    writelog("Произошла ошибка: " + ex.Message);
+                //}
+                #endregion
+
+                // Массив с путями к файлу OneDriveSetup.exe
+                string[] OneDriveSetup = Directory.GetFiles(@"C:\Windows\System32", "OneDriveSetup.exe", SearchOption.TopDirectoryOnly)
+                                                  .Concat(Directory.GetFiles(@"C:\Windows\SysWOW64", "OneDriveSetup.exe", SearchOption.TopDirectoryOnly))
+                                                  .ToArray();
+
+                // Проверка наличия хотя бы одного пути к файлу
+                if (OneDriveSetup.Length > 0)
                 {
-                    ProcessStartInfo processInfo = new ProcessStartInfo("powershell.exe", "-Command " + command);
-                    processInfo.CreateNoWindow = true;
-                    processInfo.UseShellExecute = false;
-                    processInfo.RedirectStandardError = true;
-                    processInfo.RedirectStandardOutput = true;
+                    // Путь к первому найденному файлу
+                    string OneDriveSetupPath = OneDriveSetup[0];
+                    writelog($"путь к Onedrive найден - {OneDriveSetupPath}, переходим к удалению");
 
-                    Process process = Process.Start(processInfo);
-                    process.WaitForExit();
-
-                    string output = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
-
-                    if (!string.IsNullOrEmpty(output))
-                    {
-                        Console.WriteLine("OUTPUT: " + output);
-                    }
-
-                    if (!string.IsNullOrEmpty(error))
-                    {
-                        Console.WriteLine("ERROR: " + error);
-                    }
+                    // Вызов команды для деинсталляции OneDrive
+                    await hcmdAsync($"{OneDriveSetupPath} /uninstall");
                 }
-                try
+                else
                 {
-                    // Удаление UWP приложения OneDrive
-                    ExecutePowerShellCommand("Get-AppxPackage *OneDrive* | Remove-AppxPackage");
-                    writelog("UWP версия OneDrive успешно удалена.");
-                    hcmd($"{Environment.ExpandEnvironmentVariables(@"%SystemRoot%\SysWOW64\OneDriveSetup.exe")} /uninstall");
-                    writelog("не UWP onedrive удалён");
+                    // Логирование ошибки, если файл не найден
+                    writelog("Файл OneDriveSetup.exe не найден");
                 }
-                catch (Exception ex)
-                {
-                    writelog("Произошла ошибка: " + ex.Message);
-                }
+
                 checkBox_onedrive.Checked = false;
                 checkBox_onedrive.Enabled = false;
             }
@@ -1896,11 +1993,21 @@ namespace Project
             {
                 string tempPath = Path.GetTempPath();
 
-                // Удаление всех файлов
+                // Удаление всех файлов, кроме wotbo.log
                 foreach (string file in Directory.GetFiles(tempPath))
                 {
                     try
                     {
+                        // Получаем имя файла без пути
+                        string fileName = Path.GetFileName(file);
+
+                        // Проверяем, не является ли файл wotbo.log
+                        if (fileName.Equals("wotbo.log", StringComparison.OrdinalIgnoreCase))
+                        {
+                            writelog($"Файл {file} пропущен.");
+                            continue;
+                        }
+
                         File.Delete(file);
                         writelog($"Файл {file} успешно удален.");
                     }
@@ -3144,6 +3251,17 @@ namespace Project
         } //buttons
         void back_ui_2_Click(object sender, EventArgs e)
         {
+            hcmd($"regedit.exe /s {path_ui}/un_things.reg");
+            if (!win10)
+            {
+                hcmd(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000000"" /f");
+            }
+            else
+            {
+                hcmd($"regedit.exe /s {path_ui}/Taskmgr_win10_default.reg");
+            }
+
+            hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
             checkBoxUI_Buttons_2.Enabled = true;
             checkBoxUI_Buttons_2.Checked = false;
             back_ui_2.Visible = false;
@@ -3421,28 +3539,6 @@ namespace Project
             process.Start();
             process.WaitForExit();
         }
-        #endregion
-        #region language
-        void label_language_Click(object sender, EventArgs e)
-        {
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language") != null)
-            {
-                //MessageBox.Show("не null ебать");
-                if ((Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo").GetValue("Language").ToString()) == "en")
-                {
-                    //MessageBox.Show("мы были en, ща будем ru");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("Language", "ru");
-                    hcmd($"taskkill /f /im \"{exename}\" && \"{exepath}\"");
-                }
-                else
-                {
-                    // MessageBox.Show("ща будем EN");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("Language", "en");
-                    hcmd($"taskkill /f /im \"{exename}\" && \"{exepath}\"");
-                }
-            }
-        }
-
         #endregion
     }
 }
