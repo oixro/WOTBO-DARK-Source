@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -28,6 +29,21 @@ namespace test1
             using (StreamWriter logs = new StreamWriter(logfile, true))
             {
                 logs.WriteLine("Exception: " + e.Exception.Message);
+                logs.WriteLine("StackTrace: " + e.Exception.StackTrace);
+                logs.WriteLine("Date: " + DateTime.Now);
+            }
+            if (e.Exception is WebException webException &&
+    webException.Message.Contains("Соединение было неожиданно закрыто"))
+            {
+                // Сообщение для пользователя
+                MessageBox.Show(
+                    "Ошибка: Соединение было неожиданно закрыто. Попробуйте позже.",
+                    "Ошибка загрузки",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return; // Не завершаем приложение
             }
             StringCollection files = new StringCollection();
             files.Add(logfile);

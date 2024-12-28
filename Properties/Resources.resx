@@ -121,9 +121,6 @@
   <data name="back" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="affinity" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\affinity.cmd;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
   <data name="blueicons" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\blueicons.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
@@ -135,9 +132,6 @@
   </data>
   <data name="deficonsw10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\deficonsw10.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
-  </data>
-  <data name="explor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\explor.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;koi8-r</value>
   </data>
   <data name="gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gear.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -192,5 +186,8 @@
   </data>
   <data name="Base_Profile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Base Profile.nip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="explor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\explor.bat;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
 </root>

@@ -61,27 +61,6 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на @echo off
-        ///for /f &quot;tokens=*&quot; %%f in (&apos;wmic cpu get NumberOfCores /value ^| find &quot;=&quot;&apos;) do set %%f
-        ///for /f &quot;tokens=*&quot; %%f in (&apos;wmic cpu get NumberOfLogicalProcessors /value ^| find &quot;=&quot;&apos;) do set %%f
-        ///if &quot;!NumberOfCores!&quot; == &quot;2&quot; (
-        ///	cls
-        ///	echo You have 2 cores. Affinities won&apos;t work.
-        ///	pause
-        ///	reg delete &quot;HKCU\Software\Hone&quot; /v AffinityTweaks /f
-        ///	goto Tweaks
-        ///)
-        ///if !NumberOfCores! gtr 4 (
-        ///	for /f %%i in (&apos;wmic path Win32_VideoController get PNPDeviceID^| findstr /l &quot;PCI\VEN_&quot;&apos;) do (
-        ///		reg add &quot;HKLM\System\Cu [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string affinity {
-            get {
-                return ResourceManager.GetString("affinity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
         ///
         ///;Audio Latency

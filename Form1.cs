@@ -112,7 +112,7 @@ namespace Project
         {
             try
             {
-                writelog("[CMD] Command: "+line);
+                writelog("[CMD] Command: " + line);
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
@@ -131,7 +131,7 @@ namespace Project
                     // Читаем стандартный вывод и ошибки
                     string output = proc.StandardOutput.ReadToEnd();
                     string error = proc.StandardError.ReadToEnd();
-                    proc.WaitForExit();
+                    //proc.WaitForExit();
 
                     // Объединяем вывод и ошибки
                     string result = output + error;
@@ -598,12 +598,7 @@ namespace Project
                 checkBoxUI_Buttons_2.Enabled = false;
                 back_ui_2.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("contex")) == 1)
-            {
-                writelog("contex был применён");
-                checkBoxUI_Buttons_3.Enabled = false;
-                back_ui_3.Visible = true;
-            }
+
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop").GetValue("JPEGImportQuality")) == 100)
             {
                 writelog("JPEGImportQuality был применён");
@@ -635,12 +630,7 @@ namespace Project
                 checkBox_pro_1.Enabled = false;
 
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_7")) == 1)
-            {
-                writelog("pro_7 был применён");
-                checkBox_pro_7.Enabled = false;
 
-            }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Control\PriorityControl").GetValue("Win32PrioritySeparation")) != 0x00000002)
             {
                 writelog("Win32PrioritySeparation был применён");
@@ -1009,6 +999,7 @@ namespace Project
                 checkBox_contex.Enabled = false;
                 checkBox_pro_1.Enabled = false;
                 checkBox_shapka.Enabled = false;
+
                 writelog($"чеки под win 11 для win10 отключены");
             }
             #endregion
@@ -1041,7 +1032,7 @@ namespace Project
             {
                 writelog("");
                 writelog("try bitlocker");
-                hcmd("manage-bde -off C: & manage-bde -off D: & manage-bde -off E: & manage-bde -off F: & manage-bde -off G:");
+                hcmd("manage-bde -off C:");
             }
             catch { }
             #endregion
@@ -1160,6 +1151,26 @@ namespace Project
                 }
                 supercmd($"regedit.exe /s {path_regpack}/foldernetworkX.reg");
                 hcmd($"regedit.exe /s {path_regpack}/REG_AIO.reg");
+                #region
+                try
+                {
+                    // Создаем ManagementObject для управления брандмауэром
+                    using (ManagementClass mc = new ManagementClass("root\\StandardCimv2", "MSFT_NetFirewallProfile", null))
+                    {
+                        foreach (ManagementObject mo in mc.GetInstances())
+                        {
+                            // Устанавливаем свойство Enabled в false
+                            mo["Enabled"] = false;
+                            mo.Put();
+                        }
+                    }
+                    writelog("Брандмауэр отключен.");
+                }
+                catch (Exception ex)
+                {
+                    writelog("Произошла ошибка: " + ex.Message);
+                }
+                #endregion
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("regpack", 1);
                 checkBox_reg.Enabled = false;
                 checkBox_reg.Checked = false;
@@ -1372,11 +1383,11 @@ namespace Project
             if (checkBox_mousefix.Checked)
             {
                 File.WriteAllText(tempfolder + @"\mousefix.reg", Resources.mousefix);
-                    hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
-                    Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("mousefix", 1);
-                    checkBox_mousefix.Enabled = false;
-                    checkBox_mousefix.Checked = false;
-                    back_main_5.Visible = true;
+                hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
+                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("mousefix", 1);
+                checkBox_mousefix.Enabled = false;
+                checkBox_mousefix.Checked = false;
+                back_main_5.Visible = true;
             }
 
             //вторая
@@ -1650,20 +1661,19 @@ namespace Project
                 hcmd($"regedit.exe /s {path_ui}/things.reg");
                 hcmd(@"rd /s /q ""%userprofile%\3D Objects\""");
                 if (!win10)
+                {
                     hcmd(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000001"" /f");
+                }
+                else
+                {
+                    hcmd($"regedit.exe /s {path_ui}/Taskmgr_win10_new.reg");
+                }
+                    
                 hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("litle_explorer_things", 1);
                 checkBoxUI_Buttons_2.Enabled = false;
                 checkBoxUI_Buttons_2.Checked = false;
                 back_ui_2.Visible = true;
-            }
-            if (checkBoxUI_Buttons_3.Checked)
-            {
-
-                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("contex", 1);
-                checkBoxUI_Buttons_3.Enabled = false;
-                checkBoxUI_Buttons_3.Checked = false;
-                back_ui_3.Visible = true;
             }
             if (checkBoxUI_Buttons_4.Checked)
             {
@@ -1803,32 +1813,33 @@ namespace Project
                 checkBox_mica.Checked = false;
                 back_ui_11.Visible = true;
             }
+
             #endregion
             #region dop
             if (checkBox_edgedelete.Checked)
             {
-                    DialogResult result = MessageBox.Show("Edge будет удалён, оставить WebView? ", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                    if (result == DialogResult.No)
-                    {
-                        //MessageBox.Show("Ожидайте открытия программы");
-                        using (WebClient wc = new WebClient())
-                            wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-Edge.exe?raw=true", $"{tempfolder}\\Remove-Edge.exe");
-                        Process.Start($"{tempfolder}\\Remove-Edge.exe").WaitForExit();
-                        checkBox_edgedelete.Checked = false;
+                DialogResult result = MessageBox.Show("Edge будет удалён, оставить WebView? ", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (result == DialogResult.No)
+                {
+                    //MessageBox.Show("Ожидайте открытия программы");
+                    using (WebClient wc = new WebClient())
+                        wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-Edge.exe?raw=true", $"{tempfolder}\\Remove-Edge.exe");
+                    Process.Start($"{tempfolder}\\Remove-Edge.exe").WaitForExit();
+                    checkBox_edgedelete.Checked = false;
 
-                    }
-                    if (result == DialogResult.Yes)
-                    {
-                        //MessageBox.Show("Ожидайте открытия программы");
-                        using (WebClient wc = new WebClient())
-                            wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-EdgeOnly.exe?raw=true", $"{tempfolder}\\Remove-EdgeOnly.exe");
-                        Process.Start($"{tempfolder}\\Remove-EdgeOnly.exe").WaitForExit();
-                        checkBox_edgedelete.Checked = false;
-                    }
-                    if (result == DialogResult.Cancel)
-                    {
-                        checkBox_edgedelete.Checked = false;
-                    }
+                }
+                if (result == DialogResult.Yes)
+                {
+                    //MessageBox.Show("Ожидайте открытия программы");
+                    using (WebClient wc = new WebClient())
+                        wc.DownloadFile("https://github.com/ShadowWhisperer/Remove-MS-Edge/blob/main/Remove-EdgeOnly.exe?raw=true", $"{tempfolder}\\Remove-EdgeOnly.exe");
+                    Process.Start($"{tempfolder}\\Remove-EdgeOnly.exe").WaitForExit();
+                    checkBox_edgedelete.Checked = false;
+                }
+                if (result == DialogResult.Cancel)
+                {
+                    checkBox_edgedelete.Checked = false;
+                }
             }
             if (checkBox_onedrive.Checked)
             {
@@ -2151,13 +2162,7 @@ namespace Project
                 }
                 checkBox_pro_4.Checked = false;
             } //inspector
-            if (checkBox_pro_7.Checked)
-            {
-                hcmd($"{tempfolder}\\affinity.bat");
-                checkBox_pro_7.Checked = false;
-                checkBox_pro_7.Enabled = false;
-                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("pro_7", 1);
-            } //affinity
+
             if (checkBox_CSRSS.Checked)
             {
                 //hcmd($"{tempfolder}\\csrss.bat");
@@ -2272,14 +2277,14 @@ namespace Project
                     wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
                     ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
                 }
-                if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
-                }
-                else
-                {
-                    InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
-                }
+            if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
+            }
+            else
+            {
+                InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
+            }
         }
         void label_activate_Click(object sender, EventArgs e)
         {
@@ -2291,7 +2296,6 @@ namespace Project
             {
                 try
                 {
-                    File.WriteAllText(tempfolder + @"\affinity.bat", Resources.affinity);
                     using (WebClient wcAA = new WebClient())
                         if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
                         {
@@ -2308,18 +2312,18 @@ namespace Project
         void label_delete_defender_Click(object sender, EventArgs e)
         {
 
-                using (WebClient wc = new WebClient())
-                    if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
-                    {
-                        wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip", $"{tempfolder}\\DefenderKiller.zip");
-                        ZipFile.ExtractToDirectory(tempfolder + @"\DefenderKiller.zip", path_dfkiller);
-                    }
-                    else
-                    {
-                        File.Delete(tempfolder + @"\DefenderKiller.zip");
-                        Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
-                    }
-                Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
+            using (WebClient wc = new WebClient())
+                if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
+                {
+                    wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip", $"{tempfolder}\\DefenderKiller.zip");
+                    ZipFile.ExtractToDirectory(tempfolder + @"\DefenderKiller.zip", path_dfkiller);
+                }
+                else
+                {
+                    File.Delete(tempfolder + @"\DefenderKiller.zip");
+                    Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
+                }
+            Process.Start($@"{path_dfkiller}\DefenderKiller.bat").WaitForExit();
         }
         void back_dop_movetemp_Click(object sender, EventArgs e)
         {
@@ -2621,7 +2625,7 @@ namespace Project
         }
         void label_download_4_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.7-zip.org/a/7z2408-x64.exe");
+            Process.Start("https://www.7-zip.org/a/7z2409-x64.exe");
         }
         void label_download_5_Click(object sender, EventArgs e)
         {
@@ -2649,15 +2653,15 @@ namespace Project
         }
         void label_download_11_Click(object sender, EventArgs e)
         {
-            Process.Start("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-30.2.3-Windows-Installer.exe");
+            Process.Start("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-31.0.0-Windows-Installer.exe");
         }
         void label_download_13_Click(object sender, EventArgs e)
         {
-            Process.Start("https://files2.codecguide.com/K-Lite_Codec_Pack_1850_Mega.exe");
+            Process.Start("https://files2.codecguide.com/K-Lite_Codec_Pack_1875_Mega.exe");
         }
         void label_download_14_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.fosshub.com/qBittorrent.html");
+            Process.Start("https://deac-fra.dl.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-5.0.3/qbittorrent_5.0.3_x64_setup.exe?viasf=1");
         }
         void label_download_15_Click(object sender, EventArgs e)
         {
@@ -3144,14 +3148,8 @@ namespace Project
             checkBoxUI_Buttons_2.Checked = false;
             back_ui_2.Visible = false;
             Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).DeleteValue("litle_explorer_things");
-        }//litleexplolrerthingsiaondoaisndonasd
-        void back_ui_3_Click(object sender, EventArgs e)
-        {
-            Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).DeleteValue("contex");
-            checkBoxUI_Buttons_3.Enabled = true;
-            checkBoxUI_Buttons_3.Checked = false;
-            back_ui_3.Visible = false;
-        } //contex
+        }//заглушка
+
         void back_ui_4_Click(object sender, EventArgs e)
         {
             Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true).DeleteValue("JPEGImportQuality");
