@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WOTBO
@@ -42,7 +39,7 @@ namespace WOTBO
 
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\out") != null)
             {
-                MessageBox.Show("В версии 0.959 был изменён путь к реестру, будет выполнена очитска данных","",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("В версии 0.959 был изменён путь к реестру, будет выполнена очитска данных", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Registry.CurrentUser.DeleteSubKeyTree(@"Software\oixro\out");
                 hcmd($"taskkill /f /im \"{exename}\" & timeout /t 1 && \"{exepath}\"");
             }
@@ -69,7 +66,7 @@ $"7. Чтобы принять - нажмите правой кнопкой мы
                 k++;
                 if (k >= 2)
                 {
-                        MessageBox.Show("Иди читай");
+                    MessageBox.Show("Иди читай");
                 }
 
             }
