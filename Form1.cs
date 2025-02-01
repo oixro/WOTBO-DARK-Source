@@ -1229,10 +1229,12 @@ namespace Project
                 label_delete_defender.Enabled = false;
                 checkBox_mmagent.Enabled = false;
                 checkBox_pro_13.Enabled = false;
+                checkBox_pro_14.Enabled = false;
                 checkBox_ffmpeg.Enabled = false;
                 checkBox_mica.Enabled = false;
                 label_cursors.Enabled = false;
                 label_inspector.Enabled = false;
+                label_site.Enabled = false;
 
                 MessageBox.Show("Нет доступа в интернет!\nПроврека на обновления, и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
     MessageBoxButtons.OK, MessageBoxIcon.Warning);
