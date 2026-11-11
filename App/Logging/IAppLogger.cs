@@ -18,8 +18,9 @@ namespace WOTBO.App.Logging
         LogLevel MinimumLevel { get; set; }
 
         /// <summary>
-        /// Запись в прежнем формате <c>время - текст</c>. Сохранена для
-        /// существующих вызовов <c>writelog()</c>, чтобы diff логов не менялся.
+        /// Запись без уровня в прежнем формате <c>время - текст</c>.
+        /// Оставлена для совместимости; в приложении используется
+        /// <see cref="Write(LogLevel, string, string)"/>.
         /// </summary>
         void Write(string message);
 

@@ -13,7 +13,8 @@ namespace WOTBO.App.Logging
     /// файла при закрытии. Писать синхронно выгоднее, чем через очередь:
     /// при крахе приложения последние строки не теряются.
     ///
-    /// Формат — как в старом <c>writelog()</c>:
+    /// Формат простой записи (<see cref="Write(string)"/>) — как в старом
+    /// <c>writelog()</c>:
     /// <code>2026-11-11 20:24:51.4461 - текст</code>
     /// </summary>
     public sealed class AppLogger : IAppLogger

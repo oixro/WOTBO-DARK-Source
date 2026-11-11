@@ -121,7 +121,7 @@ namespace Project
                                           $"ОЗУ: {ramSize.Trim()} {ramFrequency.Trim()}\n" +
                                           $"Display: {screenInfo.Trim()}\n" +
                                           $"OS: {label_winver.Text}";
-                            writelog(label7.Text);
+                            Log.Info("System", label7.Text);
                         });
                     }
                     catch
@@ -181,7 +181,7 @@ namespace Project
                         }
                         ChangeLabelForeColor(this, Color.Red); // Замените Color.Red на ваш цвет
 
-                        writelog("INSANE MODE!");
+                        Log.Warn("UI", "INSANE MODE!");
                         //main
                         checkBox_disabledefender.Checked = true;
                         checkBox_reg.Checked = true;
@@ -466,7 +466,7 @@ namespace Project
         {
             try
             {
-                writelog("[CMD] Command: " + line);
+                Log.Info("Process", "[CMD] Command: " + line);
 
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
@@ -486,7 +486,7 @@ namespace Project
                     {
                         if (!string.IsNullOrEmpty(e.Data))
                         {
-                            writelog("[CMD] Output: " + e.Data);
+                            Log.Debug("Process", "[CMD] Output: " + e.Data);
                         }
                     };
 
@@ -494,7 +494,7 @@ namespace Project
                     {
                         if (!string.IsNullOrEmpty(e.Data))
                         {
-                            writelog("[CMD] Error: " + e.Data);
+                            Log.Warn("Process", "[CMD] Error: " + e.Data);
                         }
                     };
 
@@ -506,7 +506,7 @@ namespace Project
             }
             catch (Exception ex)
             {
-                writelog("[CMD] Error: " + ex.Message);
+                Log.Error("Process", "[CMD] Error: " + ex.Message, ex);
             }
         }
         public async Task hcmdAsync(string line)
@@ -568,20 +568,14 @@ namespace Project
                     // Объединяем вывод и ошибки
                     string result = output + error;
 
-                    // Выводим результат через функцию writelog
-                    writelog(result);
+                    // Выводим результат в лог
+                    Log.Debug("Process", result);
                 }
             }
             catch (Exception ex)
             {
-                writelog("[CMD] Произошла ошибка: " + ex.Message);
+                Log.Error("Process", "[CMD] Произошла ошибка: " + ex.Message, ex);
             }
-        }
-        void writelog(string line)
-        {
-            // Формат и файл остались прежними (%TEMP%\wotbo.log, "время - текст").
-            // Подробности — в WOTBO.App.Logging.AppLogger.
-            Log.Write(line);
         }
         public void OpenUrl(string url)
         {
@@ -600,7 +594,7 @@ namespace Project
             System.Windows.Forms.CheckBox checkBox = sender as System.Windows.Forms.CheckBox;
             if (checkBox != null)
             {
-                writelog($"{checkBox.Text} ({checkBox.Name}) изменен на {checkBox.CheckState}");
+                Log.Info("UI", $"{checkBox.Text} ({checkBox.Name}) изменен на {checkBox.CheckState}");
             }
         }
         void PictureBox_MouseUp(object sender, MouseEventArgs e)
@@ -610,7 +604,7 @@ namespace Project
             if (clickedPictureBox != null)
             {
                 // Здесь можно написать код для выполнения действия при клике на картинку
-                writelog($"{clickedPictureBox.Name} нажат");
+                Log.Debug("UI", $"{clickedPictureBox.Name} нажат");
             }
         }
         void Label_MouseUp(object sender, MouseEventArgs e)
@@ -620,7 +614,7 @@ namespace Project
             if (Lbl != null)
             {
                 // Здесь можно написать код для выполнения действия при клике на картинку
-                writelog($"Label {Lbl.Text} был нажат");
+                Log.Debug("UI", $"Label {Lbl.Text} был нажат");
             }
         }
         void Button_MouseUp(object sender, MouseEventArgs e)
@@ -630,7 +624,7 @@ namespace Project
             if (btn != null)
             {
                 // Здесь можно написать код для выполнения действия при клике на картинку
-                writelog($"Button {btn.Text},{btn.Name} был нажат");
+                Log.Debug("UI", $"Button {btn.Text},{btn.Name} был нажат");
             }
         }
 
@@ -683,17 +677,17 @@ namespace Project
         #region открытие
         async void Form1_Load(object sender, EventArgs e)
         {
-            writelog($"==============WOTBO {version} ==============");
+            Log.Info("App", $"==============WOTBO {version} ==============");
             #region проверка запущенна ли + eula
             if (!InstanceChecker.TakeMemory())
             {
-                writelog("InstanceExists, relaunch");
+                Log.Warn("App", "InstanceExists, relaunch");
                 hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
-                writelog("cmd на перезапуск вызван, ждём когда приебашит меня");
+                Log.Info("App", "cmd на перезапуск вызван, ждём когда приебашит меня");
             }
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
             {
-                writelog("eula null");
+                Log.Info("App", "eula null");
                 Form2 eula = new Form2();
                 eula.ShowDialog();
             }
@@ -710,12 +704,12 @@ namespace Project
                 if (buildNumberValue >= 22000) // Windows 11
                 {
                     win10 = false;
-                    writelog($"Windows is win 10? {win10}");
+                    Log.Info("Windows", $"Windows is win 10? {win10}");
                     label_winver.Text = $"Windows 11 {displayVersion} Build:{buildnumber}";
                 }
                 else if (buildNumberValue <= 19042) // Windows 10 < 20H2
                 {
-                    writelog($"Windows 10 <20H2 ");
+                    Log.Info("Windows", $"Windows 10 <20H2 ");
                     win10 = true;
                     MessageBox.Show("Рекомендуется использовать Windows 10 20H2 и выше! \nЭффективность настройки не гарантирована",
                         "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -723,7 +717,7 @@ namespace Project
                 }
                 else if (buildNumberValue > 19042) // Windows 10 >= 20H2
                 {
-                    writelog($"Windows 10 {buildnumber} ");
+                    Log.Info("Windows", $"Windows 10 {buildnumber} ");
                     win10 = true;
                     label_winver.Text = $"Windows 10 {displayVersion} Build:{buildnumber}";
                 }
@@ -745,70 +739,69 @@ namespace Project
                 checkBox_contex.Enabled = false;
                 checkBox_pro_1.Enabled = false;
                 checkBox_shapka.Enabled = false;
-                writelog($"чеки под win 11 для win10 отключены");
+                Log.Info("Windows", $"чеки под win 11 для win10 отключены");
             }
             #endregion
             #region temp
             if (Directory.Exists(tempfolder))
             {
-                writelog($"tempfolder - \"{tempfolder}\" exists");
+                Log.Info("Temp", $"tempfolder - \"{tempfolder}\" exists");
                 string[] files = Directory.GetFiles(tempfolder);
-                writelog($"пытаюсь всё удалить из {tempfolder}");
+                Log.Info("Temp", $"пытаюсь всё удалить из {tempfolder}");
                 try
                 {
                     Directory.Delete(tempfolder, true);
-                    writelog($"Удалена папка: {tempfolder}");
+                    Log.Info("Temp", $"Удалена папка: {tempfolder}");
                 }
                 catch (Exception ex)
                 {
-                    writelog($"не удалось очистить {tempfolder}");
-                    writelog(ex.Message);
-                    tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; writelog($"я теперь тут ошиваюсь - {tempfolder}");
-                    path_regpack7z = tempfolder + @"\regpack.zip"; writelog($"new path_regpack7z - {path_regpack7z}");
-                    path_regpack = tempfolder + @"\regpack"; writelog($"new path_regpack - {path_regpack}");
-                    path_services = tempfolder + @"\services"; writelog($"new path_services - {path_services}");
-                    path_uizip = tempfolder + @"\ui.zip"; writelog($"new path_uizip - {path_uizip}");
-                    path_ui = tempfolder + @"\ui"; writelog($"new path_ui - {path_ui}");
-                    path_dfkiller = tempfolder + @"\DFKiller"; writelog($"new path_dfkiller - {path_dfkiller}");
-                    path_scheme = tempfolder + @"\scheme.pow"; writelog($"new path_scheme - {path_scheme}");
-                    smartctl = tempfolder + @"\smartctl.exe"; writelog($"new smartctl - {smartctl}");
+                    Log.Warn("Temp", $"не удалось очистить {tempfolder}: {ex.Message}");
+                    tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; Log.Info("Temp", $"я теперь тут ошиваюсь - {tempfolder}");
+                    path_regpack7z = tempfolder + @"\regpack.zip"; Log.Info("Temp", $"new path_regpack7z - {path_regpack7z}");
+                    path_regpack = tempfolder + @"\regpack"; Log.Info("Temp", $"new path_regpack - {path_regpack}");
+                    path_services = tempfolder + @"\services"; Log.Info("Temp", $"new path_services - {path_services}");
+                    path_uizip = tempfolder + @"\ui.zip"; Log.Info("Temp", $"new path_uizip - {path_uizip}");
+                    path_ui = tempfolder + @"\ui"; Log.Info("Temp", $"new path_ui - {path_ui}");
+                    path_dfkiller = tempfolder + @"\DFKiller"; Log.Info("Temp", $"new path_dfkiller - {path_dfkiller}");
+                    path_scheme = tempfolder + @"\scheme.pow"; Log.Info("Temp", $"new path_scheme - {path_scheme}");
+                    smartctl = tempfolder + @"\smartctl.exe"; Log.Info("Temp", $"new smartctl - {smartctl}");
                 }
             }
             else
             {
-                writelog("tempfolder нету");
+                Log.Info("Temp", "tempfolder нету");
             }
 
             #endregion
             #region отключаем чеки
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("regpack")) == 1)
             {
-                writelog("regpack был применён");
+                Log.Info("Tweak", "regpack был применён");
                 checkBox_reg.Enabled = false;
                 back_main_1.Visible = true;
             }//regpack
             if (ReservedStorage.Contains("Reserved storage is disabled.") | ReservedStorage.Contains("‡ аҐ§ҐаўЁа®ў ­­®Ґ еа ­Ё«ЁйҐ ®вЄ«озҐ­®."))
             {
-                writelog("ReservedStorage был применён");
+                Log.Info("Tweak", "ReservedStorage был применён");
                 checkBox_dism.Enabled = false;
                 back_main_2.Visible = true;
             } //old reserved
             if (!File.Exists(@"C:\hiberfil.sys"))
             {
-                writelog("hiberfil'a нету");
+                Log.Info("Tweak", "hiberfil'a нету");
                 checkBox_gibernate.Enabled = false;
                 back_main_3.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("imported_powerscheme")) == 1)
             {
-                writelog("imported_powerscheme был применён");
+                Log.Info("Tweak", "imported_powerscheme был применён");
                 checkBox_scheme.Enabled = false;
                 back_main_4.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("animations")) == 1)
             {
                 animation = false;
-                writelog("анимации выключены");
+                Log.Info("Tweak", "анимации выключены");
                 checkBox_animation.Enabled = false;
                 back_animations.Visible = true;
             }//анимации
@@ -820,19 +813,19 @@ namespace Project
                     // Если ключ "mousefix" существует - отключаем чекбокс
                     checkBox_mousefix.Enabled = false;
                     back_main_5.Visible = true;
-                    writelog("Чекбокс отключен: параметр mousefix существует в реестре.");
+                    Log.Info("Tweak", "Чекбокс отключен: параметр mousefix существует в реестре.");
                 }
                 else if (IsScale100Percent())
                 {
                     // Если ключ "mousefix" не существует и масштаб равен 100% - включаем чекбокс
                     checkBox_mousefix.Enabled = true;
-                    writelog("Чекбокс включен: параметр mousefix не существует, и масштаб равен 100%.");
+                    Log.Info("Tweak", "Чекбокс включен: параметр mousefix не существует, и масштаб равен 100%.");
                 }
                 else
                 {
                     // Если ключ "mousefix" не существует и масштаб не равен 100% - отключаем чекбокс
                     checkBox_mousefix.Enabled = false;
-                    writelog("Чекбокс отключен: параметр mousefix не существует, и масштаб не равен 100%.");
+                    Log.Info("Tweak", "Чекбокс отключен: параметр mousefix не существует, и масштаб не равен 100%.");
                 }
             }
             bool IsScale100Percent()
@@ -866,7 +859,7 @@ namespace Project
                 }
                 catch (Exception ex)
                 {
-                    writelog($"Ошибка при чтении реестра: {ex.Message}");
+                    Log.Error("Tweak", $"Ошибка при чтении реестра: {ex.Message}", ex);
                 }
 
                 return false; // Возвращаем false, если ключ или значение не найдены
@@ -875,19 +868,19 @@ namespace Project
             #endregion
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Dwm").GetValue("OverlayTestMode")) == 5)
             {
-                writelog("MPO был применён");
+                Log.Info("Tweak", "MPO был применён");
                 checkBox_mpo.Enabled = false;
                 back_main_6.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("usbpowersaving")) == 1)
             {
-                writelog("usbpowersaving был применён");
+                Log.Info("Tweak", "usbpowersaving был применён");
                 checkBox_usb.Enabled = false;
                 back_main_7.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("bcdedit")) == 1)
             {
-                writelog("bcdedit был применён, откатываем нахуй");
+                Log.Warn("Tweak", "bcdedit был применён, откатываем нахуй");
                 hcmd("bcdedit /deletevalue tscsyncpolicy");
                 hcmd("bcdedit /deletevalue bootux");
                 hcmd("bcdedit /set bootmenupolicy standard");
@@ -914,18 +907,18 @@ namespace Project
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management")?.GetValue("FeatureSettings")) == 1)
             {
-                writelog("spectre and meltdown был применён");
+                Log.Info("Tweak", "spectre and meltdown был применён");
                 checkBox_mtiititit.Enabled = false;
                 back_main_9.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("mmagent")) == 1)
             {
-                writelog("mmagent был применён");
+                Log.Info("Tweak", "mmagent был применён");
                 checkBox_mmagent.Enabled = false;
                 back_main_10.Visible = true;
             }
             #region pagefile
-            //writelog("pagefile был применён");
+            //Log.Info("Pagefile", "pagefile был применён");
             try
             {
                 // Открываем раздел реестра
@@ -965,54 +958,54 @@ namespace Project
 
                             if (settingsMatch)
                             {
-                                writelog("[pagefile check] Параметры файла подкачки уже установлены.");
+                                Log.Info("Pagefile", "[pagefile check] Параметры файла подкачки уже установлены.");
                                 checkBox_page.Enabled = false;
                                 back_main_11.Visible = true;
                             }
                             else
                             {
-                                writelog("[pagefile check] Параметры файла подкачки отличаются от заданных.");
+                                Log.Info("Pagefile", "[pagefile check] Параметры файла подкачки отличаются от заданных.");
                             }
                         }
                         else
                         {
-                            writelog("[pagefile check] Значение PagingFiles не установлено.");
+                            Log.Info("Pagefile", "[pagefile check] Значение PagingFiles не установлено.");
                         }
                     }
                     else
                     {
-                        writelog("[pagefile check] Не удалось открыть ключ реестра.");
+                        Log.Warn("Pagefile", "[pagefile check] Не удалось открыть ключ реестра.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                writelog("[pagefile check] Произошла ошибка: " + ex.Message);
+                Log.Error("Pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
             }
 
 
             #endregion
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("buttons")) == 1)
             {
-                writelog("buttons был применён");
+                Log.Info("Tweak", "buttons был применён");
                 checkBoxUI_Buttons_1.Enabled = false;
                 back_ui_1.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("litle_explorer_things")) == 1)
             {
-                writelog("litle_explorer_things был применён");
+                Log.Info("Tweak", "litle_explorer_things был применён");
                 checkBoxUI_Buttons_2.Enabled = false;
                 back_ui_2.Visible = true;
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop").GetValue("JPEGImportQuality")) == 100)
             {
-                writelog("JPEGImportQuality был применён");
+                Log.Info("Tweak", "JPEGImportQuality был применён");
                 checkBoxUI_Buttons_4.Enabled = false;
                 back_ui_4.Visible = true;
             } //wallpapers
             if (Registry.CurrentUser.OpenSubKey(@"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32") != null)
             {
-                writelog("contex11 был применён");
+                Log.Info("Tweak", "contex11 был применён");
                 checkBox_contex.Enabled = false;
                 back_ui_6.Visible = true;
             } //contex11
@@ -1020,7 +1013,7 @@ namespace Project
             {
                 if (Registry.ClassesRoot.OpenSubKey(@"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32").GetValue("").ToString().Contains("FixByVlado"))
                 {
-                    writelog("shapka11 был применён");
+                    Log.Info("Tweak", "shapka11 был применён");
                     checkBox_shapka.Enabled = false;
                     back_ui_7.Visible = true;
                 }//shapka11
@@ -1031,26 +1024,26 @@ namespace Project
             } //shapka11
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_1")) == 1)
             {
-                writelog("pro_1 был применён");
+                Log.Info("Tweak", "pro_1 был применён");
                 checkBox_pro_1.Enabled = false;
 
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Control\PriorityControl").GetValue("Win32PrioritySeparation")) != 0x00000002)
             {
-                writelog("Win32PrioritySeparation был применён");
+                Log.Info("Tweak", "Win32PrioritySeparation был применён");
                 checkBox_pro_11.Enabled = false;
                 back_pro_11.Visible = true;
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")?.GetValue("NoAutoUpdate")) == 1)
             {
-                writelog("NoAutoUpdate был применён");
+                Log.Info("Tweak", "NoAutoUpdate был применён");
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
 
             }
             if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("defenderdisabled")) == 1)
             {
-                writelog("defenderdisabled был применён");
+                Log.Info("Tweak", "defenderdisabled был применён");
                 checkBox_disabledefender.Enabled = false;
                 label_delete_defender.Enabled = true;
                 back_main_12.Visible = true;
@@ -1058,139 +1051,139 @@ namespace Project
             }
             if (File.Exists($@"C:\Windows\System32\imageres.dll_bak"))
             {
-                writelog("синие папки win 10 были применены");
+                Log.Info("Tweak", "синие папки win 10 были применены");
                 checkBox_bluefolders.Enabled = false;
                 back_ui_5.Visible = true;
             }
             if (File.Exists($@"C:\Windows\SystemResources\imageres.dll.mun_bak"))
             {
-                writelog("синие папки win 11 были применены");
+                Log.Info("Tweak", "синие папки win 11 были применены");
                 checkBox_bluefolders.Enabled = false;
                 back_ui_5.Visible = true;
             }
             if (Registry.ClassesRoot.OpenSubKey(@"DesktopBackground\Shell\WOTBO")?.GetValue("") != null)
             {
-                writelog("wotbo in contex был применён");
+                Log.Info("Tweak", "wotbo in contex был применён");
                 checkBox_wotboincontex.Enabled = false;
                 back_ui_8.Visible = true;
             }
             if (!Directory.Exists(@"C:\ProgramData\Microsoft\Windows Defender"))
             {
-                writelog("defender удалён");
+                Log.Info("Tweak", "defender удалён");
                 //checkBox_disabledefender.Visible = false;
                 checkBox_disabledefender.Enabled = false;
                 back_main_12.Visible = false;
             }
             if (!File.Exists($@"{SysFolder.UserProfile}\AppData\Local\Microsoft\OneDrive\OneDrive.exe"))
             {
-                writelog("OneDrive был удалён");
+                Log.Info("Tweak", "OneDrive был удалён");
                 checkBox_onedrive.Enabled = false;
             }
             if (exepath == contexpath)
             {
-                writelog("запущены из конткестного");
+                Log.Info("Tweak", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("buffer") != null)
             {
-                writelog("bufferbloat был применён");
+                Log.Info("Tweak", "bufferbloat был применён");
                 checkBox_pro_12.Enabled = false;
                 back_pro_12.Visible = true;
             }
             if (File.Exists(@"C:\Windows\unlocker\Unlocker.exe"))
             {
-                writelog("unclockewr был применён");
+                Log.Info("Tweak", "unclockewr был применён");
                 checkBox_pro_13.Enabled = false;
                 back_pro_13.Visible = true;
             }
             if (File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
             {
-                writelog("AlwaysOnTop был применён");
+                Log.Info("Tweak", "AlwaysOnTop был применён");
                 checkBox_pro_14.Enabled = false;
                 back_pro_14.Visible = true;
             }
             if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Classes\SystemFileAssociations\.mp4\shell\FFmpeg")?.GetValue("icon") != null)
             {
-                writelog("FFmpeg был применён");
+                Log.Info("Tweak", "FFmpeg был применён");
                 checkBox_ffmpeg.Enabled = false;
                 back_ui_10.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer", true)?.GetValue("Max Cached Icons") != null)
             {
-                writelog("Max Cached Icons был применён");
+                Log.Info("Tweak", "Max Cached Icons был применён");
                 checkBox_picture_cache.Enabled = false;
                 back_dop_1.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", true)?.GetValue("DefaultTTL") != null)
             {
-                writelog("DefaultTTL был применён");
+                Log.Info("Tweak", "DefaultTTL был применён");
                 checkBox_mobile_traffic.Enabled = false;
                 back_dop_2.Visible = true;
             }
             if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement", true)?.GetValue("ScoobeSystemSettingEnabled") != null)
             {
-                writelog("ScoobeSystemSettingEnabled был применён");
+                Log.Info("Tweak", "ScoobeSystemSettingEnabled был применён");
                 checkBox_nastroyka.Enabled = false;
                 back_dop_3.Visible = true;
             }
             if (Convert.ToString(Registry.CurrentUser.OpenSubKey(@"Control Panel\Accessibility\StickyKeys", true)?.GetValue("Flags")) == "506")
             {
-                writelog("StickyKeys был применён");
+                Log.Info("Tweak", "StickyKeys был применён");
                 checkBox_zalipanie.Enabled = false;
                 back_dop_4.Visible = true;
             }
             if (File.Exists(@"C:\Windows\ExplorerBlurMica.dll"))
             {
-                writelog("ExplorerBlurMica был применён");
+                Log.Info("Tweak", "ExplorerBlurMica был применён");
                 checkBox_mica.Enabled = false;
                 back_ui_11.Visible = true;
             }
             if (Registry.ClassesRoot.OpenSubKey(@"DesktopBackground\Shell\explorer\") != null)
             {
-                writelog("restart explorer был применён");
+                Log.Info("Tweak", "restart explorer был применён");
                 checkBox_explorer.Enabled = false;
                 back_ui_9.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe") != null)
             {
-                writelog("dwm.exe priority был применён");
+                Log.Info("Tweak", "dwm.exe priority был применён");
                 checkBox_dwm.Enabled = false;
                 back_dop_6.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe") != null)
             {
-                writelog("csrss.exe priority был применён");
+                Log.Info("Tweak", "csrss.exe priority был применён");
                 checkBox_CSRSS.Enabled = false;
                 back_dop_7.Visible = true;
             }
             if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy")?.GetValue("AllowHeadlessExecution")) == "1")
             {
-                writelog("AllowHeadlessExecution BackgroundAudioPolicy был применён");
+                Log.Info("Tweak", "AllowHeadlessExecution BackgroundAudioPolicy был применён");
                 checkBox_audio.Enabled = false;
                 back_main_13.Visible = true;
             }
             if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows")?.GetValue("DwmInputUsesIoCompletionPort")) == "0")
             {
-                writelog("DwmInputUsesIoCompletionPort был применён");
+                Log.Info("Tweak", "DwmInputUsesIoCompletionPort был применён");
                 checkBox_dwninput.Enabled = false;
                 back_main_14.Visible = true;
             }
             if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power")?.GetValue("ExitLatency")) == "1")
             {
-                writelog("Power\\ExitLatency был применён");
+                Log.Info("Tweak", "Power\\ExitLatency был применён");
                 checkBox_tolerate.Enabled = false;
                 back_main_16.Visible = true;
             }
             if (Registry.LocalMachine.OpenSubKey($@"SOFTWARE\Policies\Microsoft\Edge") != null)
             {
-                writelog("Edge был применён");
+                Log.Info("Tweak", "Edge был применён");
                 back_dop_edge.Visible = true;
                 checkBox_edge.Checked = false;
                 checkBox_edge.Enabled = false;
             }
             if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU") != null)
             {
-                writelog("WindowsUpdate\\AU был применён");
+                Log.Info("Tweak", "WindowsUpdate\\AU был применён");
                 checkBox_pro_3.Checked = false;
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
@@ -1204,7 +1197,7 @@ namespace Project
             #region инет + обнова
             if (!Internet.OK())
             {
-                writelog($"инета нету");
+                Log.Warn("Network", $"инета нету");
                 checkBox_bluefolders.Enabled = false;
                 label_nvcleaninstall.Enabled = false;
                 label_activate.Enabled = false;
@@ -1236,7 +1229,7 @@ namespace Project
                             string verjson = (wc.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
                             if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                             {
-                                writelog($"версия актуальная");
+                                Log.Info("Update", $"версия актуальная");
                                 label_ver.Text = $"{version}";
                             }
                             else
@@ -1248,7 +1241,7 @@ namespace Project
                                     MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
                                     $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
 
-                                    writelog($"скачиваем новую");
+                                    Log.Info("Update", $"скачиваем новую");
                                     wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
                                     void updateCMD(string line)
                                     {
@@ -1278,7 +1271,7 @@ namespace Project
                             }
                             if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) > (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                             {
-                                writelog($"версия dev");
+                                Log.Info("Update", $"версия dev");
                                 label_ver.Text = $"d{version}";
                             }
 
@@ -1290,7 +1283,7 @@ namespace Project
             #endregion
             #region позиция, размеры и плавный запуск
             for (Opacity = 0; Opacity < 1; Opacity += .1) await Task.Delay(7);
-            writelog($"плавно открылись");
+            Log.Info("UI", $"плавно открылись");
             #endregion
             #region получаем инфу о видеодырке
             #region old method
@@ -1299,17 +1292,17 @@ namespace Project
             if (gpu.Contains("NVIDIA"))
             {
                 nvidia = true;
-                writelog($"GPU IS NVIDIA? - {nvidia}, gpu is - {gpu}");
+                Log.Info("GPU", $"GPU IS NVIDIA? - {nvidia}, gpu is - {gpu}");
                 if (Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000")?.GetValue("RMHdcpKeyglobZero") != null)
                 {
-                    writelog($"hdcp disabled");
+                    Log.Info("GPU", $"hdcp disabled");
                     checkBox_hdcp.Checked = false;
                     checkBox_hdcp.Enabled = false;
                     back_gpu_2.Visible = true;
                 } //hdcp check
                 if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak", true)?.GetValue("DisplayPowerSaving") != null)
                 {
-                    writelog($"DisplayPowerSaving disabled");
+                    Log.Info("GPU", $"DisplayPowerSaving disabled");
                     checkBox_dopNVIDIA_tweaks.Enabled = false;
                     back_gpu_3.Visible = true;
                 }//tweaksnvidia
@@ -1329,7 +1322,7 @@ namespace Project
                         string anselstate = (getanselstate.StandardOutput.ReadToEnd().Trim());
                         if (anselstate == "0")
                         {
-                            writelog($"anselstate == \"0\"");
+                            Log.Info("GPU", $"anselstate == \"0\"");
                             checkBox_ansel.Enabled = false;
                             back_gpu_4.Visible = true;
                         }
@@ -1343,7 +1336,7 @@ namespace Project
             }
             else
             {
-                writelog("не nvidia");
+                Log.Info("GPU", "не nvidia");
                 nvidia = false;
                 checkBox_ansel.Visible = false;
                 checkBox_dopNVIDIA_tweaks.Visible = false;
@@ -1355,27 +1348,27 @@ namespace Project
             #endregion
             #endregion
             #region распаковка в temp
-            writelog("распаковка в temp");
+            Log.Info("Temp", "распаковка в temp");
             Directory.CreateDirectory(tempfolder);
-            writelog($"tempfolder создан - {tempfolder}");
+            Log.Info("Temp", $"tempfolder создан - {tempfolder}");
             File.WriteAllBytes(path_regpack7z, Resources.regpack);
-            writelog($"path_regpack7z создан - {path_regpack7z}");
+            Log.Info("Temp", $"path_regpack7z создан - {path_regpack7z}");
             if (!Directory.Exists(path_regpack))
                 ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
-            writelog($"path_regpack7z распакован - {path_regpack}");
+            Log.Info("Temp", $"path_regpack7z распакован - {path_regpack}");
             File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
-            writelog($"su.exe распакован");
+            Log.Info("Temp", $"su.exe распакован");
             File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
-            writelog($"Audio_Lantency.reg распакован");
+            Log.Info("Temp", $"Audio_Lantency.reg распакован");
             File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
-            writelog($"Audio_Lantency_delete.reg распакован");
+            Log.Info("Temp", $"Audio_Lantency_delete.reg распакован");
             File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
-            writelog($"updates.reg распакован");
+            Log.Info("Temp", $"updates.reg распакован");
             if (!Directory.Exists(path_ui))
             {
                 File.WriteAllBytes(path_uizip, Resources.ui);
                 ZipFile.ExtractToDirectory($"{path_uizip}", $"{path_ui}");
-                writelog($"ui.zip распакован - {path_ui}");
+                Log.Info("Temp", $"ui.zip распакован - {path_ui}");
             }
             if (!File.Exists(@"c:\Windows\system32\explorer.bat"))
             {
@@ -1388,7 +1381,7 @@ namespace Project
                 Process[] processes = Process.GetProcessesByName("BackgroundMonitoringServices");
                 if (processes.Length > 0)
                 {
-                    writelog($"BackgroundMonitoringServices был найден - {processes.Length}");
+                    Log.Info("System", $"BackgroundMonitoringServices был найден - {processes.Length}");
                     hcmd("taskkill /f /im BackgroundMonitoringServices.exe");
                     File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
                 }
@@ -1403,17 +1396,17 @@ namespace Project
         #region закрытие
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            writelog("closing");
+            Log.Info("App", "closing");
             if (Directory.Exists(tempfolder))
             {
                 try
                 {
-                    writelog($"удаляем tempfolder -  \"{tempfolder}\"");
+                    Log.Info("Temp", $"удаляем tempfolder -  \"{tempfolder}\"");
                     Directory.Delete(tempfolder, true);
                 }
                 catch
                 {
-                    writelog("освобождаем память и убиваемся");
+                    Log.Warn("App", "освобождаем память и убиваемся");
                     InstanceChecker.ReleaseMemory();
                     hcmd($"taskkill /f /im {exename}");
                 }
@@ -1464,7 +1457,7 @@ namespace Project
                                             targetKey.SetValue("LaunchProtected", "00000004", RegistryValueKind.DWord);
                                             targetKey.SetValue("Start", "00000004", RegistryValueKind.DWord);
                                             targetKey.SetValue("Start_old", "00000004", RegistryValueKind.DWord);
-                                            writelog($"Параметр установлен в ветке {subKeyName}");
+                                            Log.Info("Tweak", $"Параметр установлен в ветке {subKeyName}");
                                         }
                                     }
                                     break; // Предполагаем, что нужная ветка одна, и можно прекратить поиск
@@ -1527,7 +1520,7 @@ namespace Project
                 hcmd("powercfg -restoredefaultschemes");
                 File.WriteAllBytes(path_scheme, Resources.scheme);
                 string guidstring = Guid.NewGuid().ToString();
-                writelog(guidstring);
+                Log.Debug("Tweak", guidstring);
                 hcmd($"powercfg -import {path_scheme} {guidstring}");
                 hcmd($"powercfg -setactive \"{guidstring}\"");
                 Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("imported_powerscheme", 1);
@@ -1689,20 +1682,20 @@ namespace Project
                             // Устанавливаем новое значение
                             key.SetValue("PagingFiles", newValue, RegistryValueKind.MultiString);
 
-                            writelog("[pagefile check] Параметры файла подкачки успешно изменены. Перезагрузите систему для применения изменений.");
+                            Log.Info("Pagefile", "[pagefile check] Параметры файла подкачки успешно изменены. Перезагрузите систему для применения изменений.");
                             checkBox_page.Enabled = false;
                             checkBox_page.Checked = false;
                             back_main_11.Visible = true;
                         }
                         else
                         {
-                            writelog("[pagefile check] Не удалось открыть ключ реестра.");
+                            Log.Warn("Pagefile", "[pagefile check] Не удалось открыть ключ реестра.");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    writelog("[pagefile check] Произошла ошибка: " + ex.Message);
+                    Log.Error("Pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
                 }
                 ShowNotification("Файл подкачки", "Размер файла подкачки будет изменён после перезагрузки ПК", ToolTipIcon.Info);
             }
@@ -2050,7 +2043,7 @@ namespace Project
                 {
                     // Путь к первому найденному файлу
                     string OneDriveSetupPath = OneDriveSetup[0];
-                    writelog($"путь к Onedrive найден - {OneDriveSetupPath}, переходим к удалению");
+                    Log.Info("OneDrive", $"путь к Onedrive найден - {OneDriveSetupPath}, переходим к удалению");
 
                     // Вызов команды для деинсталляции OneDrive
                     await hcmdAsync($"{OneDriveSetupPath} /uninstall");
@@ -2058,7 +2051,7 @@ namespace Project
                 else
                 {
                     // Логирование ошибки, если файл не найден
-                    writelog("Файл OneDriveSetup.exe не найден");
+                    Log.Warn("OneDrive", "Файл OneDriveSetup.exe не найден");
                 }
                 #endregion
                 checkBox_onedrive.Checked = false;
@@ -2089,16 +2082,16 @@ namespace Project
                         // Проверяем, не является ли файл wotbo.log
                         if (fileName.Equals("wotbo.log", StringComparison.OrdinalIgnoreCase))
                         {
-                            writelog($"Файл {file} пропущен.");
+                            Log.Debug("Temp", $"Файл {file} пропущен.");
                             continue;
                         }
 
                         File.Delete(file);
-                        writelog($"Файл {file} успешно удален.");
+                        Log.Info("Temp", $"Файл {file} успешно удален.");
                     }
                     catch (Exception ex)
                     {
-                        writelog($"Ошибка при удалении файла {file}: {ex.Message}");
+                        Log.Error("Temp", $"Ошибка при удалении файла {file}: {ex.Message}", ex);
                     }
                 }
 
@@ -2108,11 +2101,11 @@ namespace Project
                     try
                     {
                         Directory.Delete(dir, true);
-                        writelog($"Папка {dir} успешно удалена.");
+                        Log.Info("Temp", $"Папка {dir} успешно удалена.");
                     }
                     catch (Exception ex)
                     {
-                        writelog($"Ошибка при удалении папки {dir}: {ex.Message}");
+                        Log.Error("Temp", $"Ошибка при удалении папки {dir}: {ex.Message}", ex);
                     }
                 }
                 checkBox_temp.Checked = false;
@@ -2691,7 +2684,7 @@ namespace Project
                 }
             }
 
-            writelog($"DirectPlay установлен: {directplay}");
+            Log.Info("GPU", $"DirectPlay установлен: {directplay}");
             #endregion
             ChangePanel(panel2);
         } //gpu
@@ -2981,17 +2974,17 @@ namespace Project
                         // Устанавливаем новое значение
                         key.SetValue("PagingFiles", defaultValue, RegistryValueKind.MultiString);
 
-                        writelog("[pagefile check] Стандартные настройки файла подкачки восстановлены. Перезагрузите систему для применения изменений.");
+                        Log.Info("Pagefile", "[pagefile check] Стандартные настройки файла подкачки восстановлены. Перезагрузите систему для применения изменений.");
                     }
                     else
                     {
-                        writelog("[pagefile check] Не удалось открыть ключ реестра.");
+                        Log.Warn("Pagefile", "[pagefile check] Не удалось открыть ключ реестра.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                writelog("[pagefile check] Произошла ошибка: " + ex.Message);
+                Log.Error("Pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
             }
             checkBox_page.Enabled = true;
             checkBox_page.Checked = false;
@@ -3030,7 +3023,7 @@ namespace Project
                                         targetKey.DeleteValue("LaunchProtected");
                                         targetKey.SetValue("Start", "00000002", RegistryValueKind.DWord);
                                         targetKey.DeleteValue("Start_old");
-                                        writelog($"Параметр установлен в ветке {subKeyName}");
+                                        Log.Info("Tweak", $"Параметр установлен в ветке {subKeyName}");
                                     }
                                 }
                                 break; // Предполагаем, что нужная ветка одна, и можно прекратить поиск

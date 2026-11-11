@@ -5,26 +5,20 @@
 `%TEMP%\wotbo.log` — путь не менялся (`AppPaths.LogFilePath`). Его читают F12
 в приложении, `build/run.ps1` и сценарий диагностики из README.
 
-## Два формата
+## Формат
 
-Существующие вызовы `writelog("текст")` продолжают писать прежний формат —
-одна строка, без уровней:
-
-```text
-2026-11-11 20:24:51.4461 - closing
-```
-
-Для нового кода есть уровни и категории. Категория — короткое имя подсистемы:
-`Registry`, `Process`, `Network`, `Tweak:<id>`, `App`.
+Все записи в `Form1` переведены на уровни и категории. Категория — короткое имя
+подсистемы: `App`, `UI`, `Windows`, `Temp`, `Tweak`, `Pagefile`, `Process`,
+`GPU`, `Network`, `Update`, `OneDrive`, `System`, `Registry`.
 
 ```csharp
-Log.Info("Registry", "write HKLM\\...\\Dwm\\OverlayTestMode = 5");
-Log.Warn("Tweak:ui.bluefolders", "файл заблокирован, откат недоступен");
+Log.Info("Tweak", "MPO был применён");
+Log.Warn("Temp", $"не удалось очистить {tempfolder}: {ex.Message}");
 Log.Error("Process", "dism завершился с кодом 87", ex);
 ```
 
 ```text
-2026-11-11 20:24:51.4461 - [INFO ] [Registry] write HKLM\...\Dwm\OverlayTestMode = 5
+2026-11-11 20:24:51.4461 - [INFO ] [Tweak] MPO был применён
 2026-11-11 20:24:51.4462 - [ERROR] [Process] dism завершился с кодом 87
 System.ComponentModel.Win32Exception: ...
 ```
@@ -32,17 +26,20 @@ System.ComponentModel.Win32Exception: ...
 Уровни: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. Исключение (`ex`) добавляется
 следующими строками целиком, со стеком.
 
+Для совместимости в `IAppLogger` остался `Write(string)` — запись без уровня в
+прежнем формате `время - текст`. В самом приложении он больше не используется;
+все прежние вызовы `writelog()` заменены на `Log.*`.
+
 ### Фильтр уровня
 
 По умолчанию пишутся `INFO` и выше. Подробную диагностику (например, каждое
-чтение реестра) можно включить переменной окружения:
+чтение реестра или нажатия по элементам UI) можно включить переменной окружения:
 
 ```powershell
 $env:WOTBO_LOG_LEVEL = 'Debug'
 ```
 
 Допустимые значения: `Trace`, `Debug`, `Info`, `Warn`, `Error` (регистр не важен).
-Прежний `writelog("текст")` фильтр не затрагивает — такие строки пишутся всегда.
 
 ## Как устроено
 
