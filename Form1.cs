@@ -2357,9 +2357,9 @@ namespace Project
         {
             OpenUrl("https://www.msi.com/Landing/afterburner/graphics-cards");
         }
-        void label_download_4_Click(object sender, EventArgs e)
+        async void label_download_4_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://www.7-zip.org/a/7z2409-x64.exe");
+            await OpenLatestOrFallback("7zip", "https://www.7-zip.org/a/7z2409-x64.exe");
         }
         void label_download_5_Click(object sender, EventArgs e)
         {

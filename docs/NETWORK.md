@@ -68,6 +68,7 @@ UI по-прежнему показывает `MessageBox`, пишет `lastchan
 
 ```text
 ffmpeg       GyanD/codexffmpeg, essentials_build .zip
+7zip         ip7z/7zip, -x64.exe
 notepadpp    notepad-plus-plus/notepad-plus-plus, Installer.x64.exe
 sharex       ShareX/ShareX, -setup-x64.exe
 obs          obsproject/obs-studio, Windows-x64-Installer.exe

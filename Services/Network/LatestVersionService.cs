@@ -95,6 +95,8 @@ namespace WOTBO.Services.Network
                     return GetLatestAssetUrlAsync("obsproject/obs-studio", "Windows-x64-Installer.exe");
                 case "qbittorrent":
                     return GetLatestAssetUrlAsync("qbittorrent/qBittorrent", "_x64_setup.exe");
+                case "7zip":
+                    return GetLatestAssetUrlAsync("ip7z/7zip", "-x64.exe");
                 case "crystaldiskinfo":
                     return GetLatestAssetUrlAsync("CrystalDewWorld/CrystalDiskInfo", ".exe");
                 case "ffmpeg":
