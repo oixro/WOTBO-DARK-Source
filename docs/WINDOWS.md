@@ -11,6 +11,7 @@ HKLM\Software\Microsoft\Windows NT\CurrentVersion
 и возвращает `WindowsVersionInfo`:
 
 - `Build`, `DisplayVersion`;
+- `InstallDate` — дата установки Windows из `InstallDate` (Unix-время);
 - `IsWindows11` — build >= 22000;
 - `IsWindows10` — build < 22000;
 - `IsOldWindows10` — build <= 19042;
@@ -18,6 +19,8 @@ HKLM\Software\Microsoft\Windows NT\CurrentVersion
 
 Сервис не показывает `MessageBox` и ничего не решает за UI. `Form1_Load`
 получает информацию и показывает прежние сообщения/подписи.
+`LoadSystemInfoAsync` добавляет в блок SystemInfo строку
+`Установлена: dd.MM.yyyy`.
 
 ## Почему `Services/Windows`, а не `Services/System`
 

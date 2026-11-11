@@ -115,6 +115,10 @@ namespace Project
                         string screenInfo = AppServices.Display.GetScreenInfo();
                         string ramFrequency = AppServices.Wmi.GetRamFrequency();
                         string motherBoard = AppServices.Wmi.GetString("Win32_BaseBoard", "Product");
+                        DateTime? installDate = AppServices.WindowsVersion.Detect().InstallDate;
+                        string installDateText = installDate.HasValue
+                            ? installDate.Value.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
+                            : "—";
 
                         this.Invoke((MethodInvoker)delegate
                         {
@@ -124,7 +128,8 @@ namespace Project
                                           $"GPU: {gpuModel.Trim()}\n" +
                                           $"ОЗУ: {ramSize.Trim()} {ramFrequency.Trim()}\n" +
                                           $"Display: {screenInfo.Trim()}\n" +
-                                          $"OS: {label_winver.Text}";
+                                          $"OS: {label_winver.Text}\n" +
+                                          $"Установлена: {installDateText}";
                             Log.Info("System", label7.Text);
                         });
                     }
@@ -2391,6 +2396,11 @@ namespace Project
                 }
             }//alwaysontop
             #endregion
+
+            if (checkBox_tweak_tooltips.Checked)
+            {
+                ApplyTweakTooltips();
+            }
         }
         #region курсоры
         void label_cursors_Click_1(object sender, EventArgs e)
@@ -2645,12 +2655,6 @@ namespace Project
 
             Log.Info("Tweak:gpu.directplay", $"DirectPlay установлен: {directplay}");
             #endregion
-
-            if (checkBox_tweak_tooltips.Checked)
-            {
-                ApplyTweakTooltips();
-            }
-
             ChangePanel(panel2);
         } //gpu
         #endregion

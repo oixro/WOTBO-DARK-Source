@@ -12,6 +12,9 @@ namespace WOTBO.Services.Windows
 
         public string DisplayVersion { get; set; }
 
+        /// <summary>Дата установки Windows (локальное время) или <c>null</c>.</summary>
+        public DateTime? InstallDate { get; set; }
+
         public bool IsWindows11 { get; set; }
 
         public bool IsWindows10 { get; set; }
@@ -58,6 +61,17 @@ namespace WOTBO.Services.Windows
                 Build = build,
                 DisplayVersion = displayVersion,
             };
+
+            object installDate = _registry.GetValue(RegistryHive.LocalMachine, Path, "InstallDate");
+            if (installDate != null)
+            {
+                long seconds;
+                if (long.TryParse(Convert.ToString(installDate, CultureInfo.InvariantCulture),
+                    NumberStyles.Integer, CultureInfo.InvariantCulture, out seconds) && seconds > 0)
+                {
+                    info.InstallDate = DateTimeOffset.FromUnixTimeSeconds(seconds).LocalDateTime;
+                }
+            }
 
             if (!info.IsKnown)
             {
