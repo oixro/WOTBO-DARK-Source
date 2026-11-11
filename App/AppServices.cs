@@ -6,6 +6,7 @@ using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
 using WOTBO.Services.Storage;
+using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 
 namespace WOTBO.App
@@ -51,6 +52,12 @@ namespace WOTBO.App
 
         private static readonly Lazy<IReservedStorageService> ReservedStorageLazy =
             new Lazy<IReservedStorageService>(() => new ReservedStorageService(Processes, Log.Instance));
+
+        private static readonly Lazy<TweakContext> TweakContextLazy =
+            new Lazy<TweakContext>(() => new TweakContext(Registry, Log.Instance));
+
+        private static readonly Lazy<TweakCatalog> TweakCatalogLazy =
+            new Lazy<TweakCatalog>(TweakCatalog.CreateDefault);
 
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
@@ -116,6 +123,18 @@ namespace WOTBO.App
         public static IReservedStorageService ReservedStorage
         {
             get { return ReservedStorageLazy.Value; }
+        }
+
+        /// <summary>Зависимости твиков.</summary>
+        public static TweakContext TweakContext
+        {
+            get { return TweakContextLazy.Value; }
+        }
+
+        /// <summary>Каталог твиков.</summary>
+        public static TweakCatalog TweakCatalog
+        {
+            get { return TweakCatalogLazy.Value; }
         }
     }
 }

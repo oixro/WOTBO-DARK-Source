@@ -19,6 +19,7 @@ using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
 using WOTBO.Services.Network;
+using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
 namespace Project
@@ -109,7 +110,7 @@ namespace Project
                         string motherBoard = AppServices.Wmi.GetString("Win32_BaseBoard", "Product");
                         DateTime? installDate = AppServices.WindowsVersion.Detect().InstallDate;
                         string installDateText = installDate.HasValue
-                            ? installDate.Value.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
+                            ? installDate.Value.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)
                             : "—";
 
                         this.Invoke((MethodInvoker)delegate
@@ -821,7 +822,7 @@ namespace Project
                 checkBoxUI_Buttons_2.Enabled = false;
                 back_ui_2.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop").GetValue("JPEGImportQuality")) == 100)
+            if (AppServices.TweakCatalog.Get("ui.jpegquality").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.jpegquality", "JPEGImportQuality был применён");
                 checkBoxUI_Buttons_4.Enabled = false;
@@ -932,7 +933,7 @@ namespace Project
                 checkBox_ffmpeg.Enabled = false;
                 back_ui_10.Visible = true;
             }
-            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer", true)?.GetValue("Max Cached Icons") != null)
+            if (AppServices.TweakCatalog.Get("extra.iconcache").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.iconcache", "Max Cached Icons был применён");
                 checkBox_picture_cache.Enabled = false;
@@ -950,7 +951,7 @@ namespace Project
                 checkBox_nastroyka.Enabled = false;
                 back_dop_3.Visible = true;
             }
-            if (Convert.ToString(Registry.CurrentUser.OpenSubKey(@"Control Panel\Accessibility\StickyKeys", true)?.GetValue("Flags")) == "506")
+            if (AppServices.TweakCatalog.Get("extra.stickykeys").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.stickykeys", "StickyKeys был применён");
                 checkBox_zalipanie.Enabled = false;
@@ -1740,7 +1741,11 @@ namespace Project
             }
             if (checkBoxUI_Buttons_4.Checked)
             {
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Control Panel\Desktop", "JPEGImportQuality", 100);
+                using (TweakScope.Apply("ui.jpegquality"))
+                {
+                    AppServices.TweakCatalog.Get("ui.jpegquality").Apply(AppServices.TweakContext);
+                }
+
                 checkBoxUI_Buttons_4.Enabled = false;
                 checkBoxUI_Buttons_4.Checked = false;
                 back_ui_4.Visible = true;
@@ -2028,7 +2033,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.iconcache"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer", "Max Cached Icons", 4096);
+                    AppServices.TweakCatalog.Get("extra.iconcache").Apply(AppServices.TweakContext);
                     checkBox_picture_cache.Checked = false;
                     checkBox_picture_cache.Enabled = false;
                     back_dop_1.Visible = true;
@@ -2059,7 +2064,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.stickykeys"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Control Panel\Accessibility\StickyKeys", "Flags", "506");
+                    AppServices.TweakCatalog.Get("extra.stickykeys").Apply(AppServices.TweakContext);
                     checkBox_zalipanie.Checked = false;
                     checkBox_zalipanie.Enabled = false;
                     back_dop_4.Visible = true;
@@ -3152,7 +3157,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.jpegquality"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Control Panel\Desktop", "JPEGImportQuality");
+                AppServices.TweakCatalog.Get("ui.jpegquality").Rollback(AppServices.TweakContext);
                 checkBoxUI_Buttons_4.Enabled = true;
                 checkBoxUI_Buttons_4.Checked = false;
                 back_ui_4.Visible = false;
@@ -3415,7 +3420,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.iconcache"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer", "Max Cached Icons");
+                AppServices.TweakCatalog.Get("extra.iconcache").Rollback(AppServices.TweakContext);
                 checkBox_picture_cache.Enabled = true;
                 back_dop_1.Visible = false;
             }
@@ -3455,7 +3460,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.stickykeys"))
             {
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Control Panel\Accessibility\StickyKeys", "Flags", "510");
+                AppServices.TweakCatalog.Get("extra.stickykeys").Rollback(AppServices.TweakContext);
                 checkBox_zalipanie.Enabled = true;
                 back_dop_4.Visible = false;
             }

@@ -106,6 +106,12 @@
     <Compile Include="Services\State\TweakStateStore.cs" />
     <Compile Include="Services\Storage\TempWorkspace.cs" />
     <Compile Include="Services\Storage\ReservedStorageService.cs" />
+    <Compile Include="Services\Tweaks\ITweak.cs" />
+    <Compile Include="Services\Tweaks\TweakBase.cs" />
+    <Compile Include="Services\Tweaks\TweakCatalog.cs" />
+    <Compile Include="Services\Tweaks\JpegQualityTweak.cs" />
+    <Compile Include="Services\Tweaks\IconCacheTweak.cs" />
+    <Compile Include="Services\Tweaks\StickyKeysTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">
