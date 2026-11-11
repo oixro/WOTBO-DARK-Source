@@ -63,6 +63,12 @@ namespace WOTBO.Services.Tweaks
                 new HdcpTweak(),
                 new NvidiaTweaksTweak(),
                 new MoveTempTweak(),
+                new DirectPlayTweak(),
+                new WindowsUpdateTweak(),
+                new BufferbloatTweak(),
+                new ButtonsTweak(),
+                new ExplorerRestartTweak(),
+                new Win11HeaderTweak(),
             });
         }
     }

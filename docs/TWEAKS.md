@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас двадцать три твика.
+`TweakCatalog` — словарь по `Id`, сейчас двадцать девять твиков.
 
 ## Пилот
 
@@ -45,6 +45,12 @@ public interface ITweak
 | `gpu.hdcp` | `HKLM\...\Class\{4d36e968-...}\0000` | `RMHdcpKeyglobZero=1` |
 | `gpu.nvidia` | NVIDIA/Miracast/GraphicsDrivers/FTS | `DisplayPowerSaving`, `PlatformSupportMiracast`, `EnableTiledDisplay`, `EnableRID61684` |
 | `extra.movetemp` | `HKCU\Environment` | `TEMP`/`TMP` → `%systemdrive%\Temp` |
+| `gpu.directplay` | DISM | `Enable-Feature DirectPlay` / `Disable-Feature` |
+| `pro.windowsupdate` | `updates.reg` | политики Windows Update |
+| `pro.bufferbloat` | `netsh int tcp` | `autotuninglevel=disabled/normal` |
+| `ui.buttons` | `HKCU\Control Panel\Desktop\WindowMetrics` | `CaptionHeight/Width=-270` |
+| `ui.explorerrestart` | `HKCR\DesktopBackground\Shell\explorer` | пункт перезапуска проводника |
+| `ui.win11header` | `HKCR\CLSID\{6480100b-...}\InProcServer32` | `FixByVlado` через `su.exe` |
 
 `Form1` для них:
 

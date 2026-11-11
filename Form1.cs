@@ -731,7 +731,7 @@ namespace Project
                 Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки отличаются от заданных или не установлены.");
             }
             #endregion
-            if (AppServices.Tweaks.IsApplied("ui.buttons"))
+            if (AppServices.TweakCatalog.Get("ui.buttons").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.buttons", "buttons был применён");
                 checkBoxUI_Buttons_1.Enabled = false;
@@ -757,7 +757,7 @@ namespace Project
             } //contex11
             try
             {
-                if (Registry.ClassesRoot.OpenSubKey(@"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32").GetValue("").ToString().Contains("FixByVlado"))
+                if (AppServices.TweakCatalog.Get("ui.win11header").Detect(AppServices.TweakContext) == TweakState.Applied)
                 {
                     Log.Info("Tweak:ui.win11header", "shapka11 был применён");
                     checkBox_shapka.Enabled = false;
@@ -830,7 +830,7 @@ namespace Project
                 Log.Info("App", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
-            if (AppServices.Tweaks.IsApplied("pro.bufferbloat"))
+            if (AppServices.TweakCatalog.Get("pro.bufferbloat").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.bufferbloat", "bufferbloat был применён");
                 checkBox_pro_12.Enabled = false;
@@ -884,7 +884,7 @@ namespace Project
                 checkBox_mica.Enabled = false;
                 back_ui_11.Visible = true;
             }
-            if (Registry.ClassesRoot.OpenSubKey(@"DesktopBackground\Shell\explorer\") != null)
+            if (AppServices.TweakCatalog.Get("ui.explorerrestart").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.explorerrestart", "restart explorer был применён");
                 checkBox_explorer.Enabled = false;
@@ -927,7 +927,7 @@ namespace Project
                 checkBox_edge.Checked = false;
                 checkBox_edge.Enabled = false;
             }
-            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU") != null)
+            if (AppServices.TweakCatalog.Get("pro.windowsupdate").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.windowsupdate", "WindowsUpdate\\AU был применён");
                 checkBox_pro_3.Checked = false;
@@ -1436,7 +1436,7 @@ namespace Project
             {
                 using (TweakScope.Apply("gpu.directplay"))
                 {
-                    AppServices.Processes.StartCaptured("dism /online /Enable-Feature /FeatureName:DirectPlay /All");
+                    AppServices.TweakCatalog.Get("gpu.directplay").Apply(AppServices.TweakContext);
                     checkBox_directplay.Checked = false;
                     checkBox_directplay.Enabled = false;
                     back_gpu_1.Visible = true;
@@ -1446,8 +1446,10 @@ namespace Project
             #region ui
             if (checkBoxUI_Buttons_1.Checked)
             {
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionHeight", "-270");
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionWidth", "-270");
+                using (TweakScope.Apply("ui.buttons"))
+                {
+                    AppServices.TweakCatalog.Get("ui.buttons").Apply(AppServices.TweakContext);
+                }
                 checkBoxUI_Buttons_1.Enabled = false;
                 checkBoxUI_Buttons_1.Checked = false;
                 back_ui_1.Visible = true;
@@ -1540,11 +1542,7 @@ namespace Project
                 using (TweakScope.Apply("ui.win11header"))
                 {
                     TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}");
-                    //AppServices.Processes.StartCaptured($"{tempfolder}\\shapka.bat");
-                    AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe >nul 2>&1");
-                    AppServices.Processes.RunSuper("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\FixByVlado\" /f", tempfolder + @"\su.exe");
-                    await Task.Delay(1000);
-                    AppServices.Processes.StartCaptured("explorer.exe");
+                    AppServices.TweakCatalog.Get("ui.win11header").Apply(AppServices.TweakContext);
                     checkBox_shapka.Checked = false;
                     checkBox_shapka.Enabled = false;
                     back_ui_7.Visible = true;
@@ -1583,16 +1581,7 @@ namespace Project
                 {
                     TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\explorer");
                     TweakScope.BackupFile(@"c:\Windows\system32\explorer.bat");
-                    RegistryKey key = Registry.ClassesRoot.CreateSubKey(@"DesktopBackground\Shell\explorer", true);
-                    AppServices.Registry.WriteValue(key, "", "Restart explorer.exe");
-                    if (win10)
-                        AppServices.Registry.WriteValue(key, "icon", "imageres.dll,264");
-                    else
-                        AppServices.Registry.WriteValue(key, "icon", "imageres.dll,265");
-
-                    key.CreateSubKey("command");
-                    key.Close();
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\explorer\command", "", @"c:\Windows\system32\explorer.bat");
+                    AppServices.TweakCatalog.Get("ui.explorerrestart").Apply(AppServices.TweakContext);
                     checkBox_explorer.Checked = false;
                     checkBox_explorer.Enabled = false;
                     back_ui_9.Visible = true;
@@ -1984,8 +1973,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.windowsupdate"))
                 {
-                    TweakScope.BackupRegFile($"{tempfolder}\\updates.reg");
-                    AppServices.Processes.StartCaptured($"regedit /s {tempfolder}\\updates.reg");
+                    AppServices.TweakCatalog.Get("pro.windowsupdate").Apply(AppServices.TweakContext);
                     checkBox_pro_3.Checked = false;
                     checkBox_pro_3.Enabled = false;
                     back_pro_3.Visible = true;
@@ -2032,7 +2020,10 @@ namespace Project
         "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        AppServices.Processes.StartCaptured("netsh int tcp set global autotuninglevel=disabled");
+                        using (TweakScope.Apply("pro.bufferbloat"))
+                        {
+                            AppServices.TweakCatalog.Get("pro.bufferbloat").Apply(AppServices.TweakContext);
+                        }
                         checkBox_pro_12.Checked = false;
                         checkBox_pro_12.Enabled = false;
                         back_pro_12.Visible = true;
@@ -2301,51 +2292,11 @@ namespace Project
         void label2_Click(object sender, EventArgs e)
         {
             #region directplay
-            string[] possiblePaths = {
-            @"C:\Windows\SysWOW64",
-            @"C:\Windows\System32"
-        };
-
-            bool directplay = false;
-
-            foreach (var path in possiblePaths)
+            bool directplay = AppServices.TweakCatalog.Get("gpu.directplay").Detect(AppServices.TweakContext) == TweakState.Applied;
+            if (directplay)
             {
-                try
-                {
-                    if (File.Exists(Path.Combine(path, "dpnet.dll.mui")))
-                    {
-                        directplay = true;
-                        break;
-                    }
-                    else
-                    {
-                        string[] subDirectories = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
-                        foreach (var subDir in subDirectories)
-                        {
-                            try
-                            {
-                                if (File.Exists(Path.Combine(subDir, "dpnet.dll.mui")))
-                                {
-                                    directplay = true;
-                                    checkBox_directplay.Enabled = false;
-                                    back_gpu_1.Visible = true;
-                                    break;
-                                }
-                            }
-                            catch (UnauthorizedAccessException)
-                            {
-                                // Пропускаем директории, доступ к которым запрещен
-                                continue;
-                            }
-                        }
-                    }
-                    if (directplay) break;
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    // Пропускаем директории, к которым нет доступа
-                    continue;
-                }
+                checkBox_directplay.Enabled = false;
+                back_gpu_1.Visible = true;
             }
 
             Log.Info("Tweak:gpu.directplay", $"DirectPlay установлен: {directplay}");
@@ -2668,8 +2619,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.buttons"))
             {
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionHeight", "-330");
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionWidth", "-330");
+                AppServices.TweakCatalog.Get("ui.buttons").Rollback(AppServices.TweakContext);
                 checkBoxUI_Buttons_1.Enabled = true;
                 checkBoxUI_Buttons_1.Checked = false;
                 back_ui_1.Visible = false;
@@ -2741,10 +2691,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.win11header"))
             {
-                AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe >nul 2>&1");
-                AppServices.Processes.RunSuper("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\Windows.UI.FileExplorer.dll\" /f", tempfolder + @"\su.exe");
-                //await Task.Delay(1000);
-                Process.Start("explorer");
+                AppServices.TweakCatalog.Get("ui.win11header").Rollback(AppServices.TweakContext);
                 checkBox_shapka.Checked = false;
                 checkBox_shapka.Enabled = true;
                 back_ui_7.Visible = false;
@@ -2771,7 +2718,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.explorerrestart"))
             {
-                Registry.ClassesRoot.DeleteSubKeyTree(@"DesktopBackground\Shell\explorer");
+                AppServices.TweakCatalog.Get("ui.explorerrestart").Rollback(AppServices.TweakContext);
                 back_ui_9.Visible = false;
                 checkBox_explorer.Enabled = true;
             }
@@ -2818,7 +2765,7 @@ namespace Project
         {
             using (TweakScope.Rollback("gpu.directplay"))
             {
-                AppServices.Processes.StartCaptured("Dism /online /Disable-Feature /FeatureName:DirectPlay");
+                AppServices.TweakCatalog.Get("gpu.directplay").Rollback(AppServices.TweakContext);
                 back_gpu_1.Visible = false;
                 checkBox_directplay.Checked = false;
                 checkBox_directplay.Enabled = true;
@@ -2869,7 +2816,7 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.windowsupdate"))
             {
-                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate", true).DeleteSubKeyTree("AU");
+                AppServices.TweakCatalog.Get("pro.windowsupdate").Rollback(AppServices.TweakContext);
                 checkBox_pro_3.Checked = false;
                 checkBox_pro_3.Enabled = true;
                 back_pro_3.Visible = false;
@@ -2917,7 +2864,7 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.bufferbloat"))
             {
-                AppServices.Processes.StartCaptured("netsh int tcp set global autotuninglevel=normal");
+                AppServices.TweakCatalog.Get("pro.bufferbloat").Rollback(AppServices.TweakContext);
                 checkBox_pro_12.Checked = false;
                 checkBox_pro_12.Enabled = true;
                 back_pro_12.Visible = false;
