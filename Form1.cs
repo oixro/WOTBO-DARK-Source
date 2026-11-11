@@ -699,55 +699,53 @@ namespace Project
             }
             #endregion
             #region проверка версии Windows
-            using (RegistryKey winver = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion"))
+            const string winverPath = @"Software\Microsoft\Windows NT\CurrentVersion";
+            string buildnumber = AppServices.Registry.GetValue(RegistryHive.LocalMachine, winverPath, "CurrentBuild") as string;
+            string displayVersion = AppServices.Registry.GetValue(RegistryHive.LocalMachine, winverPath, "DisplayVersion") as string;
+
+            if (buildnumber != null && displayVersion != null)
             {
-                string buildnumber = winver.GetValue("CurrentBuild") as string;
-                string displayVersion = winver.GetValue("DisplayVersion") as string;
+                ushort buildNumberValue = Convert.ToUInt16(buildnumber);
 
-                if (buildnumber != null && displayVersion != null)
+                if (buildNumberValue >= 22000) // Windows 11
                 {
-                    ushort buildNumberValue = Convert.ToUInt16(buildnumber);
-
-                    if (buildNumberValue >= 22000) // Windows 11
-                    {
-                        win10 = false;
-                        writelog($"Windows is win 10? {win10}");
-                        label_winver.Text = $"Windows 11 {displayVersion} Build:{buildnumber}";
-                    }
-                    else if (buildNumberValue <= 19042) // Windows 10 < 20H2
-                    {
-                        writelog($"Windows 10 <20H2 ");
-                        win10 = true;
-                        MessageBox.Show("Рекомендуется использовать Windows 10 20H2 и выше! \nЭффективность настройки не гарантирована",
-                            "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        label_winver.Text = $"(Old) Windows 10 {displayVersion} Build:{buildnumber}";
-                    }
-                    else if (buildNumberValue > 19042) // Windows 10 >= 20H2
-                    {
-                        writelog($"Windows 10 {buildnumber} ");
-                        win10 = true;
-                        label_winver.Text = $"Windows 10 {displayVersion} Build:{buildnumber}";
-                    }
-                    else
-                    {
-                        MessageBox.Show("Программа предназначена для Windows 10 и 11!\nРабота на других системах не поддерживается!", "Windows optimization tool by oixro (WOTBO)",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Close();
-                    }
+                    win10 = false;
+                    writelog($"Windows is win 10? {win10}");
+                    label_winver.Text = $"Windows 11 {displayVersion} Build:{buildnumber}";
+                }
+                else if (buildNumberValue <= 19042) // Windows 10 < 20H2
+                {
+                    writelog($"Windows 10 <20H2 ");
+                    win10 = true;
+                    MessageBox.Show("Рекомендуется использовать Windows 10 20H2 и выше! \nЭффективность настройки не гарантирована",
+                        "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    label_winver.Text = $"(Old) Windows 10 {displayVersion} Build:{buildnumber}";
+                }
+                else if (buildNumberValue > 19042) // Windows 10 >= 20H2
+                {
+                    writelog($"Windows 10 {buildnumber} ");
+                    win10 = true;
+                    label_winver.Text = $"Windows 10 {displayVersion} Build:{buildnumber}";
                 }
                 else
                 {
-                    MessageBox.Show("Не удалось получить информацию о версии Windows.", "Windows optimization tool by oixro (WOTBO)",
+                    MessageBox.Show("Программа предназначена для Windows 10 и 11!\nРабота на других системах не поддерживается!", "Windows optimization tool by oixro (WOTBO)",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
                 }
-                if (win10)
-                {
-                    checkBox_contex.Enabled = false;
-                    checkBox_pro_1.Enabled = false;
-                    checkBox_shapka.Enabled = false;
-                    writelog($"чеки под win 11 для win10 отключены");
-                }
+            }
+            else
+            {
+                MessageBox.Show("Не удалось получить информацию о версии Windows.", "Windows optimization tool by oixro (WOTBO)",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
+            if (win10)
+            {
+                checkBox_contex.Enabled = false;
+                checkBox_pro_1.Enabled = false;
+                checkBox_shapka.Enabled = false;
+                writelog($"чеки под win 11 для win10 отключены");
             }
             #endregion
             #region temp

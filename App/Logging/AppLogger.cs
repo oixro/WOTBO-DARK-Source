@@ -20,6 +20,7 @@ namespace WOTBO.App.Logging
     {
         private readonly object _sync = new object();
         private readonly string _filePath;
+        private LogLevel _minimumLevel;
 
         public AppLogger(string filePath)
         {
@@ -29,11 +30,18 @@ namespace WOTBO.App.Logging
             }
 
             _filePath = filePath;
+            _minimumLevel = LevelFromEnvironmentOrDefault();
         }
 
         public string FilePath
         {
             get { return _filePath; }
+        }
+
+        public LogLevel MinimumLevel
+        {
+            get { return _minimumLevel; }
+            set { _minimumLevel = value; }
         }
 
         public void Write(string message)
@@ -43,6 +51,11 @@ namespace WOTBO.App.Logging
 
         public void Write(LogLevel level, string category, string message)
         {
+            if (level < _minimumLevel)
+            {
+                return;
+            }
+
             Append(FormatLeveled(level, category, message, null));
         }
 
@@ -68,6 +81,11 @@ namespace WOTBO.App.Logging
 
         public void Error(string category, string message, Exception exception = null)
         {
+            if (LogLevel.Error < _minimumLevel)
+            {
+                return;
+            }
+
             Append(FormatLeveled(LogLevel.Error, category, message, exception));
         }
 
@@ -111,6 +129,25 @@ namespace WOTBO.App.Logging
                 case LogLevel.Error: return "ERROR";
                 default: return "INFO ";
             }
+        }
+
+        /// <summary>
+        /// Уровень можно поднять переменной окружения <c>WOTBO_LOG_LEVEL</c>
+        /// (<c>Trace</c>, <c>Debug</c>, <c>Info</c>, <c>Warn</c>, <c>Error</c>).
+        /// По умолчанию <c>Info</c>: подробное чтение реестра пишется только
+        /// при явной диагностике.
+        /// </summary>
+        private static LogLevel LevelFromEnvironmentOrDefault()
+        {
+            string raw = Environment.GetEnvironmentVariable("WOTBO_LOG_LEVEL");
+            LogLevel parsed;
+            if (!string.IsNullOrWhiteSpace(raw) &&
+                Enum.TryParse(raw.Trim(), true, out parsed))
+            {
+                return parsed;
+            }
+
+            return LogLevel.Info;
         }
 
         private void Append(string line)

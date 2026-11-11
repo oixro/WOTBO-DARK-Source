@@ -3,6 +3,8 @@
 WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 
 > **Статус:** этап **P0 (окружение и сборка) завершён** — см. `docs/P0-RESULT.md`.
+> P1 в работе: добавлены `AppPaths`, логгер (`docs/LOGGING.md`) и
+> `RegistryService` (`docs/REGISTRY.md`); версия приложения — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM
 > (`docs/VM-SETUP.md`). Проект остаётся classic `.csproj` с `Debug|x64` /
 > `Release|x64`; манифест — `requireAdministrator`; WOTBO собирается только под
@@ -491,8 +493,8 @@ public sealed class TweakUiBinder
 12. `checkBox1` («Отключить снижение громкости микрофона») — мёртвый контрол.
 13. Пустые обработчики `back_pro_1/4/6/7/9` — либо реализовать, либо убрать.
 14. `checkBox_animation` отключает только анимации приложения, не Windows.
-15. `Program.Exception`: `Clipboard.Clear()` может упасть, лог открывается
-    параллельно с `FileAppLogger` (нужен общий lock).
+15. ~~`Program.Exception`: лог открывается параллельно с `FileAppLogger`.~~
+    Решено на P1: единый `IAppLogger` под `lock`.
 16. Версии сравниваются как `double`; `2.4` и `2.40` неотличимы — перейти на
     `Version`/`SemVer` (отдельным изменением, с сохранением поведения).
 17. `Internet.OK()` через `Dns.GetHostEntry("github.com")` может висеть;
@@ -505,3 +507,17 @@ public sealed class TweakUiBinder
 Начать с **этапа 1**: добавить инфраструктурные сервисы и заменить дубли,
 не трогая ни дизайнер, ни порядок твиков. Это даёт максимальный эффект при
 минимальном риске и создаёт фундамент для этапов 2–5.
+
+---
+
+## 12. Backlog (зафиксировано, не потерять)
+
+- **Windows Defender и 26H2.** Твик отключения Defender нужно обновить под
+  24H2/25H2/26H2: `DisableAntiSpyware` игнорируется, обязателен учёт Tamper
+  Protection и новых служб (`WinDefend`, `WdNisSvc`, `Sense`,
+  `SecurityHealthService`, `webthreatdefusersvc_*`). Делать на P4–P5, не раньше.
+- **`supercmd` сохраняется.** Запуск через `{tempfolder}\su.exe /wrs` нужен для
+  Defender, поэтому в `IProcessService` он остаётся отдельным методом
+  (`RunSuperAsync`), а не сливается с обычным `RunAsync`.
+- **Очистка temp** должна пропускать `wotbo*.log`, иначе диагностика теряется.
+

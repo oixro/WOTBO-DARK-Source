@@ -12,6 +12,12 @@ namespace WOTBO.App.Logging
         string FilePath { get; }
 
         /// <summary>
+        /// Минимальный уровень для записей с уровнем. На прежний
+        /// <see cref="Write(string)"/> не влияет: он всегда пишется.
+        /// </summary>
+        LogLevel MinimumLevel { get; set; }
+
+        /// <summary>
         /// Запись в прежнем формате <c>время - текст</c>. Сохранена для
         /// существующих вызовов <c>writelog()</c>, чтобы diff логов не менялся.
         /// </summary>
