@@ -25,6 +25,8 @@ namespace WOTBO.Services.Registry
         public const string WindowsKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows";
         public const string Audio = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio";
         public const string BackgroundAudioPolicy = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy";
+        public const string Power = @"SYSTEM\CurrentControlSet\Control\Power";
+        public const string GraphicsPower = @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";

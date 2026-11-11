@@ -51,6 +51,7 @@ namespace WOTBO.Services.Tweaks
                 new ContextMenuTweak(),
                 new DwmInputTweak(),
                 new AudioTweak(),
+                new PowerLatencyTweak(),
             });
         }
     }
