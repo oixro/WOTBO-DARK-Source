@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using WOTBO.App;
 
 namespace WOTBO
 {
@@ -6,15 +6,7 @@ namespace WOTBO
     {
         public static bool OK()
         {
-            try
-            {
-                Dns.GetHostEntry("github.com");
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return AppServices.Network.IsAvailable();
         }
     }
 }

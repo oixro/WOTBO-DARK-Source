@@ -1,5 +1,6 @@
 using System;
 using WOTBO.App.Logging;
+using WOTBO.Services.Network;
 using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
@@ -28,6 +29,9 @@ namespace WOTBO.App
         private static readonly Lazy<TempWorkspace> WorkspaceLazy =
             new Lazy<TempWorkspace>(() => new TempWorkspace(AppPaths.WorkDirectory, Log.Instance));
 
+        private static readonly Lazy<INetworkService> NetworkLazy =
+            new Lazy<INetworkService>(() => new NetworkService(Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
@@ -50,6 +54,12 @@ namespace WOTBO.App
         public static TempWorkspace Workspace
         {
             get { return WorkspaceLazy.Value; }
+        }
+
+        /// <summary>Проверка сети и загрузки.</summary>
+        public static INetworkService Network
+        {
+            get { return NetworkLazy.Value; }
         }
     }
 }

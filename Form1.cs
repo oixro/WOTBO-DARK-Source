@@ -1089,11 +1089,9 @@ namespace Project
             {
                 try
                 {
-                    using (WebClient wc = new WebClient())
+                    if (Internet.OK())
                     {
-                        if (Internet.OK())
-                        {
-                            string verjson = (wc.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
+                            string verjson = (AppServices.Network.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
                             if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                             {
                                 Log.Info("Update", $"версия актуальная");
@@ -1103,13 +1101,13 @@ namespace Project
                             {
                                 if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) <= (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
                                 {
-                                    wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
+                                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
 
                                     MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
                                     $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
 
                                     Log.Info("Update", $"скачиваем новую");
-                                    wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
+                                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
                                     void updateCMD(string line)
                                     {
                                         try
@@ -1143,7 +1141,6 @@ namespace Project
                             }
 
                         }
-                    }
                 }
                 catch { } //release
             }
@@ -1475,10 +1472,9 @@ namespace Project
                     File.WriteAllText(tempfolder + @"\prefetcher ssd.reg", Resources.prefetcher_ssd);
                     //
 
-                    using (WebClient wc = new WebClient())
                         if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
                         {
-                            wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/smartctl.exe", $"{tempfolder}\\smartctl.exe");
+                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/smartctl.exe", $"{tempfolder}\\smartctl.exe");
                         }
 
 
@@ -1818,10 +1814,9 @@ namespace Project
                     if (win10)
                     {
                         File.WriteAllText(tempfolder + @"\blueiconsw10.bat", Resources.blueiconsw10);
-                        using (WebClient wc = new WebClient())
                             if (!File.Exists($"{tempfolder}\\imageres.zip"))
                             {
-                                wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/imageres.zip", $"{tempfolder}\\imageres.zip");
+                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/imageres.zip", $"{tempfolder}\\imageres.zip");
                                 ZipFile.ExtractToDirectory($"{tempfolder}\\imageres.zip", tempfolder);
                             }
                         await hcmdAsync($"{tempfolder}\\blueiconsw10.bat");
@@ -1833,10 +1828,9 @@ namespace Project
                     else
                     {
                         File.WriteAllText(tempfolder + @"\blueicons.bat", Resources.blueicons);
-                        using (WebClient wc = new WebClient())
                             if (!File.Exists($"{tempfolder}\\BlueIcon_Minimal.zip"))
                             {
-                                wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BlueIcon_Minimal.zip", $"{tempfolder}\\BlueIcon_Minimal.zip");
+                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BlueIcon_Minimal.zip", $"{tempfolder}\\BlueIcon_Minimal.zip");
                                 ZipFile.ExtractToDirectory($"{tempfolder}\\BlueIcon_Minimal.zip", tempfolder + "\\BlueIcon Minimal");
                             }
                         await hcmdAsync($"{tempfolder}\\blueicons.bat");
@@ -1932,11 +1926,10 @@ namespace Project
                 {
                     TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"SOFTWARE\Classes\SystemFileAssociations");
                     ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info);
-                    using (WebClient wc = new WebClient())
                         if (!File.Exists($"{tempfolder}\\ffmpeg.zip"))
                         {
-                            await wc.DownloadFileTaskAsync(new Uri("https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-essentials_build.zip"), $"{tempfolder}\\ffmpeg.zip");
-                            await wc.DownloadFileTaskAsync(new Uri("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg"), $"{tempfolder}\\ffmpeg.reg");
+                            await AppServices.Network.DownloadFileAsync("https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-essentials_build.zip", $"{tempfolder}\\ffmpeg.zip");
+                            await AppServices.Network.DownloadFileAsync("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg", $"{tempfolder}\\ffmpeg.reg");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\ffmpeg.zip", tempfolder);
                         }
                     if (File.Exists(@"C:\Windows\ffmpeg.exe"))
@@ -1958,10 +1951,9 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.mica"))
                 {
-                    using (WebClient wc = new WebClient())
                         if (!File.Exists($"{tempfolder}\\Release_x64.zip"))
                         {
-                            wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/Release_x64.zip", $"{tempfolder}\\Release_x64.zip");
+                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/Release_x64.zip", $"{tempfolder}\\Release_x64.zip");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\Release_x64.zip", tempfolder);
                         }
                     TweakScope.BackupFile(@"C:\Windows\ExplorerBlurMica.dll");
@@ -2399,10 +2391,9 @@ namespace Project
                     TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"*\shell\Уничтожить");
                     TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"Directory\shell\Уничтожить");
                     TweakScope.BackupDirectory(@"C:\Windows\unlocker");
-                    using (WebClient wc = new WebClient())
                         if (!Directory.Exists($"{tempfolder}\\unlocker.zip"))
                         {
-                            wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/unlocker.zip", $"{tempfolder}\\unlocker.zip");
+                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/unlocker.zip", $"{tempfolder}\\unlocker.zip");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\unlocker.zip", tempfolder);
                         }
                     if (!Directory.Exists($"C:\\Windows\\unlocker"))
@@ -2429,10 +2420,9 @@ namespace Project
                 using (TweakScope.Apply("pro.alwaysontop"))
                 {
                     TweakScope.BackupFile(@"C:\Windows\AlwaysOnTop.exe");
-                    using (WebClient wc = new WebClient())
                         if (!File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
                         {
-                            wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/AlwaysOnTop.exe", @"C:\Windows\AlwaysOnTop.exe");
+                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/AlwaysOnTop.exe", @"C:\Windows\AlwaysOnTop.exe");
                         }
                     AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "AlwaysOnTop", @"C:\Windows\AlwaysOnTop.exe");
                     Process.Start(@"C:\Windows\AlwaysOnTop.exe");
@@ -2446,10 +2436,9 @@ namespace Project
         #region курсоры
         void label_cursors_Click_1(object sender, EventArgs e)
         {
-            using (WebClient wc = new WebClient())
                 if (!File.Exists($"{tempfolder}\\cursors.zip"))
                 {
-                    wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
+                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
                     ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
                 }
             if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -2499,10 +2488,9 @@ namespace Project
             {
                 try
                 {
-                    using (WebClient wcAA = new WebClient())
                         if (!File.Exists($"{tempfolder}\\MSI_util_v3.exe"))
                         {
-                            wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
+                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe", $"{tempfolder}\\MSI_util_v3.exe");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
                         }
                 }
@@ -2517,10 +2505,9 @@ namespace Project
         void label_delete_defender_Click(object sender, EventArgs e)
         {
 
-            using (WebClient wc = new WebClient())
                 if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
                 {
-                    wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip", $"{tempfolder}\\DefenderKiller.zip");
+                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip", $"{tempfolder}\\DefenderKiller.zip");
                     ZipFile.ExtractToDirectory(tempfolder + @"\DefenderKiller.zip", path_dfkiller);
                 }
                 else
@@ -2552,10 +2539,9 @@ namespace Project
             if (!Directory.Exists(path_NVidiaProfileInspectorDmW))
             {
                 File.WriteAllBytes(tempfolder + @"\Base_Profile.nip", Resources.Base_Profile);
-                using (WebClient wcAA = new WebClient())
                     if (!File.Exists($"{tempfolder}\\NVidiaProfileInspectorDmW.zip"))
                     {
-                        wcAA.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/NVidiaProfileInspectorDmW.zip",
+                        AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/NVidiaProfileInspectorDmW.zip",
                             $"{tempfolder}\\NVidiaProfileInspectorDmW.zip");
                     }
                 ZipFile.ExtractToDirectory(tempfolder + @"\NVidiaProfileInspectorDmW.zip", tempfolder);
