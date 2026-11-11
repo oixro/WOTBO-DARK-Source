@@ -1,5 +1,6 @@
 using System;
 using WOTBO.App.Logging;
+using WOTBO.Services.Hardware;
 using WOTBO.Services.Network;
 using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
@@ -36,6 +37,12 @@ namespace WOTBO.App
         private static readonly Lazy<IWindowsVersionService> WindowsVersionLazy =
             new Lazy<IWindowsVersionService>(() => new WindowsVersionService(Registry));
 
+        private static readonly Lazy<IWmiSystemInfoService> WmiLazy =
+            new Lazy<IWmiSystemInfoService>(() => new WmiSystemInfoService(Log.Instance));
+
+        private static readonly Lazy<IDisplayService> DisplayLazy =
+            new Lazy<IDisplayService>(() => new DisplayService(Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
@@ -70,6 +77,18 @@ namespace WOTBO.App
         public static IWindowsVersionService WindowsVersion
         {
             get { return WindowsVersionLazy.Value; }
+        }
+
+        /// <summary>WMI-информация о железе.</summary>
+        public static IWmiSystemInfoService Wmi
+        {
+            get { return WmiLazy.Value; }
+        }
+
+        /// <summary>Информация об экране.</summary>
+        public static IDisplayService Display
+        {
+            get { return DisplayLazy.Value; }
         }
     }
 }

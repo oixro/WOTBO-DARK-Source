@@ -106,13 +106,13 @@ namespace Project
                 {
                     try
                     {
-                        string cpuModel = GetStringFromWMI("Win32_Processor", "Name");
-                        double cpuFrequency = GetDoubleFromWMI("Win32_Processor", "MaxClockSpeed") / 1000.0;
-                        string gpuModel = GetStringFromWMI("Win32_VideoController", "Name");
-                        string ramSize = GetRAMSize();
-                        string screenInfo = GetScreenInfo();
-                        string ramFrequency = GetRAMFrequency();
-                        string motherBoard = GetStringFromWMI("Win32_BaseBoard", "Product");
+                        string cpuModel = AppServices.Wmi.GetString("Win32_Processor", "Name");
+                        double cpuFrequency = AppServices.Wmi.GetDouble("Win32_Processor", "MaxClockSpeed") / 1000.0;
+                        string gpuModel = AppServices.Wmi.GetString("Win32_VideoController", "Name");
+                        string ramSize = AppServices.Wmi.GetRamSize();
+                        string screenInfo = AppServices.Display.GetScreenInfo();
+                        string ramFrequency = AppServices.Wmi.GetRamFrequency();
+                        string motherBoard = AppServices.Wmi.GetString("Win32_BaseBoard", "Product");
 
                         this.Invoke((MethodInvoker)delegate
                         {
@@ -305,119 +305,6 @@ namespace Project
             });
             #endregion
         }
-        #region new method of WMI
-        string GetStringFromWMI(string className, string propertyName)
-        {
-            try
-            {
-                using (var searcher = new ManagementObjectSearcher($"SELECT * FROM {className}"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        return obj[propertyName]?.ToString() ?? "";
-                    }
-                }
-            }
-            catch
-            {
-                return "";
-            }
-            return "";
-        }
-        private double GetDoubleFromWMI(string className, string propertyName)
-        {
-            try
-            {
-                using (var searcher = new ManagementObjectSearcher($"SELECT * FROM {className}"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        return Convert.ToDouble(obj[propertyName]);
-                    }
-                }
-            }
-            catch
-            {
-                return -1.0;
-            }
-            return -1.0;
-        }
-        string GetRAMSize()
-        {
-            try
-            {
-                using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        ulong totalMemory = (ulong)obj["TotalPhysicalMemory"];
-                        return $"{Math.Round((double)totalMemory / (1024 * 1024 * 1024), 0)} GB";
-                    }
-                }
-            }
-            catch
-            {
-                return "";
-            }
-            return "";
-        }
-        string GetRAMFrequency()
-        {
-            try
-            {
-                using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        uint speed = (uint)obj["Speed"];
-                        if (speed > 0)
-                        {
-                            return $"{speed} MHz";
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                return "";
-            }
-            return "";
-        }
-        string GetScreenInfo()
-        {
-            try
-            {
-                Screen primaryScreen = Screen.PrimaryScreen;
-                if (primaryScreen != null)
-                {
-                    var bounds = primaryScreen.Bounds;
-                    int refreshRate = GetRefreshRate(bounds);
-                    return $"{bounds.Width}x{bounds.Height} {refreshRate} Hz";
-                }
-            }
-            catch
-            {
-                return "";
-            }
-            return "";
-        }
-        int GetRefreshRate(System.Drawing.Rectangle bounds)
-        {
-            IntPtr hdc = GetDC(IntPtr.Zero);
-            int refreshRate = GetDeviceCaps(hdc, 116); // VREFRESH
-            ReleaseDC(IntPtr.Zero, hdc);
-            return refreshRate;
-        }
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern IntPtr GetDC(IntPtr hWnd);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDc);
-
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-        #endregion
         #endregion
         #region my void's
         #region анимка

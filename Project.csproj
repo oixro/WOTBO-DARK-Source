@@ -87,6 +87,8 @@
     <Compile Include="App\Logging\Log.cs" />
     <Compile Include="App\Logging\LogLevel.cs" />
     <Compile Include="App\Logging\TweakScope.cs" />
+    <Compile Include="Services\Hardware\DisplayService.cs" />
+    <Compile Include="Services\Hardware\WmiSystemInfoService.cs" />
     <Compile Include="Services\Network\INetworkService.cs" />
     <Compile Include="Services\Network\NetworkService.cs" />
     <Compile Include="Services\Processes\IProcessService.cs" />
