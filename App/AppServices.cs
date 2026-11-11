@@ -43,6 +43,12 @@ namespace WOTBO.App
         private static readonly Lazy<IDisplayService> DisplayLazy =
             new Lazy<IDisplayService>(() => new DisplayService(Log.Instance));
 
+        private static readonly Lazy<IGpuService> GpuLazy =
+            new Lazy<IGpuService>(() => new GpuService(Wmi, Registry, Processes, Log.Instance));
+
+        private static readonly Lazy<IReservedStorageService> ReservedStorageLazy =
+            new Lazy<IReservedStorageService>(() => new ReservedStorageService(Processes, Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
@@ -89,6 +95,18 @@ namespace WOTBO.App
         public static IDisplayService Display
         {
             get { return DisplayLazy.Value; }
+        }
+
+        /// <summary>NVIDIA/Ansel/HDCP.</summary>
+        public static IGpuService Gpu
+        {
+            get { return GpuLazy.Value; }
+        }
+
+        /// <summary>Состояние зарезервированного хранилища (DISM).</summary>
+        public static IReservedStorageService ReservedStorage
+        {
+            get { return ReservedStorageLazy.Value; }
         }
     }
 }

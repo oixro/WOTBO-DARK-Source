@@ -10,8 +10,9 @@ WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 > `writelog()` переведены на `Log.*` с уровнями и категориями `Tweak:<id>`;
 > `DEBUG` пишется всегда; apply/rollback обёрнуты в `TweakScope`; записи
 > реестра и файлы сохраняются для отката, старые флаги мигрируют в
-> `HKCU\Software\oixro\wotbo\Backups`; добавлен `WindowsVersionService`
-> (`docs/WINDOWS.md`) и WMI/Display (`docs/HARDWARE.md`); версия — 2.34.
+> `HKCU\Software\oixro\wotbo\Backups`; добавлены `WindowsVersionService`
+> (`docs/WINDOWS.md`), WMI/Display/GPU (`docs/HARDWARE.md`),
+> `ReservedStorageService` (`docs/STORAGE.md`); версия — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM
 > (`docs/VM-SETUP.md`). Проект остаётся classic `.csproj` с `Debug|x64` /
 > `Release|x64`; манифест — `requireAdministrator`; WOTBO собирается только под

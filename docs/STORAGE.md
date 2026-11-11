@@ -33,3 +33,14 @@ InstanceGuard.Release();
 
 Mutex создаётся по имени exe, как раньше (`AppDomain.CurrentDomain.FriendlyName`).
 `Release()` идемпотентен: повторный вызов ничего не делает.
+
+## ReservedStorage
+
+`ReservedStorageService` заменил статический запуск DISM в `Form1`.
+
+- `GetStateAsync()` — `DISM /Online /Get-ReservedStorageState` через
+  `IProcessService.ReadOutputAsync`;
+- `IsDisabled(state)` — те же английская/русская строки, что и раньше.
+
+DISM больше не запускается в инициализаторе статического поля: вызов идёт
+осознанно в `Form1_Load`, процесс освобождается после чтения вывода.

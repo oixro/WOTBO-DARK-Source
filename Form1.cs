@@ -47,15 +47,6 @@ namespace Project
         string logfile = AppPaths.LogFilePath;
         public static string gpu;
         public bool nvidia;
-        public static Process getReservedStorage = Process.Start(new ProcessStartInfo
-        {
-            FileName = "cmd",
-            Arguments = "/c chcp 65001 && DISM /Online /Get-ReservedStorageState",
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            RedirectStandardOutput = true,
-        });
-        static public string ReservedStorage = (getReservedStorage.StandardOutput.ReadToEnd().Trim());
         public static long capacity;
         static string path_NVidiaProfileInspectorDmW = tempfolder + @"\NVidiaProfileInspectorDmW";
         private NotifyIcon notifyIcon;
@@ -630,7 +621,8 @@ namespace Project
                 checkBox_reg.Enabled = false;
                 back_main_1.Visible = true;
             }//regpack
-            if (ReservedStorage.Contains("Reserved storage is disabled.") | ReservedStorage.Contains("‡ аҐ§ҐаўЁа®ў ­­®Ґ еа ­Ё«ЁйҐ ®вЄ«озҐ­®."))
+            string reservedStorageState = await AppServices.ReservedStorage.GetStateAsync();
+            if (AppServices.ReservedStorage.IsDisabled(reservedStorageState))
             {
                 Log.Info("Tweak:main.reservedstorage", "ReservedStorage был применён");
                 checkBox_dism.Enabled = false;
@@ -1114,53 +1106,38 @@ namespace Project
             Log.Info("UI", $"плавно открылись");
             #endregion
             #region получаем инфу о видеодырке
-            #region old method
-            foreach (var mo in new ManagementObjectSearcher("select * from win32_VideoController").Get())
-                gpu = (string)mo["name"];
-            if (gpu.Contains("NVIDIA"))
+            gpu = AppServices.Gpu.GetName();
+            if (AppServices.Gpu.IsNvidia(gpu))
             {
                 nvidia = true;
                 Log.Info("GPU", $"GPU IS NVIDIA? - {nvidia}, gpu is - {gpu}");
-                if (Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000")?.GetValue("RMHdcpKeyglobZero") != null)
+
+                if (AppServices.Gpu.IsHdcpDisabled())
                 {
                     Log.Info("Tweak:gpu.hdcp", $"hdcp disabled");
                     checkBox_hdcp.Checked = false;
                     checkBox_hdcp.Enabled = false;
                     back_gpu_2.Visible = true;
                 } //hdcp check
-                if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak", true)?.GetValue("DisplayPowerSaving") != null)
+
+                if (AppServices.Gpu.IsNvidiaTweaksApplied())
                 {
                     Log.Info("Tweak:gpu.nvidia", $"DisplayPowerSaving disabled");
                     checkBox_dopNVIDIA_tweaks.Enabled = false;
                     back_gpu_3.Visible = true;
                 }//tweaksnvidia
-                try
+
+                bool? anselDisabled = await AppServices.Gpu.IsAnselDisabledAsync();
+                if (anselDisabled == true)
                 {
-                    string[] ansel = Directory.GetFiles(@"C:\Windows\System32\DriverStore\", "NvCameraEnable.exe", SearchOption.AllDirectories);
-                    if (ansel.Length > 0)
-                    {
-                        string anselPath = ansel[0];
-                        Process getanselstate = Process.Start(new ProcessStartInfo
-                        {
-                            FileName = $"{anselPath}",
-                            UseShellExecute = false,
-                            CreateNoWindow = true,
-                            RedirectStandardOutput = true,
-                        });
-                        string anselstate = (getanselstate.StandardOutput.ReadToEnd().Trim());
-                        if (anselstate == "0")
-                        {
-                            Log.Info("Tweak:gpu.ansel", $"anselstate == \"0\"");
-                            checkBox_ansel.Enabled = false;
-                            back_gpu_4.Visible = true;
-                        }
-                        else
-                        {
-                            checkBox_ansel.Enabled = true;
-                        }
-                    }
+                    Log.Info("Tweak:gpu.ansel", $"anselstate == \"0\"");
+                    checkBox_ansel.Enabled = false;
+                    back_gpu_4.Visible = true;
                 }
-                catch { }//ansel
+                else if (anselDisabled == false)
+                {
+                    checkBox_ansel.Enabled = true;
+                }
             }
             else
             {
@@ -1173,7 +1150,6 @@ namespace Project
                 checkBox_directplay.Location = new Point(20, 45);
                 back_gpu_1.Location = new Point(0, 45);
             }//не nvidia
-            #endregion
             #endregion
             #region распаковка в temp
             Log.Info("Temp", "распаковка в temp");
@@ -1681,13 +1657,7 @@ namespace Project
             {
                 using (TweakScope.Apply("gpu.ansel"))
                 {
-                    string[] ansel = Directory.GetFiles(@"C:\Windows\System32\DriverStore\", "NvCameraEnable.exe", SearchOption.AllDirectories);
-                    if (ansel.Length > 0)
-                    {
-                        string anselPath = ansel[0];
-                        hcmd($"{anselPath} off");
-                    }
-                    else
+                    if (!AppServices.Gpu.SetAnsel(false))
                     {
                         MessageBox.Show("Файл NvCameraEnable.exe не найден");
                     }
@@ -3328,13 +3298,7 @@ namespace Project
         {
             using (TweakScope.Rollback("gpu.ansel"))
             {
-                string[] ansel = Directory.GetFiles(@"C:\Windows\System32\DriverStore\", "NvCameraEnable.exe", SearchOption.AllDirectories);
-                if (ansel.Length > 0)
-                {
-                    string anselPath = ansel[0];
-                    hcmd($"{anselPath} on");
-                }
-                else
+                if (!AppServices.Gpu.SetAnsel(true))
                 {
                     MessageBox.Show("Файл NvCameraEnable.exe не найден");
                 }

@@ -202,5 +202,45 @@ namespace WOTBO.Services.Processes
                 return false;
             }
         }
+
+        public Task<string> ReadOutputAsync(string fileName, string arguments)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = fileName,
+                        Arguments = arguments ?? string.Empty,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                    };
+
+                    using (var process = new Process())
+                    {
+                        process.StartInfo = psi;
+                        process.Start();
+                        string output = process.StandardOutput.ReadToEnd();
+                        string error = process.StandardError.ReadToEnd();
+                        process.WaitForExit();
+
+                        if (!string.IsNullOrEmpty(error))
+                        {
+                            _log.Debug(Category, "[OUTPUT] " + error.Trim());
+                        }
+
+                        return output + error;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.Error(Category, "не удалось прочитать вывод: " + fileName + " " + arguments, ex);
+                    return string.Empty;
+                }
+            });
+        }
     }
 }

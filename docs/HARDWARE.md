@@ -19,3 +19,18 @@
 Файлы: `Services/Hardware/WmiSystemInfoService.cs`,
 `Services/Hardware/DisplayService.cs`. Namespace — `WOTBO.Services.Hardware`,
 чтобы не конфликтовать с `System.*`.
+
+## GPU
+
+`IGpuService`:
+
+- `GetName()` — имя GPU из WMI;
+- `IsNvidia(name)` — содержит `NVIDIA`;
+- `IsHdcpDisabled()` — наличие `RMHdcpKeyglobZero`;
+- `IsNvidiaTweaksApplied()` — наличие `DisplayPowerSaving`;
+- `IsAnselDisabledAsync()` — запускает `NvCameraEnable.exe` и читает состояние
+  (`true`/`false`/`null`, если утилита не найдена);
+- `SetAnsel(bool)` — `on`/`off` через прежний fire-and-forget запуск.
+
+Определение Ansel больше не дублируется в `Form1` и откате: обе ветки
+вызывают `AppServices.Gpu`.

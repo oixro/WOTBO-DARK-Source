@@ -38,5 +38,11 @@ namespace WOTBO.Services.Processes
 
         /// <summary>Открыть URL. Возвращает <c>false</c>, если браузер не открылся.</summary>
         bool OpenUrl(string url);
+
+        /// <summary>
+        /// Запустить процесс, дождаться завершения и вернуть stdout+stderr.
+        /// Нужно для DISM и NvCameraEnable.exe.
+        /// </summary>
+        Task<string> ReadOutputAsync(string fileName, string arguments);
     }
 }
