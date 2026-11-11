@@ -130,6 +130,9 @@
     <Compile Include="Services\Tweaks\PowerSchemeTweak.cs" />
     <Compile Include="Services\Tweaks\RegpackTweak.cs" />
     <Compile Include="Services\Tweaks\DefenderTweak.cs" />
+    <Compile Include="Services\Tweaks\HdcpTweak.cs" />
+    <Compile Include="Services\Tweaks\NvidiaTweaksTweak.cs" />
+    <Compile Include="Services\Tweaks\MoveTempTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

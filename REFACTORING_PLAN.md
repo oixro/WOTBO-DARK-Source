@@ -13,7 +13,7 @@ WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 > `HKCU\Software\oixro\wotbo\Backups`; добавлены `WindowsVersionService`
 > (`docs/WINDOWS.md`), WMI/Display/GPU (`docs/HARDWARE.md`),
 > `ReservedStorageService` (`docs/STORAGE.md`), `GitHubUpdateService`
-> (`docs/NETWORK.md`); пилот `ITweak` (`docs/TWEAKS.md`) на двадцати
+> (`docs/NETWORK.md`); пилот `ITweak` (`docs/TWEAKS.md`) на двадцати трёх
 > твиках, включая `regpack` и `defender` (`docs/DEFENDER.md`);
 > `RegistryPaths` и удаление локальных обёрток процессов; версия — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM

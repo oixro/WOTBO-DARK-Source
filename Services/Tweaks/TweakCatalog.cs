@@ -60,6 +60,9 @@ namespace WOTBO.Services.Tweaks
                 new PowerSchemeTweak(),
                 new RegpackTweak(),
                 new DefenderTweak(),
+                new HdcpTweak(),
+                new NvidiaTweaksTweak(),
+                new MoveTempTweak(),
             });
         }
     }

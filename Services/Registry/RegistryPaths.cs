@@ -42,6 +42,10 @@ namespace WOTBO.Services.Registry
         public const string DefenderPolicy = @"SOFTWARE\Policies\Microsoft\Windows Defender";
         public const string DefenderRealtime = @"SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection";
         public const string DefenderSpynet = @"SOFTWARE\Policies\Microsoft\Windows Defender\Spynet";
+        public const string Environment = @"Environment";
+        public const string NvidiaColor = @"Software\NVIDIA Corporation\Global\NVTweak\Devices\509901423-0\Color";
+        public const string GraphicsDrivers = @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers";
+        public const string NvidiaFts = @"SYSTEM\CurrentControlSet\Services\nvlddmkm\FTS";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";

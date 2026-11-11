@@ -934,7 +934,7 @@ namespace Project
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
             }
-            if (Convert.ToString(Registry.CurrentUser.OpenSubKey("Environment")?.GetValue("TEMP")) == $@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp")
+            if (AppServices.TweakCatalog.Get("extra.movetemp").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 checkBox_move_temp.Enabled = false;
                 back_dop_movetemp.Visible = true;
@@ -1040,7 +1040,7 @@ namespace Project
                 nvidia = true;
                 Log.Info("GPU", $"GPU IS NVIDIA? - {nvidia}, gpu is - {gpu}");
 
-                if (AppServices.Gpu.IsHdcpDisabled())
+                if (AppServices.TweakCatalog.Get("gpu.hdcp").Detect(AppServices.TweakContext) == TweakState.Applied)
                 {
                     Log.Info("Tweak:gpu.hdcp", $"hdcp disabled");
                     checkBox_hdcp.Checked = false;
@@ -1048,7 +1048,7 @@ namespace Project
                     back_gpu_2.Visible = true;
                 } //hdcp check
 
-                if (AppServices.Gpu.IsNvidiaTweaksApplied())
+                if (AppServices.TweakCatalog.Get("gpu.nvidia").Detect(AppServices.TweakContext) == TweakState.Applied)
                 {
                     Log.Info("Tweak:gpu.nvidia", $"DisplayPowerSaving disabled");
                     checkBox_dopNVIDIA_tweaks.Enabled = false;
@@ -1418,20 +1418,15 @@ namespace Project
                 {
                     checkBox_hdcp.Checked = false;
                     checkBox_hdcp.Enabled = false;
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000", "RMHdcpKeyglobZero", 1);
+                    AppServices.TweakCatalog.Get("gpu.hdcp").Apply(AppServices.TweakContext);
                     back_gpu_2.Visible = true;
-
                 }
             }
             if (checkBox_dopNVIDIA_tweaks.Checked)
             {
                 using (TweakScope.Apply("gpu.nvidia"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\NVIDIA Corporation\Global\NVTweak\Devices\509901423-0\Color", "NvCplUseColorCorrection", "0");
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers", "PlatformSupportMiracast", "0");
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak", "DisplayPowerSaving", "0");
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000", "EnableTiledDisplay", "0");
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\nvlddmkm\FTS", "EnableRID61684", "1");
+                    AppServices.TweakCatalog.Get("gpu.nvidia").Apply(AppServices.TweakContext);
                     checkBox_dopNVIDIA_tweaks.Checked = false;
                     checkBox_dopNVIDIA_tweaks.Enabled = false;
                     back_gpu_3.Visible = true;
@@ -1957,13 +1952,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.movetemp"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Environment", "TEMP", "%systemdrive%\\Temp", RegistryValueKind.ExpandString);
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Environment", "TMP", "%systemdrive%\\Temp", RegistryValueKind.ExpandString);
-                    if (!Directory.Exists($@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp"))
-                    {
-                        Directory.CreateDirectory($@"{Environment.ExpandEnvironmentVariables("%systemdrive%")}\Temp");
-                    }
-
+                    AppServices.TweakCatalog.Get("extra.movetemp").Apply(AppServices.TweakContext);
                     checkBox_move_temp.Checked = false;
                     checkBox_move_temp.Enabled = false;
                     back_dop_movetemp.Visible = true;
@@ -2841,7 +2830,7 @@ namespace Project
             {
                 checkBox_hdcp.Checked = false;
                 checkBox_hdcp.Enabled = true;
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000", "RMHdcpKeyglobZero");
+                AppServices.TweakCatalog.Get("gpu.hdcp").Rollback(AppServices.TweakContext);
                 back_gpu_2.Visible = false;
             }
         }//hdcp
@@ -2849,11 +2838,7 @@ namespace Project
         {
             using (TweakScope.Rollback("gpu.nvidia"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\NVIDIA Corporation\Global\NVTweak\Devices\509901423-0\Color", "NvCplUseColorCorrection");
-                AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers", "PlatformSupportMiracast", "1");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak", "DisplayPowerSaving");
-                AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000", "EnableTiledDisplay", "0");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\nvlddmkm\FTS", "EnableRID61684");
+                AppServices.TweakCatalog.Get("gpu.nvidia").Rollback(AppServices.TweakContext);
                 checkBox_dopNVIDIA_tweaks.Checked = false;
                 checkBox_dopNVIDIA_tweaks.Enabled = true;
                 back_gpu_3.Visible = false;
@@ -3033,8 +3018,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.movetemp"))
             {
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Environment", "TEMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Environment", "TMP", "%USERPROFILE%\\AppData\\Local\\Temp", RegistryValueKind.ExpandString);
+                AppServices.TweakCatalog.Get("extra.movetemp").Rollback(AppServices.TweakContext);
                 checkBox_move_temp.Checked = false;
                 checkBox_move_temp.Enabled = true;
                 back_dop_movetemp.Visible = false;
