@@ -93,6 +93,7 @@
     <Compile Include="Services\Network\INetworkService.cs" />
     <Compile Include="Services\Network\IGitHubUpdateService.cs" />
     <Compile Include="Services\Network\GitHubUpdateService.cs" />
+    <Compile Include="Services\Network\LatestVersionService.cs" />
     <Compile Include="Services\Network\NetworkService.cs" />
     <Compile Include="Services\Processes\IProcessService.cs" />
     <Compile Include="Services\Processes\ProcessService.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Services\Tweaks\ButtonsTweak.cs" />
     <Compile Include="Services\Tweaks\ExplorerRestartTweak.cs" />
     <Compile Include="Services\Tweaks\Win11HeaderTweak.cs" />
+    <Compile Include="Services\Tweaks\FfmpegTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

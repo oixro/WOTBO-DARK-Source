@@ -69,6 +69,7 @@ namespace WOTBO.Services.Tweaks
                 new ButtonsTweak(),
                 new ExplorerRestartTweak(),
                 new Win11HeaderTweak(),
+                new FfmpegTweak(),
             });
         }
     }

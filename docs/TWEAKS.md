@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас двадцать девять твиков.
+`TweakCatalog` — словарь по `Id`, сейчас тридцать твиков.
 
 ## Пилот
 
@@ -51,6 +51,7 @@ public interface ITweak
 | `ui.buttons` | `HKCU\Control Panel\Desktop\WindowMetrics` | `CaptionHeight/Width=-270` |
 | `ui.explorerrestart` | `HKCR\DesktopBackground\Shell\explorer` | пункт перезапуска проводника |
 | `ui.win11header` | `HKCR\CLSID\{6480100b-...}\InProcServer32` | `FixByVlado` через `su.exe` |
+| `ui.ffmpeg` | `C:\Windows\ffmpeg.exe` + SystemFileAssociations | последний essentials build через GitHub API |
 
 `Form1` для них:
 

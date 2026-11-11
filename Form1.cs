@@ -848,7 +848,7 @@ namespace Project
                 checkBox_pro_14.Enabled = false;
                 back_pro_14.Visible = true;
             }
-            if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Classes\SystemFileAssociations\.mp4\shell\FFmpeg")?.GetValue("icon") != null)
+            if (AppServices.TweakCatalog.Get("ui.ffmpeg").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.ffmpeg", "FFmpeg был применён");
                 checkBox_ffmpeg.Enabled = false;
@@ -1591,24 +1591,8 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.ffmpeg"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"SOFTWARE\Classes\SystemFileAssociations");
                     ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info);
-                        if (!File.Exists($"{tempfolder}\\ffmpeg.zip"))
-                        {
-                            await AppServices.Network.DownloadFileAsync("https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-essentials_build.zip", $"{tempfolder}\\ffmpeg.zip");
-                            await AppServices.Network.DownloadFileAsync("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/ffmpeg.reg", $"{tempfolder}\\ffmpeg.reg");
-                            ZipFile.ExtractToDirectory($"{tempfolder}\\ffmpeg.zip", tempfolder);
-                        }
-                    if (File.Exists(@"C:\Windows\ffmpeg.exe"))
-                    {
-                        TweakScope.BackupFile(@"C:\Windows\ffmpeg.exe");
-                        AppServices.Processes.StartCaptured("taskkill /f /im ffmpeg.exe");
-                        File.Delete(@"C:\Windows\ffmpeg.exe");
-                    }
-                    File.Copy($@"{tempfolder}\ffmpeg-7.1-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
-                    TweakScope.BackupRegFile($"{tempfolder}/ffmpeg.reg");
-                    AppServices.Processes.StartCaptured($@"regedit.exe /s {tempfolder}/ffmpeg.reg");
-
+                    AppServices.TweakCatalog.Get("ui.ffmpeg").Apply(AppServices.TweakContext);
                     checkBox_ffmpeg.Enabled = false;
                     checkBox_ffmpeg.Checked = false;
                     back_ui_10.Visible = true;
@@ -2349,9 +2333,25 @@ namespace Project
         {
             OpenUrl("https://win10tweaker.ru/");
         }
-        void label_download_2_Click(object sender, EventArgs e)
+
+        private async Task OpenLatestOrFallback(string key, string fallback)
         {
-            OpenUrl("https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7.5/npp.8.7.5.Installer.x64.exe");
+            string url = null;
+            try
+            {
+                url = await AppServices.LatestVersions.GetProgramUrlAsync(key);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Programs", "не удалось получить последнюю версию " + key + ": " + ex.Message);
+            }
+
+            OpenUrl(string.IsNullOrEmpty(url) ? fallback : url);
+        }
+
+        async void label_download_2_Click(object sender, EventArgs e)
+        {
+            await OpenLatestOrFallback("notepadpp", "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7.5/npp.8.7.5.Installer.x64.exe");
         }
         void label_download_3_Click(object sender, EventArgs e)
         {
@@ -2373,9 +2373,9 @@ namespace Project
         {
             OpenUrl("https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe");
         }
-        void label_download_8_Click(object sender, EventArgs e)
+        async void label_download_8_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/ShareX/ShareX/releases/download/v17.0.0/ShareX-17.0.0-setup.exe");
+            await OpenLatestOrFallback("sharex", "https://github.com/ShareX/ShareX/releases/download/v17.0.0/ShareX-17.0.0-setup.exe");
         }
         void label_download_9_Click(object sender, EventArgs e)
         {
@@ -2385,17 +2385,17 @@ namespace Project
         {
             OpenUrl("https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64");
         }
-        void label_download_11_Click(object sender, EventArgs e)
+        async void label_download_11_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-31.0.0-Windows-Installer.exe");
+            await OpenLatestOrFallback("obs", "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-31.0.0-Windows-Installer.exe");
         }
         void label_download_13_Click(object sender, EventArgs e)
         {
             OpenUrl("https://files2.codecguide.com/K-Lite_Codec_Pack_1875_Mega.exe");
         }
-        void label_download_14_Click(object sender, EventArgs e)
+        async void label_download_14_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://deac-fra.dl.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-5.0.3/qbittorrent_5.0.3_x64_setup.exe?viasf=1");
+            await OpenLatestOrFallback("qbittorrent", "https://deac-fra.dl.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-5.0.3/qbittorrent_5.0.3_x64_setup.exe?viasf=1");
         }
         void label_download_15_Click(object sender, EventArgs e)
         {
@@ -2429,9 +2429,9 @@ namespace Project
         {
             OpenUrl("https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.28-windows-x64-installer");
         }
-        void label_download_23_Click(object sender, EventArgs e)
+        async void label_download_23_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://deac-riga.dl.sourceforge.net/project/crystaldiskinfo/9.2.3/CrystalDiskInfo9_2_3.exe");
+            await OpenLatestOrFallback("crystaldiskinfo", "https://deac-riga.dl.sourceforge.net/project/crystaldiskinfo/9.2.3/CrystalDiskInfo9_2_3.exe");
         }
         void label_download_24_Click(object sender, EventArgs e)
         {
@@ -2727,10 +2727,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.ffmpeg"))
             {
-                Registry.CurrentUser.DeleteSubKeyTree(@"SOFTWARE\Classes\SystemFileAssociations");
-                Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Classes\SystemFileAssociations");
-                AppServices.Processes.StartCaptured("taskkill /f /im ffmpeg.exe");
-                File.Delete(@"C:\Windows\ffmpeg.exe");
+                AppServices.TweakCatalog.Get("ui.ffmpeg").Rollback(AppServices.TweakContext);
                 back_ui_10.Visible = false;
                 checkBox_ffmpeg.Enabled = true;
             }

@@ -59,6 +59,25 @@ UpdateInfo update = await AppServices.Updates.CheckAsync(curver);
 UI по-прежнему показывает `MessageBox`, пишет `lastchange.json` и запускает
 команду обновления.
 
+## Последние версии программ
+
+`LatestVersionService` (`ILatestVersionService`) ходит в GitHub API
+`repos/<repo>/releases/latest` и выбирает ассет по подстроке/суффиксу.
+
+Используется для:
+
+```text
+ffmpeg       GyanD/codexffmpeg, essentials_build .zip
+notepadpp    notepad-plus-plus/notepad-plus-plus, Installer.x64.exe
+sharex       ShareX/ShareX, -setup-x64.exe
+obs          obsproject/obs-studio, Windows-x64-Installer.exe
+qbittorrent  qbittorrent/qBittorrent, _x64_setup.exe
+```
+
+Кнопки вкладки «Программы» сначала пробуют получить последнюю версию, а при
+ошибке открывают прежний статический URL. FFmpeg-твик использует тот же
+сервис; при недоступности API остаётся fallback на 7.1.
+
 ## Что осталось
 
 - `DownloadService` с прогрессом и отменой — по мере необходимости.

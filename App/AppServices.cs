@@ -38,6 +38,9 @@ namespace WOTBO.App
         private static readonly Lazy<IGitHubUpdateService> UpdatesLazy =
             new Lazy<IGitHubUpdateService>(() => new GitHubUpdateService(Network, Log.Instance));
 
+        private static readonly Lazy<ILatestVersionService> LatestVersionsLazy =
+            new Lazy<ILatestVersionService>(() => new LatestVersionService(Network, Log.Instance));
+
         private static readonly Lazy<IWindowsVersionService> WindowsVersionLazy =
             new Lazy<IWindowsVersionService>(() => new WindowsVersionService(Registry));
 
@@ -54,7 +57,8 @@ namespace WOTBO.App
             new Lazy<IReservedStorageService>(() => new ReservedStorageService(Processes, Log.Instance));
 
         private static readonly Lazy<TweakContext> TweakContextLazy =
-            new Lazy<TweakContext>(() => new TweakContext(Registry, Processes, Workspace, Tweaks, WindowsVersion, Log.Instance));
+            new Lazy<TweakContext>(() => new TweakContext(
+                Registry, Processes, Network, LatestVersions, Workspace, Tweaks, WindowsVersion, Log.Instance));
 
         private static readonly Lazy<TweakCatalog> TweakCatalogLazy =
             new Lazy<TweakCatalog>(TweakCatalog.CreateDefault);
@@ -93,6 +97,12 @@ namespace WOTBO.App
         public static IGitHubUpdateService Updates
         {
             get { return UpdatesLazy.Value; }
+        }
+
+        /// <summary>Последние версии программ и ffmpeg.</summary>
+        public static ILatestVersionService LatestVersions
+        {
+            get { return LatestVersionsLazy.Value; }
         }
 
         /// <summary>Определение версии Windows.</summary>

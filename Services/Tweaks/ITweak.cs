@@ -1,4 +1,6 @@
+using Microsoft.Win32;
 using WOTBO.App.Logging;
+using WOTBO.Services.Network;
 using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
@@ -21,6 +23,8 @@ namespace WOTBO.Services.Tweaks
         public TweakContext(
             IRegistryService registry,
             IProcessService processes,
+            INetworkService network,
+            ILatestVersionService latestVersions,
             TempWorkspace workspace,
             TweakStateStore store,
             IWindowsVersionService windowsVersion,
@@ -28,6 +32,8 @@ namespace WOTBO.Services.Tweaks
         {
             Registry = registry;
             Processes = processes;
+            Network = network;
+            LatestVersions = latestVersions;
             Workspace = workspace;
             Store = store;
             WindowsVersion = windowsVersion;
@@ -37,6 +43,10 @@ namespace WOTBO.Services.Tweaks
         public IRegistryService Registry { get; }
 
         public IProcessService Processes { get; }
+
+        public INetworkService Network { get; }
+
+        public ILatestVersionService LatestVersions { get; }
 
         public TempWorkspace Workspace { get; }
 
@@ -50,6 +60,20 @@ namespace WOTBO.Services.Tweaks
         public void BackupRegFile(string path)
         {
             TweakBackupSession.RecordRegFile(path);
+        }
+
+        public void BackupFile(string path)
+        {
+            TweakBackupSession.RecordFile(path);
+        }
+
+        public void BackupRegistryKey(RegistryHive hive, string path)
+        {
+            TweakBackupSession session = TweakBackupSession.Current;
+            if (session != null)
+            {
+                session.BackupRegistryKey(hive, path);
+            }
         }
     }
 

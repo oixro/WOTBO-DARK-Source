@@ -55,6 +55,7 @@ namespace WOTBO.Services.Network
             {
                 using (var client = new WebClient())
                 {
+                    client.Headers[HttpRequestHeader.UserAgent] = "WOTBO";
                     return client.DownloadString(url);
                 }
             }
