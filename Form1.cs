@@ -2050,6 +2050,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.dwmpriority"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.ImageFileExecutionOptions + @"\dwm.exe");
                     AppServices.TweakCatalog.Get("extra.dwmpriority").Apply(AppServices.TweakContext);
                     checkBox_dwm.Checked = false;
                     checkBox_dwm.Enabled = false;
