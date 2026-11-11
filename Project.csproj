@@ -73,6 +73,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -89,6 +90,9 @@
     <Compile Include="Services\Registry\RegistryOperationException.cs" />
     <Compile Include="Services\Registry\RegistryService.cs" />
     <Compile Include="Services\Registry\RegistryValueSnapshot.cs" />
+    <Compile Include="Services\State\TweakBackup.cs" />
+    <Compile Include="Services\State\TweakBackupSession.cs" />
+    <Compile Include="Services\State\TweakStateStore.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

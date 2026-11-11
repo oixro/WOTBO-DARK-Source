@@ -691,6 +691,7 @@ namespace Project
                 Form2 eula = new Form2();
                 eula.ShowDialog();
             }
+            AppServices.Tweaks.MigrateLegacyFlags();
             #endregion
             #region проверка версии Windows
             const string winverPath = @"Software\Microsoft\Windows NT\CurrentVersion";
@@ -774,7 +775,7 @@ namespace Project
 
             #endregion
             #region отключаем чеки
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("regpack")) == 1)
+            if (AppServices.Tweaks.IsApplied("main.regpack"))
             {
                 Log.Info("Tweak:main.regpack", "regpack был применён");
                 checkBox_reg.Enabled = false;
@@ -792,13 +793,13 @@ namespace Project
                 checkBox_gibernate.Enabled = false;
                 back_main_3.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("imported_powerscheme")) == 1)
+            if (AppServices.Tweaks.IsApplied("main.powerscheme"))
             {
                 Log.Info("Tweak:main.powerscheme", "imported_powerscheme был применён");
                 checkBox_scheme.Enabled = false;
                 back_main_4.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("animations")) == 1)
+            if (AppServices.Tweaks.IsApplied("ui.animations"))
             {
                 animation = false;
                 Log.Info("Tweak:ui.animations", "анимации выключены");
@@ -843,26 +844,7 @@ namespace Project
             }
             bool IsMouseFixKeyPresent()
             {
-                const string registryPath = @"Software\oixro\wotbo";
-
-                try
-                {
-                    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registryPath))
-                    {
-                        if (key != null)
-                        {
-                            // Проверяем, существует ли значение "mousefix" в ключе реестра
-                            object value = key.GetValue("mousefix");
-                            return value != null; // Возвращаем true, если значение существует
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Tweak:main.mousefix", $"Ошибка при чтении реестра: {ex.Message}", ex);
-                }
-
-                return false; // Возвращаем false, если ключ или значение не найдены
+                return AppServices.Tweaks.IsApplied("main.mousefix");
             }
             UpdateMouseFixCheckBox();
             #endregion
@@ -872,13 +854,13 @@ namespace Project
                 checkBox_mpo.Enabled = false;
                 back_main_6.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("usbpowersaving")) == 1)
+            if (AppServices.Tweaks.IsApplied("main.usb"))
             {
                 Log.Info("Tweak:main.usb", "usbpowersaving был применён");
                 checkBox_usb.Enabled = false;
                 back_main_7.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("bcdedit")) == 1)
+            if (AppServices.Tweaks.IsApplied("main.bcdedit"))
             {
                 Log.Warn("Tweak:main.bcdedit", "bcdedit был применён, откатываем нахуй");
                 hcmd("bcdedit /deletevalue tscsyncpolicy");
@@ -903,7 +885,7 @@ namespace Project
                 hcmd("bcdedit /deletevalue usephysicaldestination");
                 hcmd("bcdedit /deletevalue usefirmwarepcisettings");
                 hcmd("bcdedit /deletevalue uselegacyapicmode");
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "bcdedit");
+                AppServices.Tweaks.Remove("main.bcdedit");
             }
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management")?.GetValue("FeatureSettings")) == 1)
             {
@@ -911,7 +893,7 @@ namespace Project
                 checkBox_mtiititit.Enabled = false;
                 back_main_9.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("mmagent")) == 1)
+            if (AppServices.Tweaks.IsApplied("main.mmagent"))
             {
                 Log.Info("Tweak:main.mmagent", "mmagent был применён");
                 checkBox_mmagent.Enabled = false;
@@ -985,13 +967,13 @@ namespace Project
 
 
             #endregion
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("buttons")) == 1)
+            if (AppServices.Tweaks.IsApplied("ui.buttons"))
             {
                 Log.Info("Tweak:ui.buttons", "buttons был применён");
                 checkBoxUI_Buttons_1.Enabled = false;
                 back_ui_1.Visible = true;
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("litle_explorer_things")) == 1)
+            if (AppServices.Tweaks.IsApplied("ui.explorerdetails"))
             {
                 Log.Info("Tweak:ui.explorerdetails", "litle_explorer_things был применён");
                 checkBoxUI_Buttons_2.Enabled = false;
@@ -1022,7 +1004,7 @@ namespace Project
             {
 
             } //shapka11
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("pro_1")) == 1)
+            if (AppServices.Tweaks.IsApplied("pro.homegallery"))
             {
                 Log.Info("Tweak:pro.homegallery", "pro_1 был применён");
                 checkBox_pro_1.Enabled = false;
@@ -1041,7 +1023,7 @@ namespace Project
                 back_pro_3.Visible = true;
 
             }
-            if (Convert.ToInt32(Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("defenderdisabled")) == 1)
+            if (AppServices.Tweaks.IsApplied("main.defender"))
             {
                 Log.Info("Tweak:main.defender", "defenderdisabled был применён");
                 checkBox_disabledefender.Enabled = false;
@@ -1084,7 +1066,7 @@ namespace Project
                 Log.Info("App", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("buffer") != null)
+            if (AppServices.Tweaks.IsApplied("pro.bufferbloat"))
             {
                 Log.Info("Tweak:pro.bufferbloat", "bufferbloat был применён");
                 checkBox_pro_12.Enabled = false;
@@ -1431,10 +1413,12 @@ namespace Project
                     #region new method
                     if (win10)
                     {
+                        TweakScope.BackupRegFile($"{path_regpack}/w10/win10defenderX.reg");
                         supercmd($"regedit.exe /s {path_regpack}/w10/win10defenderX.reg");
                     }
                     else
                     {
+                        TweakScope.BackupRegFile($"{path_regpack}/w11/win11defenderX.reg");
                         supercmd($"regedit.exe /s {path_regpack}/w11/win11defenderX.reg");
                         #region webthreatdefusersvc_XXXXX
                         // Путь к основной ветке реестра
@@ -1469,13 +1453,13 @@ namespace Project
                         }
                         #endregion
                     }
+                    TweakScope.BackupRegFile($"{path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
                     supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
                     checkBox_disabledefender.Enabled = false;
                     checkBox_disabledefender.Checked = false;
                     label_kalorant.Visible = true;
                     back_main_12.Visible = true;
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "defenderdisabled", 1);
-                    ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
+                        ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
                     #endregion
                 }
             }
@@ -1485,16 +1469,19 @@ namespace Project
                 {
                     if (win10)
                     {
+                        TweakScope.BackupRegFile($"{path_regpack}/w10/w10_AIO.reg");
                         hcmd($"regedit.exe /s {path_regpack}/w10/w10_AIO.reg");
                     }
                     else
                     {
+                        TweakScope.BackupRegFile($"{path_regpack}/w11/w11_AIO.reg");
                         supercmd($"regedit.exe /s {path_regpack}/w11/w11_AIO.reg");
                     }
+                    TweakScope.BackupRegFile($"{path_regpack}/foldernetworkX.reg");
                     supercmd($"regedit.exe /s {path_regpack}/foldernetworkX.reg");
+                    TweakScope.BackupRegFile($"{path_regpack}/REG_AIO.reg");
                     hcmd($"regedit.exe /s {path_regpack}/REG_AIO.reg");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "regpack", 1);
-                    RegistryKey key;
+                        RegistryKey key;
                     key = Registry.CurrentUser.CreateSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
                     AppServices.Registry.WriteValue(key, "EnableAutoEnhanceDuringPlayback", 0x00000000, RegistryValueKind.DWord);
                     key.Close();
@@ -1509,8 +1496,7 @@ namespace Project
                 using (TweakScope.Apply("main.reservedstorage"))
                 {
                     hcmd(@"Dism /Online /Set-ReservedStorageState /State:Disabled");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "ReservedStorageState", 1);
-                    checkBox_dism.Enabled = false;
+                        checkBox_dism.Enabled = false;
                     checkBox_dism.Checked = false;
                     back_main_2.Visible = true;
                 }
@@ -1520,8 +1506,7 @@ namespace Project
                 using (TweakScope.Apply("main.hibernate"))
                 {
                     hcmd("powercfg -h off");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "hibernate", 1);
-                    checkBox_gibernate.Enabled = false;
+                        checkBox_gibernate.Enabled = false;
                     checkBox_gibernate.Checked = false;
                     back_main_3.Visible = true;
 
@@ -1537,8 +1522,7 @@ namespace Project
                     Log.Debug("Tweak:main.powerscheme", guidstring);
                     hcmd($"powercfg -import {path_scheme} {guidstring}");
                     hcmd($"powercfg -setactive \"{guidstring}\"");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "imported_powerscheme", 1);
-                    checkBox_scheme.Enabled = false;
+                        checkBox_scheme.Enabled = false;
                     checkBox_scheme.Checked = false;
                     back_main_4.Visible = true;
                 }
@@ -1558,9 +1542,9 @@ namespace Project
                 using (TweakScope.Apply("main.usb"))
                 {
                     File.WriteAllText(tempfolder + @"\usbpowersaving.bat", Resources.usbpowersaving);
+                    TweakScope.BackupRegFile($"{tempfolder}/usbpowersaving.cmd");
                     hcmd($"regedit.exe /s {tempfolder}/usbpowersaving.cmd");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "usbpowersaving", 1);
-                    RegistryKey key;
+                        RegistryKey key;
                     key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\hubg");
                     AppServices.Registry.WriteValue(key, "DisableOnSoftRemove", 0x00000001, RegistryValueKind.DWord);
                     key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\xusb22\\Parameters");
@@ -1600,8 +1584,7 @@ namespace Project
                     AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled", 0);
                     //supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.dll mcupdate_GenuineIntel.old");
                     //supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.dll mcupdate_AuthenticAMD.old");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "Mitigations", 1);
-                    checkBox_mtiititit.Enabled = false;
+                        checkBox_mtiititit.Enabled = false;
                     checkBox_mtiititit.Checked = false;
                     back_main_9.Visible = true;
 
@@ -1654,10 +1637,12 @@ namespace Project
                         isdiskssd = true;
                     if (isdiskssd)
                     {
+                        TweakScope.BackupRegFile($"{tempfolder}/prefetcher ssd.reg");
                         hcmd($"regedit.exe /s {tempfolder}/prefetcher ssd.reg");
                     }
                     else
                     {
+                        TweakScope.BackupRegFile($"{tempfolder}/prefetcher hdd.reg");
                         hcmd($"regedit.exe /s {tempfolder}/prefetcher hdd.reg");
                     }
                     int ramgbINT = Convert.ToInt32(ramGB) * 32;
@@ -1688,8 +1673,7 @@ namespace Project
                         powershell($"set-mmagent -moaf {mmMemory}");
                     }
 
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "mmagent", 1);
-                    checkBox_mmagent.Enabled = false;
+                        checkBox_mmagent.Enabled = false;
                     checkBox_mmagent.Checked = false;
                     back_main_10.Visible = true;
                 }
@@ -1734,8 +1718,8 @@ namespace Project
                 using (TweakScope.Apply("main.mousefix"))
                 {
                     File.WriteAllText(tempfolder + @"\mousefix.reg", Resources.mousefix);
+                    TweakScope.BackupRegFile($"{tempfolder}\\mousefix.reg");
                     hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "mousefix", 1);
                     checkBox_mousefix.Enabled = false;
                     checkBox_mousefix.Checked = false;
                     back_main_5.Visible = true;
@@ -1846,6 +1830,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.win32priority"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SYSTEM\ControlSet001\Control\PriorityControl");
                     Win32Priority Win32Priority = new Win32Priority();
                     Win32Priority.ShowDialog();
                     checkBox_pro_11.Checked = false;
@@ -1916,13 +1901,13 @@ namespace Project
             {
                 AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionHeight", "-270");
                 AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionWidth", "-270");
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "buttons", 1);
                 checkBoxUI_Buttons_1.Enabled = false;
                 checkBoxUI_Buttons_1.Checked = false;
                 back_ui_1.Visible = true;
             }
             if (checkBoxUI_Buttons_2.Checked)
             {
+                TweakScope.BackupRegFile($"{path_ui}/things.reg");
                 hcmd($"regedit.exe /s {path_ui}/things.reg");
                 hcmd(@"rd /s /q ""%userprofile%\3D Objects\""");
                 if (!win10)
@@ -1931,11 +1916,11 @@ namespace Project
                 }
                 else
                 {
+                    TweakScope.BackupRegFile($"{path_ui}/Taskmgr_win10_new.reg");
                     hcmd($"regedit.exe /s {path_ui}/Taskmgr_win10_new.reg");
                 }
 
                 hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
-                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "litle_explorer_things", 1);
                 checkBoxUI_Buttons_2.Enabled = false;
                 checkBoxUI_Buttons_2.Checked = false;
                 back_ui_2.Visible = true;
@@ -1951,6 +1936,8 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.bluefolders"))
                 {
+                    TweakScope.BackupFile(@"C:\Windows\System32\imageres.dll");
+                    TweakScope.BackupFile(@"C:\Windows\SystemResources\imageres.dll.mun");
                     if (win10)
                     {
                         File.WriteAllText(tempfolder + @"\blueiconsw10.bat", Resources.blueiconsw10);
@@ -1987,6 +1974,7 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.contextmenu"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}");
                     if (!win10)
                     {
                         AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", "", " ");
@@ -2002,6 +1990,7 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.win11header"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}");
                     //hcmd($"{tempfolder}\\shapka.bat");
                     hcmd("taskkill /f /im explorer.exe >nul 2>&1");
                     supercmd("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\FixByVlado\" /f");
@@ -2016,6 +2005,9 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.wotbocontext"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\WOTBO");
+                    TweakScope.BackupFile(@"C:\Windows\gear.ico");
+                    TweakScope.BackupFile(@"C:\Windows\wotbo.exe");
                     if (!File.Exists(@"C:\Windows\gear.ico"))
                     {
                         File.WriteAllBytes(tempfolder + @"\gear.zip", Resources.gear);
@@ -2040,6 +2032,8 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.explorerrestart"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\explorer");
+                    TweakScope.BackupFile(@"c:\Windows\system32\explorer.bat");
                     RegistryKey key = Registry.ClassesRoot.CreateSubKey(@"DesktopBackground\Shell\explorer", true);
                     AppServices.Registry.WriteValue(key, "", "Restart explorer.exe");
                     if (win10)
@@ -2059,6 +2053,7 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.ffmpeg"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"SOFTWARE\Classes\SystemFileAssociations");
                     ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info);
                     using (WebClient wc = new WebClient())
                         if (!File.Exists($"{tempfolder}\\ffmpeg.zip"))
@@ -2069,10 +2064,12 @@ namespace Project
                         }
                     if (File.Exists(@"C:\Windows\ffmpeg.exe"))
                     {
+                        TweakScope.BackupFile(@"C:\Windows\ffmpeg.exe");
                         hcmd("taskkill /f /im ffmpeg.exe");
                         File.Delete(@"C:\Windows\ffmpeg.exe");
                     }
                     File.Copy($@"{tempfolder}\ffmpeg-7.1-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
+                    TweakScope.BackupRegFile($"{tempfolder}/ffmpeg.reg");
                     hcmd($@"regedit.exe /s {tempfolder}/ffmpeg.reg");
 
                     checkBox_ffmpeg.Enabled = false;
@@ -2090,6 +2087,8 @@ namespace Project
                             wc.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/Release_x64.zip", $"{tempfolder}\\Release_x64.zip");
                             ZipFile.ExtractToDirectory($"{tempfolder}\\Release_x64.zip", tempfolder);
                         }
+                    TweakScope.BackupFile(@"C:\Windows\ExplorerBlurMica.dll");
+                    TweakScope.BackupFile(@"C:\Windows\config.ini");
                     File.Copy($@"{tempfolder}\Release\ExplorerBlurMica.dll", @"C:\Windows\ExplorerBlurMica.dll");
                     File.Copy($@"{tempfolder}\Release\config.ini", @"C:\Windows\config.ini");
                     hcmd($"regsvr32 /s C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
@@ -2103,8 +2102,7 @@ namespace Project
                 using (TweakScope.Apply("ui.animations"))
                 {
                     animation = false;
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "animations", 1);
-                    back_animations.Visible = true;
+                        back_animations.Visible = true;
                     checkBox_animation.Checked = false;
                     checkBox_animation.Enabled = false;
                 }
@@ -2126,6 +2124,7 @@ namespace Project
                     {
                         // Путь к первому найденному файлу
                         string OneDriveSetupPath = OneDriveSetup[0];
+                        TweakScope.BackupFile(OneDriveSetupPath);
                         Log.Info("Tweak:extra.onedrive", $"путь к Onedrive найден - {OneDriveSetupPath}, переходим к удалению");
 
                         // Вызов команды для деинсталляции OneDrive
@@ -2276,6 +2275,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.edge"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Edge");
                     RegistryKey edge;
                     edge = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge");
                     AppServices.Registry.WriteValue(edge, "EdgeEnhanceImagesEnabled", 0x00000000, RegistryValueKind.DWord);
@@ -2428,6 +2428,9 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.homegallery"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer");
+                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}");
+                    TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}");
                     {  //HomeDelete
                         hcmd(@"reg add ""HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"" /v ""HubMode"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
                         supercmd(@"cmd.exe /c reg add ""HKCR\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000000"" /f");
@@ -2436,8 +2439,7 @@ namespace Project
                         supercmd(@"cmd.exe /c reg add ""HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
                         //restart explorer
                         hcmd("taskkill /f /im explorer.exe && timeout /t 1 && explorer.exe");
-                        AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "pro_1", 1);
-                        checkBox_pro_1.Checked = false;
+                                checkBox_pro_1.Checked = false;
                         checkBox_pro_1.Enabled = false;
                     }
                 }
@@ -2446,6 +2448,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.windowsupdate"))
                 {
+                    TweakScope.BackupRegFile($"{tempfolder}\\updates.reg");
                     hcmd($"regedit /s {tempfolder}\\updates.reg");
                     checkBox_pro_3.Checked = false;
                     checkBox_pro_3.Enabled = false;
@@ -2457,6 +2460,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.csrss"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe");
                     //hcmd($"{tempfolder}\\csrss.bat");
                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
         .CreateSubKey("csrss.exe");
@@ -2504,8 +2508,7 @@ namespace Project
                         checkBox_pro_12.Checked = false;
                         checkBox_pro_12.Enabled = false;
                         back_pro_12.Visible = true;
-                        AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "buffer", 1);
-                    }
+                            }
                     else
                     {
                         checkBox_pro_12.Checked = false;
@@ -2516,6 +2519,9 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.unlocker"))
                 {
+                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"*\shell\Уничтожить");
+                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"Directory\shell\Уничтожить");
+                    TweakScope.BackupDirectory(@"C:\Windows\unlocker");
                     using (WebClient wc = new WebClient())
                         if (!Directory.Exists($"{tempfolder}\\unlocker.zip"))
                         {
@@ -2545,6 +2551,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.alwaysontop"))
                 {
+                    TweakScope.BackupFile(@"C:\Windows\AlwaysOnTop.exe");
                     using (WebClient wc = new WebClient())
                         if (!File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
                         {
@@ -2656,6 +2663,7 @@ namespace Project
         #region kalorant
         void label_kalorant_Click(object sender, EventArgs e)
         {
+            TweakScope.BackupRegFile($"{path_regpack}/exploitscfg.reg");
             hcmd($"regedit.exe /s {path_regpack}/exploitscfg.reg");
             label_kalorant.Visible = false;
         }
@@ -2989,7 +2997,6 @@ namespace Project
                 #endregion
                 checkBox_reg.Enabled = true;
                 back_main_1.Visible = false;
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "regpack");
             }
         } //regpack
         void back_main_2_Click(object sender, EventArgs e)
@@ -3019,7 +3026,6 @@ namespace Project
             using (TweakScope.Rollback("main.powerscheme"))
             {
                 hcmd("powercfg -restoredefaultschemes");
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "imported_powerscheme");
                 checkBox_scheme.Enabled = true;
                 checkBox_scheme.Checked = false;
                 back_main_4.Visible = false;
@@ -3031,7 +3037,6 @@ namespace Project
             {
                 File.WriteAllText(tempfolder + @"\unmousefix.reg", Resources.unmousefix);
                 hcmd($"regedit.exe /s {tempfolder}\\unmousefix.reg");
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "mousefix");
                 checkBox_mousefix.Enabled = true;
                 checkBox_mousefix.Checked = false;
                 back_main_5.Visible = false;
@@ -3074,7 +3079,6 @@ namespace Project
                 key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Windows\\EnhancedStorageDevices");
                 AppServices.Registry.WriteValue(key, "TCGSecurityActivationDisabled", 0x00000000, RegistryValueKind.DWord);
                 key.Close();
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "usbpowersaving");
                 checkBox_usb.Enabled = true;
                 checkBox_usb.Checked = false;
                 back_main_7.Visible = false;
@@ -3100,7 +3104,6 @@ namespace Project
                 supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.old mcupdate_GenuineIntel.dll");
                 supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.old mcupdate_AuthenticAMD.dll");
 
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "Mitigations");
                 checkBox_mtiititit.Enabled = true;
                 checkBox_mtiititit.Checked = false;
                 back_main_9.Visible = false;
@@ -3196,7 +3199,6 @@ namespace Project
                 }
                 supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/AIO_ON.reg");
                 #endregion
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "defenderdisabled");
                 back_main_12.Visible = false;
                 //MessageBox.Show("Для восстановления работы защитника выполните перезагрузку!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ShowNotification("Защитник Windows", "Работа защитника будет восстановлена после перезагруки ПК", ToolTipIcon.Warning);
@@ -3312,7 +3314,6 @@ namespace Project
             {
                 AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionHeight", "-330");
                 AppServices.Registry.WriteValue(RegistryHive.CurrentUser, "Control Panel\\Desktop\\WindowMetrics", "CaptionWidth", "-330");
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "buttons");
                 checkBoxUI_Buttons_1.Enabled = true;
                 checkBoxUI_Buttons_1.Checked = false;
                 back_ui_1.Visible = false;
@@ -3336,7 +3337,6 @@ namespace Project
                 checkBoxUI_Buttons_2.Enabled = true;
                 checkBoxUI_Buttons_2.Checked = false;
                 back_ui_2.Visible = false;
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "litle_explorer_things");
             }
         }//заглушка
 
@@ -3450,7 +3450,6 @@ namespace Project
             using (TweakScope.Rollback("ui.animations"))
             {
                 animation = true;
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "animations");
                 back_animations.Visible = false;
                 checkBox_animation.Enabled = true;
             }
@@ -3571,7 +3570,6 @@ namespace Project
                 checkBox_pro_12.Checked = false;
                 checkBox_pro_12.Enabled = true;
                 back_pro_12.Visible = false;
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "buffer");
             }
         }
         void back_pro_13_Click(object sender, EventArgs e)

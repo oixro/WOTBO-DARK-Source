@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Microsoft.Win32;
 
 namespace WOTBO.Services.Registry
@@ -90,6 +91,12 @@ namespace WOTBO.Services.Registry
 
             if (data is string text)
             {
+                if (text.Length > 512)
+                {
+                    return "\"" + text.Substring(0, 512) + "...\" (" +
+                           text.Length.ToString(CultureInfo.InvariantCulture) + " символов)";
+                }
+
                 return "\"" + text + "\"";
             }
 

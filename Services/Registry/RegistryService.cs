@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security;
 using Microsoft.Win32;
 using WOTBO.App.Logging;
+using WOTBO.Services.State;
 
 namespace WOTBO.Services.Registry
 {
@@ -144,6 +145,7 @@ namespace WOTBO.Services.Registry
 
             // Старое значение нужно и для лога, и для отката: читаем до записи.
             RegistryValueSnapshot before = ReadValue(hive, path, valueName);
+            TweakBackupSession.RecordValue(before);
 
             try
             {
@@ -180,6 +182,7 @@ namespace WOTBO.Services.Registry
             RegistryHive hive = HiveFromKeyName(key.Name);
 
             RegistryValueSnapshot before = ReadValueFromKey(hive, path, key, valueName);
+            TweakBackupSession.RecordValue(before);
 
             try
             {
@@ -210,6 +213,7 @@ namespace WOTBO.Services.Registry
             string path = PathFromKeyName(key.Name);
             RegistryHive hive = HiveFromKeyName(key.Name);
             RegistryValueSnapshot before = ReadValueFromKey(hive, path, key, valueName);
+            TweakBackupSession.RecordValue(before);
 
             if (!before.Exists)
             {
@@ -287,6 +291,7 @@ namespace WOTBO.Services.Registry
             string path = Normalize(keyPath);
 
             RegistryValueSnapshot before = ReadValue(hive, path, valueName);
+            TweakBackupSession.RecordValue(before);
             if (!before.Exists)
             {
                 _log.Debug(Category, Format("удаление значения", hive, path, valueName) + " -> значения не было");

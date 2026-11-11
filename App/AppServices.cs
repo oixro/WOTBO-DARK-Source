@@ -1,6 +1,7 @@
 using System;
 using WOTBO.App.Logging;
 using WOTBO.Services.Registry;
+using WOTBO.Services.State;
 
 namespace WOTBO.App
 {
@@ -16,10 +17,19 @@ namespace WOTBO.App
         private static readonly Lazy<IRegistryService> RegistryLazy =
             new Lazy<IRegistryService>(() => new RegistryService(Log.Instance));
 
+        private static readonly Lazy<TweakStateStore> TweaksLazy =
+            new Lazy<TweakStateStore>(() => new TweakStateStore(Registry, Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
             get { return RegistryLazy.Value; }
+        }
+
+        /// <summary>Постоянное состояние твиков и их бэкапы.</summary>
+        public static TweakStateStore Tweaks
+        {
+            get { return TweaksLazy.Value; }
         }
     }
 }

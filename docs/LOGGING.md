@@ -9,7 +9,7 @@
 
 Все записи в `Form1` переведены на уровни и категории. Категория — короткое имя
 подсистемы: `App`, `UI`, `Windows`, `Temp`, `Tweak:<id>`, `Process`, `GPU`,
-`Network`, `Update`, `OneDrive`, `System`, `Registry`.
+`Network`, `Update`, `OneDrive`, `System`, `Registry`, `State`.
 
 ```csharp
 Log.Info("Tweak:main.mpo", "MPO был применён");
@@ -65,6 +65,9 @@ using (TweakScope.Apply("main.mpo"))
 Категория `Tweak:<id>` общая для detect, apply и rollback. Примеры id:
 `main.defender`, `main.mpo`, `main.pagefile`, `ui.bluefolders`,
 `gpu.ansel`, `extra.onedrive`, `pro.csrss`.
+
+Бэкап и миграция старых флагов пишутся в категорию `State` — см.
+`docs/STATE.md`.
 
 ## Как устроено
 
