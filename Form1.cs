@@ -720,72 +720,16 @@ namespace Project
                 back_main_10.Visible = true;
             }
             #region pagefile
-            //Log.Info("Tweak:main.pagefile", "pagefile был применён");
-            try
+            if (AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
-                // Открываем раздел реестра
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement))
-                {
-                    if (key != null)
-                    {
-                        // Читаем текущее значение PagingFiles
-                        object value = key.GetValue("PagingFiles");
-                        if (value != null)
-                        {
-                            string[] pagingFiles = (string[])value;
-
-                            // Флаг для отслеживания соответствия параметров
-                            bool settingsMatch = false;
-
-                            // Проходим по всем настройкам файла подкачки
-                            foreach (string pagingFile in pagingFiles)
-                            {
-                                // Разбираем строку настроек
-                                string[] parts = pagingFile.Split(' ');
-                                if (parts.Length >= 3)
-                                {
-                                    string path = parts[0];
-                                    int minSize = int.Parse(parts[1]);
-                                    int maxSize = int.Parse(parts[2]);
-
-                                    // Проверяем, соответствуют ли размеры заданным
-                                    if (path.Equals(@"C:\pagefile.sys", StringComparison.OrdinalIgnoreCase)
-                                        && minSize == 16 && maxSize == 32768)
-                                    {
-                                        settingsMatch = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (settingsMatch)
-                            {
-                                Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки уже установлены.");
-                                checkBox_page.Enabled = false;
-                                back_main_11.Visible = true;
-                            }
-                            else
-                            {
-                                Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки отличаются от заданных.");
-                            }
-                        }
-                        else
-                        {
-                            Log.Info("Tweak:main.pagefile", "[pagefile check] Значение PagingFiles не установлено.");
-                        }
-                    }
-                    else
-                    {
-                        Log.Warn("Tweak:main.pagefile", "[pagefile check] Не удалось открыть ключ реестра.");
-                    }
-                }
+                Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки уже установлены.");
+                checkBox_page.Enabled = false;
+                back_main_11.Visible = true;
             }
-            catch (Exception ex)
+            else
             {
-                Log.Error("Tweak:main.pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
+                Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки отличаются от заданных или не установлены.");
             }
-
-
             #endregion
             if (AppServices.Tweaks.IsApplied("ui.buttons"))
             {
@@ -1452,27 +1396,11 @@ namespace Project
                 {
                     try
                     {
-                        // Открываем раздел реестра
-                        using (RegistryKey key = Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement, true))
-                        {
-                            if (key != null)
-                            {
-                                // Новое значение для PagingFiles
-                                string[] newValue = { "C:\\pagefile.sys 16 32768" }; // Указываем диск и размеры в МБ
-
-                                // Устанавливаем новое значение
-                                AppServices.Registry.WriteValue(key, "PagingFiles", newValue, RegistryValueKind.MultiString);
-
-                                Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки успешно изменены. Перезагрузите систему для применения изменений.");
-                                checkBox_page.Enabled = false;
-                                checkBox_page.Checked = false;
-                                back_main_11.Visible = true;
-                            }
-                            else
-                            {
-                                Log.Warn("Tweak:main.pagefile", "[pagefile check] Не удалось открыть ключ реестра.");
-                            }
-                        }
+                        AppServices.TweakCatalog.Get("main.pagefile").Apply(AppServices.TweakContext);
+                        Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки успешно изменены. Перезагрузите систему для применения изменений.");
+                        checkBox_page.Enabled = false;
+                        checkBox_page.Checked = false;
+                        back_main_11.Visible = true;
                     }
                     catch (Exception ex)
                     {
@@ -2773,24 +2701,8 @@ namespace Project
             {
                 try
                 {
-                    // Открываем раздел реестра
-                    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement, writable: true))
-                    {
-                        if (key != null)
-                        {
-                            // Восстанавливаем значение PagingFiles по умолчанию
-                            string[] defaultValue = { "C:\\pagefile.sys 0 0" }; // Автоматический размер
-
-                            // Устанавливаем новое значение
-                            AppServices.Registry.WriteValue(key, "PagingFiles", defaultValue, RegistryValueKind.MultiString);
-
-                            Log.Info("Tweak:main.pagefile", "[pagefile check] Стандартные настройки файла подкачки восстановлены. Перезагрузите систему для применения изменений.");
-                        }
-                        else
-                        {
-                            Log.Warn("Tweak:main.pagefile", "[pagefile check] Не удалось открыть ключ реестра.");
-                        }
-                    }
+                    AppServices.TweakCatalog.Get("main.pagefile").Rollback(AppServices.TweakContext);
+                    Log.Info("Tweak:main.pagefile", "[pagefile check] Стандартные настройки файла подкачки восстановлены. Перезагрузите систему для применения изменений.");
                 }
                 catch (Exception ex)
                 {

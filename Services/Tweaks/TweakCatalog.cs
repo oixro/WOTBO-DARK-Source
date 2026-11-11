@@ -55,6 +55,7 @@ namespace WOTBO.Services.Tweaks
                 new UsbPowerTweak(),
                 new MitigationsTweak(),
                 new HibernateTweak(),
+                new PagefileTweak(),
             });
         }
     }

@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас пятнадцать твиков.
+`TweakCatalog` — словарь по `Id`, сейчас шестнадцать твиков.
 
 ## Пилот
 
@@ -37,6 +37,7 @@ public interface ITweak
 | `main.usb` | `SYSTEM\CurrentControlSet\Services\...`, `Enum\USB`, `usbflags`, `EnhancedStorageDevices` | USB power saving; `.cmd` по-прежнему запускается в Form1 |
 | `main.mitigations` | `HKLM\...\Memory Management`, `...\Kernel`, `...\DeviceGuard\...` | Spectre/Meltdown; detect по `FeatureSettings=1` |
 | `main.hibernate` | `powercfg -h off` | detect: отсутствует `C:\hiberfil.sys` |
+| `main.pagefile` | `HKLM\...\Memory Management\PagingFiles` | `C:\pagefile.sys 16 32768` |
 
 `Form1` для них:
 
