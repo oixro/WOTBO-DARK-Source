@@ -106,6 +106,12 @@ namespace WOTBO.Services.State
             return dataFile is string && File.Exists((string)dataFile);
         }
 
+        /// <summary>Время применения в ISO-8601 или <c>null</c>.</summary>
+        public string GetAppliedAt(string tweakId)
+        {
+            return _registry.GetValue(RegistryHive.CurrentUser, BackupKeyPath(tweakId), "appliedAt") as string;
+        }
+
         /// <summary>
         /// Переводит все известные старые флаги в новый формат и удаляет их.
         /// Вызывается один раз при старте, чтобы в корне

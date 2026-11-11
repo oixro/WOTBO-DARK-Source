@@ -18,6 +18,7 @@ using WOTBO;
 using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
+using WOTBO.UI;
 namespace Project
 {
     public partial class WOTBO : FormShadow
@@ -678,6 +679,7 @@ namespace Project
         async void Form1_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
+            TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula
             if (!InstanceChecker.TakeMemory())
             {

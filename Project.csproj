@@ -93,6 +93,7 @@
     <Compile Include="Services\State\TweakBackup.cs" />
     <Compile Include="Services\State\TweakBackupSession.cs" />
     <Compile Include="Services\State\TweakStateStore.cs" />
+    <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
