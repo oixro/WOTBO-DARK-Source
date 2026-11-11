@@ -91,6 +91,8 @@
     <Compile Include="Services\Hardware\GpuService.cs" />
     <Compile Include="Services\Hardware\WmiSystemInfoService.cs" />
     <Compile Include="Services\Network\INetworkService.cs" />
+    <Compile Include="Services\Network\IGitHubUpdateService.cs" />
+    <Compile Include="Services\Network\GitHubUpdateService.cs" />
     <Compile Include="Services\Network\NetworkService.cs" />
     <Compile Include="Services\Processes\IProcessService.cs" />
     <Compile Include="Services\Processes\ProcessService.cs" />

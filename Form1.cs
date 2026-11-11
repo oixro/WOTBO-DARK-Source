@@ -18,6 +18,7 @@ using WOTBO;
 using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
+using WOTBO.Services.Network;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
 namespace Project
@@ -1045,60 +1046,65 @@ namespace Project
             {
                 try
                 {
-                    if (Internet.OK())
+                    UpdateInfo update = await AppServices.Updates.CheckAsync(curver);
+                    switch (update.Status)
                     {
-                        string verjson = (AppServices.Network.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
-                        if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
-                        {
+                        case UpdateStatus.Actual:
                             Log.Info("Update", $"версия актуальная");
                             label_ver.Text = $"{version}";
-                        }
-                        else
-                        {
-                            if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) <= (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
+                            break;
+
+                        case UpdateStatus.Newer:
+                            File.WriteAllText("lastchange.json", update.ChangeLog ?? string.Empty);
+                            MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\nБудет выполнено обновление\n\n" +
+                            $"Список изменений:\n {update.ChangeLog}", "", MessageBoxButtons.OK);
+
+                            Log.Info("Update", $"скачиваем новую");
+                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
+                            void updateCMD(string line)
                             {
-                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
-
-                                MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
-                                $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
-
-                                Log.Info("Update", $"скачиваем новую");
-                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
-                                void updateCMD(string line)
+                                try
                                 {
-                                    try
+                                    Process.Start(new ProcessStartInfo
                                     {
-                                        Process.Start(new ProcessStartInfo
-                                        {
-                                            FileName = "cmd.exe",
-                                            Arguments = $"/c {line}",
-                                            WindowStyle = ProcessWindowStyle.Hidden
-                                        });
-                                    }
-                                    catch
-                                    {
-                                    }
+                                        FileName = "cmd.exe",
+                                        Arguments = $"/c {line}",
+                                        WindowStyle = ProcessWindowStyle.Hidden
+                                    });
                                 }
-                                updateCMD($"taskkill /f /im \"{exename}\" &&" +
-                                    $" timeout /t 1 &&" +
-                                    $" del \"{exepath}\" /f /q &&" +
-                                    $" del \"{contexpath}\" /f /q &&" +
-                                    $" del \"lastchange.json\" /f /q &&" +
-                                    $" copy new.exe \"{contexpath}\" &&" +
-                                    $" ren new.exe \"{exename}\" &&" +
-                                    $" rd \"{exepath}\" /s /q &" +
-                                    $" \"{exepath}\"");
+                                catch
+                                {
+                                }
                             }
-                        }
-                        if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) > (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
-                        {
+                            updateCMD($"taskkill /f /im \"{exename}\" &&" +
+                                $" timeout /t 1 &&" +
+                                $" del \"{exepath}\" /f /q &&" +
+                                $" del \"{contexpath}\" /f /q &&" +
+                                $" del \"lastchange.json\" /f /q &&" +
+                                $" copy new.exe \"{contexpath}\" &&" +
+                                $" ren new.exe \"{exename}\" &&" +
+                                $" rd \"{exepath}\" /s /q &" +
+                                $" \"{exepath}\"");
+                            break;
+
+                        case UpdateStatus.Dev:
                             Log.Info("Update", $"версия dev");
                             label_ver.Text = $"d{version}";
-                        }
+                            break;
 
+                        case UpdateStatus.NoInternet:
+                            Log.Warn("Update", "инета нету при проверке обновления");
+                            break;
+
+                        case UpdateStatus.Error:
+                            Log.Warn("Update", "ошибка проверки обновления: " + update.Error);
+                            break;
                     }
                 }
-                catch { } //release
+                catch (Exception ex)
+                {
+                    Log.Error("Update", "проверка обновления не удалась", ex);
+                }
             }
             #endregion
             #region позиция, размеры и плавный запуск

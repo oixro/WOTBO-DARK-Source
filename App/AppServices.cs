@@ -34,6 +34,9 @@ namespace WOTBO.App
         private static readonly Lazy<INetworkService> NetworkLazy =
             new Lazy<INetworkService>(() => new NetworkService(Log.Instance));
 
+        private static readonly Lazy<IGitHubUpdateService> UpdatesLazy =
+            new Lazy<IGitHubUpdateService>(() => new GitHubUpdateService(Network, Log.Instance));
+
         private static readonly Lazy<IWindowsVersionService> WindowsVersionLazy =
             new Lazy<IWindowsVersionService>(() => new WindowsVersionService(Registry));
 
@@ -77,6 +80,12 @@ namespace WOTBO.App
         public static INetworkService Network
         {
             get { return NetworkLazy.Value; }
+        }
+
+        /// <summary>Проверка обновлений GitHub.</summary>
+        public static IGitHubUpdateService Updates
+        {
+            get { return UpdatesLazy.Value; }
         }
 
         /// <summary>Определение версии Windows.</summary>

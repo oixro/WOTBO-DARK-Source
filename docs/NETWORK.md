@@ -38,9 +38,27 @@ ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 - начало загрузки — `INFO [Network]`;
 - ошибки — `ERROR [Network]` с исключением.
 
+## Проверка обновлений
+
+`GitHubUpdateService` (`IGitHubUpdateService`) вынесен из `Form1_Load`:
+
+```csharp
+UpdateInfo update = await AppServices.Updates.CheckAsync(curver);
+```
+
+Возможные статусы:
+
+- `NoInternet` — сеть пропала во время проверки;
+- `Actual` — версии равны;
+- `Newer` — локальная меньше `ver.json`, сервис также скачивает
+  `lastchange.json` в `ChangeLog`;
+- `Dev` — локальная больше удалённой;
+- `Error` — ошибка загрузки/разбора.
+
+Сравнение версий намеренно осталось через `double`, как в прежнем коде.
+UI по-прежнему показывает `MessageBox`, пишет `lastchange.json` и запускает
+команду обновления.
+
 ## Что осталось
 
-- `GitHubUpdateService`: вынести сравнение версий и `lastchange.json` из
-  `Form1_Load`. Сейчас UI-логика осталась на месте, но загрузки уже идут
-  через сервис.
 - `DownloadService` с прогрессом и отменой — по мере необходимости.
