@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
+using WOTBO.App;
 
 namespace WOTBO
 {
@@ -13,16 +13,7 @@ namespace WOTBO
         }
         void hcmd(string line)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c {line}",
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
-            }
-            catch { }
+            AppServices.Processes.StartDetached(line, true);
         }
         private void button1_Click(object sender, EventArgs e)
         {

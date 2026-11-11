@@ -19,16 +19,7 @@ namespace WOTBO
         int k = 0;
         void hcmd(string line)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c {line}",
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
-            }
-            catch { }
+            AppServices.Processes.StartDetached(line, true);
         }
         private void Form2_Load(object sender, EventArgs e)
         {

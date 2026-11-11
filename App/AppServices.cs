@@ -1,5 +1,6 @@
 using System;
 using WOTBO.App.Logging;
+using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
 
@@ -20,6 +21,9 @@ namespace WOTBO.App
         private static readonly Lazy<TweakStateStore> TweaksLazy =
             new Lazy<TweakStateStore>(() => new TweakStateStore(Registry, Log.Instance));
 
+        private static readonly Lazy<IProcessService> ProcessesLazy =
+            new Lazy<IProcessService>(() => new ProcessService(Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
@@ -30,6 +34,12 @@ namespace WOTBO.App
         public static TweakStateStore Tweaks
         {
             get { return TweaksLazy.Value; }
+        }
+
+        /// <summary>Запуск процессов с прежней семантикой WOTBO.</summary>
+        public static IProcessService Processes
+        {
+            get { return ProcessesLazy.Value; }
         }
     }
 }

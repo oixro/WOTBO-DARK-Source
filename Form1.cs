@@ -465,126 +465,27 @@ namespace Project
         #endregion
         public void hcmd(string line)
         {
-            try
-            {
-                Log.Info("Process", "[CMD] Command: " + line);
-
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c chcp 65001 & {line}",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                using (Process proc = new Process())
-                {
-                    proc.StartInfo = psi;
-
-                    proc.OutputDataReceived += (sender, e) =>
-                    {
-                        if (!string.IsNullOrEmpty(e.Data))
-                        {
-                            Log.Debug("Process", "[CMD] Output: " + e.Data);
-                        }
-                    };
-
-                    proc.ErrorDataReceived += (sender, e) =>
-                    {
-                        if (!string.IsNullOrEmpty(e.Data))
-                        {
-                            Log.Warn("Process", "[CMD] Error: " + e.Data);
-                        }
-                    };
-
-                    proc.Start();
-
-                    proc.BeginOutputReadLine();
-                    proc.BeginErrorReadLine();
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Process", "[CMD] Error: " + ex.Message, ex);
-            }
+            AppServices.Processes.StartCaptured(line);
         }
         public async Task hcmdAsync(string line)
         {
-            await Task.Run(() =>
-            {
-                hcmd(line); // Вызов вашей команды внутри Task.Run
-            });
+            await AppServices.Processes.StartCapturedAsync(line);
         }
         void scmd(string line)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c {line}"
-                });
-            }
-            catch { }
+            AppServices.Processes.StartDetached(line);
         }
         void powershell(string line)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "powershell",
-                    Arguments = $"/command {line}",
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
-            }
-            catch { }
+            AppServices.Processes.StartPowerShell(line);
         }
         void supercmd(string line)
         {
-            try
-            {
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $@"/c {tempfolder}\su.exe /wrs cmd.exe /c {line}",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true // Скрыть окно CMD
-                };
-
-                using (Process proc = new Process())
-                {
-                    proc.StartInfo = psi;
-                    proc.Start();
-
-                    // Читаем стандартный вывод и ошибки
-                    string output = proc.StandardOutput.ReadToEnd();
-                    string error = proc.StandardError.ReadToEnd();
-                    proc.WaitForExit();
-
-                    // Объединяем вывод и ошибки
-                    string result = output + error;
-
-                    // Выводим результат в лог
-                    Log.Debug("Process", result);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Process", "[CMD] Произошла ошибка: " + ex.Message, ex);
-            }
+            AppServices.Processes.RunSuper(line, tempfolder + @"\su.exe");
         }
         public void OpenUrl(string url)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo(url));
-            }
-            catch
+            if (!AppServices.Processes.OpenUrl(url))
             {
                 MessageBox.Show($"Не удалось открыть ссылку. \nВозможно у вас не установлен браузер по умолчанию.", "WOTBO");
             }

@@ -4,11 +4,12 @@ WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 
 > **Статус:** этап **P0 (окружение и сборка) завершён** — см. `docs/P0-RESULT.md`.
 > P1 в работе: добавлены `AppPaths`, логгер (`docs/LOGGING.md`),
-> `RegistryService` (`docs/REGISTRY.md`) и постоянные бэкапы
-> (`docs/STATE.md`); все вызовы `writelog()` переведены на `Log.*` с уровнями
-> и категориями `Tweak:<id>`; `DEBUG` пишется всегда; apply/rollback обёрнуты
-> в `TweakScope`; записи реестра и файлы сохраняются для отката, старые флаги
-> мигрируют в `HKCU\Software\oixro\wotbo\Backups`; версия — 2.34.
+> `RegistryService` (`docs/REGISTRY.md`), `ProcessService` (`docs/PROCESSES.md`)
+> и постоянные бэкапы (`docs/STATE.md`); все вызовы `writelog()` переведены на
+> `Log.*` с уровнями и категориями `Tweak:<id>`; `DEBUG` пишется всегда;
+> apply/rollback обёрнуты в `TweakScope`; записи реестра и файлы сохраняются
+> для отката, старые флаги мигрируют в `HKCU\Software\oixro\wotbo\Backups`;
+> версия — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM
 > (`docs/VM-SETUP.md`). Проект остаётся classic `.csproj` с `Debug|x64` /
 > `Release|x64`; манифест — `requireAdministrator`; WOTBO собирается только под
@@ -104,8 +105,8 @@ WOTBO-DARK-Source/
 │  │  ├─ RegistryPaths.cs          # константы путей реестра
 │  │  └─ AppStateStore.cs          # HKCU\Software\oixro\wotbo, типизированные флаги
 │  ├─ Processes/
-│  │  ├─ IProcessRunner.cs
-│  │  └─ ProcessRunner.cs          # бывшие hcmd/scmd/powershell/supercmd/OpenUrl
+│  │  ├─ IProcessService.cs
+│  │  └─ ProcessService.cs          # бывшие hcmd/scmd/powershell/supercmd/OpenUrl
 │  ├─ System/
 │  │  ├─ IWindowsVersionService.cs
 │  │  ├─ WindowsVersionService.cs
@@ -212,7 +213,7 @@ UI не содержит путей реестра, команд cmd/powershell,
 | Группа | Сервисы | Что заменяют |
 |---|---|---|
 | Registry | `RegistryService`, `RegistryPaths`, `AppStateStore` | все `Registry.*` вызовы, `Convert.ToInt32(...GetValue(...)) == 1` |
-| Processes | `ProcessRunner` | `hcmd`, `scmd`, `powershell`, `supercmd`, `OpenUrl`, `InstallCursor` |
+| Processes | `ProcessService` | `hcmd`, `scmd`, `powershell`, `supercmd`, `OpenUrl`, `InstallCursor` |
 | System | `WindowsVersionService`, `WmiSystemInfoService`, `DisplayService`, `GpuService`, `ReservedStorageService` | версия Windows, WMI, `GetDeviceCaps`, NVIDIA/Ansel/HDCP, DISM |
 | Network | `InternetChecker`, `DownloadService`, `GitHubUpdateService` | `Internet.OK`, `WebClient`, проверка/скачивание обновлений |
 | Storage | `TempWorkspace`, `ArchiveService`, `EmbeddedResourceProvider` | `tempfolder`, все `path_*`, `ZipFile`, `Resources.*` |
@@ -233,7 +234,7 @@ UI не содержит путей реестра, команд cmd/powershell,
 | Сейчас | Станет |
 |---|---|
 | `Form1.cs` (оркестрация) | `UI/Forms/MainForm.cs` (тонкий) + `Services/Tweaks/*` |
-| `Form1.cs` (`hcmd`, `scmd`, `powershell`, `supercmd`, `OpenUrl`) | `Services/Processes/ProcessRunner.cs` |
+| `Form1.cs` (`hcmd`, `scmd`, `powershell`, `supercmd`, `OpenUrl`) | `Services/Processes/ProcessService.cs` |
 | `Form1.cs` (`writelog`, `logLock`) | `App/Logging/FileAppLogger.cs` |
 | `Form1.cs` (`SysFolder`) | `App/AppPaths.cs` |
 | `Form1.cs` (`tempfolder`, `path_*`) | `Services/Storage/TempWorkspace.cs` |
@@ -248,7 +249,7 @@ UI не содержит путей реестра, команд cmd/powershell,
 | `Form1.cs` (~50 `back_*_Click`) | `ITweak.RollbackAsync` |
 | `Form1.cs` (большой `Load`-блок проверок) | `ITweak.Detect` + `TweakUiBinder` |
 | `Form2.cs` | `UI/Forms/EulaForm.cs` + `AppStateStore.IsEulaAccepted` |
-| `Form4.cs` | `UI/Forms/MsiModeForm.cs` + `ProcessRunner` |
+| `Form4.cs` | `UI/Forms/MsiModeForm.cs` + `ProcessService` |
 | `Win32Priority.cs` | `UI/Forms/Win32PriorityForm.cs` + `RegistryService` |
 | `FormShadow.cs` | `UI/Forms/ShadowForm.cs` (P/Invoke в `Helpers/Win32/NativeMethods.cs`) |
 | `InstanceChecker.cs` | `App/InstanceGuard.cs` |
@@ -340,7 +341,7 @@ public sealed class TweakUiBinder
 
 ### Этап 1. Инфраструктура (без изменения поведения)
 
-- Добавить `AppPaths`, `FileAppLogger`, `ProcessRunner`, `RegistryService`,
+- Добавить `AppPaths`, `FileAppLogger`, `ProcessService`, `RegistryService`,
   `RegistryPaths`, `AppStateStore`, `DownloadService`, `TempWorkspace`,
   `InternetChecker`, `InstanceGuard`.
 - Заменить дубли в `Form1`, `Form2`, `Form4`, `Win32Priority`.
