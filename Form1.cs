@@ -1091,56 +1091,56 @@ namespace Project
                 {
                     if (Internet.OK())
                     {
-                            string verjson = (AppServices.Network.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
-                            if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
-                            {
-                                Log.Info("Update", $"версия актуальная");
-                                label_ver.Text = $"{version}";
-                            }
-                            else
-                            {
-                                if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) <= (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
-                                {
-                                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
-
-                                    MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
-                                    $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
-
-                                    Log.Info("Update", $"скачиваем новую");
-                                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
-                                    void updateCMD(string line)
-                                    {
-                                        try
-                                        {
-                                            Process.Start(new ProcessStartInfo
-                                            {
-                                                FileName = "cmd.exe",
-                                                Arguments = $"/c {line}",
-                                                WindowStyle = ProcessWindowStyle.Hidden
-                                            });
-                                        }
-                                        catch
-                                        {
-                                        }
-                                    }
-                                    updateCMD($"taskkill /f /im \"{exename}\" &&" +
-                                        $" timeout /t 1 &&" +
-                                        $" del \"{exepath}\" /f /q &&" +
-                                        $" del \"{contexpath}\" /f /q &&" +
-                                        $" del \"lastchange.json\" /f /q &&" +
-                                        $" copy new.exe \"{contexpath}\" &&" +
-                                        $" ren new.exe \"{exename}\" &&" +
-                                        $" rd \"{exepath}\" /s /q &" +
-                                        $" \"{exepath}\"");
-                                }
-                            }
-                            if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) > (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
-                            {
-                                Log.Info("Update", $"версия dev");
-                                label_ver.Text = $"d{version}";
-                            }
-
+                        string verjson = (AppServices.Network.DownloadString("https://raw.githubusercontent.com/oixro/WOTBO/main/ver.json").Trim());
+                        if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) == (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
+                        {
+                            Log.Info("Update", $"версия актуальная");
+                            label_ver.Text = $"{version}";
                         }
+                        else
+                        {
+                            if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) <= (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
+                            {
+                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/lastchange.json", "lastchange.json");
+
+                                MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {verjson}\nБудет выполнено обновление\n\n" +
+                                $"Список изменений:\n {File.ReadAllText("lastchange.json")}", "", MessageBoxButtons.OK);
+
+                                Log.Info("Update", $"скачиваем новую");
+                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
+                                void updateCMD(string line)
+                                {
+                                    try
+                                    {
+                                        Process.Start(new ProcessStartInfo
+                                        {
+                                            FileName = "cmd.exe",
+                                            Arguments = $"/c {line}",
+                                            WindowStyle = ProcessWindowStyle.Hidden
+                                        });
+                                    }
+                                    catch
+                                    {
+                                    }
+                                }
+                                updateCMD($"taskkill /f /im \"{exename}\" &&" +
+                                    $" timeout /t 1 &&" +
+                                    $" del \"{exepath}\" /f /q &&" +
+                                    $" del \"{contexpath}\" /f /q &&" +
+                                    $" del \"lastchange.json\" /f /q &&" +
+                                    $" copy new.exe \"{contexpath}\" &&" +
+                                    $" ren new.exe \"{exename}\" &&" +
+                                    $" rd \"{exepath}\" /s /q &" +
+                                    $" \"{exepath}\"");
+                            }
+                        }
+                        if (Convert.ToDouble(curver, CultureInfo.InvariantCulture) > (Convert.ToDouble(verjson, CultureInfo.InvariantCulture)))
+                        {
+                            Log.Info("Update", $"версия dev");
+                            label_ver.Text = $"d{version}";
+                        }
+
+                    }
                 }
                 catch { } //release
             }
