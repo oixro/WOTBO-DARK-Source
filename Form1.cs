@@ -582,7 +582,7 @@ namespace Project
             Log.Info("App", $"==============WOTBO {version} ==============");
             TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula
-            if (!InstanceChecker.TakeMemory())
+            if (!InstanceGuard.TryAcquire())
             {
                 Log.Warn("App", "InstanceExists, relaunch");
                 hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
@@ -647,35 +647,17 @@ namespace Project
             }
             #endregion
             #region temp
-            if (Directory.Exists(tempfolder))
-            {
-                Log.Info("Temp", $"tempfolder - \"{tempfolder}\" exists");
-                string[] files = Directory.GetFiles(tempfolder);
-                Log.Info("Temp", $"пытаюсь всё удалить из {tempfolder}");
-                try
-                {
-                    Directory.Delete(tempfolder, true);
-                    Log.Info("Temp", $"Удалена папка: {tempfolder}");
-                }
-                catch (Exception ex)
-                {
-                    Log.Warn("Temp", $"не удалось очистить {tempfolder}: {ex.Message}");
-                    tempfolder = @"c:\Windows\oixro" + $"_{Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(5)}"; Log.Info("Temp", $"я теперь тут ошиваюсь - {tempfolder}");
-                    path_regpack7z = tempfolder + @"\regpack.zip"; Log.Info("Temp", $"new path_regpack7z - {path_regpack7z}");
-                    path_regpack = tempfolder + @"\regpack"; Log.Info("Temp", $"new path_regpack - {path_regpack}");
-                    path_services = tempfolder + @"\services"; Log.Info("Temp", $"new path_services - {path_services}");
-                    path_uizip = tempfolder + @"\ui.zip"; Log.Info("Temp", $"new path_uizip - {path_uizip}");
-                    path_ui = tempfolder + @"\ui"; Log.Info("Temp", $"new path_ui - {path_ui}");
-                    path_dfkiller = tempfolder + @"\DFKiller"; Log.Info("Temp", $"new path_dfkiller - {path_dfkiller}");
-                    path_scheme = tempfolder + @"\scheme.pow"; Log.Info("Temp", $"new path_scheme - {path_scheme}");
-                    smartctl = tempfolder + @"\smartctl.exe"; Log.Info("Temp", $"new smartctl - {smartctl}");
-                }
-            }
-            else
-            {
-                Log.Info("Temp", "tempfolder нету");
-            }
-
+            var workspace = AppServices.Workspace;
+            workspace.Prepare();
+            tempfolder = workspace.Root;
+            path_regpack7z = workspace.RegpackZip;
+            path_regpack = workspace.Regpack;
+            path_services = workspace.Services;
+            path_uizip = workspace.UiZip;
+            path_ui = workspace.Ui;
+            path_dfkiller = workspace.DfKiller;
+            path_scheme = workspace.Scheme;
+            smartctl = workspace.Smartctl;
             #endregion
             #region отключаем чеки
             if (AppServices.Tweaks.IsApplied("main.regpack"))
@@ -1282,21 +1264,13 @@ namespace Project
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Info("App", "closing");
-            if (Directory.Exists(tempfolder))
+            if (!AppServices.Workspace.Cleanup())
             {
-                try
-                {
-                    Log.Info("Temp", $"удаляем tempfolder -  \"{tempfolder}\"");
-                    Directory.Delete(tempfolder, true);
-                }
-                catch
-                {
-                    Log.Warn("App", "освобождаем память и убиваемся");
-                    InstanceChecker.ReleaseMemory();
-                    hcmd($"taskkill /f /im {exename}");
-                }
+                Log.Warn("App", "освобождаем память и убиваемся");
+                InstanceGuard.Release();
+                hcmd($"taskkill /f /im {exename}");
             }
-            InstanceChecker.ReleaseMemory();
+            InstanceGuard.Release();
         }
         #endregion
         #region все твики

@@ -4,12 +4,12 @@ WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 
 > **Статус:** этап **P0 (окружение и сборка) завершён** — см. `docs/P0-RESULT.md`.
 > P1 в работе: добавлены `AppPaths`, логгер (`docs/LOGGING.md`),
-> `RegistryService` (`docs/REGISTRY.md`), `ProcessService` (`docs/PROCESSES.md`)
-> и постоянные бэкапы (`docs/STATE.md`); все вызовы `writelog()` переведены на
-> `Log.*` с уровнями и категориями `Tweak:<id>`; `DEBUG` пишется всегда;
-> apply/rollback обёрнуты в `TweakScope`; записи реестра и файлы сохраняются
-> для отката, старые флаги мигрируют в `HKCU\Software\oixro\wotbo\Backups`;
-> версия — 2.34.
+> `RegistryService` (`docs/REGISTRY.md`), `ProcessService` (`docs/PROCESSES.md`),
+> `TempWorkspace`/`InstanceGuard` (`docs/STORAGE.md`) и постоянные бэкапы
+> (`docs/STATE.md`); все вызовы `writelog()` переведены на `Log.*` с уровнями
+> и категориями `Tweak:<id>`; `DEBUG` пишется всегда; apply/rollback обёрнуты
+> в `TweakScope`; записи реестра и файлы сохраняются для отката, старые флаги
+> мигрируют в `HKCU\Software\oixro\wotbo\Backups`; версия — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM
 > (`docs/VM-SETUP.md`). Проект остаётся classic `.csproj` с `Debug|x64` /
 > `Release|x64`; манифест — `requireAdministrator`; WOTBO собирается только под

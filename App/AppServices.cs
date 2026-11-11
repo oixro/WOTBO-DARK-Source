@@ -3,6 +3,7 @@ using WOTBO.App.Logging;
 using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
+using WOTBO.Services.Storage;
 
 namespace WOTBO.App
 {
@@ -24,6 +25,9 @@ namespace WOTBO.App
         private static readonly Lazy<IProcessService> ProcessesLazy =
             new Lazy<IProcessService>(() => new ProcessService(Log.Instance));
 
+        private static readonly Lazy<TempWorkspace> WorkspaceLazy =
+            new Lazy<TempWorkspace>(() => new TempWorkspace(AppPaths.WorkDirectory, Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
@@ -40,6 +44,12 @@ namespace WOTBO.App
         public static IProcessService Processes
         {
             get { return ProcessesLazy.Value; }
+        }
+
+        /// <summary>Рабочая папка и её пути.</summary>
+        public static TempWorkspace Workspace
+        {
+            get { return WorkspaceLazy.Value; }
         }
     }
 }
