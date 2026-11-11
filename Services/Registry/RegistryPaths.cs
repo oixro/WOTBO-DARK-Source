@@ -22,6 +22,9 @@ namespace WOTBO.Services.Registry
         public const string ImageFileExecutionOptions = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options";
         public const string SystemProfile = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile";
         public const string ContextMenuClsid = @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}";
+        public const string WindowsKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows";
+        public const string Audio = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio";
+        public const string BackgroundAudioPolicy = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";
@@ -36,5 +39,6 @@ namespace WOTBO.Services.Registry
         public const string OverlayTestMode = "OverlayTestMode";
         public const string DefaultTtl = "DefaultTTL";
         public const string ScoobeSystemSettingEnabled = "ScoobeSystemSettingEnabled";
+        public const string AllowHeadlessExecution = "AllowHeadlessExecution";
     }
 }

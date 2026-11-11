@@ -119,6 +119,8 @@
     <Compile Include="Services\Tweaks\DwmPriorityTweak.cs" />
     <Compile Include="Services\Tweaks\CsrssPriorityTweak.cs" />
     <Compile Include="Services\Tweaks\ContextMenuTweak.cs" />
+    <Compile Include="Services\Tweaks\DwmInputTweak.cs" />
+    <Compile Include="Services\Tweaks\AudioTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

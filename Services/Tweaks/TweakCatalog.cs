@@ -49,6 +49,8 @@ namespace WOTBO.Services.Tweaks
                 new DwmPriorityTweak(),
                 new CsrssPriorityTweak(),
                 new ContextMenuTweak(),
+                new DwmInputTweak(),
+                new AudioTweak(),
             });
         }
     }

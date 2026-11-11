@@ -958,13 +958,13 @@ namespace Project
                 checkBox_CSRSS.Enabled = false;
                 back_dop_7.Visible = true;
             }
-            if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy")?.GetValue("AllowHeadlessExecution")) == "1")
+            if (AppServices.TweakCatalog.Get("main.audio").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.audio", "AllowHeadlessExecution BackgroundAudioPolicy был применён");
                 checkBox_audio.Enabled = false;
                 back_main_13.Visible = true;
             }
-            if (Convert.ToString(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows")?.GetValue("DwmInputUsesIoCompletionPort")) == "0")
+            if (AppServices.TweakCatalog.Get("main.dwminput").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.dwminput", "DwmInputUsesIoCompletionPort был применён");
                 checkBox_dwninput.Enabled = false;
@@ -1529,12 +1529,7 @@ namespace Project
                 using (TweakScope.Apply("main.audio"))
                 {
                     AppServices.Processes.RunSuper($@"regedit /s {tempfolder}\Audio_Lantency.reg", tempfolder + @"\su.exe");
-                    RegistryKey key;
-                    key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Audio");
-                    AppServices.Registry.WriteValue(key, "DisableSpatialOnComboEndpoints", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "DisableProtectedAudioDG", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "DisableProtectedAudio", 0x00000001, RegistryValueKind.DWord);
-                    key.Close();
+                    AppServices.TweakCatalog.Get("main.audio").Apply(AppServices.TweakContext);
                     checkBox_audio.Checked = false;
                     checkBox_audio.Enabled = false;
                     back_main_13.Visible = true;
@@ -1544,12 +1539,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.dwminput"))
                 {
-                    RegistryKey key;
-                    key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows");
-                    AppServices.Registry.WriteValue(key, "DesktopHeapLogging", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "DwmInputUsesIoCompletionPort", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "EnableDwmInputProcessing", 0x00000000, RegistryValueKind.DWord);
-                    key.Close();
+                    AppServices.TweakCatalog.Get("main.dwminput").Apply(AppServices.TweakContext);
                     checkBox_dwninput.Checked = false;
                     checkBox_dwninput.Enabled = false;
                     back_main_14.Visible = true;
@@ -2989,12 +2979,7 @@ namespace Project
             using (TweakScope.Rollback("main.audio"))
             {
                 AppServices.Processes.RunSuper($@"regedit /s {tempfolder}\Audio_Lantency_delete.reg", tempfolder + @"\su.exe");
-                RegistryKey key;
-                key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio");
-                AppServices.Registry.WriteValue(key, "DisableSpatialOnComboEndpoints", 0x00000000, RegistryValueKind.DWord);
-                AppServices.Registry.DeleteValue(key, "DisableProtectedAudioDG");
-                AppServices.Registry.DeleteValue(key, "DisableProtectedAudio");
-                key.Close();
+                AppServices.TweakCatalog.Get("main.audio").Rollback(AppServices.TweakContext);
                 checkBox_audio.Checked = false;
                 checkBox_audio.Enabled = true;
                 back_main_13.Visible = false;
@@ -3005,12 +2990,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.dwminput"))
             {
-                RegistryKey key;
-                key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows");
-                AppServices.Registry.WriteValue(key, "DesktopHeapLogging", 0x00000001, RegistryValueKind.DWord);
-                AppServices.Registry.WriteValue(key, "DwmInputUsesIoCompletionPort", 0x00000001, RegistryValueKind.DWord);
-                AppServices.Registry.WriteValue(key, "EnableDwmInputProcessing", 0x00000007, RegistryValueKind.DWord);
-                key.Close();
+                AppServices.TweakCatalog.Get("main.dwminput").Rollback(AppServices.TweakContext);
                 checkBox_dwninput.Checked = false;
                 checkBox_dwninput.Enabled = true;
                 back_main_14.Visible = false;
