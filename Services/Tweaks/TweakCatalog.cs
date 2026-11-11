@@ -53,6 +53,8 @@ namespace WOTBO.Services.Tweaks
                 new AudioTweak(),
                 new PowerLatencyTweak(),
                 new UsbPowerTweak(),
+                new MitigationsTweak(),
+                new HibernateTweak(),
             });
         }
     }

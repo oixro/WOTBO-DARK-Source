@@ -607,7 +607,7 @@ namespace Project
                 checkBox_dism.Enabled = false;
                 back_main_2.Visible = true;
             } //old reserved
-            if (!File.Exists(@"C:\hiberfil.sys"))
+            if (AppServices.TweakCatalog.Get("main.hibernate").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.hibernate", "hiberfil'a нету");
                 checkBox_gibernate.Enabled = false;
@@ -707,7 +707,7 @@ namespace Project
                 AppServices.Processes.StartCaptured("bcdedit /deletevalue uselegacyapicmode");
                 AppServices.Tweaks.Remove("main.bcdedit");
             }
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement)?.GetValue("FeatureSettings")) == 1)
+            if (AppServices.TweakCatalog.Get("main.mitigations").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.mitigations", "spectre and meltdown был применён");
                 checkBox_mtiititit.Enabled = false;
@@ -1303,7 +1303,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.hibernate"))
                 {
-                    AppServices.Processes.StartCaptured("powercfg -h off");
+                    AppServices.TweakCatalog.Get("main.hibernate").Apply(AppServices.TweakContext);
                         checkBox_gibernate.Enabled = false;
                     checkBox_gibernate.Checked = false;
                     back_main_3.Visible = true;
@@ -1352,16 +1352,8 @@ namespace Project
             {
                 using (TweakScope.Apply("main.mitigations"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettings", 1);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverride", 3);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverrideMask", 3);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "EnableCfg", 0);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Kernel", "ProtectionMode", 0);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\kernel", "DisableExceptionChainValidation", 1);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled", 0);
-                    //AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.dll mcupdate_GenuineIntel.old", tempfolder + @"\su.exe");
-                    //AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.dll mcupdate_AuthenticAMD.old", tempfolder + @"\su.exe");
-                        checkBox_mtiititit.Enabled = false;
+                    AppServices.TweakCatalog.Get("main.mitigations").Apply(AppServices.TweakContext);
+                    checkBox_mtiititit.Enabled = false;
                     checkBox_mtiititit.Checked = false;
                     back_main_9.Visible = true;
 
@@ -2702,7 +2694,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.hibernate"))
             {
-                AppServices.Processes.StartCaptured("powercfg -h on");
+                AppServices.TweakCatalog.Get("main.hibernate").Rollback(AppServices.TweakContext);
                 //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "hibernate");
                 checkBox_gibernate.Enabled = true;
                 checkBox_gibernate.Checked = false;
@@ -2756,18 +2748,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.mitigations"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettings");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverride");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverrideMask");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "EnableCfg");
-
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Kernel", "ProtectionMode");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\kernel", "DisableExceptionChainValidation");
-
-                if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity") != null)
-                {
-                    Registry.LocalMachine.DeleteSubKeyTree(@"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity");
-                }
+                AppServices.TweakCatalog.Get("main.mitigations").Rollback(AppServices.TweakContext);
 
                 AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.old mcupdate_GenuineIntel.dll", tempfolder + @"\su.exe");
                 AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.old mcupdate_AuthenticAMD.dll", tempfolder + @"\su.exe");

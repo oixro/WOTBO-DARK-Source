@@ -35,6 +35,8 @@ namespace WOTBO.Services.Registry
         public const string UsbXhciWdf = @"SYSTEM\CurrentControlSet\Services\USBXHCI\Parameters\Wdf";
         public const string UsbFlags = @"SYSTEM\CurrentControlSet\Control\usbflags";
         public const string EnhancedStorageDevices = @"SOFTWARE\Policies\Microsoft\Windows\EnhancedStorageDevices";
+        public const string Kernel = @"SYSTEM\CurrentControlSet\Control\Session Manager\Kernel";
+        public const string DeviceGuardHvci = @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";
