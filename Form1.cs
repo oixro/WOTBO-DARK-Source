@@ -2389,9 +2389,9 @@ namespace Project
         {
             await OpenLatestOrFallback("obs", "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-31.0.0-Windows-Installer.exe");
         }
-        void label_download_13_Click(object sender, EventArgs e)
+        async void label_download_13_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://files2.codecguide.com/K-Lite_Codec_Pack_1875_Mega.exe");
+            await OpenLatestOrFallback("klite", "https://files2.codecguide.com/K-Lite_Codec_Pack_1875_Mega.exe");
         }
         async void label_download_14_Click(object sender, EventArgs e)
         {
@@ -2409,9 +2409,9 @@ namespace Project
         {
             OpenUrl("https://static.centbrowser.com/win_stable/5.1.1130.129/centbrowser_5.1.1130.129_x64.exe");
         }
-        void label_download_18_Click(object sender, EventArgs e)
+        async void label_download_18_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://diskanalyzer.com/files/wiztree_4_23_portable.zip");
+            await OpenLatestOrFallback("wiztree", "https://diskanalyzer.com/files/wiztree_4_23_portable.zip");
         }
         void label_download_19_Click(object sender, EventArgs e)
         {
@@ -2425,9 +2425,9 @@ namespace Project
         {
             OpenUrl("https://www.faststonesoft.net/DN/FSViewerSetup79.exe");
         }
-        void label_download_22_Click(object sender, EventArgs e)
+        async void label_download_22_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.28-windows-x64-installer");
+            await OpenLatestOrFallback("dotnet6", "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.28-windows-x64-installer");
         }
         async void label_download_23_Click(object sender, EventArgs e)
         {

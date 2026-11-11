@@ -73,7 +73,15 @@ notepadpp    notepad-plus-plus/notepad-plus-plus, Installer.x64.exe
 sharex       ShareX/ShareX, -setup-x64.exe
 obs          obsproject/obs-studio, Windows-x64-Installer.exe
 qbittorrent  qbittorrent/qBittorrent, _x64_setup.exe
+klite        codecguide.com, K-Lite_*_Mega.exe
+wiztree      diskanalyzer.com, wiztree_*_portable.zip
+dotnet6      dotnet release-metadata, dotnet-runtime-*-win-x64.exe
 ```
+
+Кнопки К-Lite, WizTree и .NET 6 также используют latest с fallback.
+HWiNFO, MSI Afterburner, FastStone, CentBrowser, VC++ Runtimes и
+CrystalDiskInfo отдают 403/404 либо не имеют стабильного машинного
+endpoint — для них остаются статические ссылки.
 
 Кнопки вкладки «Программы» сначала пробуют получить последнюю версию, а при
 ошибке открывают прежний статический URL. FFmpeg-твик использует тот же

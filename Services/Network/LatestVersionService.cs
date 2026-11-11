@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WOTBO.App.Logging;
 
@@ -101,9 +102,98 @@ namespace WOTBO.Services.Network
                     return GetLatestAssetUrlAsync("CrystalDewWorld/CrystalDiskInfo", ".exe");
                 case "ffmpeg":
                     return GetLatestAssetUrlAsync("GyanD/codexffmpeg", "essentials_build", ".zip");
+                case "klite":
+                    return GetKLiteUrlAsync();
+                case "wiztree":
+                    return GetWizTreeUrlAsync();
+                case "dotnet6":
+                    return GetDotNetRuntimeUrlAsync("6.0");
                 default:
                     return Task.FromResult<string>(null);
             }
+        }
+
+        private Task<string> GetKLiteUrlAsync()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    string html = _network.DownloadString("https://codecguide.com/download_k-lite_codec_pack_mega.htm");
+                    Match match = Regex.Match(
+                        html,
+                        @"https://files[0-9]?\.codecguide\.com/K-Lite_Codec_Pack_[0-9]+_Mega\.exe",
+                        RegexOptions.IgnoreCase);
+
+                    if (match.Success)
+                    {
+                        _log.Info(Category, "K-Lite -> " + match.Value);
+                        return match.Value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.Warn(Category, "K-Lite: " + ex.Message);
+                }
+
+                return null;
+            });
+        }
+
+        private Task<string> GetWizTreeUrlAsync()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    string html = _network.DownloadString("https://diskanalyzer.com/download");
+                    Match match = Regex.Match(
+                        html,
+                        @"files/wiztree_[0-9_]+_portable\.zip",
+                        RegexOptions.IgnoreCase);
+
+                    if (match.Success)
+                    {
+                        string url = "https://diskanalyzer.com/" + match.Value;
+                        _log.Info(Category, "WizTree -> " + url);
+                        return url;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.Warn(Category, "WizTree: " + ex.Message);
+                }
+
+                return null;
+            });
+        }
+
+        private Task<string> GetDotNetRuntimeUrlAsync(string major)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    string json = _network.DownloadString(
+                        "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/" + major + "/releases.json");
+                    Match match = Regex.Match(json, @"""release-version""\s*:\s*""([0-9.]+)""");
+                    if (!match.Success)
+                    {
+                        return null;
+                    }
+
+                    string version = match.Groups[1].Value;
+                    string url = "https://builds.dotnet.microsoft.com/dotnet/Runtime/" + version +
+                                 "/dotnet-runtime-" + version + "-win-x64.exe";
+                    _log.Info(Category, ".NET " + major + " -> " + version);
+                    return url;
+                }
+                catch (Exception ex)
+                {
+                    _log.Warn(Category, ".NET " + major + ": " + ex.Message);
+                    return null;
+                }
+            });
         }
 
         private static GitHubRelease Deserialize(string json)
