@@ -920,7 +920,7 @@ namespace Project
                 checkBox_tolerate.Enabled = false;
                 back_main_16.Visible = true;
             }
-            if (Registry.LocalMachine.OpenSubKey($@"SOFTWARE\Policies\Microsoft\Edge") != null)
+            if (AppServices.TweakCatalog.Get("extra.edge").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.edge", "Edge был применён");
                 back_dop_edge.Visible = true;
@@ -1748,132 +1748,8 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.edge"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Edge");
-                    RegistryKey edge;
-                    edge = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge");
-                    AppServices.Registry.WriteValue(edge, "EdgeEnhanceImagesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EdgeWorkspacesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "TyposquattingCheckerEnabled", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "RemoveDesktopShortcutDefault", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "AlternateErrorPagesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SpotlightExperiencesAndRecommendationsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NewTabPageSearchBox", "redirect");
-                    AppServices.Registry.WriteValue(edge, "DefaultSearchProviderEnabled", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BasicAuthOverHttpEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "AllowCrossOriginAuthPrompt", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DisableAuthNegotiateCnameLookup", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NativeMessagingUserLevelHosts", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "PasswordMonitorAllowed", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "StartupBoostEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "UseSystemPrintDialog", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SleepingTabsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "RestoreOnStartup", 0x00000004, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "HomepageLocation", "www.google.com");
-                    AppServices.Registry.WriteValue(edge, "NewTabPageLocation", "www.google.com");
-                    AppServices.Registry.WriteValue(edge, "NewTabPagePrerenderEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NewTabPageHideDefaultTopSites", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "AdsSettingForIntrusiveAdsSites", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DownloadRestrictions", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "TabFreezingEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "InternetExplorerIntegrationTestingAllowed", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "InternetExplorerIntegrationLocalFileAllowed", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "PersonalizationReportingEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BrowserNetworkTimeQueriesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "LocalProvidersEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "AudioSandboxEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "WebWidgetIsEnabledOnStartup", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "UserFeedbackAllowed", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "FamilySafetySettingsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ClickOnceEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DirectInvokeEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SSLErrorOverrideAllowed", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BingAdsSuppression", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "TrackingPrevention", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BrowserSignin", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "InternetExplorerIntegrationEnhancedHangDetection", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "InternetExplorerIntegrationLevel", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ConfigureOnlineTextToSpeech", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "VerticalTabsAllowed", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ConfigureFriendlyURLFormat", 0x00000004, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ExperimentationAndConfigurationServiceControl", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "IntensiveWakeUpThrottlingEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DnsOverHttpsMode", "off");
-                    AppServices.Registry.WriteValue(edge, "DNSInterceptionChecksEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "TargetBlankImpliesNoOpener", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ComponentUpdatesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EnableDomainActionsDownload", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NetworkPredictionOptions", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EnableOnlineRevocationChecks", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "RendererCodeIntegrityEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ResolveNavigationErrorsUseWebService", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BackgroundTemplateListUpdatesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SearchSuggestEnabled", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "CommandLineFlagSecurityWarningsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SitePerProcess", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SpellcheckEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EdgeCollectionsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "WebWidgetAllowed", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "MetricsReportingEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ForceEphemeralProfiles", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ForceGoogleSafeSearch", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "GoToIntranetSiteForSingleWordEntryInAddressBar", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "HideFirstRunExperience", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "HideInternetExplorerRedirectUXForIncompatibleSitesEnabled", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "RelaunchNotification", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "RedirectSitesFromInternetExplorerPreventBHOInstall", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "PromotionalTabsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DiagnosticData", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SendSiteInfoToImproveServices", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "TotalMemoryLimitMb", 0x00008192, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "WPADQuickCheckEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EdgeShoppingAssistantEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "InternetExplorerIntegrationLocalFileShowContextMenu", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "AddressBarMicrosoftSearchInBingProviderEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ShowOfficeShortcutInFavoritesBar", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ShowMicrosoftRewards", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BuiltInDnsClientEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ClearCachedImagesAndFilesOnExit", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ConfigureDoNotTrack", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ApplicationGuardFavoritesSyncEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ApplicationGuardTrafficIdentificationEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ApplicationGuardUploadBlockingEnabled", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EnableMediaRouter", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "ShowCastIconInToolbar", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultCookiesSetting", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultFileSystemReadGuardSetting", 0x00000003, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultFileSystemWriteGuardSetting", 0x00000003, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultGeolocationSetting", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultImagesSetting", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultInsecureContentSetting", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultJavaScriptJitSetting", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultJavaScriptSetting", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultNotificationsSetting", 0x00000003, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultPluginsSetting", 0x00000003, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultPopupsSetting", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultWebBluetoothGuardSetting", 0x00000003, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultWebHidGuardSetting", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "DefaultWebUsbGuardSetting", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "LegacySameSiteCookieBehaviorEnabled", 0x00000002, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "PreventSmartScreenPromptOverrideForFiles", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "PreventSmartScreenPromptOverride", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SmartScreenForTrustedDownloadsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NewSmartScreenLibraryEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SmartScreenDnsRequestsEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SmartScreenPuaEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SmartScreenEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NewTabPageContentEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NewTabPageQuickLinksEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "NewTabPageAllowedBackgroundTypes", 0x00000003, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "TyposquattingCheckerEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "BackgroundModeEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EfficiencyMode", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SuppressUnsupportedOSWarning", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "HubsSidebarEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "SiteSafetyServicesEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "EdgeFollowEnabled", 0x00000000, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(edge, "LocalBrowserDataShareEnabled", 0x00000000, RegistryValueKind.DWord);
-                    edge = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Edge\\RestoreOnStartupURLs");
-                    AppServices.Registry.WriteValue(edge, "1", "www.google.com");
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.Edge);
+                    AppServices.TweakCatalog.Get("extra.edge").Apply(AppServices.TweakContext);
                     back_dop_edge.Visible = true;
                     checkBox_edge.Checked = false;
                     checkBox_edge.Enabled = false;
@@ -2357,7 +2233,7 @@ namespace Project
         }
         void label_download_15_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://www.hwinfo.com/files/hwi_820.zip");
+            OpenUrl("https://www.hwinfo.com/files/hwi64_860.exe");
         }
         void label_download_16_Click(object sender, EventArgs e)
         {
@@ -2381,7 +2257,7 @@ namespace Project
         }
         void label_download_21_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://www.faststonesoft.net/DN/FSViewerSetup79.exe");
+            OpenUrl("https://www.faststonesoft.net/DN/FSViewerSetup85.exe");
         }
         async void label_download_22_Click(object sender, EventArgs e)
         {
@@ -2883,7 +2759,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.edge"))
             {
-                Registry.LocalMachine.DeleteSubKeyTree($"SOFTWARE\\Policies\\Microsoft\\Edge");
+                AppServices.TweakCatalog.Get("extra.edge").Rollback(AppServices.TweakContext);
                 back_dop_edge.Visible = false;
                 checkBox_edge.Checked = false;
                 checkBox_edge.Enabled = true;

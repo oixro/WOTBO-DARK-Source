@@ -75,6 +75,7 @@ namespace WOTBO.Services.Tweaks
                 new WinSxsTweak(),
                 new UpdateCleanTweak(),
                 new TempCleanTweak(),
+                new EdgeTweak(),
             });
         }
     }

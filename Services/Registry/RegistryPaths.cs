@@ -51,6 +51,8 @@ namespace WOTBO.Services.Registry
         public const string Win11HeaderClsid = @"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}";
         public const string WindowsUpdatePolicy = @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate";
         public const string FileAssociations = @"SOFTWARE\Classes\SystemFileAssociations";
+        public const string Edge = @"SOFTWARE\Policies\Microsoft\Edge";
+        public const string EdgeRestoreUrls = @"SOFTWARE\Policies\Microsoft\Edge\RestoreOnStartupURLs";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";

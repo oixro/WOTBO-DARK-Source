@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас тридцать пять твиков.
+`TweakCatalog` — словарь по `Id`, сейчас тридцать шесть твиков.
 
 ## Пилот
 
@@ -57,6 +57,7 @@ public interface ITweak
 | `extra.winsxs` | DISM StartComponentCleanup /ResetBase | односторонняя |
 | `extra.updateclean` | SoftwareDistribution / DeliveryOptimization | односторонняя |
 | `extra.tempclean` | `%TEMP%` | удаляет всё, кроме `wotbo*.log` |
+| `extra.edge` | `HKLM\SOFTWARE\Policies\Microsoft\Edge` | 122 политики Edge + RestoreOnStartupURLs |
 
 `Form1` для них:
 
