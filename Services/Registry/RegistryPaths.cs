@@ -19,6 +19,9 @@ namespace WOTBO.Services.Registry
         public const string TcpipParameters = @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters";
         public const string Tcpip6Parameters = @"SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters";
         public const string UserProfileEngagement = @"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement";
+        public const string ImageFileExecutionOptions = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options";
+        public const string SystemProfile = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile";
+        public const string ContextMenuClsid = @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";

@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас шесть твиков.
+`TweakCatalog` — словарь по `Id`, сейчас девять твиков.
 
 ## Пилот
 
@@ -28,6 +28,9 @@ public interface ITweak
 | `main.mpo` | `HKLM\SOFTWARE\Microsoft\Windows\Dwm` | `OverlayTestMode=5` |
 | `extra.mobiletraffic` | `HKLM\...\Tcpip[6]\Parameters` | `DefaultTTL=0x41` |
 | `extra.scoobe` | `HKCU\...\UserProfileEngagement` | `ScoobeSystemSettingEnabled=0` |
+| `extra.dwmpriority` | `HKLM\...\Image File Execution Options\dwm.exe` | `CpuPriorityClass=1`, `IoPriority=0` |
+| `pro.csrss` | `HKLM\...\Image File Execution Options\csrss.exe` + SystemProfile | `CpuPriorityClass=3`, `IoPriority=3`, `NoLazyMode=1`, `AlwaysOn=1` |
+| `ui.contextmenu` | `HKCU\Software\Classes\CLSID\{86ca1aa0-...}\InprocServer32` | пустое значение `" "` |
 
 `Form1` для них:
 

@@ -46,6 +46,9 @@ namespace WOTBO.Services.Tweaks
                 new MpoTweak(),
                 new MobileTrafficTweak(),
                 new ScoobeTweak(),
+                new DwmPriorityTweak(),
+                new CsrssPriorityTweak(),
+                new ContextMenuTweak(),
             });
         }
     }

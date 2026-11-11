@@ -805,7 +805,7 @@ namespace Project
                 checkBoxUI_Buttons_4.Enabled = false;
                 back_ui_4.Visible = true;
             } //wallpapers
-            if (Registry.CurrentUser.OpenSubKey(@"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32") != null)
+            if (AppServices.TweakCatalog.Get("ui.contextmenu").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.contextmenu", "contex11 был применён");
                 checkBox_contex.Enabled = false;
@@ -946,13 +946,13 @@ namespace Project
                 checkBox_explorer.Enabled = false;
                 back_ui_9.Visible = true;
             }
-            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe") != null)
+            if (AppServices.TweakCatalog.Get("extra.dwmpriority").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.dwmpriority", "dwm.exe priority был применён");
                 checkBox_dwm.Enabled = false;
                 back_dop_6.Visible = true;
             }
-            if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe") != null)
+            if (AppServices.TweakCatalog.Get("pro.csrss").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.csrss", "csrss.exe priority был применён");
                 checkBox_CSRSS.Enabled = false;
@@ -1770,7 +1770,7 @@ namespace Project
                     TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}");
                     if (!win10)
                     {
-                        AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", "", " ");
+                        AppServices.TweakCatalog.Get("ui.contextmenu").Apply(AppServices.TweakContext);
                         AppServices.Processes.StartCaptured(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                         checkBox_contex.Checked = false;
                         checkBox_contex.Enabled = false;
@@ -2050,12 +2050,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.dwmpriority"))
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
-                        .CreateSubKey("dwm.exe");
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe", true)
-                        .CreateSubKey("PerfOptions");
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe\PerfOptions", "CpuPriorityClass", "1", RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\dwm.exe\PerfOptions", "IoPriority", "0", RegistryValueKind.DWord);
+                    AppServices.TweakCatalog.Get("extra.dwmpriority").Apply(AppServices.TweakContext);
                     checkBox_dwm.Checked = false;
                     checkBox_dwm.Enabled = false;
                     back_dop_6.Visible = true;
@@ -2250,16 +2245,8 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.csrss"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe");
-                    //AppServices.Processes.StartCaptured($"{tempfolder}\\csrss.bat");
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
-        .CreateSubKey("csrss.exe");
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe", true)
-                        .CreateSubKey("PerfOptions");
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions", "CpuPriorityClass", "3", RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe\PerfOptions", "IoPriority", "3", RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", "NoLazyMode", "1", RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", "AlwaysOn", "1", RegistryValueKind.DWord);
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.ImageFileExecutionOptions + @"\csrss.exe");
+                    AppServices.TweakCatalog.Get("pro.csrss").Apply(AppServices.TweakContext);
 
                     checkBox_CSRSS.Checked = false;
                     checkBox_CSRSS.Enabled = false;
@@ -3163,7 +3150,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.contextmenu"))
             {
-                Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}");
+                AppServices.TweakCatalog.Get("ui.contextmenu").Rollback(AppServices.TweakContext);
                 AppServices.Processes.StartCaptured(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                 checkBox_contex.Checked = false;
                 checkBox_contex.Enabled = true;
@@ -3327,12 +3314,13 @@ namespace Project
         }
         void back_pro_8_Click(object sender, EventArgs e)
         {
-            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true).DeleteSubKeyTree("csrss.exe");
-            AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", "NoLazyMode");
-            AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", "AlwaysOn");
-            checkBox_CSRSS.Checked = false;
-            checkBox_CSRSS.Enabled = true;
-            back_dop_7.Visible = false;
+            using (TweakScope.Rollback("pro.csrss"))
+            {
+                AppServices.TweakCatalog.Get("pro.csrss").Rollback(AppServices.TweakContext);
+                checkBox_CSRSS.Checked = false;
+                checkBox_CSRSS.Enabled = true;
+                back_dop_7.Visible = false;
+            }
         }
         void back_pro_9_Click(object sender, EventArgs e)
         {
@@ -3444,7 +3432,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.dwmpriority"))
             {
-                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true).DeleteSubKeyTree("dwm.exe");
+                AppServices.TweakCatalog.Get("extra.dwmpriority").Rollback(AppServices.TweakContext);
                 checkBox_dwm.Checked = false;
                 checkBox_dwm.Enabled = true;
                 back_dop_6.Visible = false;
