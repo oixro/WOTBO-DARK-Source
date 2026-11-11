@@ -126,8 +126,18 @@ namespace WOTBO.UI
 
         private static Form _form;
         private static ToolTip _toolTip;
-        private static Control _current;
+        private static string _currentTweakId;
         private static bool _attached;
+        private static readonly Dictionary<string, CachedTooltip> Cache =
+            new Dictionary<string, CachedTooltip>(StringComparer.OrdinalIgnoreCase);
+
+        private const int CacheSeconds = 30;
+
+        private sealed class CachedTooltip
+        {
+            public string Text;
+            public DateTime ExpiresUtc;
+        }
 
         public static void Attach(Form form)
         {
@@ -149,7 +159,17 @@ namespace WOTBO.UI
                 IsBalloon = false,
             };
 
+            AppServices.Tweaks.Changed += OnStateChanged;
             AttachRecursive(form);
+        }
+
+        private static void OnStateChanged(string tweakId)
+        {
+            Cache.Remove(tweakId);
+            if (string.Equals(_currentTweakId, tweakId, StringComparison.OrdinalIgnoreCase))
+            {
+                ClearHover();
+            }
         }
 
         private static void AttachRecursive(Control control)
@@ -178,20 +198,53 @@ namespace WOTBO.UI
             }
 
             Control target = HitTest(_form, clientPoint);
-            if (target == _current)
+            string tweakId;
+            Control mapped = FindMapped(target, out tweakId);
+            if (mapped == null || string.IsNullOrEmpty(tweakId))
+            {
+                ClearHover();
+                return;
+            }
+
+            // Смена «того же твика» (чекбокс <-> стрелка) не требует
+            // повторного чтения реестра.
+            if (string.Equals(_currentTweakId, tweakId, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
 
-            _current = target;
-            string text = BuildTooltip(target);
+            _currentTweakId = tweakId;
+
+            CachedTooltip cached;
+            if (Cache.TryGetValue(tweakId, out cached) && cached.ExpiresUtc > DateTime.UtcNow)
+            {
+                ShowTooltip(cached.Text, clientPoint);
+                return;
+            }
+
+            string text = BuildTooltip(mapped, tweakId);
+            Cache[tweakId] = new CachedTooltip
+            {
+                Text = text,
+                ExpiresUtc = DateTime.UtcNow.AddSeconds(CacheSeconds),
+            };
+
+            ShowTooltip(text, clientPoint);
+        }
+
+        private static void ShowTooltip(string text, Point point)
+        {
             if (string.IsNullOrEmpty(text))
             {
-                Hide();
+                if (_toolTip != null)
+                {
+                    _toolTip.Hide(_form);
+                }
+
                 return;
             }
 
-            _toolTip.Show(text, _form, clientPoint.X + 18, clientPoint.Y + 18, 20000);
+            _toolTip.Show(text, _form, point.X + 18, point.Y + 18, 20000);
         }
 
         private static void OnMouseLeave(object sender, EventArgs e)
@@ -210,11 +263,33 @@ namespace WOTBO.UI
 
         private static void Hide()
         {
-            _current = null;
+            _currentTweakId = null;
             if (_toolTip != null)
             {
                 _toolTip.Hide(_form);
             }
+        }
+
+        private static void ClearHover()
+        {
+            Hide();
+        }
+
+        private static Control FindMapped(Control target, out string tweakId)
+        {
+            tweakId = null;
+            Control mapped = target;
+            while (mapped != null)
+            {
+                if (ControlToTweak.TryGetValue(mapped.Name, out tweakId))
+                {
+                    return mapped;
+                }
+
+                mapped = mapped.Parent;
+            }
+
+            return null;
         }
 
         private static Control HitTest(Control parent, Point pointInParent)
@@ -229,25 +304,8 @@ namespace WOTBO.UI
             return HitTest(child, childPoint);
         }
 
-        private static string BuildTooltip(Control target)
+        private static string BuildTooltip(Control mapped, string tweakId)
         {
-            if (target == null)
-            {
-                return null;
-            }
-
-            string tweakId = null;
-            Control mapped = target;
-            while (mapped != null)
-            {
-                if (ControlToTweak.TryGetValue(mapped.Name, out tweakId))
-                {
-                    break;
-                }
-
-                mapped = mapped.Parent;
-            }
-
             if (mapped == null || string.IsNullOrEmpty(tweakId))
             {
                 return null;
@@ -280,6 +338,12 @@ namespace WOTBO.UI
             else if (!string.IsNullOrEmpty(appliedAt))
             {
                 builder.AppendLine("Применён: " + appliedAt);
+            }
+
+            if (!TweakStateStore.SupportsBackup(tweakId))
+            {
+                // Очистки/сжатие/DISM: показываем только время применения.
+                return builder.ToString().TrimEnd();
             }
 
             if (backup == null || !backup.HasData)

@@ -57,6 +57,48 @@ namespace WOTBO.Services.State
                 { "pro.bufferbloat", new LegacyFlag("buffer", true) },
             };
 
+        /// <summary>
+        /// Твики, у которых бэкап принципиально невозможен или бессмысленен:
+        /// DISM/сжатие/очистки/powercfg. Для них хранится только время
+        /// применения, без data.
+        /// </summary>
+        private static readonly HashSet<string> NoBackupTweaks =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "main.reservedstorage",
+                "main.hibernate",
+                "main.powerscheme",
+                "gpu.ansel",
+                "gpu.directplay",
+                "ui.animations",
+                "extra.compactos",
+                "extra.winsxs",
+                "extra.tempclean",
+                "extra.updateclean",
+                "pro.bufferbloat",
+            };
+
+        /// <summary>Может ли твик иметь бэкап значений/файлов.</summary>
+        public static bool SupportsBackup(string tweakId)
+        {
+            return !string.IsNullOrEmpty(tweakId) && !NoBackupTweaks.Contains(tweakId);
+        }
+
+        /// <summary>
+        /// Вызывается после изменения состояния (apply/rollback). Подсказки
+        /// сбрасывают кэш по этому id.
+        /// </summary>
+        public event Action<string> Changed;
+
+        private void NotifyChanged(string tweakId)
+        {
+            Action<string> handler = Changed;
+            if (handler != null)
+            {
+                handler(tweakId);
+            }
+        }
+
         private readonly IRegistryService _registry;
         private readonly IAppLogger _log;
 
@@ -208,10 +250,18 @@ namespace WOTBO.Services.State
             {
                 _registry.DeleteValue(RegistryHive.CurrentUser, path, "data");
                 _registry.DeleteValue(RegistryHive.CurrentUser, path, "dataFile");
-                _log.Warn(LogCategory, $"бэкап {tweakId} пуст: твик меняет систему вне RegistryService (regedit/DISM/файлы)");
+                if (SupportsBackup(tweakId))
+                {
+                    _log.Warn(LogCategory, $"бэкап {tweakId} пуст: твик меняет систему вне RegistryService (regedit/DISM/файлы)");
+                }
+                else
+                {
+                    _log.Info(LogCategory, $"состояние {tweakId} сохранено без бэкапа (твик не поддерживает откат данных)");
+                }
             }
 
             DeleteLegacyFlag(tweakId);
+            NotifyChanged(tweakId);
         }
 
         /// <summary>
@@ -360,6 +410,7 @@ namespace WOTBO.Services.State
             _registry.DeleteKey(RegistryHive.CurrentUser, BackupKeyPath(tweakId));
             DeleteLegacyFlag(tweakId);
             DeleteBackupDirectory(tweakId);
+            NotifyChanged(tweakId);
         }
 
         /// <summary>Каталог файловых копий конкретного твика.</summary>

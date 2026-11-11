@@ -41,7 +41,7 @@ namespace WOTBO.App.Logging
             _watch = Stopwatch.StartNew();
             Log.Info(_category, _action + " начато");
 
-            if (apply)
+            if (apply && TweakStateStore.SupportsBackup(id))
             {
                 _session = TweakBackupSession.Begin(id, AppServices.Tweaks.BackupDirectory(id));
             }
