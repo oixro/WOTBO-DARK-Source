@@ -5,6 +5,7 @@ using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
 using WOTBO.Services.Storage;
+using WOTBO.Services.Windows;
 
 namespace WOTBO.App
 {
@@ -31,6 +32,9 @@ namespace WOTBO.App
 
         private static readonly Lazy<INetworkService> NetworkLazy =
             new Lazy<INetworkService>(() => new NetworkService(Log.Instance));
+
+        private static readonly Lazy<IWindowsVersionService> WindowsVersionLazy =
+            new Lazy<IWindowsVersionService>(() => new WindowsVersionService(Registry));
 
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
@@ -60,6 +64,12 @@ namespace WOTBO.App
         public static INetworkService Network
         {
             get { return NetworkLazy.Value; }
+        }
+
+        /// <summary>Определение версии Windows.</summary>
+        public static IWindowsVersionService WindowsVersion
+        {
+            get { return WindowsVersionLazy.Value; }
         }
     }
 }

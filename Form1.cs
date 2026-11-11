@@ -18,6 +18,7 @@ using WOTBO;
 using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
+using WOTBO.Services.Windows;
 using WOTBO.UI;
 namespace Project
 {
@@ -577,9 +578,36 @@ namespace Project
 
         #endregion
         #region открытие
+        private void SetupTweakTooltipsToggle()
+        {
+            var toggle = new CheckBox
+            {
+                Name = "checkBox_tweak_tooltips",
+                Text = "Показывать подсказки о применённых твиках",
+                AutoSize = true,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Location = new Point(20, 95),
+                Font = panel_ui_2.Font,
+                TabIndex = 100,
+                UseVisualStyleBackColor = true,
+            };
+
+            toggle.Checked = AppSettings.TweakTooltipsEnabled;
+            TweakHoverInfo.SetEnabled(toggle.Checked);
+            toggle.CheckedChanged += (sender, e) =>
+            {
+                AppSettings.TweakTooltipsEnabled = toggle.Checked;
+                TweakHoverInfo.SetEnabled(toggle.Checked);
+            };
+
+            panel_ui_2.Controls.Add(toggle);
+        }
+
         async void Form1_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
+            SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula
             if (!InstanceGuard.TryAcquire())
@@ -597,39 +625,28 @@ namespace Project
             AppServices.Tweaks.MigrateLegacyFlags();
             #endregion
             #region проверка версии Windows
-            const string winverPath = @"Software\Microsoft\Windows NT\CurrentVersion";
-            string buildnumber = AppServices.Registry.GetValue(RegistryHive.LocalMachine, winverPath, "CurrentBuild") as string;
-            string displayVersion = AppServices.Registry.GetValue(RegistryHive.LocalMachine, winverPath, "DisplayVersion") as string;
+            WindowsVersionInfo winVersion = AppServices.WindowsVersion.Detect();
 
-            if (buildnumber != null && displayVersion != null)
+            if (winVersion.IsKnown && winVersion.IsBuildValid)
             {
-                ushort buildNumberValue = Convert.ToUInt16(buildnumber);
+                win10 = winVersion.IsWindows10;
 
-                if (buildNumberValue >= 22000) // Windows 11
+                if (winVersion.IsWindows11)
                 {
-                    win10 = false;
                     Log.Info("Windows", $"Windows is win 10? {win10}");
-                    label_winver.Text = $"Windows 11 {displayVersion} Build:{buildnumber}";
+                    label_winver.Text = $"Windows 11 {winVersion.DisplayVersion} Build:{winVersion.Build}";
                 }
-                else if (buildNumberValue <= 19042) // Windows 10 < 20H2
+                else if (winVersion.IsOldWindows10)
                 {
                     Log.Info("Windows", $"Windows 10 <20H2 ");
-                    win10 = true;
                     MessageBox.Show("Рекомендуется использовать Windows 10 20H2 и выше! \nЭффективность настройки не гарантирована",
                         "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    label_winver.Text = $"(Old) Windows 10 {displayVersion} Build:{buildnumber}";
-                }
-                else if (buildNumberValue > 19042) // Windows 10 >= 20H2
-                {
-                    Log.Info("Windows", $"Windows 10 {buildnumber} ");
-                    win10 = true;
-                    label_winver.Text = $"Windows 10 {displayVersion} Build:{buildnumber}";
+                    label_winver.Text = $"(Old) Windows 10 {winVersion.DisplayVersion} Build:{winVersion.Build}";
                 }
                 else
                 {
-                    MessageBox.Show("Программа предназначена для Windows 10 и 11!\nРабота на других системах не поддерживается!", "Windows optimization tool by oixro (WOTBO)",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Close();
+                    Log.Info("Windows", $"Windows 10 {winVersion.Build} ");
+                    label_winver.Text = $"Windows 10 {winVersion.DisplayVersion} Build:{winVersion.Build}";
                 }
             }
             else

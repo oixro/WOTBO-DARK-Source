@@ -128,6 +128,7 @@ namespace WOTBO.UI
         private static ToolTip _toolTip;
         private static string _currentTweakId;
         private static bool _attached;
+        private static bool _enabled;
         private static readonly Dictionary<string, CachedTooltip> Cache =
             new Dictionary<string, CachedTooltip>(StringComparer.OrdinalIgnoreCase);
 
@@ -163,6 +164,19 @@ namespace WOTBO.UI
             AttachRecursive(form);
         }
 
+        /// <summary>
+        /// Включает или выключает подсказки. По умолчанию они выключены;
+        /// состояние задаётся настройкой на вкладке «Интерфейс».
+        /// </summary>
+        public static void SetEnabled(bool enabled)
+        {
+            _enabled = enabled;
+            if (!enabled)
+            {
+                ClearHover();
+            }
+        }
+
         private static void OnStateChanged(string tweakId)
         {
             Cache.Remove(tweakId);
@@ -185,6 +199,12 @@ namespace WOTBO.UI
 
         private static void OnMouseMove(object sender, MouseEventArgs e)
         {
+            if (!_enabled)
+            {
+                ClearHover();
+                return;
+            }
+
             if (_form == null || _toolTip == null)
             {
                 return;
