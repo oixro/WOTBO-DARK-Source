@@ -11,6 +11,11 @@
 `IDisplayService.GetScreenInfo()` — `"1920x1200 60 Hz"` через
 `Screen.PrimaryScreen` и `GetDeviceCaps(VREFRESH)`.
 
+`GetSnapshotAsync()` собирает CPU/GPU/плату/RAM параллельно и запрашивает
+только нужные поля (`SELECT Name, MaxClockSpeed FROM Win32_Processor` и т.д.),
+а не `SELECT *`. На VM это занимает ~0.3 с вместо ~10 с; `LoadSystemInfoAsync`
+обновляет `label7` без блокировки загрузки формы.
+
 Ошибки WMI/экрана пишутся в `DEBUG [Hardware]`, а не глотаются.
 
 `LoadSystemInfoAsync` в `Form1` только собирает строку для `label7` и

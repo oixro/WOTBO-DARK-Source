@@ -18,6 +18,7 @@ using WOTBO;
 using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
+using WOTBO.Services.Hardware;
 using WOTBO.Services.Network;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
@@ -97,40 +98,35 @@ namespace Project
             LoadSystemInfoAsync();
             async void LoadSystemInfoAsync()
             {
-                await Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        string cpuModel = AppServices.Wmi.GetString("Win32_Processor", "Name");
-                        double cpuFrequency = AppServices.Wmi.GetDouble("Win32_Processor", "MaxClockSpeed") / 1000.0;
-                        string gpuModel = AppServices.Wmi.GetString("Win32_VideoController", "Name");
-                        string ramSize = AppServices.Wmi.GetRamSize();
-                        string screenInfo = AppServices.Display.GetScreenInfo();
-                        string ramFrequency = AppServices.Wmi.GetRamFrequency();
-                        string motherBoard = AppServices.Wmi.GetString("Win32_BaseBoard", "Product");
-                        DateTime? installDate = AppServices.WindowsVersion.Detect().InstallDate;
-                        string installDateText = installDate.HasValue
-                            ? installDate.Value.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)
-                            : "—";
+                    Task<SystemInfoSnapshot> snapshotTask = AppServices.Wmi.GetSnapshotAsync();
+                    string screenInfo = AppServices.Display.GetScreenInfo();
+                    DateTime? installDate = AppServices.WindowsVersion.Detect().InstallDate;
+                    string installDateText = installDate.HasValue
+                        ? installDate.Value.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                        : "—";
 
-                        this.Invoke((MethodInvoker)delegate
-                        {
-                            label7.Text = $"CPU: {cpuModel.Trim()}\n" +
-                                          $"CPU base clock: {cpuFrequency} GHz\n" +
-                                          $"MB: {motherBoard.Trim()}\n" +
-                                          $"GPU: {gpuModel.Trim()}\n" +
-                                          $"ОЗУ: {ramSize.Trim()} {ramFrequency.Trim()}\n" +
-                                          $"Display: {screenInfo.Trim()}\n" +
-                                          $"OS: {label_winver.Text}\n" +
-                                          $"Установлена: {installDateText}";
-                            Log.Info("System", label7.Text);
-                        });
-                    }
-                    catch
+                    SystemInfoSnapshot info = await snapshotTask;
+
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        label7.Text = "Произошла ошибка при получении информации о пк";
-                    }
-                });
+                        label7.Text = $"CPU: {info.CpuModel.Trim()}\n" +
+                                      $"CPU base clock: {info.CpuFrequencyGhz} GHz\n" +
+                                      $"MB: {info.Motherboard.Trim()}\n" +
+                                      $"GPU: {info.Gpu.Trim()}\n" +
+                                      $"ОЗУ: {info.RamSize.Trim()} {info.RamFrequency.Trim()}\n" +
+                                      $"Display: {screenInfo.Trim()}\n" +
+                                      $"OS: {label_winver.Text}\n" +
+                                      $"Установлена: {installDateText}";
+                        Log.Info("System", label7.Text);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("System", "не удалось получить информацию о ПК", ex);
+                    label7.Text = "Произошла ошибка при получении информации о пк";
+                }
             }
             #endregion
             #region key binds
