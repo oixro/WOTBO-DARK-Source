@@ -58,7 +58,7 @@ namespace WOTBO.App
 
         private static readonly Lazy<TweakContext> TweakContextLazy =
             new Lazy<TweakContext>(() => new TweakContext(
-                Registry, Processes, Network, LatestVersions, Workspace, Tweaks, WindowsVersion, Log.Instance));
+                Registry, Processes, Network, LatestVersions, Gpu, Workspace, Tweaks, WindowsVersion, Log.Instance));
 
         private static readonly Lazy<TweakCatalog> TweakCatalogLazy =
             new Lazy<TweakCatalog>(TweakCatalog.CreateDefault);

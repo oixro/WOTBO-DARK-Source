@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using WOTBO.App.Logging;
+using WOTBO.Services.Hardware;
 using WOTBO.Services.Network;
 using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
@@ -25,6 +26,7 @@ namespace WOTBO.Services.Tweaks
             IProcessService processes,
             INetworkService network,
             ILatestVersionService latestVersions,
+            IGpuService gpu,
             TempWorkspace workspace,
             TweakStateStore store,
             IWindowsVersionService windowsVersion,
@@ -34,6 +36,7 @@ namespace WOTBO.Services.Tweaks
             Processes = processes;
             Network = network;
             LatestVersions = latestVersions;
+            Gpu = gpu;
             Workspace = workspace;
             Store = store;
             WindowsVersion = windowsVersion;
@@ -47,6 +50,8 @@ namespace WOTBO.Services.Tweaks
         public INetworkService Network { get; }
 
         public ILatestVersionService LatestVersions { get; }
+
+        public IGpuService Gpu { get; }
 
         public TempWorkspace Workspace { get; }
 

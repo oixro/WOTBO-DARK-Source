@@ -141,6 +141,11 @@
     <Compile Include="Services\Tweaks\ExplorerRestartTweak.cs" />
     <Compile Include="Services\Tweaks\Win11HeaderTweak.cs" />
     <Compile Include="Services\Tweaks\FfmpegTweak.cs" />
+    <Compile Include="Services\Tweaks\AnselTweak.cs" />
+    <Compile Include="Services\Tweaks\CompactOsTweak.cs" />
+    <Compile Include="Services\Tweaks\WinSxsTweak.cs" />
+    <Compile Include="Services\Tweaks\UpdateCleanTweak.cs" />
+    <Compile Include="Services\Tweaks\TempCleanTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

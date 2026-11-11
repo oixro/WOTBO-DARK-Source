@@ -70,6 +70,11 @@ namespace WOTBO.Services.Tweaks
                 new ExplorerRestartTweak(),
                 new Win11HeaderTweak(),
                 new FfmpegTweak(),
+                new AnselTweak(),
+                new CompactOsTweak(),
+                new WinSxsTweak(),
+                new UpdateCleanTweak(),
+                new TempCleanTweak(),
             });
         }
     }

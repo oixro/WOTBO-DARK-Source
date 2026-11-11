@@ -1055,14 +1055,14 @@ namespace Project
                     back_gpu_3.Visible = true;
                 }//tweaksnvidia
 
-                bool? anselDisabled = await AppServices.Gpu.IsAnselDisabledAsync();
-                if (anselDisabled == true)
+                TweakState anselState = AppServices.TweakCatalog.Get("gpu.ansel").Detect(AppServices.TweakContext);
+                if (anselState == TweakState.Applied)
                 {
                     Log.Info("Tweak:gpu.ansel", $"anselstate == \"0\"");
                     checkBox_ansel.Enabled = false;
                     back_gpu_4.Visible = true;
                 }
-                else if (anselDisabled == false)
+                else if (anselState == TweakState.NotApplied)
                 {
                     checkBox_ansel.Enabled = true;
                 }
@@ -1402,11 +1402,12 @@ namespace Project
             {
                 using (TweakScope.Apply("gpu.ansel"))
                 {
-                    if (!AppServices.Gpu.SetAnsel(false))
+                    AnselTweak ansel = (AnselTweak)AppServices.TweakCatalog.Get("gpu.ansel");
+                    if (ansel.Detect(AppServices.TweakContext) == TweakState.Unavailable)
                     {
                         MessageBox.Show("Файл NvCameraEnable.exe не найден");
                     }
-
+                    ansel.Apply(AppServices.TweakContext);
                     checkBox_ansel.Checked = false;
                     checkBox_ansel.Enabled = false;
                     back_gpu_4.Visible = true;
@@ -1664,7 +1665,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.compactos"))
                 {
-                    AppServices.Processes.StartDetached(@"compact /CompactOS:always");
+                    AppServices.TweakCatalog.Get("extra.compactos").Apply(AppServices.TweakContext);
                     checkBox_compactos.Checked = false;
                 }
             }
@@ -1672,7 +1673,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.winsxs"))
                 {
-                    AppServices.Processes.StartDetached(@"Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase");
+                    AppServices.TweakCatalog.Get("extra.winsxs").Apply(AppServices.TweakContext);
                     checkBox_WinSxS.Checked = false;
                 }
             }
@@ -1680,45 +1681,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.tempclean"))
                 {
-                    string tempPath = Path.GetTempPath();
-
-                    // Удаление всех файлов, кроме wotbo.log
-                    foreach (string file in Directory.GetFiles(tempPath))
-                    {
-                        try
-                        {
-                            // Получаем имя файла без пути
-                            string fileName = Path.GetFileName(file);
-
-                            // Проверяем, не является ли файл wotbo.log
-                            if (fileName.Equals("wotbo.log", StringComparison.OrdinalIgnoreCase))
-                            {
-                                Log.Debug("Tweak:extra.tempclean", $"Файл {file} пропущен.");
-                                continue;
-                            }
-
-                            File.Delete(file);
-                            Log.Info("Tweak:extra.tempclean", $"Файл {file} успешно удален.");
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error("Tweak:extra.tempclean", $"Ошибка при удалении файла {file}: {ex.Message}", ex);
-                        }
-                    }
-
-                    // Удаление всех папок и их содержимого
-                    foreach (string dir in Directory.GetDirectories(tempPath))
-                    {
-                        try
-                        {
-                            Directory.Delete(dir, true);
-                            Log.Info("Tweak:extra.tempclean", $"Папка {dir} успешно удалена.");
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error("Tweak:extra.tempclean", $"Ошибка при удалении папки {dir}: {ex.Message}", ex);
-                        }
-                    }
+                    AppServices.TweakCatalog.Get("extra.tempclean").Apply(AppServices.TweakContext);
                     checkBox_temp.Checked = false;
                 }
             }
@@ -1726,12 +1689,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.updateclean"))
                 {
-                    //AppServices.Processes.StartCaptured($"{tempfolder}\\cleanupdate.bat");
-                    AppServices.Processes.StartCaptured(@"net stop wuauserv >nul");
-                    AppServices.Processes.StartCaptured(@"del /q /f /s %windir%\SoftwareDistribution\Download\*.* >nul");
-                    AppServices.Processes.StartCaptured(@"rd /q /s %windir%\SoftwareDistribution\Download\ >nul");
-                    AppServices.Processes.StartCaptured(@"del /q /f /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
-                    AppServices.Processes.StartCaptured(@"rd /q /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
+                    AppServices.TweakCatalog.Get("extra.updateclean").Apply(AppServices.TweakContext);
                     checkBox_updclean.Checked = false;
                 }
             }
@@ -2792,10 +2750,12 @@ namespace Project
         {
             using (TweakScope.Rollback("gpu.ansel"))
             {
-                if (!AppServices.Gpu.SetAnsel(true))
+                AnselTweak ansel = (AnselTweak)AppServices.TweakCatalog.Get("gpu.ansel");
+                if (ansel.Detect(AppServices.TweakContext) == TweakState.Unavailable)
                 {
                     MessageBox.Show("Файл NvCameraEnable.exe не найден");
                 }
+                ansel.Rollback(AppServices.TweakContext);
                 checkBox_ansel.Checked = false;
                 checkBox_ansel.Enabled = true;
                 back_gpu_4.Visible = false;
