@@ -31,7 +31,9 @@ namespace WOTBO.App.Logging
             }
 
             _filePath = filePath;
-            _minimumLevel = LevelFromEnvironmentOrDefault();
+            // DEBUG включён всегда: приложение диагностируется по логу,
+            // поэтому отдельный переключатель не нужен.
+            _minimumLevel = LogLevel.Debug;
         }
 
         public string FilePath
@@ -97,20 +99,33 @@ namespace WOTBO.App.Logging
 
         private static string FormatLeveled(LogLevel level, string category, string message, Exception exception)
         {
-            string line = string.Format(
+            string prefix = string.Format(
                 CultureInfo.InvariantCulture,
-                "{0} - [{1}] [{2}] {3}",
+                "{0} - [{1}] [{2}] ",
                 Timestamp(),
                 LevelName(level),
-                string.IsNullOrEmpty(category) ? "App" : category,
-                message);
+                string.IsNullOrEmpty(category) ? "App" : category);
+
+            // Каждая строка многострочного сообщения получает свой префикс:
+            // так grep по категории не теряет хвост (например, вывод WMI).
+            var builder = new StringBuilder();
+            AppendLines(builder, prefix, message);
 
             if (exception != null)
             {
-                line += Environment.NewLine + exception;
+                AppendLines(builder, prefix, exception.ToString());
             }
 
-            return line;
+            return builder.ToString().TrimEnd('\r', '\n');
+        }
+
+        private static void AppendLines(StringBuilder builder, string prefix, string text)
+        {
+            string normalized = (text ?? string.Empty).Replace("\r\n", "\n").Replace('\r', '\n');
+            foreach (string line in normalized.Split('\n'))
+            {
+                builder.Append(prefix).Append(line).Append(Environment.NewLine);
+            }
         }
 
         private static string Timestamp()
@@ -133,24 +148,10 @@ namespace WOTBO.App.Logging
         }
 
         /// <summary>
-        /// Уровень можно поднять переменной окружения <c>WOTBO_LOG_LEVEL</c>
-        /// (<c>Trace</c>, <c>Debug</c>, <c>Info</c>, <c>Warn</c>, <c>Error</c>).
-        /// По умолчанию <c>Info</c>: подробное чтение реестра пишется только
-        /// при явной диагностике.
+        /// Уровень по умолчанию — <c>Debug</c>: подробности (команды, чтение
+        /// реестра, нажатия UI) пишутся всегда. Свойство оставлено, чтобы
+        /// при необходимости поднять порог из кода.
         /// </summary>
-        private static LogLevel LevelFromEnvironmentOrDefault()
-        {
-            string raw = Environment.GetEnvironmentVariable("WOTBO_LOG_LEVEL");
-            LogLevel parsed;
-            if (!string.IsNullOrWhiteSpace(raw) &&
-                Enum.TryParse(raw.Trim(), true, out parsed))
-            {
-                return parsed;
-            }
-
-            return LogLevel.Info;
-        }
-
         private void Append(string line)
         {
             lock (_sync)

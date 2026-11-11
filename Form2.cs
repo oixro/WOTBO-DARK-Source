@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using WOTBO.App;
 
 namespace WOTBO
 {
@@ -40,7 +41,7 @@ namespace WOTBO
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\out") != null)
             {
                 MessageBox.Show("В версии 0.959 был изменён путь к реестру, будет выполнена очитска данных", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Registry.CurrentUser.DeleteSubKeyTree(@"Software\oixro\out");
+                AppServices.Registry.DeleteKey(RegistryHive.CurrentUser, @"Software\oixro\out");
                 hcmd($"taskkill /f /im \"{exename}\" & timeout /t 1 && \"{exepath}\"");
             }
             {
@@ -72,7 +73,7 @@ $"7. Чтобы принять - нажмите правой кнопкой мы
             }
             if (e.Button == MouseButtons.Right)
             {
-                Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo", true).SetValue("eula", 1);
+                AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "eula", 1);
                 Close();
             }
         }

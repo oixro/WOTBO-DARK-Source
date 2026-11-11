@@ -34,14 +34,30 @@ var service = new RegistryService(log, RegistryView.Registry32);
 
 ## Логи
 
-- чтение — `DEBUG` (в обычном режиме не пишется, включается
-  `WOTBO_LOG_LEVEL=Debug`);
+- чтение — `DEBUG` (пишется всегда; уровень по умолчанию в `AppLogger` — `Debug`);
 - запись/удаление — `INFO` со старым и новым значением:
 
 ```text
 2026-11-11 20:58:57.0387 - [DEBUG] [Registry] чтение LocalMachine\...\CurrentBuild (String) = "26300"
 2026-11-11 20:58:57.1000 - [INFO ] [Registry] запись LocalMachine\...\OverlayTestMode (DWord) = 5 (было: <отсутствовало>)
+2026-11-11 20:58:57.1234 - [INFO ] [Registry] запись LocalMachine\...\Value (String) = "bye" (было: "hello")
 ```
+
+Все записи и удаления в `Form1`, `Form2` и `Win32Priority` переведены на сервис,
+поэтому old → new попадает в лог. Читать через сервис пока не обязательно:
+существующие чтения в `Form1` оставлены как есть.
+
+### Открытый ключ
+
+Где ключ уже открыт (`key`, `edge`, `targetKey`), используется перегрузка:
+
+```csharp
+AppServices.Registry.WriteValue(key, "CpuPriorityClass", "1", RegistryValueKind.DWord);
+AppServices.Registry.DeleteValue(key, "Start_old");
+```
+
+`null`-ключ — тихий пропуск, как прежнее `key?.SetValue(...)`. Полное имя ключа
+берётся из `RegistryKey.Name`.
 
 ## Ошибки
 

@@ -38,6 +38,21 @@ namespace WOTBO.Services.Registry
         /// </summary>
         void WriteValue(RegistryHive hive, string keyPath, string name, object value, RegistryValueKind kind);
 
+        /// <summary>Тип значения выводится из объекта: int → DWord, string[] → MultiString и т.д.</summary>
+        void WriteValue(RegistryHive hive, string keyPath, string name, object value);
+
+        /// <summary>
+        /// Запись в уже открытый ключ. <c>null</c> — тихий пропуск, как
+        /// <c>key?.SetValue(...)</c> в прежнем коде. В лог попадают old → new
+        /// и полное имя ключа (<see cref="RegistryKey.Name"/>).
+        /// </summary>
+        void WriteValue(RegistryKey key, string name, object value, RegistryValueKind kind);
+
+        void WriteValue(RegistryKey key, string name, object value);
+
+        /// <summary>Удаление значения из открытого ключа; отсутствие — не ошибка.</summary>
+        void DeleteValue(RegistryKey key, string name);
+
         void DeleteValue(RegistryHive hive, string keyPath, string name);
 
         /// <summary>Удаляет ветку целиком, если она есть. Отсутствие ключа — не ошибка.</summary>

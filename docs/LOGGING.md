@@ -8,19 +8,19 @@
 ## Формат
 
 Все записи в `Form1` переведены на уровни и категории. Категория — короткое имя
-подсистемы: `App`, `UI`, `Windows`, `Temp`, `Tweak`, `Pagefile`, `Process`,
-`GPU`, `Network`, `Update`, `OneDrive`, `System`, `Registry`.
+подсистемы: `App`, `UI`, `Windows`, `Temp`, `Tweak:<id>`, `Process`, `GPU`,
+`Network`, `Update`, `OneDrive`, `System`, `Registry`.
 
 ```csharp
-Log.Info("Tweak", "MPO был применён");
+Log.Info("Tweak:main.mpo", "MPO был применён");
 Log.Warn("Temp", $"не удалось очистить {tempfolder}: {ex.Message}");
 Log.Error("Process", "dism завершился с кодом 87", ex);
 ```
 
 ```text
-2026-11-11 20:24:51.4461 - [INFO ] [Tweak] MPO был применён
+2026-11-11 20:24:51.4461 - [INFO ] [Tweak:main.mpo] MPO был применён
 2026-11-11 20:24:51.4462 - [ERROR] [Process] dism завершился с кодом 87
-System.ComponentModel.Win32Exception: ...
+2026-11-11 20:24:51.4462 - [ERROR] [Process] System.ComponentModel.Win32Exception: ...
 ```
 
 Уровни: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. Исключение (`ex`) добавляется
@@ -32,14 +32,39 @@ System.ComponentModel.Win32Exception: ...
 
 ### Фильтр уровня
 
-По умолчанию пишутся `INFO` и выше. Подробную диагностику (например, каждое
-чтение реестра или нажатия по элементам UI) можно включить переменной окружения:
+`DEBUG` пишется всегда — отдельного переключателя нет. Подробные записи
+(команды, чтение реестра, нажатия UI, старые/новые значения) нужны для разбора
+проблем, поэтому не прячутся. `TRACE` остаётся зарезервированным и сейчас не
+используется.
 
-```powershell
-$env:WOTBO_LOG_LEVEL = 'Debug'
+### Многострочные сообщения
+
+Каждая физическая строка получает свой префикс — включая стек исключения:
+
+```text
+2026-11-11 21:29:58.7515 - [ERROR] [App] System.ComponentModel.Win32Exception ...
+2026-11-11 21:29:58.7515 - [ERROR] [App]    at System.Windows.Forms.Form.UpdateLayered()
+2026-11-11 21:29:58.7515 - [ERROR] [App]    at Project.WOTBO.<Form1_Load>d__50.MoveNext()
 ```
 
-Допустимые значения: `Trace`, `Debug`, `Info`, `Warn`, `Error` (регистр не важен).
+Поэтому `grep "Tweak:main.mpo"` находит и хвост многострочного вывода WMI.
+
+### Твики
+
+Для применения и отката используется `TweakScope`:
+
+```csharp
+using (TweakScope.Apply("main.mpo"))
+{
+    AppServices.Registry.WriteValue(...);
+}
+// [INFO ] [Tweak:main.mpo] применение начато
+// [INFO ] [Tweak:main.mpo] применение завершено за 12 мс
+```
+
+Категория `Tweak:<id>` общая для detect, apply и rollback. Примеры id:
+`main.defender`, `main.mpo`, `main.pagefile`, `ui.bluefolders`,
+`gpu.ansel`, `extra.onedrive`, `pro.csrss`.
 
 ## Как устроено
 

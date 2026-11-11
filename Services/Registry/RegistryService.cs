@@ -162,6 +162,125 @@ namespace WOTBO.Services.Registry
             }
         }
 
+        public void WriteValue(RegistryHive hive, string keyPath, string name, object value)
+        {
+            WriteValue(hive, keyPath, name, value, InferKind(value));
+        }
+
+        public void WriteValue(RegistryKey key, string name, object value, RegistryValueKind kind)
+        {
+            if (key == null)
+            {
+                _log.Debug(Category, "запись " + name + " -> ключ не открыт, пропуск");
+                return;
+            }
+
+            string valueName = NormalizeName(name);
+            string path = PathFromKeyName(key.Name);
+            RegistryHive hive = HiveFromKeyName(key.Name);
+
+            RegistryValueSnapshot before = ReadValueFromKey(hive, path, key, valueName);
+
+            try
+            {
+                key.SetValue(valueName, value ?? string.Empty, kind);
+                RegistryValueSnapshot after = RegistryValueSnapshot.Present(hive, path, valueName, kind, value);
+                _log.Info(Category, "запись " + after + " (было: " + DescribeBefore(before) + ")");
+            }
+            catch (Exception ex) when (IsRegistryFailure(ex))
+            {
+                throw Fail("запись", hive, path, valueName, ex);
+            }
+        }
+
+        public void WriteValue(RegistryKey key, string name, object value)
+        {
+            WriteValue(key, name, value, InferKind(value));
+        }
+
+        public void DeleteValue(RegistryKey key, string name)
+        {
+            if (key == null)
+            {
+                _log.Debug(Category, "удаление значения " + name + " -> ключ не открыт, пропуск");
+                return;
+            }
+
+            string valueName = NormalizeName(name);
+            string path = PathFromKeyName(key.Name);
+            RegistryHive hive = HiveFromKeyName(key.Name);
+            RegistryValueSnapshot before = ReadValueFromKey(hive, path, key, valueName);
+
+            if (!before.Exists)
+            {
+                _log.Debug(Category, Format("удаление значения", hive, path, valueName) + " -> значения не было");
+                return;
+            }
+
+            try
+            {
+                key.DeleteValue(valueName, false);
+                _log.Info(Category, Format("удаление значения", hive, path, valueName) + " (было: " + DescribeBefore(before) + ")");
+            }
+            catch (Exception ex) when (IsRegistryFailure(ex))
+            {
+                throw Fail("удаление значения", hive, path, valueName, ex);
+            }
+        }
+
+        private RegistryValueSnapshot ReadValueFromKey(RegistryHive hive, string path, RegistryKey key, string name)
+        {
+            object data = key.GetValue(name, null, RegistryValueOptions.DoNotExpandEnvironmentNames);
+            if (data == null)
+            {
+                return RegistryValueSnapshot.Missing(hive, path, name);
+            }
+
+            return RegistryValueSnapshot.Present(hive, path, name, key.GetValueKind(name), data);
+        }
+
+        private static RegistryValueKind InferKind(object value)
+        {
+            if (value is int || value is uint || value is short || value is ushort || value is byte)
+            {
+                return RegistryValueKind.DWord;
+            }
+
+            if (value is long || value is ulong)
+            {
+                return RegistryValueKind.QWord;
+            }
+
+            if (value is string[])
+            {
+                return RegistryValueKind.MultiString;
+            }
+
+            if (value is byte[])
+            {
+                return RegistryValueKind.Binary;
+            }
+
+            return RegistryValueKind.String;
+        }
+
+        private static RegistryHive HiveFromKeyName(string fullName)
+        {
+            string name = fullName ?? string.Empty;
+            if (name.StartsWith("HKEY_CURRENT_USER", StringComparison.OrdinalIgnoreCase)) return RegistryHive.CurrentUser;
+            if (name.StartsWith("HKEY_CLASSES_ROOT", StringComparison.OrdinalIgnoreCase)) return RegistryHive.ClassesRoot;
+            if (name.StartsWith("HKEY_USERS", StringComparison.OrdinalIgnoreCase)) return RegistryHive.Users;
+            if (name.StartsWith("HKEY_CURRENT_CONFIG", StringComparison.OrdinalIgnoreCase)) return RegistryHive.CurrentConfig;
+            return RegistryHive.LocalMachine;
+        }
+
+        private static string PathFromKeyName(string fullName)
+        {
+            string name = fullName ?? string.Empty;
+            int index = name.IndexOf('\\');
+            return index < 0 ? string.Empty : name.Substring(index + 1);
+        }
+
         public void DeleteValue(RegistryHive hive, string keyPath, string name)
         {
             string valueName = NormalizeName(name);

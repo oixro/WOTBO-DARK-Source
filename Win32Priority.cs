@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WOTBO.App;
 
 namespace WOTBO
 {
@@ -13,7 +14,7 @@ namespace WOTBO
         }
         private async void button1_Click(object sender, EventArgs e)
         {
-            Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Control\PriorityControl", true)?.SetValue("Win32PrioritySeparation", Convert.ToInt32(comboBox1.Text));
+            AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\ControlSet001\Control\PriorityControl", "Win32PrioritySeparation", Convert.ToInt32(comboBox1.Text));
             await Task.Delay(100);
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Control\PriorityControl")?.GetValue("Win32PrioritySeparation")) == Convert.ToInt32(comboBox1.Text))
             {
