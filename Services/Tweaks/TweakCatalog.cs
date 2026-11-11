@@ -52,6 +52,7 @@ namespace WOTBO.Services.Tweaks
                 new DwmInputTweak(),
                 new AudioTweak(),
                 new PowerLatencyTweak(),
+                new UsbPowerTweak(),
             });
         }
     }

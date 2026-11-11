@@ -122,6 +122,7 @@
     <Compile Include="Services\Tweaks\DwmInputTweak.cs" />
     <Compile Include="Services\Tweaks\AudioTweak.cs" />
     <Compile Include="Services\Tweaks\PowerLatencyTweak.cs" />
+    <Compile Include="Services\Tweaks\UsbPowerTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

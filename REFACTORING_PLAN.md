@@ -13,9 +13,9 @@ WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 > `HKCU\Software\oixro\wotbo\Backups`; добавлены `WindowsVersionService`
 > (`docs/WINDOWS.md`), WMI/Display/GPU (`docs/HARDWARE.md`),
 > `ReservedStorageService` (`docs/STORAGE.md`), `GitHubUpdateService`
-> (`docs/NETWORK.md`); пилот `ITweak` (`docs/TWEAKS.md`) на двенадцати
+> (`docs/NETWORK.md`); пилот `ITweak` (`docs/TWEAKS.md`) на тринадцати
 > твиках (JPEG/IconCache/StickyKeys/MPO/MobileTTL/SCOOBE/DWM/CSRSS/
-> ContextMenu/DwmInput/Audio/PowerLatency); `RegistryPaths` и удаление
+> ContextMenu/DwmInput/Audio/PowerLatency/USB); `RegistryPaths` и удаление
 > локальных обёрток процессов; версия — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM
 > (`docs/VM-SETUP.md`). Проект остаётся classic `.csproj` с `Debug|x64` /

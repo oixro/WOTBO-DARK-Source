@@ -27,6 +27,14 @@ namespace WOTBO.Services.Registry
         public const string BackgroundAudioPolicy = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\BackgroundModel\BackgroundAudioPolicy";
         public const string Power = @"SYSTEM\CurrentControlSet\Control\Power";
         public const string GraphicsPower = @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Power";
+        public const string UsbHubHubg = @"SYSTEM\CurrentControlSet\Services\usbhub\hubg";
+        public const string Xusb22Parameters = @"SYSTEM\CurrentControlSet\Services\xusb22\Parameters";
+        public const string UsbXhciParameters = @"SYSTEM\CurrentControlSet\Services\USBXHCI\Parameters";
+        public const string UsbHubParameters = @"SYSTEM\CurrentControlSet\Services\usbhub\Parameters";
+        public const string EnumUsb = @"SYSTEM\CurrentControlSet\Enum\USB";
+        public const string UsbXhciWdf = @"SYSTEM\CurrentControlSet\Services\USBXHCI\Parameters\Wdf";
+        public const string UsbFlags = @"SYSTEM\CurrentControlSet\Control\usbflags";
+        public const string EnhancedStorageDevices = @"SOFTWARE\Policies\Microsoft\Windows\EnhancedStorageDevices";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";

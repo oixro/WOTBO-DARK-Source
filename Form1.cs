@@ -674,7 +674,7 @@ namespace Project
                 checkBox_mpo.Enabled = false;
                 back_main_6.Visible = true;
             }
-            if (AppServices.Tweaks.IsApplied("main.usb"))
+            if (AppServices.TweakCatalog.Get("main.usb").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.usb", "usbpowersaving был применён");
                 checkBox_usb.Enabled = false;
@@ -1342,28 +1342,7 @@ namespace Project
                     File.WriteAllText(tempfolder + @"\usbpowersaving.bat", Resources.usbpowersaving);
                     TweakScope.BackupRegFile($"{tempfolder}/usbpowersaving.cmd");
                     AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/usbpowersaving.cmd");
-                        RegistryKey key;
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\hubg");
-                    AppServices.Registry.WriteValue(key, "DisableOnSoftRemove", 0x00000001, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\xusb22\\Parameters");
-                    AppServices.Registry.WriteValue(key, "IoQueueWorkItem", 0x0000000a, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\USBXHCI\\Parameters");
-                    AppServices.Registry.WriteValue(key, "IoQueueWorkItem", 0x0000000a, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\Parameters");
-                    AppServices.Registry.WriteValue(key, "IoQueueWorkItem", 0x0000000a, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Enum\\USB");
-                    AppServices.Registry.WriteValue(key, "AllowIdleIrpInD3", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "EnhancedPowerManagementEnabled", 0x00000000, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\USBXHCI\\Parameters\\Wdf");
-                    AppServices.Registry.WriteValue(key, "NoExtraBufferRoom", 0x00000000, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Control\\usbflags");
-                    AppServices.Registry.WriteValue(key, "fid_D1Latency", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "fid_D2Latency", 0x00000001, RegistryValueKind.DWord);
-                    AppServices.Registry.WriteValue(key, "fid_D3Latency", 0x00000001, RegistryValueKind.DWord);
-                    key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\Performance");
-                    key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Windows\\EnhancedStorageDevices");
-                    AppServices.Registry.WriteValue(key, "TCGSecurityActivationDisabled", 0x00000001, RegistryValueKind.DWord);
-                    key.Close();
+                    AppServices.TweakCatalog.Get("main.usb").Apply(AppServices.TweakContext);
                     checkBox_usb.Enabled = false;
                     checkBox_usb.Checked = false;
                     back_main_7.Visible = true;
@@ -2767,27 +2746,7 @@ namespace Project
             {
                 File.WriteAllText(tempfolder + @"\unusbpowersaving.bat", Resources.unusbpowersaving);
                 AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/un_usbpowersaving.cmd");
-                RegistryKey key;
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\usbhub\\hubg");
-                AppServices.Registry.DeleteValue(key, "DisableOnSoftRemove");
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\xusb22\\Parameters");
-                AppServices.Registry.DeleteValue(key, "IoQueueWorkItem");
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\USBXHCI\\Parameters");
-                AppServices.Registry.DeleteValue(key, "IoQueueWorkItem");
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\usbhub\\Parameters");
-                AppServices.Registry.DeleteValue(key, "IoQueueWorkItem");
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Enum\\USB");
-                AppServices.Registry.DeleteValue(key, "AllowIdleIrpInD3");
-                AppServices.Registry.DeleteValue(key, "EnhancedPowerManagementEnabled");
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\USBXHCI\\Parameters\\Wdf");
-                AppServices.Registry.DeleteValue(key, "NoExtraBufferRoom");
-                key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Control\\usbflags");
-                AppServices.Registry.DeleteValue(key, "fid_D1Latency");
-                AppServices.Registry.DeleteValue(key, "fid_D2Latency");
-                AppServices.Registry.DeleteValue(key, "fid_D3Latency");
-                key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Policies\\Microsoft\\Windows\\EnhancedStorageDevices");
-                AppServices.Registry.WriteValue(key, "TCGSecurityActivationDisabled", 0x00000000, RegistryValueKind.DWord);
-                key.Close();
+                AppServices.TweakCatalog.Get("main.usb").Rollback(AppServices.TweakContext);
                 checkBox_usb.Enabled = true;
                 checkBox_usb.Checked = false;
                 back_main_7.Visible = false;
