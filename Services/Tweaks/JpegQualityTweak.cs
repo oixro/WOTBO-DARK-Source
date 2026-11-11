@@ -6,8 +6,8 @@ namespace WOTBO.Services.Tweaks
     /// <summary>Отключение сжатия обоев (JPEGImportQuality = 100).</summary>
     public sealed class JpegQualityTweak : TweakBase
     {
-        private const string Path = @"Control Panel\Desktop";
-        private const string Value = "JPEGImportQuality";
+        private const string Path = WOTBO.Services.Registry.RegistryPaths.Desktop;
+        private const string Value = WOTBO.Services.Registry.RegistryPaths.JpegImportQuality;
 
         public override string Id
         {

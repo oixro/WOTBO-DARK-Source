@@ -20,6 +20,7 @@ using WOTBO.App.Logging;
 using WOTBO.Properties;
 using WOTBO.Services.Hardware;
 using WOTBO.Services.Network;
+using WOTBO.Services.Registry;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
@@ -347,26 +348,6 @@ namespace Project
             #endregion
         }
         #endregion
-        public void hcmd(string line)
-        {
-            AppServices.Processes.StartCaptured(line);
-        }
-        public async Task hcmdAsync(string line)
-        {
-            await AppServices.Processes.StartCapturedAsync(line);
-        }
-        void scmd(string line)
-        {
-            AppServices.Processes.StartDetached(line);
-        }
-        void powershell(string line)
-        {
-            AppServices.Processes.StartPowerShell(line);
-        }
-        void supercmd(string line)
-        {
-            AppServices.Processes.RunSuper(line, tempfolder + @"\su.exe");
-        }
         public void OpenUrl(string url)
         {
             if (!AppServices.Processes.OpenUrl(url))
@@ -549,10 +530,10 @@ namespace Project
             if (!InstanceGuard.TryAcquire())
             {
                 Log.Warn("App", "InstanceExists, relaunch");
-                hcmd($"taskkill /f /im {exename} && \"{exepath}\"");
+                AppServices.Processes.StartCaptured($"taskkill /f /im {exename} && \"{exepath}\"");
                 Log.Info("App", "cmd на перезапуск вызван, ждём когда приебашит меня");
             }
-            if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo")?.GetValue("eula") == null)
+            if (Registry.CurrentUser.OpenSubKey(RegistryPaths.AppRoot)?.GetValue("eula") == null)
             {
                 Log.Info("App", "eula null");
                 Form2 eula = new Form2();
@@ -687,7 +668,7 @@ namespace Project
             }
             UpdateMouseFixCheckBox();
             #endregion
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\Dwm").GetValue("OverlayTestMode")) == 5)
+            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(RegistryPaths.Dwm).GetValue("OverlayTestMode")) == 5)
             {
                 Log.Info("Tweak:main.mpo", "MPO был применён");
                 checkBox_mpo.Enabled = false;
@@ -702,31 +683,31 @@ namespace Project
             if (AppServices.Tweaks.IsApplied("main.bcdedit"))
             {
                 Log.Warn("Tweak:main.bcdedit", "bcdedit был применён, откатываем нахуй");
-                hcmd("bcdedit /deletevalue tscsyncpolicy");
-                hcmd("bcdedit /deletevalue bootux");
-                hcmd("bcdedit /set bootmenupolicy standard");
-                hcmd("bcdedit /set hypervisorlaunchtype Auto");
-                hcmd("bcdedit /deletevalue tpmbootentropy");
-                hcmd("bcdedit /deletevalue quietboot");
-                hcmd("bcdedit /set nx optin");
-                hcmd("bcdedit /set allowedinmemorysettings 0x17000077");
-                hcmd("bcdedit /set isolatedcontext Yes");
-                hcmd("bcdedit /deletevalue vsmlaunchtype");
-                hcmd("bcdedit /deletevalue vm");
-                hcmd("reg delete \"HKLM\\Software\\Policies\\Microsoft\\FVE\" /v \"DisableExternalDMAUnderLock\" /f");
-                hcmd("reg delete \"HKLM\\Software\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v \"EnableVirtualizationBasedSecurity\" /f");
-                hcmd("reg delete \"HKLM\\Software\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v \"HVCIMATRequired\" /f");
-                hcmd("bcdedit /deletevalue firstmegabytepolicy");
-                hcmd("bcdedit /deletevalue avoidlowmemory");
-                hcmd("bcdedit /deletevalue nolowmem");
-                hcmd("bcdedit /deletevalue configaccesspolicy");
-                hcmd("bcdedit /deletevalue x2apicpolicy");
-                hcmd("bcdedit /deletevalue usephysicaldestination");
-                hcmd("bcdedit /deletevalue usefirmwarepcisettings");
-                hcmd("bcdedit /deletevalue uselegacyapicmode");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue tscsyncpolicy");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue bootux");
+                AppServices.Processes.StartCaptured("bcdedit /set bootmenupolicy standard");
+                AppServices.Processes.StartCaptured("bcdedit /set hypervisorlaunchtype Auto");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue tpmbootentropy");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue quietboot");
+                AppServices.Processes.StartCaptured("bcdedit /set nx optin");
+                AppServices.Processes.StartCaptured("bcdedit /set allowedinmemorysettings 0x17000077");
+                AppServices.Processes.StartCaptured("bcdedit /set isolatedcontext Yes");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue vsmlaunchtype");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue vm");
+                AppServices.Processes.StartCaptured("reg delete \"HKLM\\Software\\Policies\\Microsoft\\FVE\" /v \"DisableExternalDMAUnderLock\" /f");
+                AppServices.Processes.StartCaptured("reg delete \"HKLM\\Software\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v \"EnableVirtualizationBasedSecurity\" /f");
+                AppServices.Processes.StartCaptured("reg delete \"HKLM\\Software\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v \"HVCIMATRequired\" /f");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue firstmegabytepolicy");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue avoidlowmemory");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue nolowmem");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue configaccesspolicy");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue x2apicpolicy");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue usephysicaldestination");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue usefirmwarepcisettings");
+                AppServices.Processes.StartCaptured("bcdedit /deletevalue uselegacyapicmode");
                 AppServices.Tweaks.Remove("main.bcdedit");
             }
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management")?.GetValue("FeatureSettings")) == 1)
+            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement)?.GetValue("FeatureSettings")) == 1)
             {
                 Log.Info("Tweak:main.mitigations", "spectre and meltdown был применён");
                 checkBox_mtiititit.Enabled = false;
@@ -743,7 +724,7 @@ namespace Project
             try
             {
                 // Открываем раздел реестра
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management"))
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement))
                 {
                     if (key != null)
                     {
@@ -849,7 +830,7 @@ namespace Project
                 checkBox_pro_1.Enabled = false;
 
             }
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Control\PriorityControl").GetValue("Win32PrioritySeparation")) != 0x00000002)
+            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(RegistryPaths.PriorityControl).GetValue("Win32PrioritySeparation")) != 0x00000002)
             {
                 Log.Info("Tweak:pro.win32priority", "Win32PrioritySeparation был применён");
                 checkBox_pro_11.Enabled = false;
@@ -935,7 +916,7 @@ namespace Project
                 checkBox_picture_cache.Enabled = false;
                 back_dop_1.Visible = true;
             }
-            if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", true)?.GetValue("DefaultTTL") != null)
+            if (Registry.LocalMachine.OpenSubKey(RegistryPaths.TcpipParameters, true)?.GetValue("DefaultTTL") != null)
             {
                 Log.Info("Tweak:extra.mobiletraffic", "DefaultTTL был применён");
                 checkBox_mobile_traffic.Enabled = false;
@@ -1189,7 +1170,7 @@ namespace Project
                 if (processes.Length > 0)
                 {
                     Log.Info("System", $"BackgroundMonitoringServices был найден - {processes.Length}");
-                    hcmd("taskkill /f /im BackgroundMonitoringServices.exe");
+                    AppServices.Processes.StartCaptured("taskkill /f /im BackgroundMonitoringServices.exe");
                     File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
                 }
                 else
@@ -1208,7 +1189,7 @@ namespace Project
             {
                 Log.Warn("App", "освобождаем память и убиваемся");
                 InstanceGuard.Release();
-                hcmd($"taskkill /f /im {exename}");
+                AppServices.Processes.StartCaptured($"taskkill /f /im {exename}");
             }
             InstanceGuard.Release();
         }
@@ -1231,12 +1212,12 @@ namespace Project
                     if (win10)
                     {
                         TweakScope.BackupRegFile($"{path_regpack}/w10/win10defenderX.reg");
-                        supercmd($"regedit.exe /s {path_regpack}/w10/win10defenderX.reg");
+                        AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w10/win10defenderX.reg", tempfolder + @"\su.exe");
                     }
                     else
                     {
                         TweakScope.BackupRegFile($"{path_regpack}/w11/win11defenderX.reg");
-                        supercmd($"regedit.exe /s {path_regpack}/w11/win11defenderX.reg");
+                        AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/win11defenderX.reg", tempfolder + @"\su.exe");
                         #region webthreatdefusersvc_XXXXX
                         // Путь к основной ветке реестра
                         string baseKeyPath = @"SYSTEM\CurrentControlSet\Services";
@@ -1271,7 +1252,7 @@ namespace Project
                         #endregion
                     }
                     TweakScope.BackupRegFile($"{path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
-                    supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
+                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg", tempfolder + @"\su.exe");
                     checkBox_disabledefender.Enabled = false;
                     checkBox_disabledefender.Checked = false;
                     label_kalorant.Visible = true;
@@ -1287,17 +1268,17 @@ namespace Project
                     if (win10)
                     {
                         TweakScope.BackupRegFile($"{path_regpack}/w10/w10_AIO.reg");
-                        hcmd($"regedit.exe /s {path_regpack}/w10/w10_AIO.reg");
+                        AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/w10/w10_AIO.reg");
                     }
                     else
                     {
                         TweakScope.BackupRegFile($"{path_regpack}/w11/w11_AIO.reg");
-                        supercmd($"regedit.exe /s {path_regpack}/w11/w11_AIO.reg");
+                        AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/w11_AIO.reg", tempfolder + @"\su.exe");
                     }
                     TweakScope.BackupRegFile($"{path_regpack}/foldernetworkX.reg");
-                    supercmd($"regedit.exe /s {path_regpack}/foldernetworkX.reg");
+                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/foldernetworkX.reg", tempfolder + @"\su.exe");
                     TweakScope.BackupRegFile($"{path_regpack}/REG_AIO.reg");
-                    hcmd($"regedit.exe /s {path_regpack}/REG_AIO.reg");
+                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/REG_AIO.reg");
                         RegistryKey key;
                     key = Registry.CurrentUser.CreateSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
                     AppServices.Registry.WriteValue(key, "EnableAutoEnhanceDuringPlayback", 0x00000000, RegistryValueKind.DWord);
@@ -1312,7 +1293,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.reservedstorage"))
                 {
-                    hcmd(@"Dism /Online /Set-ReservedStorageState /State:Disabled");
+                    AppServices.Processes.StartCaptured(@"Dism /Online /Set-ReservedStorageState /State:Disabled");
                         checkBox_dism.Enabled = false;
                     checkBox_dism.Checked = false;
                     back_main_2.Visible = true;
@@ -1322,7 +1303,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.hibernate"))
                 {
-                    hcmd("powercfg -h off");
+                    AppServices.Processes.StartCaptured("powercfg -h off");
                         checkBox_gibernate.Enabled = false;
                     checkBox_gibernate.Checked = false;
                     back_main_3.Visible = true;
@@ -1333,12 +1314,12 @@ namespace Project
             {
                 using (TweakScope.Apply("main.powerscheme"))
                 {
-                    hcmd("powercfg -restoredefaultschemes");
+                    AppServices.Processes.StartCaptured("powercfg -restoredefaultschemes");
                     File.WriteAllBytes(path_scheme, Resources.scheme);
                     string guidstring = Guid.NewGuid().ToString();
                     Log.Debug("Tweak:main.powerscheme", guidstring);
-                    hcmd($"powercfg -import {path_scheme} {guidstring}");
-                    hcmd($"powercfg -setactive \"{guidstring}\"");
+                    AppServices.Processes.StartCaptured($"powercfg -import {path_scheme} {guidstring}");
+                    AppServices.Processes.StartCaptured($"powercfg -setactive \"{guidstring}\"");
                         checkBox_scheme.Enabled = false;
                     checkBox_scheme.Checked = false;
                     back_main_4.Visible = true;
@@ -1348,7 +1329,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.mpo"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode", 5);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Dwm, "OverlayTestMode", 5);
                     checkBox_mpo.Enabled = false;
                     checkBox_mpo.Checked = false;
                     back_main_6.Visible = true;
@@ -1360,7 +1341,7 @@ namespace Project
                 {
                     File.WriteAllText(tempfolder + @"\usbpowersaving.bat", Resources.usbpowersaving);
                     TweakScope.BackupRegFile($"{tempfolder}/usbpowersaving.cmd");
-                    hcmd($"regedit.exe /s {tempfolder}/usbpowersaving.cmd");
+                    AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/usbpowersaving.cmd");
                         RegistryKey key;
                     key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\CurrentControlSet\\Services\\usbhub\\hubg");
                     AppServices.Registry.WriteValue(key, "DisableOnSoftRemove", 0x00000001, RegistryValueKind.DWord);
@@ -1392,15 +1373,15 @@ namespace Project
             {
                 using (TweakScope.Apply("main.mitigations"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "FeatureSettings", 1);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "FeatureSettingsOverride", 3);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "FeatureSettingsOverrideMask", 3);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "EnableCfg", 0);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettings", 1);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverride", 3);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverrideMask", 3);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "EnableCfg", 0);
                     AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Kernel", "ProtectionMode", 0);
                     AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\kernel", "DisableExceptionChainValidation", 1);
                     AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled", 0);
-                    //supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.dll mcupdate_GenuineIntel.old");
-                    //supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.dll mcupdate_AuthenticAMD.old");
+                    //AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.dll mcupdate_GenuineIntel.old", tempfolder + @"\su.exe");
+                    //AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.dll mcupdate_AuthenticAMD.old", tempfolder + @"\su.exe");
                         checkBox_mtiititit.Enabled = false;
                     checkBox_mtiititit.Checked = false;
                     back_main_9.Visible = true;
@@ -1454,12 +1435,12 @@ namespace Project
                     if (isdiskssd)
                     {
                         TweakScope.BackupRegFile($"{tempfolder}/prefetcher ssd.reg");
-                        hcmd($"regedit.exe /s {tempfolder}/prefetcher ssd.reg");
+                        AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/prefetcher ssd.reg");
                     }
                     else
                     {
                         TweakScope.BackupRegFile($"{tempfolder}/prefetcher hdd.reg");
-                        hcmd($"regedit.exe /s {tempfolder}/prefetcher hdd.reg");
+                        AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/prefetcher hdd.reg");
                     }
                     int ramgbINT = Convert.ToInt32(ramGB) * 32;
                     if (ramgbINT <= 128)
@@ -1476,17 +1457,17 @@ namespace Project
                     }
                     if (win10 == false)
                     {
-                        powershell($"enable-mmagent -ApplicationPreLaunch");
-                        powershell($"enable-mmagent -MC");
-                        powershell($"disable-mmagent -PC");
-                        powershell($"set-mmagent -moaf {mmMemory}");
+                        AppServices.Processes.StartPowerShell($"enable-mmagent -ApplicationPreLaunch");
+                        AppServices.Processes.StartPowerShell($"enable-mmagent -MC");
+                        AppServices.Processes.StartPowerShell($"disable-mmagent -PC");
+                        AppServices.Processes.StartPowerShell($"set-mmagent -moaf {mmMemory}");
                     }
                     else
                     {
-                        powershell($"enable-mmagent -ApplicationPreLaunch");
-                        powershell($"disable-mmagent -MC");
-                        powershell($"disable-mmagent -PC");
-                        powershell($"set-mmagent -moaf {mmMemory}");
+                        AppServices.Processes.StartPowerShell($"enable-mmagent -ApplicationPreLaunch");
+                        AppServices.Processes.StartPowerShell($"disable-mmagent -MC");
+                        AppServices.Processes.StartPowerShell($"disable-mmagent -PC");
+                        AppServices.Processes.StartPowerShell($"set-mmagent -moaf {mmMemory}");
                     }
 
                         checkBox_mmagent.Enabled = false;
@@ -1501,7 +1482,7 @@ namespace Project
                     try
                     {
                         // Открываем раздел реестра
-                        using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", true))
+                        using (RegistryKey key = Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement, true))
                         {
                             if (key != null)
                             {
@@ -1535,7 +1516,7 @@ namespace Project
                 {
                     File.WriteAllText(tempfolder + @"\mousefix.reg", Resources.mousefix);
                     TweakScope.BackupRegFile($"{tempfolder}\\mousefix.reg");
-                    hcmd($"regedit.exe /s {tempfolder}\\mousefix.reg");
+                    AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}\\mousefix.reg");
                     checkBox_mousefix.Enabled = false;
                     checkBox_mousefix.Checked = false;
                     back_main_5.Visible = true;
@@ -1547,7 +1528,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.audio"))
                 {
-                    supercmd($@"regedit /s {tempfolder}\Audio_Lantency.reg");
+                    AppServices.Processes.RunSuper($@"regedit /s {tempfolder}\Audio_Lantency.reg", tempfolder + @"\su.exe");
                     RegistryKey key;
                     key = Registry.LocalMachine.CreateSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Audio");
                     AppServices.Registry.WriteValue(key, "DisableSpatialOnComboEndpoints", 0x00000001, RegistryValueKind.DWord);
@@ -1646,7 +1627,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.win32priority"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SYSTEM\ControlSet001\Control\PriorityControl");
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.PriorityControl);
                     Win32Priority Win32Priority = new Win32Priority();
                     Win32Priority.ShowDialog();
                     checkBox_pro_11.Checked = false;
@@ -1699,7 +1680,7 @@ namespace Project
             {
                 using (TweakScope.Apply("gpu.directplay"))
                 {
-                    hcmd("dism /online /Enable-Feature /FeatureName:DirectPlay /All");
+                    AppServices.Processes.StartCaptured("dism /online /Enable-Feature /FeatureName:DirectPlay /All");
                     checkBox_directplay.Checked = false;
                     checkBox_directplay.Enabled = false;
                     back_gpu_1.Visible = true;
@@ -1718,19 +1699,19 @@ namespace Project
             if (checkBoxUI_Buttons_2.Checked)
             {
                 TweakScope.BackupRegFile($"{path_ui}/things.reg");
-                hcmd($"regedit.exe /s {path_ui}/things.reg");
-                hcmd(@"rd /s /q ""%userprofile%\3D Objects\""");
+                AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/things.reg");
+                AppServices.Processes.StartCaptured(@"rd /s /q ""%userprofile%\3D Objects\""");
                 if (!win10)
                 {
-                    hcmd(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000001"" /f");
+                    AppServices.Processes.StartCaptured(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000001"" /f");
                 }
                 else
                 {
                     TweakScope.BackupRegFile($"{path_ui}/Taskmgr_win10_new.reg");
-                    hcmd($"regedit.exe /s {path_ui}/Taskmgr_win10_new.reg");
+                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/Taskmgr_win10_new.reg");
                 }
 
-                hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
+                AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                 checkBoxUI_Buttons_2.Enabled = false;
                 checkBoxUI_Buttons_2.Checked = false;
                 back_ui_2.Visible = true;
@@ -1760,11 +1741,11 @@ namespace Project
                                 AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/imageres.zip", $"{tempfolder}\\imageres.zip");
                                 ZipFile.ExtractToDirectory($"{tempfolder}\\imageres.zip", tempfolder);
                             }
-                        await hcmdAsync($"{tempfolder}\\blueiconsw10.bat");
+                        await AppServices.Processes.StartCapturedAsync($"{tempfolder}\\blueiconsw10.bat");
                         checkBox_bluefolders.Checked = false;
                         checkBox_bluefolders.Enabled = false;
                         back_ui_5.Visible = true;
-                        //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "bluefolders", 1);
+                        //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders", 1);
                     }
                     else
                     {
@@ -1774,11 +1755,11 @@ namespace Project
                                 AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BlueIcon_Minimal.zip", $"{tempfolder}\\BlueIcon_Minimal.zip");
                                 ZipFile.ExtractToDirectory($"{tempfolder}\\BlueIcon_Minimal.zip", tempfolder + "\\BlueIcon Minimal");
                             }
-                        await hcmdAsync($"{tempfolder}\\blueicons.bat");
+                        await AppServices.Processes.StartCapturedAsync($"{tempfolder}\\blueicons.bat");
                         checkBox_bluefolders.Checked = false;
                         checkBox_bluefolders.Enabled = false;
                         back_ui_5.Visible = true;
-                        //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "bluefolders", 1);
+                        //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders", 1);
                     }
                 }
             }
@@ -1790,7 +1771,7 @@ namespace Project
                     if (!win10)
                     {
                         AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", "", " ");
-                        hcmd(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
+                        AppServices.Processes.StartCaptured(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                         checkBox_contex.Checked = false;
                         checkBox_contex.Enabled = false;
                         back_ui_6.Visible = true;
@@ -1803,11 +1784,11 @@ namespace Project
                 using (TweakScope.Apply("ui.win11header"))
                 {
                     TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}");
-                    //hcmd($"{tempfolder}\\shapka.bat");
-                    hcmd("taskkill /f /im explorer.exe >nul 2>&1");
-                    supercmd("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\FixByVlado\" /f");
+                    //AppServices.Processes.StartCaptured($"{tempfolder}\\shapka.bat");
+                    AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe >nul 2>&1");
+                    AppServices.Processes.RunSuper("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\FixByVlado\" /f", tempfolder + @"\su.exe");
                     await Task.Delay(1000);
-                    hcmd("explorer.exe");
+                    AppServices.Processes.StartCaptured("explorer.exe");
                     checkBox_shapka.Checked = false;
                     checkBox_shapka.Enabled = false;
                     back_ui_7.Visible = true;
@@ -1876,12 +1857,12 @@ namespace Project
                     if (File.Exists(@"C:\Windows\ffmpeg.exe"))
                     {
                         TweakScope.BackupFile(@"C:\Windows\ffmpeg.exe");
-                        hcmd("taskkill /f /im ffmpeg.exe");
+                        AppServices.Processes.StartCaptured("taskkill /f /im ffmpeg.exe");
                         File.Delete(@"C:\Windows\ffmpeg.exe");
                     }
                     File.Copy($@"{tempfolder}\ffmpeg-7.1-essentials_build\bin\ffmpeg.exe", @"C:\Windows\ffmpeg.exe");
                     TweakScope.BackupRegFile($"{tempfolder}/ffmpeg.reg");
-                    hcmd($@"regedit.exe /s {tempfolder}/ffmpeg.reg");
+                    AppServices.Processes.StartCaptured($@"regedit.exe /s {tempfolder}/ffmpeg.reg");
 
                     checkBox_ffmpeg.Enabled = false;
                     checkBox_ffmpeg.Checked = false;
@@ -1901,7 +1882,7 @@ namespace Project
                     TweakScope.BackupFile(@"C:\Windows\config.ini");
                     File.Copy($@"{tempfolder}\Release\ExplorerBlurMica.dll", @"C:\Windows\ExplorerBlurMica.dll");
                     File.Copy($@"{tempfolder}\Release\config.ini", @"C:\Windows\config.ini");
-                    hcmd($"regsvr32 /s C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
+                    AppServices.Processes.StartCaptured($"regsvr32 /s C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
                     checkBox_mica.Enabled = false;
                     checkBox_mica.Checked = false;
                     back_ui_11.Visible = true;
@@ -1938,7 +1919,7 @@ namespace Project
                         Log.Info("Tweak:extra.onedrive", $"путь к Onedrive найден - {OneDriveSetupPath}, переходим к удалению");
 
                         // Вызов команды для деинсталляции OneDrive
-                        await hcmdAsync($"{OneDriveSetupPath} /uninstall");
+                        await AppServices.Processes.StartCapturedAsync($"{OneDriveSetupPath} /uninstall");
                     }
                     else
                     {
@@ -1954,7 +1935,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.compactos"))
                 {
-                    scmd(@"compact /CompactOS:always");
+                    AppServices.Processes.StartDetached(@"compact /CompactOS:always");
                     checkBox_compactos.Checked = false;
                 }
             }
@@ -1962,7 +1943,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.winsxs"))
                 {
-                    scmd(@"Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase");
+                    AppServices.Processes.StartDetached(@"Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase");
                     checkBox_WinSxS.Checked = false;
                 }
             }
@@ -2016,12 +1997,12 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.updateclean"))
                 {
-                    //hcmd($"{tempfolder}\\cleanupdate.bat");
-                    hcmd(@"net stop wuauserv >nul");
-                    hcmd(@"del /q /f /s %windir%\SoftwareDistribution\Download\*.* >nul");
-                    hcmd(@"rd /q /s %windir%\SoftwareDistribution\Download\ >nul");
-                    hcmd(@"del /q /f /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
-                    hcmd(@"rd /q /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
+                    //AppServices.Processes.StartCaptured($"{tempfolder}\\cleanupdate.bat");
+                    AppServices.Processes.StartCaptured(@"net stop wuauserv >nul");
+                    AppServices.Processes.StartCaptured(@"del /q /f /s %windir%\SoftwareDistribution\Download\*.* >nul");
+                    AppServices.Processes.StartCaptured(@"rd /q /s %windir%\SoftwareDistribution\Download\ >nul");
+                    AppServices.Processes.StartCaptured(@"del /q /f /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
+                    AppServices.Processes.StartCaptured(@"rd /q /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
                     checkBox_updclean.Checked = false;
                 }
             }
@@ -2039,8 +2020,8 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.mobiletraffic"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DefaultTTL", 0x00000041);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters", "DefaultTTL", 0x00000041);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.TcpipParameters, "DefaultTTL", 0x00000041);
+                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Tcpip6Parameters, "DefaultTTL", 0x00000041);
                     checkBox_mobile_traffic.Checked = false;
                     checkBox_mobile_traffic.Enabled = false;
                     back_dop_2.Visible = true;
@@ -2238,17 +2219,17 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.homegallery"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer");
+                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.Explorer);
                     TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}");
                     TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}");
                     {  //HomeDelete
-                        hcmd(@"reg add ""HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"" /v ""HubMode"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
-                        supercmd(@"cmd.exe /c reg add ""HKCR\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000000"" /f");
+                        AppServices.Processes.StartCaptured(@"reg add ""HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"" /v ""HubMode"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
+                        AppServices.Processes.RunSuper(@"cmd.exe /c reg add ""HKCR\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000000"" /f", tempfolder + @"\su.exe");
                         //GaleryDelete
-                        hcmd("reg add \"HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}\" /v \"System.IsPinnedToNameSpaceTree\" /t REG_DWORD /d \"00000000\" /f >nul 2>&1");
-                        supercmd(@"cmd.exe /c reg add ""HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
+                        AppServices.Processes.StartCaptured("reg add \"HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}\" /v \"System.IsPinnedToNameSpaceTree\" /t REG_DWORD /d \"00000000\" /f >nul 2>&1");
+                        AppServices.Processes.RunSuper(@"cmd.exe /c reg add ""HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1", tempfolder + @"\su.exe");
                         //restart explorer
-                        hcmd("taskkill /f /im explorer.exe && timeout /t 1 && explorer.exe");
+                        AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe && timeout /t 1 && explorer.exe");
                                 checkBox_pro_1.Checked = false;
                         checkBox_pro_1.Enabled = false;
                     }
@@ -2259,7 +2240,7 @@ namespace Project
                 using (TweakScope.Apply("pro.windowsupdate"))
                 {
                     TweakScope.BackupRegFile($"{tempfolder}\\updates.reg");
-                    hcmd($"regedit /s {tempfolder}\\updates.reg");
+                    AppServices.Processes.StartCaptured($"regedit /s {tempfolder}\\updates.reg");
                     checkBox_pro_3.Checked = false;
                     checkBox_pro_3.Enabled = false;
                     back_pro_3.Visible = true;
@@ -2271,7 +2252,7 @@ namespace Project
                 using (TweakScope.Apply("pro.csrss"))
                 {
                     TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe");
-                    //hcmd($"{tempfolder}\\csrss.bat");
+                    //AppServices.Processes.StartCaptured($"{tempfolder}\\csrss.bat");
                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true)
         .CreateSubKey("csrss.exe");
                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\csrss.exe", true)
@@ -2284,7 +2265,7 @@ namespace Project
                     checkBox_CSRSS.Checked = false;
                     checkBox_CSRSS.Enabled = false;
                     back_dop_7.Visible = true;
-                    //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "pro_8", 1);
+                    //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "pro_8", 1);
                 }
             } //csrss
             //if (checkBox_pro_10.Checked)
@@ -2314,7 +2295,7 @@ namespace Project
         "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        hcmd("netsh int tcp set global autotuninglevel=disabled");
+                        AppServices.Processes.StartCaptured("netsh int tcp set global autotuninglevel=disabled");
                         checkBox_pro_12.Checked = false;
                         checkBox_pro_12.Enabled = false;
                         back_pro_12.Visible = true;
@@ -2424,7 +2405,7 @@ namespace Project
         #region activation
         void label_activate_Click(object sender, EventArgs e)
         {
-            powershell("irm https://get.activated.win | iex");
+            AppServices.Processes.StartPowerShell("irm https://get.activated.win | iex");
         }
         #endregion
         #region msi mode
@@ -2474,7 +2455,7 @@ namespace Project
         void label_kalorant_Click(object sender, EventArgs e)
         {
             TweakScope.BackupRegFile($"{path_regpack}/exploitscfg.reg");
-            hcmd($"regedit.exe /s {path_regpack}/exploitscfg.reg");
+            AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/exploitscfg.reg");
             label_kalorant.Visible = false;
         }
         #endregion
@@ -2491,7 +2472,7 @@ namespace Project
                             $"{tempfolder}\\NVidiaProfileInspectorDmW.zip");
                     }
                 ZipFile.ExtractToDirectory(tempfolder + @"\NVidiaProfileInspectorDmW.zip", tempfolder);
-                hcmd($"{path_NVidiaProfileInspectorDmW}\\nvidiaProfileInspector.exe \"{tempfolder}\\Base_Profile.nip\"");
+                AppServices.Processes.StartCaptured($"{path_NVidiaProfileInspectorDmW}\\nvidiaProfileInspector.exe \"{tempfolder}\\Base_Profile.nip\"");
             }
         }
         #endregion
@@ -2790,15 +2771,15 @@ namespace Project
                 #region new
                 if (win10)
                 {
-                    hcmd($"regedit.exe /s {path_regpack}/w10/w10_AIO_RESTORE.reg");
+                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/w10/w10_AIO_RESTORE.reg");
                 }
                 else
                 {
-                    supercmd($"regedit.exe /s {path_regpack}\\restore\\win11widgets_restore.bat");
-                    supercmd($"regedit.exe /s {path_regpack}/w11/w11_AIO_RESTORE.reg");
+                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}\\restore\\win11widgets_restore.bat", tempfolder + @"\su.exe");
+                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/w11_AIO_RESTORE.reg", tempfolder + @"\su.exe");
                 }
-                supercmd($"regedit.exe /s {path_regpack}/foldernetworkX_restore.reg");
-                hcmd($"regedit.exe /s {path_regpack}/REG_AIO_RESTORE.reg");
+                AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/foldernetworkX_restore.reg", tempfolder + @"\su.exe");
+                AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/REG_AIO_RESTORE.reg");
                 RegistryKey key;
                 key = Registry.CurrentUser.CreateSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
                 AppServices.Registry.WriteValue(key, "EnableAutoEnhanceDuringPlayback", 0x00000001, RegistryValueKind.DWord);
@@ -2812,8 +2793,8 @@ namespace Project
         {
             using (TweakScope.Rollback("main.reservedstorage"))
             {
-                hcmd("Dism.exe /Online /Set-ReservedStorageState /State:Enabled");
-                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "ReservedStorageState");
+                AppServices.Processes.StartCaptured("Dism.exe /Online /Set-ReservedStorageState /State:Enabled");
+                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "ReservedStorageState");
                 checkBox_dism.Enabled = true;
                 checkBox_dism.Checked = false;
                 back_main_2.Visible = false;
@@ -2823,8 +2804,8 @@ namespace Project
         {
             using (TweakScope.Rollback("main.hibernate"))
             {
-                hcmd("powercfg -h on");
-                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "hibernate");
+                AppServices.Processes.StartCaptured("powercfg -h on");
+                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "hibernate");
                 checkBox_gibernate.Enabled = true;
                 checkBox_gibernate.Checked = false;
                 back_main_3.Visible = false;
@@ -2834,7 +2815,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.powerscheme"))
             {
-                hcmd("powercfg -restoredefaultschemes");
+                AppServices.Processes.StartCaptured("powercfg -restoredefaultschemes");
                 checkBox_scheme.Enabled = true;
                 checkBox_scheme.Checked = false;
                 back_main_4.Visible = false;
@@ -2845,7 +2826,7 @@ namespace Project
             using (TweakScope.Rollback("main.mousefix"))
             {
                 File.WriteAllText(tempfolder + @"\unmousefix.reg", Resources.unmousefix);
-                hcmd($"regedit.exe /s {tempfolder}\\unmousefix.reg");
+                AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}\\unmousefix.reg");
                 checkBox_mousefix.Enabled = true;
                 checkBox_mousefix.Checked = false;
                 back_main_5.Visible = false;
@@ -2855,7 +2836,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.mpo"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.Dwm, "OverlayTestMode");
                 checkBox_mpo.Enabled = true;
                 checkBox_mpo.Checked = false;
                 back_main_6.Visible = false;
@@ -2866,7 +2847,7 @@ namespace Project
             using (TweakScope.Rollback("main.usb"))
             {
                 File.WriteAllText(tempfolder + @"\unusbpowersaving.bat", Resources.unusbpowersaving);
-                hcmd($"regedit.exe /s {tempfolder}/un_usbpowersaving.cmd");
+                AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/un_usbpowersaving.cmd");
                 RegistryKey key;
                 key = Registry.LocalMachine.CreateSubKey($"SYSTEM\\ControlSet001\\Services\\usbhub\\hubg");
                 AppServices.Registry.DeleteValue(key, "DisableOnSoftRemove");
@@ -2897,10 +2878,10 @@ namespace Project
         {
             using (TweakScope.Rollback("main.mitigations"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "FeatureSettings");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "FeatureSettingsOverride");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "FeatureSettingsOverrideMask");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "EnableCfg");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettings");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverride");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "FeatureSettingsOverrideMask");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.MemoryManagement, "EnableCfg");
 
                 AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Kernel", "ProtectionMode");
                 AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\kernel", "DisableExceptionChainValidation");
@@ -2910,8 +2891,8 @@ namespace Project
                     Registry.LocalMachine.DeleteSubKeyTree(@"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity");
                 }
 
-                supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.old mcupdate_GenuineIntel.dll");
-                supercmd("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.old mcupdate_AuthenticAMD.dll");
+                AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.old mcupdate_GenuineIntel.dll", tempfolder + @"\su.exe");
+                AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.old mcupdate_AuthenticAMD.dll", tempfolder + @"\su.exe");
 
                 checkBox_mtiititit.Enabled = true;
                 checkBox_mtiititit.Checked = false;
@@ -2934,7 +2915,7 @@ namespace Project
                 try
                 {
                     // Открываем раздел реестра
-                    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", writable: true))
+                    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(RegistryPaths.MemoryManagement, writable: true))
                     {
                         if (key != null)
                         {
@@ -2968,11 +2949,11 @@ namespace Project
                 #region new
                 if (win10)
                 {
-                    supercmd($"regedit.exe /s {path_regpack}/w10/win10defenderX_restore.reg");
+                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w10/win10defenderX_restore.reg", tempfolder + @"\su.exe");
                 }
                 else
                 {
-                    supercmd($"regedit.exe /s {path_regpack}/w11/win11defenderX_restore.reg");
+                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/win11defenderX_restore.reg", tempfolder + @"\su.exe");
                     #region webthreatdefusersvc_XXXXX
                     // Путь к основной ветке реестра
                     string baseKeyPath = @"SYSTEM\CurrentControlSet\Services";
@@ -3006,7 +2987,7 @@ namespace Project
                     }
                     #endregion
                 }
-                supercmd($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/AIO_ON.reg");
+                AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/AIO_ON.reg", tempfolder + @"\su.exe");
                 #endregion
                 back_main_12.Visible = false;
                 //MessageBox.Show("Для восстановления работы защитника выполните перезагрузку!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -3020,7 +3001,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.audio"))
             {
-                supercmd($@"regedit /s {tempfolder}\Audio_Lantency_delete.reg");
+                AppServices.Processes.RunSuper($@"regedit /s {tempfolder}\Audio_Lantency_delete.reg", tempfolder + @"\su.exe");
                 RegistryKey key;
                 key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Audio");
                 AppServices.Registry.WriteValue(key, "DisableSpatialOnComboEndpoints", 0x00000000, RegistryValueKind.DWord);
@@ -3132,17 +3113,17 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.explorerdetails"))
             {
-                hcmd($"regedit.exe /s {path_ui}/un_things.reg");
+                AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/un_things.reg");
                 if (!win10)
                 {
-                    hcmd(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000000"" /f");
+                    AppServices.Processes.StartCaptured(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000000"" /f");
                 }
                 else
                 {
-                    hcmd($"regedit.exe /s {path_ui}/Taskmgr_win10_default.reg");
+                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/Taskmgr_win10_default.reg");
                 }
 
-                hcmd("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
+                AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                 checkBoxUI_Buttons_2.Enabled = true;
                 checkBoxUI_Buttons_2.Checked = false;
                 back_ui_2.Visible = false;
@@ -3166,16 +3147,16 @@ namespace Project
                 if (win10)
                 {
                     File.WriteAllText(tempfolder + @"\deficonsw10.bat", Resources.deficonsw10);
-                    hcmd($"{tempfolder}\\deficonsw10.bat");
+                    AppServices.Processes.StartCaptured($"{tempfolder}\\deficonsw10.bat");
                 }
                 else
                 {
                     File.WriteAllText(tempfolder + @"\defblueicons.bat", Resources.defblueicons);
-                    hcmd($"{tempfolder}\\defblueicons.bat");
+                    AppServices.Processes.StartCaptured($"{tempfolder}\\defblueicons.bat");
                 }
                 checkBox_bluefolders.Checked = false;
                 checkBox_bluefolders.Enabled = true;
-                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"Software\oixro\wotbo", "bluefolders");
+                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders");
                 back_ui_5.Visible = false;
             }
         }//bluefolders
@@ -3184,7 +3165,7 @@ namespace Project
             using (TweakScope.Rollback("ui.contextmenu"))
             {
                 Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}");
-                hcmd(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
+                AppServices.Processes.StartCaptured(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
                 checkBox_contex.Checked = false;
                 checkBox_contex.Enabled = true;
                 back_ui_6.Visible = false;
@@ -3194,8 +3175,8 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.win11header"))
             {
-                hcmd("taskkill /f /im explorer.exe >nul 2>&1");
-                supercmd("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\Windows.UI.FileExplorer.dll\" /f");
+                AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe >nul 2>&1");
+                AppServices.Processes.RunSuper("reg add \"HKCR\\CLSID\\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\\InProcServer32\" /v \"\" /t REG_SZ /d \"C:\\Windows\\System32\\Windows.UI.FileExplorer.dll\" /f", tempfolder + @"\su.exe");
                 //await Task.Delay(1000);
                 Process.Start("explorer");
                 checkBox_shapka.Checked = false;
@@ -3235,7 +3216,7 @@ namespace Project
             {
                 Registry.CurrentUser.DeleteSubKeyTree(@"SOFTWARE\Classes\SystemFileAssociations");
                 Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Classes\SystemFileAssociations");
-                hcmd("taskkill /f /im ffmpeg.exe");
+                AppServices.Processes.StartCaptured("taskkill /f /im ffmpeg.exe");
                 File.Delete(@"C:\Windows\ffmpeg.exe");
                 back_ui_10.Visible = false;
                 checkBox_ffmpeg.Enabled = true;
@@ -3245,7 +3226,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.mica"))
             {
-                hcmd($"regsvr32 /s /u C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
+                AppServices.Processes.StartCaptured($"regsvr32 /s /u C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
                 await Task.Delay(1000);
                 File.Delete(@"C:\Windows\ExplorerBlurMica.dll");
                 File.Delete(@"C:\Windows\config.ini");
@@ -3271,7 +3252,7 @@ namespace Project
         {
             using (TweakScope.Rollback("gpu.directplay"))
             {
-                hcmd("Dism /online /Disable-Feature /FeatureName:DirectPlay");
+                AppServices.Processes.StartCaptured("Dism /online /Disable-Feature /FeatureName:DirectPlay");
                 back_gpu_1.Visible = false;
                 checkBox_directplay.Checked = false;
                 checkBox_directplay.Enabled = true;
@@ -3362,7 +3343,7 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.win32priority"))
             {
-                AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SYSTEM\ControlSet001\Control\PriorityControl", "Win32PrioritySeparation", 0x00000002);
+                AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.PriorityControl, "Win32PrioritySeparation", 0x00000002);
                 checkBox_pro_11.Enabled = true;
                 checkBox_pro_11.Checked = false;
                 back_pro_11.Visible = false;
@@ -3373,7 +3354,7 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.bufferbloat"))
             {
-                hcmd("netsh int tcp set global autotuninglevel=normal");
+                AppServices.Processes.StartCaptured("netsh int tcp set global autotuninglevel=normal");
                 checkBox_pro_12.Checked = false;
                 checkBox_pro_12.Enabled = true;
                 back_pro_12.Visible = false;
@@ -3398,7 +3379,7 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.alwaysontop"))
             {
-                hcmd("taskkill /f /im AlwaysOnTop.exe");
+                AppServices.Processes.StartCaptured("taskkill /f /im AlwaysOnTop.exe");
                 AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "AlwaysOnTop");
                 checkBox_pro_14.Checked = false;
                 checkBox_pro_14.Enabled = true;
@@ -3426,8 +3407,8 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.mobiletraffic"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DefaultTTL");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters", "DefaultTTL");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.TcpipParameters, "DefaultTTL");
+                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.Tcpip6Parameters, "DefaultTTL");
                 checkBox_mobile_traffic.Enabled = true;
                 back_dop_2.Visible = false;
             }

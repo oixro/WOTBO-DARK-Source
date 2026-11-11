@@ -6,8 +6,8 @@ namespace WOTBO.Services.Tweaks
     /// <summary>Отключение залипания клавиш (StickyKeys Flags = 506).</summary>
     public sealed class StickyKeysTweak : TweakBase
     {
-        private const string Path = @"Control Panel\Accessibility\StickyKeys";
-        private const string Value = "Flags";
+        private const string Path = WOTBO.Services.Registry.RegistryPaths.StickyKeys;
+        private const string Value = WOTBO.Services.Registry.RegistryPaths.StickyKeysFlags;
         private const string AppliedValue = "506";
         private const string DefaultValue = "510";
 

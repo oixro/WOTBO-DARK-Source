@@ -5,8 +5,8 @@ namespace WOTBO.Services.Tweaks
     /// <summary>Увеличение кэша иконок (Max Cached Icons = 4096).</summary>
     public sealed class IconCacheTweak : TweakBase
     {
-        private const string Path = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer";
-        private const string Value = "Max Cached Icons";
+        private const string Path = WOTBO.Services.Registry.RegistryPaths.Explorer;
+        private const string Value = WOTBO.Services.Registry.RegistryPaths.MaxCachedIcons;
 
         public override string Id
         {

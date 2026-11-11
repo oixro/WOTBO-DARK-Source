@@ -9,7 +9,7 @@ namespace WOTBO.App
     /// </summary>
     public static class AppSettings
     {
-        private const string RootPath = @"Software\oixro\wotbo";
+        private const string RootPath = WOTBO.Services.Registry.RegistryPaths.AppRoot;
 
         /// <summary>
         /// Показывать подсказки о применённых твиках. По умолчанию выключено.
@@ -21,7 +21,7 @@ namespace WOTBO.App
                 object value = AppServices.Registry.GetValue(
                     RegistryHive.CurrentUser,
                     RootPath,
-                    "tweakTooltips");
+                    WOTBO.Services.Registry.RegistryPaths.TweakTooltips);
 
                 return value != null && Convert.ToInt32(value) == 1;
             }
@@ -30,7 +30,7 @@ namespace WOTBO.App
                 AppServices.Registry.WriteValue(
                     RegistryHive.CurrentUser,
                     RootPath,
-                    "tweakTooltips",
+                    WOTBO.Services.Registry.RegistryPaths.TweakTooltips,
                     value ? 1 : 0);
             }
         }

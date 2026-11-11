@@ -42,7 +42,7 @@ namespace WOTBO.Services.Windows
     /// </summary>
     public sealed class WindowsVersionService : IWindowsVersionService
     {
-        private const string Path = @"Software\Microsoft\Windows NT\CurrentVersion";
+        private const string Path = RegistryPaths.WindowsVersion;
 
         private readonly IRegistryService _registry;
 

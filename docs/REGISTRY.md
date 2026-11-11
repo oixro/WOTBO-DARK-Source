@@ -96,6 +96,18 @@ AppServices.Registry.Restore(before);
 
 ## Что ещё не сделано
 
-- `RegistryPaths` — вынести магические пути в константы.
 - Владелец ключей `TrustedInstaller` — отдельная операция взятия владения
   (понадобится для части твиков 24H2+).
+
+## RegistryPaths
+
+Часто используемые пути и имена значений вынесены в
+`Services/Registry/RegistryPaths.cs`:
+
+```text
+AppRoot, BackupsRoot, WindowsVersion, Desktop, StickyKeys, Explorer,
+Dwm, MemoryManagement, PriorityControl, TcpipParameters, Tcpip6Parameters,
+HdcpPath, NvidiaTweaksPath
+```
+
+Новый код ссылается на константы, а не на строки на месте.

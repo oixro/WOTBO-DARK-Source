@@ -14,7 +14,8 @@ WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 > (`docs/WINDOWS.md`), WMI/Display/GPU (`docs/HARDWARE.md`),
 > `ReservedStorageService` (`docs/STORAGE.md`), `GitHubUpdateService`
 > (`docs/NETWORK.md`); пилот `ITweak` (`docs/TWEAKS.md`) на JPEG/IconCache/
-> StickyKeys; версия — 2.34.
+> StickyKeys; `RegistryPaths` и удаление локальных обёрток процессов;
+> версия — 2.34.
 > Рабочий цикл: код в VSCode на macOS, сборка и запуск в Windows 11 VM
 > (`docs/VM-SETUP.md`). Проект остаётся classic `.csproj` с `Debug|x64` /
 > `Release|x64`; манифест — `requireAdministrator`; WOTBO собирается только под

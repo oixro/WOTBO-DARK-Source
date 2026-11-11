@@ -30,8 +30,8 @@ namespace WOTBO.Services.State
     /// </summary>
     public sealed class TweakStateStore
     {
-        private const string RootPath = @"Software\oixro\wotbo";
-        private const string BackupsPath = RootPath + @"\Backups";
+        private const string RootPath = RegistryPaths.AppRoot;
+        private const string BackupsPath = RegistryPaths.BackupsRoot;
         private const string LogCategory = "State";
 
         /// <summary>Больше этого JSON уходит в файл: значение реестра ограничено.</summary>

@@ -20,17 +20,12 @@
 
 ## Совместимость
 
-В `Form1` пока остались одноимённые обёртки:
+Локальные обёртки `hcmd/hcmdAsync/scmd/powershell/supercmd` в `Form1`
+удалены: все вызовы идут напрямую в `AppServices.Processes`.
+`supercmd` заменён на `RunSuper(command, tempfolder + @"\su.exe")`.
 
-```csharp
-public void hcmd(string line)
-{
-    AppServices.Processes.StartCaptured(line);
-}
-```
-
-Это сделано намеренно: сотни вызовов `hcmd/scmd/...` по коду не трогались.
-Следующий шаг — заменить вызовы напрямую и удалить обёртки.
+`OpenUrl` остался тонкой UI-обёрткой: при неудаче показывает прежний
+`MessageBox`.
 
 `Form2` и `Form4` уже делегируют в `StartDetached(line, true)`.
 

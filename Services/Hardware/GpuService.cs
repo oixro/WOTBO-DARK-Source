@@ -28,10 +28,8 @@ namespace WOTBO.Services.Hardware
     public sealed class GpuService : IGpuService
     {
         private const string Category = "GPU";
-        private const string HdcpPath =
-            @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";
-        private const string NvidiaTweaksPath =
-            @"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak";
+        private const string HdcpPath = RegistryPaths.HdcpPath;
+        private const string NvidiaTweaksPath = RegistryPaths.NvidiaTweaksPath;
 
         private readonly IWmiSystemInfoService _wmi;
         private readonly IRegistryService _registry;

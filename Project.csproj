@@ -99,6 +99,7 @@
     <Compile Include="Services\Registry\IRegistryService.cs" />
     <Compile Include="Services\Registry\RegistryKeySnapshot.cs" />
     <Compile Include="Services\Registry\RegistryOperationException.cs" />
+    <Compile Include="Services\Registry\RegistryPaths.cs" />
     <Compile Include="Services\Registry\RegistryService.cs" />
     <Compile Include="Services\Registry\RegistryValueSnapshot.cs" />
     <Compile Include="Services\State\TweakBackup.cs" />
