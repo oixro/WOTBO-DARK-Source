@@ -668,7 +668,7 @@ namespace Project
             }
             UpdateMouseFixCheckBox();
             #endregion
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(RegistryPaths.Dwm).GetValue("OverlayTestMode")) == 5)
+            if (AppServices.TweakCatalog.Get("main.mpo").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.mpo", "MPO был применён");
                 checkBox_mpo.Enabled = false;
@@ -916,13 +916,13 @@ namespace Project
                 checkBox_picture_cache.Enabled = false;
                 back_dop_1.Visible = true;
             }
-            if (Registry.LocalMachine.OpenSubKey(RegistryPaths.TcpipParameters, true)?.GetValue("DefaultTTL") != null)
+            if (AppServices.TweakCatalog.Get("extra.mobiletraffic").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.mobiletraffic", "DefaultTTL был применён");
                 checkBox_mobile_traffic.Enabled = false;
                 back_dop_2.Visible = true;
             }
-            if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement", true)?.GetValue("ScoobeSystemSettingEnabled") != null)
+            if (AppServices.TweakCatalog.Get("extra.scoobe").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.scoobe", "ScoobeSystemSettingEnabled был применён");
                 checkBox_nastroyka.Enabled = false;
@@ -1329,7 +1329,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.mpo"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Dwm, "OverlayTestMode", 5);
+                    AppServices.TweakCatalog.Get("main.mpo").Apply(AppServices.TweakContext);
                     checkBox_mpo.Enabled = false;
                     checkBox_mpo.Checked = false;
                     back_main_6.Visible = true;
@@ -2020,8 +2020,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.mobiletraffic"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.TcpipParameters, "DefaultTTL", 0x00000041);
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Tcpip6Parameters, "DefaultTTL", 0x00000041);
+                    AppServices.TweakCatalog.Get("extra.mobiletraffic").Apply(AppServices.TweakContext);
                     checkBox_mobile_traffic.Checked = false;
                     checkBox_mobile_traffic.Enabled = false;
                     back_dop_2.Visible = true;
@@ -2031,7 +2030,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.scoobe"))
                 {
-                    AppServices.Registry.WriteValue(RegistryHive.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement", "ScoobeSystemSettingEnabled", 0);
+                    AppServices.TweakCatalog.Get("extra.scoobe").Apply(AppServices.TweakContext);
                     checkBox_nastroyka.Checked = false;
                     checkBox_nastroyka.Enabled = false;
                     back_dop_3.Visible = true;
@@ -2836,7 +2835,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.mpo"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.Dwm, "OverlayTestMode");
+                AppServices.TweakCatalog.Get("main.mpo").Rollback(AppServices.TweakContext);
                 checkBox_mpo.Enabled = true;
                 checkBox_mpo.Checked = false;
                 back_main_6.Visible = false;
@@ -3407,8 +3406,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.mobiletraffic"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.TcpipParameters, "DefaultTTL");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.Tcpip6Parameters, "DefaultTTL");
+                AppServices.TweakCatalog.Get("extra.mobiletraffic").Rollback(AppServices.TweakContext);
                 checkBox_mobile_traffic.Enabled = true;
                 back_dop_2.Visible = false;
             }
@@ -3427,7 +3425,7 @@ namespace Project
         {
             using (TweakScope.Rollback("extra.scoobe"))
             {
-                AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement", "ScoobeSystemSettingEnabled");
+                AppServices.TweakCatalog.Get("extra.scoobe").Rollback(AppServices.TweakContext);
                 checkBox_nastroyka.Enabled = true;
                 back_dop_3.Visible = false;
             }

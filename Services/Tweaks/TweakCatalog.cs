@@ -43,6 +43,9 @@ namespace WOTBO.Services.Tweaks
                 new JpegQualityTweak(),
                 new IconCacheTweak(),
                 new StickyKeysTweak(),
+                new MpoTweak(),
+                new MobileTrafficTweak(),
+                new ScoobeTweak(),
             });
         }
     }

@@ -113,6 +113,9 @@
     <Compile Include="Services\Tweaks\JpegQualityTweak.cs" />
     <Compile Include="Services\Tweaks\IconCacheTweak.cs" />
     <Compile Include="Services\Tweaks\StickyKeysTweak.cs" />
+    <Compile Include="Services\Tweaks\MpoTweak.cs" />
+    <Compile Include="Services\Tweaks\MobileTrafficTweak.cs" />
+    <Compile Include="Services\Tweaks\ScoobeTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

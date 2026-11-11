@@ -18,6 +18,7 @@ namespace WOTBO.Services.Registry
         public const string PriorityControl = @"SYSTEM\ControlSet001\Control\PriorityControl";
         public const string TcpipParameters = @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters";
         public const string Tcpip6Parameters = @"SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters";
+        public const string UserProfileEngagement = @"SOFTWARE\Microsoft\Windows\CurrentVersion\UserProfileEngagement";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";
@@ -29,5 +30,8 @@ namespace WOTBO.Services.Registry
         public const string JpegImportQuality = "JPEGImportQuality";
         public const string MaxCachedIcons = "Max Cached Icons";
         public const string StickyKeysFlags = "Flags";
+        public const string OverlayTestMode = "OverlayTestMode";
+        public const string DefaultTtl = "DefaultTTL";
+        public const string ScoobeSystemSettingEnabled = "ScoobeSystemSettingEnabled";
     }
 }
