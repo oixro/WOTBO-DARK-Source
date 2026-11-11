@@ -155,6 +155,17 @@ namespace WOTBO.Services.State
             return _registry.GetValue(RegistryHive.CurrentUser, BackupKeyPath(tweakId), "appliedAt") as string;
         }
 
+        /// <summary>Дополнительные данные твика в его ключе состояния.</summary>
+        public void WriteExtra(string tweakId, string name, object value)
+        {
+            _registry.WriteValue(RegistryHive.CurrentUser, BackupKeyPath(tweakId), name, value);
+        }
+
+        public object ReadExtra(string tweakId, string name)
+        {
+            return _registry.GetValue(RegistryHive.CurrentUser, BackupKeyPath(tweakId), name);
+        }
+
         /// <summary>
         /// Переводит все известные старые флаги в новый формат и удаляет их.
         /// Вызывается один раз при старте, чтобы в корне

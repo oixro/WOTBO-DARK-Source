@@ -56,6 +56,8 @@ namespace WOTBO.Services.Tweaks
                 new MitigationsTweak(),
                 new HibernateTweak(),
                 new PagefileTweak(),
+                new MouseFixTweak(),
+                new PowerSchemeTweak(),
             });
         }
     }

@@ -1,6 +1,8 @@
 using WOTBO.App.Logging;
 using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
+using WOTBO.Services.State;
+using WOTBO.Services.Storage;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -15,16 +17,27 @@ namespace WOTBO.Services.Tweaks
     /// <summary>Зависимости, которые нужны твику во время Detect/Apply/Rollback.</summary>
     public sealed class TweakContext
     {
-        public TweakContext(IRegistryService registry, IProcessService processes, IAppLogger log)
+        public TweakContext(
+            IRegistryService registry,
+            IProcessService processes,
+            TempWorkspace workspace,
+            TweakStateStore store,
+            IAppLogger log)
         {
             Registry = registry;
             Processes = processes;
+            Workspace = workspace;
+            Store = store;
             Log = log;
         }
 
         public IRegistryService Registry { get; }
 
         public IProcessService Processes { get; }
+
+        public TempWorkspace Workspace { get; }
+
+        public TweakStateStore Store { get; }
 
         public IAppLogger Log { get; }
     }

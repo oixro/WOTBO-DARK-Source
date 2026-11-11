@@ -613,7 +613,7 @@ namespace Project
                 checkBox_gibernate.Enabled = false;
                 back_main_3.Visible = true;
             }
-            if (AppServices.Tweaks.IsApplied("main.powerscheme"))
+            if (AppServices.TweakCatalog.Get("main.powerscheme").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.powerscheme", "imported_powerscheme был применён");
                 checkBox_scheme.Enabled = false;
@@ -664,7 +664,7 @@ namespace Project
             }
             bool IsMouseFixKeyPresent()
             {
-                return AppServices.Tweaks.IsApplied("main.mousefix");
+                return AppServices.TweakCatalog.Get("main.mousefix").Detect(AppServices.TweakContext) == TweakState.Applied;
             }
             UpdateMouseFixCheckBox();
             #endregion
@@ -1258,12 +1258,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.powerscheme"))
                 {
-                    AppServices.Processes.StartCaptured("powercfg -restoredefaultschemes");
-                    File.WriteAllBytes(path_scheme, Resources.scheme);
-                    string guidstring = Guid.NewGuid().ToString();
-                    Log.Debug("Tweak:main.powerscheme", guidstring);
-                    AppServices.Processes.StartCaptured($"powercfg -import {path_scheme} {guidstring}");
-                    AppServices.Processes.StartCaptured($"powercfg -setactive \"{guidstring}\"");
+                    AppServices.TweakCatalog.Get("main.powerscheme").Apply(AppServices.TweakContext);
                         checkBox_scheme.Enabled = false;
                     checkBox_scheme.Checked = false;
                     back_main_4.Visible = true;
@@ -1413,9 +1408,7 @@ namespace Project
             {
                 using (TweakScope.Apply("main.mousefix"))
                 {
-                    File.WriteAllText(tempfolder + @"\mousefix.reg", Resources.mousefix);
-                    TweakScope.BackupRegFile($"{tempfolder}\\mousefix.reg");
-                    AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}\\mousefix.reg");
+                    AppServices.TweakCatalog.Get("main.mousefix").Apply(AppServices.TweakContext);
                     checkBox_mousefix.Enabled = false;
                     checkBox_mousefix.Checked = false;
                     back_main_5.Visible = true;
@@ -2633,7 +2626,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.powerscheme"))
             {
-                AppServices.Processes.StartCaptured("powercfg -restoredefaultschemes");
+                AppServices.TweakCatalog.Get("main.powerscheme").Rollback(AppServices.TweakContext);
                 checkBox_scheme.Enabled = true;
                 checkBox_scheme.Checked = false;
                 back_main_4.Visible = false;
@@ -2643,8 +2636,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.mousefix"))
             {
-                File.WriteAllText(tempfolder + @"\unmousefix.reg", Resources.unmousefix);
-                AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}\\unmousefix.reg");
+                AppServices.TweakCatalog.Get("main.mousefix").Rollback(AppServices.TweakContext);
                 checkBox_mousefix.Enabled = true;
                 checkBox_mousefix.Checked = false;
                 back_main_5.Visible = false;

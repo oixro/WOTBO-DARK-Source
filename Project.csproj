@@ -126,6 +126,8 @@
     <Compile Include="Services\Tweaks\MitigationsTweak.cs" />
     <Compile Include="Services\Tweaks\HibernateTweak.cs" />
     <Compile Include="Services\Tweaks\PagefileTweak.cs" />
+    <Compile Include="Services\Tweaks\MouseFixTweak.cs" />
+    <Compile Include="Services\Tweaks\PowerSchemeTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

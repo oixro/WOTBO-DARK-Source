@@ -54,7 +54,7 @@ namespace WOTBO.App
             new Lazy<IReservedStorageService>(() => new ReservedStorageService(Processes, Log.Instance));
 
         private static readonly Lazy<TweakContext> TweakContextLazy =
-            new Lazy<TweakContext>(() => new TweakContext(Registry, Processes, Log.Instance));
+            new Lazy<TweakContext>(() => new TweakContext(Registry, Processes, Workspace, Tweaks, Log.Instance));
 
         private static readonly Lazy<TweakCatalog> TweakCatalogLazy =
             new Lazy<TweakCatalog>(TweakCatalog.CreateDefault);
