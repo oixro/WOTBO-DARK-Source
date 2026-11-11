@@ -37,6 +37,11 @@ namespace WOTBO.Services.Registry
         public const string EnhancedStorageDevices = @"SOFTWARE\Policies\Microsoft\Windows\EnhancedStorageDevices";
         public const string Kernel = @"SYSTEM\CurrentControlSet\Control\Session Manager\Kernel";
         public const string DeviceGuardHvci = @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity";
+        public const string Services = @"SYSTEM\CurrentControlSet\Services";
+        public const string VideoSettings = @"Software\Microsoft\Windows\CurrentVersion\VideoSettings";
+        public const string DefenderPolicy = @"SOFTWARE\Policies\Microsoft\Windows Defender";
+        public const string DefenderRealtime = @"SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection";
+        public const string DefenderSpynet = @"SOFTWARE\Policies\Microsoft\Windows Defender\Spynet";
 
         public const string HdcpPath =
             @"System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000";
@@ -52,5 +57,6 @@ namespace WOTBO.Services.Registry
         public const string DefaultTtl = "DefaultTTL";
         public const string ScoobeSystemSettingEnabled = "ScoobeSystemSettingEnabled";
         public const string AllowHeadlessExecution = "AllowHeadlessExecution";
+        public const string EnableAutoEnhanceDuringPlayback = "EnableAutoEnhanceDuringPlayback";
     }
 }

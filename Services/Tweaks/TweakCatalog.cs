@@ -58,6 +58,8 @@ namespace WOTBO.Services.Tweaks
                 new PagefileTweak(),
                 new MouseFixTweak(),
                 new PowerSchemeTweak(),
+                new RegpackTweak(),
+                new DefenderTweak(),
             });
         }
     }

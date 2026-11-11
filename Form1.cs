@@ -594,7 +594,7 @@ namespace Project
             smartctl = workspace.Smartctl;
             #endregion
             #region отключаем чеки
-            if (AppServices.Tweaks.IsApplied("main.regpack"))
+            if (AppServices.TweakCatalog.Get("main.regpack").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.regpack", "regpack был применён");
                 checkBox_reg.Enabled = false;
@@ -787,7 +787,7 @@ namespace Project
                 back_pro_3.Visible = true;
 
             }
-            if (AppServices.Tweaks.IsApplied("main.defender"))
+            if (AppServices.TweakCatalog.Get("main.defender").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.defender", "defenderdisabled был применён");
                 checkBox_disabledefender.Enabled = false;
@@ -1146,87 +1146,24 @@ namespace Project
             {
                 using (TweakScope.Apply("main.defender"))
                 {
-
                     MessageBox.Show("Защитник будет отключен!" +
                         "\nЗащита от эксполитов не будет работать." +
                         "\nОна нужна для работы некоторых античитов." +
                         "\nНо восстановить защитник можно через вкладку дополнительно.\n" +
                         "", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    #region new method
-                    if (win10)
-                    {
-                        TweakScope.BackupRegFile($"{path_regpack}/w10/win10defenderX.reg");
-                        AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w10/win10defenderX.reg", tempfolder + @"\su.exe");
-                    }
-                    else
-                    {
-                        TweakScope.BackupRegFile($"{path_regpack}/w11/win11defenderX.reg");
-                        AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/win11defenderX.reg", tempfolder + @"\su.exe");
-                        #region webthreatdefusersvc_XXXXX
-                        // Путь к основной ветке реестра
-                        string baseKeyPath = @"SYSTEM\CurrentControlSet\Services";
-
-                        // Открываем основную ветку реестра
-                        using (RegistryKey baseKey = Registry.LocalMachine.OpenSubKey(baseKeyPath))
-                        {
-                            if (baseKey != null)
-                            {
-                                // Ищем подветку с нужным префиксом
-                                foreach (string subKeyName in baseKey.GetSubKeyNames())
-                                {
-                                    if (subKeyName.StartsWith("webthreatdefusersvc_"))
-                                    {
-                                        // Открываем найденную ветку
-                                        using (RegistryKey targetKey = baseKey.OpenSubKey(subKeyName, true))
-                                        {
-                                            if (targetKey != null)
-                                            {
-                                                // Устанавливаем параметры в ветке
-                                                AppServices.Registry.WriteValue(targetKey, "LaunchProtected", "00000004", RegistryValueKind.DWord);
-                                                AppServices.Registry.WriteValue(targetKey, "Start", "00000004", RegistryValueKind.DWord);
-                                                AppServices.Registry.WriteValue(targetKey, "Start_old", "00000004", RegistryValueKind.DWord);
-                                                Log.Info("Tweak:main.defender", $"Параметр установлен в ветке {subKeyName}");
-                                            }
-                                        }
-                                        break; // Предполагаем, что нужная ветка одна, и можно прекратить поиск
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-                    }
-                    TweakScope.BackupRegFile($"{path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg");
-                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/!AIO_OFF.reg", tempfolder + @"\su.exe");
+                    AppServices.TweakCatalog.Get("main.defender").Apply(AppServices.TweakContext);
                     checkBox_disabledefender.Enabled = false;
                     checkBox_disabledefender.Checked = false;
                     label_kalorant.Visible = true;
                     back_main_12.Visible = true;
-                        ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
-                    #endregion
+                    ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
                 }
             }
             if (checkBox_reg.Checked)
             {
                 using (TweakScope.Apply("main.regpack"))
                 {
-                    if (win10)
-                    {
-                        TweakScope.BackupRegFile($"{path_regpack}/w10/w10_AIO.reg");
-                        AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/w10/w10_AIO.reg");
-                    }
-                    else
-                    {
-                        TweakScope.BackupRegFile($"{path_regpack}/w11/w11_AIO.reg");
-                        AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/w11_AIO.reg", tempfolder + @"\su.exe");
-                    }
-                    TweakScope.BackupRegFile($"{path_regpack}/foldernetworkX.reg");
-                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/foldernetworkX.reg", tempfolder + @"\su.exe");
-                    TweakScope.BackupRegFile($"{path_regpack}/REG_AIO.reg");
-                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/REG_AIO.reg");
-                        RegistryKey key;
-                    key = Registry.CurrentUser.CreateSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
-                    AppServices.Registry.WriteValue(key, "EnableAutoEnhanceDuringPlayback", 0x00000000, RegistryValueKind.DWord);
-                    key.Close();
+                    AppServices.TweakCatalog.Get("main.regpack").Apply(AppServices.TweakContext);
                     checkBox_reg.Enabled = false;
                     checkBox_reg.Checked = false;
                     back_main_1.Visible = true;
@@ -2579,23 +2516,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.regpack"))
             {
-                #region new
-                if (win10)
-                {
-                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/w10/w10_AIO_RESTORE.reg");
-                }
-                else
-                {
-                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}\\restore\\win11widgets_restore.bat", tempfolder + @"\su.exe");
-                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/w11_AIO_RESTORE.reg", tempfolder + @"\su.exe");
-                }
-                AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/foldernetworkX_restore.reg", tempfolder + @"\su.exe");
-                AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/REG_AIO_RESTORE.reg");
-                RegistryKey key;
-                key = Registry.CurrentUser.CreateSubKey($"Software\\Microsoft\\Windows\\CurrentVersion\\VideoSettings");
-                AppServices.Registry.WriteValue(key, "EnableAutoEnhanceDuringPlayback", 0x00000001, RegistryValueKind.DWord);
-                key.Close();
-                #endregion
+                AppServices.TweakCatalog.Get("main.regpack").Rollback(AppServices.TweakContext);
                 checkBox_reg.Enabled = true;
                 back_main_1.Visible = false;
             }
@@ -2709,49 +2630,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.defender"))
             {
-                #region new
-                if (win10)
-                {
-                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w10/win10defenderX_restore.reg", tempfolder + @"\su.exe");
-                }
-                else
-                {
-                    AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/w11/win11defenderX_restore.reg", tempfolder + @"\su.exe");
-                    #region webthreatdefusersvc_XXXXX
-                    // Путь к основной ветке реестра
-                    string baseKeyPath = @"SYSTEM\CurrentControlSet\Services";
-
-                    // Открываем основную ветку реестра
-                    using (RegistryKey baseKey = Registry.LocalMachine.OpenSubKey(baseKeyPath))
-                    {
-                        if (baseKey != null)
-                        {
-                            // Ищем подветку с нужным префиксом
-                            foreach (string subKeyName in baseKey.GetSubKeyNames())
-                            {
-                                if (subKeyName.StartsWith("webthreatdefusersvc_"))
-                                {
-                                    // Открываем найденную ветку
-                                    using (RegistryKey targetKey = baseKey.OpenSubKey(subKeyName, true))
-                                    {
-                                        if (targetKey != null)
-                                        {
-                                            // Устанавливаем параметры в ветке
-                                            AppServices.Registry.DeleteValue(targetKey, "LaunchProtected");
-                                            AppServices.Registry.WriteValue(targetKey, "Start", "00000002", RegistryValueKind.DWord);
-                                            AppServices.Registry.DeleteValue(targetKey, "Start_old");
-                                            Log.Info("Tweak:main.defender", $"Параметр установлен в ветке {subKeyName}");
-                                        }
-                                    }
-                                    break; // Предполагаем, что нужная ветка одна, и можно прекратить поиск
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-                }
-                AppServices.Processes.RunSuper($"regedit.exe /s {path_regpack}/antimalwareserviceexecutable/AIO_ON.reg", tempfolder + @"\su.exe");
-                #endregion
+                AppServices.TweakCatalog.Get("main.defender").Rollback(AppServices.TweakContext);
                 back_main_12.Visible = false;
                 //MessageBox.Show("Для восстановления работы защитника выполните перезагрузку!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ShowNotification("Защитник Windows", "Работа защитника будет восстановлена после перезагруки ПК", ToolTipIcon.Warning);

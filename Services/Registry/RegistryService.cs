@@ -138,6 +138,35 @@ namespace WOTBO.Services.Registry
             return ReadValue(hive, keyPath, name).Exists;
         }
 
+        public IReadOnlyList<string> GetSubKeyNames(RegistryHive hive, string keyPath)
+        {
+            var names = new List<string>();
+            try
+            {
+                using (RegistryKey baseKey = RegistryKey.OpenBaseKey(hive, View))
+                using (RegistryKey key = baseKey.OpenSubKey(Normalize(keyPath), false))
+                {
+                    if (key == null)
+                    {
+                        return names;
+                    }
+
+                    names.AddRange(key.GetSubKeyNames());
+                    _log.Debug(Category, string.Format(
+                        CultureInfo.InvariantCulture,
+                        "подветки {0}\\{1} -> {2} шт.",
+                        hive,
+                        keyPath,
+                        names.Count));
+                    return names;
+                }
+            }
+            catch (Exception ex) when (IsRegistryFailure(ex))
+            {
+                throw Fail("чтение подветок", hive, keyPath, null, ex);
+            }
+        }
+
         public void WriteValue(RegistryHive hive, string keyPath, string name, object value, RegistryValueKind kind)
         {
             string valueName = NormalizeName(name);

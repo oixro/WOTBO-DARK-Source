@@ -32,6 +32,9 @@ namespace WOTBO.Services.Registry
 
         bool ValueExists(RegistryHive hive, string keyPath, string name);
 
+        /// <summary>Имена подветок первого уровня. Отсутствие ключа — пустой список.</summary>
+        System.Collections.Generic.IReadOnlyList<string> GetSubKeyNames(RegistryHive hive, string keyPath);
+
         /// <summary>
         /// Пишет значение, создавая ключ при необходимости. В лог попадает
         /// старое и новое значение — это основа читаемой диагностики твиков.

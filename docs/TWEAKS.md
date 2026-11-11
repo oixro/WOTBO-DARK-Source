@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас восемнадцать твиков.
+`TweakCatalog` — словарь по `Id`, сейчас двадцать твиков.
 
 ## Пилот
 
@@ -40,6 +40,8 @@ public interface ITweak
 | `main.pagefile` | `HKLM\...\Memory Management\PagingFiles` | `C:\pagefile.sys 16 32768` |
 | `main.mousefix` | `HKCU\Control Panel\Mouse`, `HKU\.DEFAULT\Control Panel\Mouse` | кривые мыши и 1:1 без `.reg` |
 | `main.powerscheme` | `powercfg -import/-setactive/-delete` | запоминает активную схему, проверяет импорт, откат возвращает её |
+| `main.regpack` | `.reg`-пакеты regpack | w10/w11 AIO + foldernetwork + REG_AIO через `su.exe`/`regedit` |
+| `main.defender` | `.reg`-пакеты + политики/службы 24H2+ | см. `docs/DEFENDER.md`; Tamper Protection не отключается реестром |
 
 `Form1` для них:
 

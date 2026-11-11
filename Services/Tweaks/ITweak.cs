@@ -3,6 +3,7 @@ using WOTBO.Services.Processes;
 using WOTBO.Services.Registry;
 using WOTBO.Services.State;
 using WOTBO.Services.Storage;
+using WOTBO.Services.Windows;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -22,12 +23,14 @@ namespace WOTBO.Services.Tweaks
             IProcessService processes,
             TempWorkspace workspace,
             TweakStateStore store,
+            IWindowsVersionService windowsVersion,
             IAppLogger log)
         {
             Registry = registry;
             Processes = processes;
             Workspace = workspace;
             Store = store;
+            WindowsVersion = windowsVersion;
             Log = log;
         }
 
@@ -39,7 +42,15 @@ namespace WOTBO.Services.Tweaks
 
         public TweakStateStore Store { get; }
 
+        public IWindowsVersionService WindowsVersion { get; }
+
         public IAppLogger Log { get; }
+
+        /// <summary>Рекурсивно сохранить ветки, которые меняет .reg-файл.</summary>
+        public void BackupRegFile(string path)
+        {
+            TweakBackupSession.RecordRegFile(path);
+        }
     }
 
     /// <summary>
