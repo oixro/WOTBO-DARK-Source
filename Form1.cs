@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO;
+using WOTBO.App;
+using WOTBO.App.Logging;
 using WOTBO.Properties;
 namespace Project
 {
@@ -23,7 +25,7 @@ namespace Project
         #region переменные
         string version = $"build - {Assembly.GetExecutingAssembly().GetName().Version.ToString(2)}";
         bool win10;
-        static string tempfolder = @"c:\Windows\oixro";
+        static string tempfolder = AppPaths.WorkDirectory;
         static string path_regpack7z = tempfolder + @"\regpack.zip";
         static string path_regpack = tempfolder + @"\regpack";
         static string path_services = tempfolder + @"\services";
@@ -38,7 +40,7 @@ namespace Project
         string contexpath = @"C:\Windows\wotbo.exe";
         int mmMemory = 0;
         public string uilanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-        string logfile = $@"{Environment.ExpandEnvironmentVariables("%temp%")}\wotbo.log";
+        string logfile = AppPaths.LogFilePath;
         public static string gpu;
         public bool nvidia;
         public static Process getReservedStorage = Process.Start(new ProcessStartInfo
@@ -56,18 +58,18 @@ namespace Project
 
         public static class SysFolder
         {
-            public static string C = Environment.ExpandEnvironmentVariables("%systemdrive%");
-            public static string Temp = Environment.ExpandEnvironmentVariables("%temp%");
-            public static string UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            public static string Local = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\AppData\Local";
-            public static string Roaming = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\AppData\Roaming";
-            public static string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            public static string Windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            public static string System32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            public static string SysWOW64 = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
-            public static string ProgramFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            public static string ProgramFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            public static string ProgramData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            public static string C => AppPaths.SystemDrive;
+            public static string Temp => AppPaths.Temp;
+            public static string UserProfile => AppPaths.UserProfile;
+            public static string Local => AppPaths.LocalAppData;
+            public static string Roaming => AppPaths.RoamingAppData;
+            public static string Desktop => AppPaths.Desktop;
+            public static string Windows => AppPaths.Windows;
+            public static string System32 => AppPaths.System32;
+            public static string SysWOW64 => AppPaths.SysWOW64;
+            public static string ProgramFiles => AppPaths.ProgramFiles;
+            public static string ProgramFilesX86 => AppPaths.ProgramFilesX86;
+            public static string ProgramData => AppPaths.ProgramData;
         }
         public bool animation = true;
         #endregion
@@ -577,22 +579,9 @@ namespace Project
         }
         void writelog(string line)
         {
-            // Запускаем асинхронную запись в лог
-            Task.Run(() =>
-            {
-                lock (logLock) // Гарантия потокобезопасности
-                {
-                    using (StreamWriter logs = new StreamWriter(logfile, true, Encoding.UTF8))
-                    {
-                        // Получение текущего времени
-                        DateTime now = DateTime.Now;
-
-                        // Форматирование времени с миллисекундами
-                        string formattedTime = now.ToString("yyyy-MM-dd HH:mm:ss.ffff");
-                        logs.WriteLine($"{formattedTime} - {line}");
-                    }
-                }
-            });
+            // Формат и файл остались прежними (%TEMP%\wotbo.log, "время - текст").
+            // Подробности — в WOTBO.App.Logging.AppLogger.
+            Log.Write(line);
         }
         public void OpenUrl(string url)
         {
@@ -605,9 +594,6 @@ namespace Project
                 MessageBox.Show($"Не удалось открыть ссылку. \nВозможно у вас не установлен браузер по умолчанию.", "WOTBO");
             }
         }
-
-        // Глобальный объект для блокировки
-        private static readonly object logLock = new object();
 
         void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
