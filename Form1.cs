@@ -36,6 +36,8 @@ namespace Project
         static string path_dfkiller = tempfolder + @"\DFKiller";
         static string path_scheme = tempfolder + @"\scheme.pow";
         static string smartctl = tempfolder + @"\smartctl.exe";
+        private CheckBox checkBox_tweak_tooltips;
+        private PictureBox back_ui_tooltips;
         string curver = (Assembly.GetExecutingAssembly().GetName().Version.ToString(2)).Trim();
         string exename = AppDomain.CurrentDomain.FriendlyName;
         string exepath = Assembly.GetEntryAssembly().Location;
@@ -467,28 +469,81 @@ namespace Project
         #region открытие
         private void SetupTweakTooltipsToggle()
         {
-            var toggle = new CheckBox
+            back_ui_tooltips = new PictureBox
+            {
+                Name = "back_ui_tooltips",
+                Location = new Point(0, 85),
+                Size = new Size(15, 15),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                BackgroundImage = back_animations.BackgroundImage,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                TabStop = false,
+                Visible = false,
+            };
+            back_ui_tooltips.Click += back_ui_tooltips_Click;
+
+            checkBox_tweak_tooltips = new CheckBox
             {
                 Name = "checkBox_tweak_tooltips",
                 Text = "Показывать подсказки о применённых твиках",
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = new Point(20, 95),
+                Location = new Point(20, 85),
                 Font = panel_ui_2.Font,
                 TabIndex = 100,
                 UseVisualStyleBackColor = true,
             };
+            checkBox_tweak_tooltips.CheckedChanged += CheckBox_CheckedChanged;
 
-            toggle.Checked = AppSettings.TweakTooltipsEnabled;
-            TweakHoverInfo.SetEnabled(toggle.Checked);
-            toggle.CheckedChanged += (sender, e) =>
+            panel_ui_2.Controls.Add(back_ui_tooltips);
+            panel_ui_2.Controls.Add(checkBox_tweak_tooltips);
+
+            bool enabled = AppSettings.TweakTooltipsEnabled;
+            bool applied = AppServices.Tweaks.IsApplied("ui.tweakTooltips");
+
+            // Приводим состояние в порядок, если настройка осталась от
+            // прежней версии или state потерян.
+            if (enabled && !applied)
             {
-                AppSettings.TweakTooltipsEnabled = toggle.Checked;
-                TweakHoverInfo.SetEnabled(toggle.Checked);
-            };
+                AppServices.Tweaks.MarkApplied("ui.tweakTooltips", null);
+                applied = true;
+            }
+            else if (applied && !enabled)
+            {
+                AppSettings.TweakTooltipsEnabled = true;
+                enabled = true;
+            }
 
-            panel_ui_2.Controls.Add(toggle);
+            TweakHoverInfo.SetEnabled(enabled);
+            back_ui_tooltips.Visible = applied;
+            checkBox_tweak_tooltips.Enabled = !applied;
+            checkBox_tweak_tooltips.Checked = false;
+        }
+
+        private void ApplyTweakTooltips()
+        {
+            using (TweakScope.Apply("ui.tweakTooltips"))
+            {
+                AppSettings.TweakTooltipsEnabled = true;
+                TweakHoverInfo.SetEnabled(true);
+            }
+
+            checkBox_tweak_tooltips.Checked = false;
+            checkBox_tweak_tooltips.Enabled = false;
+            back_ui_tooltips.Visible = true;
+        }
+
+        private void RollbackTweakTooltips()
+        {
+            using (TweakScope.Rollback("ui.tweakTooltips"))
+            {
+                AppSettings.TweakTooltipsEnabled = false;
+                TweakHoverInfo.SetEnabled(false);
+                checkBox_tweak_tooltips.Checked = false;
+                checkBox_tweak_tooltips.Enabled = true;
+                back_ui_tooltips.Visible = false;
+            }
         }
 
         async void Form1_Load(object sender, EventArgs e)
@@ -2590,6 +2645,12 @@ namespace Project
 
             Log.Info("Tweak:gpu.directplay", $"DirectPlay установлен: {directplay}");
             #endregion
+
+            if (checkBox_tweak_tooltips.Checked)
+            {
+                ApplyTweakTooltips();
+            }
+
             ChangePanel(panel2);
         } //gpu
         #endregion
@@ -3220,6 +3281,10 @@ namespace Project
                 back_animations.Visible = false;
                 checkBox_animation.Enabled = true;
             }
+        }
+        void back_ui_tooltips_Click(object sender, EventArgs e)
+        {
+            RollbackTweakTooltips();
         }
         void back_gpu_1_Click(object sender, EventArgs e)
         {
