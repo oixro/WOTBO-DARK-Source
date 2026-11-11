@@ -16,7 +16,7 @@
             Удалите этот элемент, если виртуализация требуется приложению для обратной
             совместимости.
         -->
-        <requestedExecutionLevel level="highestAvailable" uiAccess="false" />
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
       </requestedPrivileges>
     </security>
   </trustInfo>
@@ -39,11 +39,19 @@
       <!-- Windows 8.1 -->
       <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
 
-      <!-- Windows 10 -->
-      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+      <!-- Windows 10 / Windows 11 -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
 
     </application>
   </compatibility>
+
+  <!-- Длинные пути (Windows 10 1607+). DPI awareness пока не включаем:
+       UI построен на абсолютных координатах, сначала нужен тест 100/125/150 %. -->
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <longPathAware xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">true</longPathAware>
+    </windowsSettings>
+  </application>
 
   <!-- Указывает, что приложение поддерживает определение DPI и не будет автоматически масштабироваться Windows при более высоких
        значениях DPI. Приложения Windows Presentation Foundation (WPF) по умолчанию поддерживают определение DPI, им не нужно 

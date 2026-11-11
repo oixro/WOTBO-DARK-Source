@@ -1,0 +1,20 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Исходники и проектные файлы Windows: сохраняем BOM, чтобы старый MSBuild /
+# Visual Studio корректно читали кириллицу. Компилятору также задан CodePage=65001.
+[*.{cs,csproj,sln,resx,manifest,config,settings,ps1,psm1}]
+charset = utf-8-bom
+end_of_line = crlf
+
+[*.{json,jsonc,yml,yaml,md,sh,gitignore,gitattributes}]
+charset = utf-8
+end_of_line = lf
+
+[*.sh]
+indent_size = 2
