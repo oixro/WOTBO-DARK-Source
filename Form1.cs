@@ -456,8 +456,8 @@ namespace Project
             back_ui_tooltips = new PictureBox
             {
                 Name = "back_ui_tooltips",
-                Location = new Point(0, 85),
-                Size = new Size(15, 15),
+                Location = Dpi.Scale(this, 0, 85),
+                Size = Dpi.ScaleSize(this, 15, 15),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
                 BackgroundImageLayout = ImageLayout.Stretch,
@@ -473,7 +473,7 @@ namespace Project
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = new Point(20, 85),
+                Location = Dpi.Scale(this, 20, 85),
                 Font = panel_ui_2.Font,
                 TabIndex = 100,
                 UseVisualStyleBackColor = true,
@@ -895,8 +895,8 @@ namespace Project
                 checkBox_dopNVIDIA_tweaks.Visible = false;
                 checkBox_hdcp.Visible = false;
                 label_inspector.Visible = false;
-                checkBox_directplay.Location = new Point(20, 45);
-                back_gpu_1.Location = new Point(0, 45);
+                checkBox_directplay.Location = Dpi.Scale(this, 20, 45);
+                back_gpu_1.Location = Dpi.Scale(this, 0, 45);
             }//не nvidia
             #endregion
             #region распаковка в temp
@@ -1231,7 +1231,7 @@ namespace Project
             button_main_1.Visible = true;
             button_main_2.Visible = true;
             panel_main_navigate.Visible = true;
-            panel_main_navigate.Location = new Point(195, 284);
+            panel_main_navigate.Location = Dpi.Scale(this, 195, 284);
 
         } //main        
         void button_main_1_Click(object sender, EventArgs e)
@@ -1242,7 +1242,7 @@ namespace Project
             button_main_1.Visible = true;
             button_main_2.Visible = true;
             panel_main_navigate.Visible = true;
-            panel_main_navigate.Location = new Point(195, 284);
+            panel_main_navigate.Location = Dpi.Scale(this, 195, 284);
         }
         void button_main_2_Click(object sender, EventArgs e)
         {
@@ -1252,7 +1252,7 @@ namespace Project
             button_main_1.Visible = true;
             button_main_2.Visible = true;
             panel_main_navigate.Visible = true;
-            panel_main_navigate.Location = new Point(195, 284);
+            panel_main_navigate.Location = Dpi.Scale(this, 195, 284);
         }
         #endregion
         #region ui
@@ -1265,7 +1265,7 @@ namespace Project
             button_ui_new_1.Visible = true;
             button_ui_new_2.Visible = true;
             panel_ui_navigate.Visible = true;
-            panel_ui_navigate.Location = new Point(195, 284);
+            panel_ui_navigate.Location = Dpi.Scale(this, 195, 284);
 
         }//ui
         void button_ui_1_Click(object sender, EventArgs e)
@@ -1308,7 +1308,7 @@ namespace Project
             button_dop_new_1.Visible = true;
             button_dop_new_2.Visible = true;
             panel_dop_navigate.Visible = true;
-            panel_dop_navigate.Location = new Point(195, 284);
+            panel_dop_navigate.Location = Dpi.Scale(this, 195, 284);
         }
         void button_dop_new_1_Click(object sender, EventArgs e)
         {

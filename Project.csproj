@@ -169,6 +169,7 @@
     <Compile Include="UI\BalloonNotifier.cs" />
     <Compile Include="UI\TweakUiBinder.cs" />
     <Compile Include="UI\HoverAnimator.cs" />
+    <Compile Include="UI\Dpi.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

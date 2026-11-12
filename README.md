@@ -60,11 +60,14 @@ artifacts\logs\wotbo-*.log
 Project.sln / Project.csproj   # classic csproj, Debug|x64 / Release|x64
 build/                         # build, run, sync, setup-vm
 docs/                          # документация по окружению
+UI/                            # PanelNavigator, TweakUiBinder, DPI, painters
 Resources/                     # встроенные .reg/.bat/.zip/.exe
 Properties/                    # Resources.resx, AssemblyInfo, Settings
 ```
 
 ## Статус
 
-Идёт поэтапный рефакторинг. Текущий этап — **P0: окружение и сборка**.
-Логика приложения пока не менялась.
+Идёт поэтапный рефакторинг. Завершены **P0–P4**: окружение и сборка,
+инфраструктурные сервисы, 48 твиков на `ITweak`, UI-инфраструктура
+(`TweakUiBinder`, `PanelNavigator`, `BalloonNotifier`) и DPI awareness
+([docs/DPI.md](docs/DPI.md)).

@@ -11,9 +11,9 @@ namespace WOTBO.UI
     /// </summary>
     public sealed class PanelNavigator
     {
-        private const int StartX = 405;
-        private const int EndX = 105;
-        private const int Top = 36;
+        private const int BaseStartX = 405;
+        private const int BaseEndX = 105;
+        private const int BaseTop = 36;
         private const int DurationMs = 125;
         private const int Steps = 40;
 
@@ -46,7 +46,11 @@ namespace WOTBO.UI
                 }
             }
 
-            target.Location = new Point(StartX, Top);
+            int startX = Dpi.Scale(_form, BaseStartX);
+            int endX = Dpi.Scale(_form, BaseEndX);
+            int top = Dpi.Scale(_form, BaseTop);
+
+            target.Location = new Point(startX, top);
             target.Visible = true;
 
             int delayPerStep = DurationMs / Steps;
@@ -60,13 +64,13 @@ namespace WOTBO.UI
                     float easedT = t < 0.5f
                         ? 4f * t * t * t
                         : (t - 1) * (2f * t - 2) * (2f * t - 2) + 1f;
-                    int currentX = (int)(StartX + (EndX - StartX) * easedT);
+                    int currentX = (int)(startX + (endX - startX) * easedT);
                     target.Location = new Point(currentX, target.Location.Y);
                     await Task.Delay(delayPerStep);
                 }
                 else
                 {
-                    target.Location = new Point(EndX, Top);
+                    target.Location = new Point(endX, top);
                 }
             }
         }
