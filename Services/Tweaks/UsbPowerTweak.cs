@@ -31,6 +31,11 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            string cmd = System.IO.Path.Combine(context.Workspace.Root, "usbpowersaving.cmd");
+            System.IO.File.WriteAllText(cmd, WOTBO.Properties.Resources.usbpowersaving);
+            context.BackupRegFile(cmd);
+            context.Processes.StartCaptured("regedit.exe /s \"" + cmd + "\"");
+
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.UsbHubHubg, "DisableOnSoftRemove", 1, RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Xusb22Parameters, "IoQueueWorkItem", 0x0a, RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.UsbXhciParameters, "IoQueueWorkItem", 0x0a, RegistryValueKind.DWord);

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using WOTBO.UI;
 
 namespace Project
 {
@@ -9,10 +9,7 @@ namespace Project
     {
         #region Тень формы + перетаскивание окна + предотвращение разворачивания
 #if !DEBUG
-        [DllImport("dwmapi.dll")] public static extern int DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
-        [DllImport("dwmapi.dll")] public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-        [DllImport("dwmapi.dll")] public static extern int DwmIsCompositionEnabled(ref int pfEnabled); readonly bool m_aeroEnabled;
-        public struct MARGINS { public int leftWidth; public int rightWidth; public int topHeight; public int bottomHeight; }
+        readonly bool m_aeroEnabled;
 
         public FormShadow() => m_aeroEnabled = CheckAeroEnabled();
 
@@ -21,7 +18,7 @@ namespace Project
             if (Environment.OSVersion.Version.Major >= 6)
             {
                 int enabled = 0;
-                DwmIsCompositionEnabled(ref enabled);
+                NativeMethods.DwmIsCompositionEnabled(ref enabled);
                 return enabled == 1;
             }
             return false;
@@ -41,15 +38,15 @@ namespace Project
                 case 0x0085:
                     if (m_aeroEnabled)
                     {
-                        var v = 2; DwmSetWindowAttribute(Handle, 2, ref v, 4);
-                        MARGINS margins = new MARGINS()
+                        var v = 2; NativeMethods.DwmSetWindowAttribute(Handle, 2, ref v, 4);
+                        NativeMethods.Margins margins = new NativeMethods.Margins()
                         {
-                            bottomHeight = 1,
-                            leftWidth = 0,
-                            rightWidth = 0,
-                            topHeight = 0
+                            BottomHeight = 1,
+                            LeftWidth = 0,
+                            RightWidth = 0,
+                            TopHeight = 0
                         };
-                        DwmExtendFrameIntoClientArea(Handle, ref margins);
+                        NativeMethods.DwmExtendFrameIntoClientArea(Handle, ref margins);
                     }
                     break;
                 case 0x0083:

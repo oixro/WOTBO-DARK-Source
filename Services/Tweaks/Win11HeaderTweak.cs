@@ -28,6 +28,7 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            context.BackupRegistryKey(RegistryHive.ClassesRoot, RegistryPaths.Win11HeaderClsid);
             context.Processes.StartCaptured("taskkill /f /im explorer.exe >nul 2>&1");
             context.Processes.RunSuper(RegAdd(DefaultDll), context.Workspace.SuExecutable);
             Thread.Sleep(1000);

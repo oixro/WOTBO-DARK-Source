@@ -2,8 +2,10 @@
 
 WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 
-> **Статус:** этап **P0 (окружение и сборка) завершён** — см. `docs/P0-RESULT.md`.
-> P1 в работе: добавлены `AppPaths`, логгер (`docs/LOGGING.md`),
+> **Статус:** P0–P3 завершены — см. `docs/P0-RESULT.md`, `docs/TWEAKS.md`.
+> Этап 4 (UI-инфраструктура) завершён: `TweakUiBinder`, `PanelNavigator`,
+> `FormPainter`, `HoverAnimator`, `WindowDragBehavior`, `BalloonNotifier`,
+> `NativeMethods`. Добавлены `AppPaths`, логгер (`docs/LOGGING.md`),
 > `RegistryService` (`docs/REGISTRY.md`), `ProcessService` (`docs/PROCESSES.md`),
 > `TempWorkspace`/`InstanceGuard` (`docs/STORAGE.md`), `NetworkService`
 > (`docs/NETWORK.md`) и постоянные бэкапы (`docs/STATE.md`); все вызовы
@@ -397,6 +399,10 @@ public sealed class TweakUiBinder
 - `TweakUiBinder` — привязка чекбоксов и PictureBox.
 - `FormPainter`, `HoverAnimator`, `WindowDragBehavior`, `BalloonNotifier`.
 - `Helpers/Win32/NativeMethods` — собрать все `DllImport`.
+- **Статус:** выполнено. `Form1` использует `TweakUiBinder` (47 связок),
+  `PanelNavigator`, `FormPainter`, `HoverAnimator`, `WindowDragBehavior`,
+  `BalloonNotifier` и `NativeMethods`; `Form1.cs` сократился с 2567 до
+  ~1700 строк.
 - **DoD:** визуально идентично эталонным скриншотам; анимации и перетаскивание
   работают; уведомления те же.
 

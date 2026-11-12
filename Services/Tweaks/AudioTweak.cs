@@ -35,6 +35,9 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            context.Processes.RunSuper(
+                "regedit /s \"" + context.Workspace.Root + "\\Audio_Lantency.reg\"",
+                context.Workspace.SuExecutable);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Audio, "DisableSpatialOnComboEndpoints", 1, RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Audio, "DisableProtectedAudioDG", 1, RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Audio, "DisableProtectedAudio", 1, RegistryValueKind.DWord);
@@ -42,6 +45,9 @@ namespace WOTBO.Services.Tweaks
 
         public override void Rollback(TweakContext context)
         {
+            context.Processes.RunSuper(
+                "regedit /s \"" + context.Workspace.Root + "\\Audio_Lantency_delete.reg\"",
+                context.Workspace.SuExecutable);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Audio, "DisableSpatialOnComboEndpoints", 0, RegistryValueKind.DWord);
             context.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.Audio, "DisableProtectedAudioDG");
             context.Registry.DeleteValue(RegistryHive.LocalMachine, RegistryPaths.Audio, "DisableProtectedAudio");

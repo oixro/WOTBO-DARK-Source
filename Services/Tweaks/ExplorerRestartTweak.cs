@@ -18,6 +18,8 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            context.BackupRegistryKey(RegistryHive.ClassesRoot, RegistryPaths.DesktopBackgroundExplorer);
+            context.BackupFile(@"c:\Windows\system32\explorer.bat");
             string key = RegistryPaths.DesktopBackgroundExplorer;
             context.Registry.WriteValue(RegistryHive.ClassesRoot, key, string.Empty, "Restart explorer.exe", RegistryValueKind.String);
 

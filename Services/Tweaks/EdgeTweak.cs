@@ -18,6 +18,7 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            context.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.Edge);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Edge, "EdgeEnhanceImagesEnabled", 0x00000000, RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Edge, "EdgeWorkspacesEnabled", 0x00000000, RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.Edge, "TyposquattingCheckerEnabled", 0x00000001, RegistryValueKind.DWord);

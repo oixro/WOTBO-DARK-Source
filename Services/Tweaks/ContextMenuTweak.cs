@@ -27,12 +27,14 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            context.BackupRegistryKey(RegistryHive.CurrentUser, RegistryPaths.ContextMenuClsid);
             context.Registry.WriteValue(RegistryHive.CurrentUser, InprocKey, string.Empty, " ", RegistryValueKind.String);
         }
 
         public override void Rollback(TweakContext context)
         {
             context.Registry.DeleteKey(RegistryHive.CurrentUser, RegistryPaths.ContextMenuClsid);
+            context.Processes.StartCaptured(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
         }
     }
 }

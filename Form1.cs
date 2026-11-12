@@ -51,7 +51,10 @@ namespace Project
         public bool nvidia;
         public static long capacity;
         static string path_NVidiaProfileInspectorDmW = tempfolder + @"\NVidiaProfileInspectorDmW";
-        private NotifyIcon notifyIcon;
+        private readonly BalloonNotifier notifier;
+        private readonly PanelNavigator panelNavigator;
+        private readonly Dictionary<string, TweakUiBinder> tweakBinders =
+            new Dictionary<string, TweakUiBinder>(StringComparer.OrdinalIgnoreCase);
 
         public static class SysFolder
         {
@@ -75,19 +78,21 @@ namespace Project
         {
             InitializeComponent();
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
-            #region двигаем окно
-            new List<Control> { LabelHead, PanelHead, logo }.ForEach(x =>
+
+            notifier = new BalloonNotifier();
+            panelNavigator = new PanelNavigator(this, PanelMain, PanelHead)
             {
-                x.MouseDown += (s, a) =>
-                {
-                    x.Capture = false; Capture = false; Message m = Message.Create(Handle, 0xA1, new IntPtr(2), IntPtr.Zero); base.WndProc(ref m);
-                };
-            });
+                AnimationEnabled = () => animation,
+            };
+            SetupTweakBinders();
+
+            #region двигаем окно
+            WindowDragBehavior.Attach(new List<Control> { LabelHead, PanelHead, logo });
             #endregion
             #region плавное закрытие + окраска формы
             async void Exit() { for (Opacity = 1; Opacity > .0; Opacity -= .2) await Task.Delay(7); Close(); }
             ButtonClose.Click += (s, a) => Exit();
-            FormPaint(Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55)); //old
+            FormPainter.Apply(this, Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55)); //old
             Size = new System.Drawing.Size(390, 305);
             CenterToScreen();
             Controls.OfType<Panel>().ToList().ForEach(x => x.GetType().GetProperty("DoubleBuffered")?.SetValue(x, true));
@@ -238,112 +243,157 @@ namespace Project
 
             };
             #endregion
-            #region NotifyIcon
-            notifyIcon = new NotifyIcon
-            {
-                Icon = SystemIcons.Information, // Устанавливаем иконку (или любую другую)
-                Visible = false // Сначала иконка не видима
-            };
-            #endregion
             #region label animations
-            new List<Control> { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver, label7 }.ForEach(x =>
-            {
-                x.MouseHover += async (s, a) =>
-                {
-                    // Начальный цвет (192, 192, 192)
-                    Color startColor = Color.FromArgb(192, 192, 192);
-                    // Конечный цвет (255, 255, 255)
-                    Color endColor = Color.FromArgb(255, 255, 255);
-
-                    // Длительность анимации в миллисекундах
-                    int duration = 50;
-
-                    // Количество шагов анимации
-                    int steps = duration / 5;
-
-                    for (int i = 0; i <= steps; i++)
-                    {
-                        // Интерполяция цвета
-                        int r = startColor.R + (endColor.R - startColor.R) * i / steps;
-                        int g = startColor.G + (endColor.G - startColor.G) * i / steps;
-                        int b = startColor.B + (endColor.B - startColor.B) * i / steps;
-
-                        x.ForeColor = Color.FromArgb(r, g, b);
-                        await Task.Delay(15);
-                    }
-                };
-
-                x.MouseLeave += async (s, a) =>
-                {
-                    // Начальный цвет (белый)
-                    Color startColor = Color.FromArgb(255, 255, 255);
-                    // Конечный цвет (чуть уже не белый)
-                    Color endColor = Color.FromArgb(192, 192, 192);
-
-                    // Длительность анимации в миллисекундах
-                    int duration = 50;
-
-                    // Количество шагов анимации
-                    int steps = duration / 5;
-
-                    for (int i = 0; i <= steps; i++)
-                    {
-                        // Интерполяция цвета
-                        int r = startColor.R + (endColor.R - startColor.R) * i / steps;
-                        int g = startColor.G + (endColor.G - startColor.G) * i / steps;
-                        int b = startColor.B + (endColor.B - startColor.B) * i / steps;
-
-                        x.ForeColor = Color.FromArgb(r, g, b);
-                        await Task.Delay(15);
-                    }
-                };
-            });
+            HoverAnimator.Attach(
+                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver, label7 },
+                Color.FromArgb(192, 192, 192),
+                Color.FromArgb(255, 255, 255));
             #endregion
+        }
+        #endregion
+        #region TweakUiBinder
+        private TweakUiBinder Bind(
+            string id,
+            CheckBox checkBox,
+            PictureBox rollback,
+            string detectMessage = null,
+            Action onDetected = null,
+            Action beforeApply = null,
+            Action inApply = null,
+            Action afterApply = null,
+            Action inRollback = null,
+            Action afterRollback = null,
+            Func<bool> confirmApply = null,
+            bool disableOnApply = true,
+            bool showRollbackOnApply = true,
+            bool showRollbackOnDetect = true,
+            bool uncheckOnDetect = false)
+        {
+            var binder = new TweakUiBinder(
+                id,
+                checkBox,
+                rollback,
+                detectMessage,
+                onDetected,
+                beforeApply,
+                inApply,
+                afterApply,
+                inRollback,
+                afterRollback,
+                confirmApply,
+                disableOnApply,
+                showRollbackOnApply,
+                showRollbackOnDetect,
+                uncheckOnDetect);
+
+            tweakBinders[id] = binder;
+            return binder;
+        }
+
+        private TweakUiBinder Binder(string id)
+        {
+            return tweakBinders[id];
+        }
+
+        private void SetupTweakBinders()
+        {
+            Bind("main.defender", checkBox_disabledefender, back_main_12,
+                "defenderdisabled был применён",
+                onDetected: () =>
+                {
+                    label_delete_defender.Enabled = true;
+                    label_kalorant.Visible = true;
+                },
+                beforeApply: () => MessageBox.Show(
+                    "Защитник будет отключен!\nЗащита от эксполитов не будет работать.\n" +
+                    "Она нужна для работы некоторых античитов.\n" +
+                    "Но восстановить защитник можно через вкладку дополнительно.\n",
+                    "", MessageBoxButtons.OK, MessageBoxIcon.Warning),
+                afterApply: () =>
+                {
+                    label_kalorant.Visible = true;
+                    ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
+                },
+                afterRollback: () => ShowNotification("Защитник Windows", "Работа защитника будет восстановлена после перезагруки ПК", ToolTipIcon.Warning));
+
+            Bind("main.regpack", checkBox_reg, back_main_1, "regpack был применён",
+                afterApply: () => ShowNotification("Настройки Реестра", "Рекомендуется перезагрузить ПК после применения данного твика!", ToolTipIcon.Warning));
+            Bind("main.reservedstorage", checkBox_dism, back_main_2);
+            Bind("main.hibernate", checkBox_gibernate, back_main_3, "hiberfil'a нету");
+            Bind("main.powerscheme", checkBox_scheme, back_main_4, "imported_powerscheme был применён");
+            Bind("main.mpo", checkBox_mpo, back_main_6, "MPO был применён");
+            Bind("main.usb", checkBox_usb, back_main_7, "usbpowersaving был применён");
+            Bind("main.mitigations", checkBox_mtiititit, back_main_9, "spectre and meltdown был применён");
+            Bind("main.mmagent", checkBox_mmagent, back_main_10, "mmagent был применён");
+            Bind("main.pagefile", checkBox_page, back_main_11);
+            Bind("main.mousefix", checkBox_mousefix, back_main_5);
+            Bind("main.audio", checkBox_audio, back_main_13, "AllowHeadlessExecution BackgroundAudioPolicy был применён");
+            Bind("main.dwminput", checkBox_dwninput, back_main_14, "DwmInputUsesIoCompletionPort был применён");
+            Bind("main.powerlatency", checkBox_tolerate, back_main_16, "Power\\ExitLatency был применён");
+            Bind("pro.win32priority", checkBox_pro_11, back_pro_11, "Win32PrioritySeparation был применён",
+                inApply: () => new Win32Priority().ShowDialog());
+
+            Bind("gpu.hdcp", checkBox_hdcp, back_gpu_2);
+            Bind("gpu.nvidia", checkBox_dopNVIDIA_tweaks, back_gpu_3);
+            Bind("gpu.directplay", checkBox_directplay, back_gpu_1);
+
+            Bind("ui.buttons", checkBoxUI_Buttons_1, back_ui_1, "buttons был применён");
+            Bind("ui.explorerdetails", checkBoxUI_Buttons_2, back_ui_2, "litle_explorer_things был применён");
+            Bind("ui.jpegquality", checkBoxUI_Buttons_4, back_ui_4, "JPEGImportQuality был применён");
+            Bind("ui.bluefolders", checkBox_bluefolders, back_ui_5, "синие папки были применены");
+            Bind("ui.contextmenu", checkBox_contex, back_ui_6, "contex11 был применён");
+            Bind("ui.win11header", checkBox_shapka, back_ui_7, "shapka11 был применён");
+            Bind("ui.wotbocontext", checkBox_wotboincontex, back_ui_8, "wotbo in contex был применён");
+            Bind("ui.explorerrestart", checkBox_explorer, back_ui_9, "restart explorer был применён");
+            Bind("ui.ffmpeg", checkBox_ffmpeg, back_ui_10, "FFmpeg был применён",
+                beforeApply: () => ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info));
+            Bind("ui.mica", checkBox_mica, back_ui_11, "ExplorerBlurMica был применён");
+            Bind("ui.animations", checkBox_animation, back_animations, "анимации выключены",
+                onDetected: () => animation = false,
+                afterApply: () => animation = false,
+                afterRollback: () => animation = true);
+
+            Bind("extra.onedrive", checkBox_onedrive, null, "OneDrive был удалён",
+                showRollbackOnApply: false, showRollbackOnDetect: false);
+            Bind("extra.compactos", checkBox_compactos, null,
+                disableOnApply: false, showRollbackOnApply: false);
+            Bind("extra.winsxs", checkBox_WinSxS, null,
+                disableOnApply: false, showRollbackOnApply: false);
+            Bind("extra.tempclean", checkBox_temp, null,
+                disableOnApply: false, showRollbackOnApply: false);
+            Bind("extra.updateclean", checkBox_updclean, null,
+                disableOnApply: false, showRollbackOnApply: false);
+            Bind("extra.iconcache", checkBox_picture_cache, back_dop_1, "Max Cached Icons был применён");
+            Bind("extra.mobiletraffic", checkBox_mobile_traffic, back_dop_2, "DefaultTTL был применён");
+            Bind("extra.scoobe", checkBox_nastroyka, back_dop_3, "ScoobeSystemSettingEnabled был применён");
+            Bind("extra.stickykeys", checkBox_zalipanie, back_dop_4, "StickyKeys был применён");
+            Bind("extra.dwmpriority", checkBox_dwm, back_dop_6, "dwm.exe priority был применён");
+            Bind("extra.edge", checkBox_edge, back_dop_edge, "Edge был применён",
+                uncheckOnDetect: true);
+            Bind("extra.movetemp", checkBox_move_temp, back_dop_movetemp);
+
+            Bind("pro.homegallery", checkBox_pro_1, back_pro_1, "pro_1 был применён",
+                showRollbackOnApply: false, showRollbackOnDetect: false);
+            Bind("pro.windowsupdate", checkBox_pro_3, back_pro_3);
+            Bind("pro.csrss", checkBox_CSRSS, back_dop_7, "csrss.exe priority был применён");
+            Bind("pro.bufferbloat", checkBox_pro_12, back_pro_12, "bufferbloat был применён",
+                confirmApply: () => MessageBox.Show(
+                    "Bufferbloat - явление, когда чрезмерная буферизация вызывает увеличение времени прохождения пакетов (Ping) и разброса задержки пакетов (Packetloss)\n\n" +
+                    "Рекомендуется использовать только если у вас нестабильное соединение!\n(Например мобильный интернет и т.д)\n" +
+                    "!Твик может незначительно снизить скорость интернета!\n" +
+                    "В случае если у вас стало хуже, или же вам не нужен этот твик, просто откатите его.\n" +
+                    "Применить?",
+                    "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+            Bind("pro.unlocker", checkBox_pro_13, back_pro_13, "unclockewr был применён");
+            Bind("pro.alwaysontop", checkBox_pro_14, back_pro_14, "AlwaysOnTop был применён",
+                inRollback: () => AppServices.Processes.StartCaptured("taskkill /f /im AlwaysOnTop.exe"));
         }
         #endregion
         #region my void's
         #region анимка
         async public void ChangePanel(Panel NewPanel)
         {
-            #region old style
-            foreach (Control control in this.Controls)
-            {
-                if (control is Panel panel && panel != PanelMain && panel != PanelHead)
-                {
-                    panel.Visible = false;
-                }
-            }
-
-            // Устанавливаем начальную позицию новой панели вне видимости (например, справа от формы)
-            NewPanel.Location = new Point(405, 36); //
-            NewPanel.Visible = true;
-
-            // Параметры для плавной анимации
-            int startX = 405;
-            int endX = 105;
-            int duration = 125; // увеличиваем продолжительность для более плавного движения
-            int steps = 40;
-            int delayPerStep = duration / steps;
-            for (int i = 0; i <= steps; i++)
-            {
-                if (animation)
-                {
-                    float t = (float)i / steps; // нормализованное время от 0 до 1
-                    float easedT = t < 0.5f ? 4f * t * t * t : (t - 1) * (2f * t - 2f) * (2f * t - 2f) + 1f; // easeInOutCubic
-                    int currentX = (int)(startX + (endX - startX) * easedT);
-                    NewPanel.Location = new Point(currentX, NewPanel.Location.Y);
-                    await Task.Delay(delayPerStep);
-                }
-                else
-                {
-                    NewPanel.Location = new Point(105, 36);
-                }
-
-
-
-
-            }
-            #endregion
+            await panelNavigator.NavigateAsync(NewPanel);
         }
         #endregion
         public void OpenUrl(string url)
@@ -396,46 +446,7 @@ namespace Project
         // Универсальный метод для отображения уведомления
         public void ShowNotification(string title, string message, ToolTipIcon icon = ToolTipIcon.None)
         {
-            int duration = 10000;
-            // Устанавливаем текст уведомления
-            notifyIcon.BalloonTipTitle = title;
-            notifyIcon.BalloonTipText = message;
-            notifyIcon.BalloonTipIcon = icon;
-
-            // Показываем уведомление
-            notifyIcon.Visible = true; // Делаем иконку видимой для показа уведомления
-            notifyIcon.ShowBalloonTip(duration);
-
-            // Настраиваем скрытие иконки через указанное время
-            Timer timer = new Timer { Interval = duration + 500 }; // +500 мс, чтобы гарантировать завершение показа
-            timer.Tick += (s, e) =>
-            {
-                notifyIcon.Visible = false; // Скрываем иконку
-                timer.Stop(); // Останавливаем таймер
-                timer.Dispose(); // Освобождаем ресурсы таймера
-            };
-            timer.Start();
-        }
-
-        // Красим форму
-        public void FormPaint(Color color1, Color color2)
-        {
-            void OnPaintEventHandler(object s, PaintEventArgs a)
-            {
-                if (ClientRectangle == Rectangle.Empty)
-                    return;
-
-                var lgb = new LinearGradientBrush(ClientRectangle, Color.Empty, Color.Empty, 90);
-                var cblend = new ColorBlend { Colors = new[] { color1, color1, color2, color2 }, Positions = new[] { 0, 0.106f, 0.106f, 1 } };
-
-                lgb.InterpolationColors = cblend;
-                a.Graphics.FillRectangle(lgb, ClientRectangle);
-            }
-
-            Paint -= OnPaintEventHandler;
-            Paint += OnPaintEventHandler;
-
-            Invalidate();
+            notifier.Show(title, message, icon);
         }
 
         #endregion
@@ -591,12 +602,7 @@ namespace Project
             path_scheme = workspace.Scheme;
             #endregion
             #region отключаем чеки
-            if (AppServices.TweakCatalog.Get("main.regpack").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.regpack", "regpack был применён");
-                checkBox_reg.Enabled = false;
-                back_main_1.Visible = true;
-            }//regpack
+            Binder("main.regpack").Detect();//regpack
             string reservedStorageState = await AppServices.ReservedStorage.GetStateAsync();
             if (AppServices.ReservedStorage.IsDisabled(reservedStorageState))
             {
@@ -604,25 +610,9 @@ namespace Project
                 checkBox_dism.Enabled = false;
                 back_main_2.Visible = true;
             } //old reserved
-            if (AppServices.TweakCatalog.Get("main.hibernate").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.hibernate", "hiberfil'a нету");
-                checkBox_gibernate.Enabled = false;
-                back_main_3.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("main.powerscheme").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.powerscheme", "imported_powerscheme был применён");
-                checkBox_scheme.Enabled = false;
-                back_main_4.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.animations").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                animation = false;
-                Log.Info("Tweak:ui.animations", "анимации выключены");
-                checkBox_animation.Enabled = false;
-                back_animations.Visible = true;
-            }//анимации
+            Binder("main.hibernate").Detect();
+            Binder("main.powerscheme").Detect();
+            Binder("ui.animations").Detect();//анимации
             #region mousefix
             void UpdateMouseFixCheckBox()
             {
@@ -665,18 +655,8 @@ namespace Project
             }
             UpdateMouseFixCheckBox();
             #endregion
-            if (AppServices.TweakCatalog.Get("main.mpo").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.mpo", "MPO был применён");
-                checkBox_mpo.Enabled = false;
-                back_main_6.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("main.usb").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.usb", "usbpowersaving был применён");
-                checkBox_usb.Enabled = false;
-                back_main_7.Visible = true;
-            }
+            Binder("main.mpo").Detect();
+            Binder("main.usb").Detect();
             if (AppServices.Tweaks.IsApplied("main.bcdedit"))
             {
                 Log.Warn("Tweak:main.bcdedit", "bcdedit был применён, откатываем нахуй");
@@ -704,18 +684,8 @@ namespace Project
                 AppServices.Processes.StartCaptured("bcdedit /deletevalue uselegacyapicmode");
                 AppServices.Tweaks.Remove("main.bcdedit");
             }
-            if (AppServices.TweakCatalog.Get("main.mitigations").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.mitigations", "spectre and meltdown был применён");
-                checkBox_mtiititit.Enabled = false;
-                back_main_9.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("main.mmagent").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.mmagent", "mmagent был применён");
-                checkBox_mmagent.Enabled = false;
-                back_main_10.Visible = true;
-            }
+            Binder("main.mitigations").Detect();
+            Binder("main.mmagent").Detect();
             #region pagefile
             if (AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
@@ -728,55 +698,20 @@ namespace Project
                 Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки отличаются от заданных или не установлены.");
             }
             #endregion
-            if (AppServices.TweakCatalog.Get("ui.buttons").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.buttons", "buttons был применён");
-                checkBoxUI_Buttons_1.Enabled = false;
-                back_ui_1.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.explorerdetails").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.explorerdetails", "litle_explorer_things был применён");
-                checkBoxUI_Buttons_2.Enabled = false;
-                back_ui_2.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.jpegquality").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.jpegquality", "JPEGImportQuality был применён");
-                checkBoxUI_Buttons_4.Enabled = false;
-                back_ui_4.Visible = true;
-            } //wallpapers
-            if (AppServices.TweakCatalog.Get("ui.contextmenu").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.contextmenu", "contex11 был применён");
-                checkBox_contex.Enabled = false;
-                back_ui_6.Visible = true;
-            } //contex11
+            Binder("ui.buttons").Detect();
+            Binder("ui.explorerdetails").Detect();
+            Binder("ui.jpegquality").Detect(); //wallpapers
+            Binder("ui.contextmenu").Detect(); //contex11
             try
             {
-                if (AppServices.TweakCatalog.Get("ui.win11header").Detect(AppServices.TweakContext) == TweakState.Applied)
-                {
-                    Log.Info("Tweak:ui.win11header", "shapka11 был применён");
-                    checkBox_shapka.Enabled = false;
-                    back_ui_7.Visible = true;
-                }//shapka11
+                Binder("ui.win11header").Detect();//shapka11
             }
             catch
             {
 
             } //shapka11
-            if (AppServices.TweakCatalog.Get("pro.homegallery").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.homegallery", "pro_1 был применён");
-                checkBox_pro_1.Enabled = false;
-
-            }
-            if (AppServices.TweakCatalog.Get("pro.win32priority").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.win32priority", "Win32PrioritySeparation был применён");
-                checkBox_pro_11.Enabled = false;
-                back_pro_11.Visible = true;
-            }
+            Binder("pro.homegallery").Detect();
+            Binder("pro.win32priority").Detect();
             if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")?.GetValue("NoAutoUpdate")) == 1)
             {
                 Log.Info("Tweak:pro.windowsupdate", "NoAutoUpdate был применён");
@@ -784,26 +719,9 @@ namespace Project
                 back_pro_3.Visible = true;
 
             }
-            if (AppServices.TweakCatalog.Get("main.defender").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.defender", "defenderdisabled был применён");
-                checkBox_disabledefender.Enabled = false;
-                label_delete_defender.Enabled = true;
-                back_main_12.Visible = true;
-                label_kalorant.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.bluefolders").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.bluefolders", "синие папки были применены");
-                checkBox_bluefolders.Enabled = false;
-                back_ui_5.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.wotbocontext").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.wotbocontext", "wotbo in contex был применён");
-                checkBox_wotboincontex.Enabled = false;
-                back_ui_8.Visible = true;
-            }
+            Binder("main.defender").Detect();
+            Binder("ui.bluefolders").Detect();
+            Binder("ui.wotbocontext").Detect();
             if (!Directory.Exists(@"C:\ProgramData\Microsoft\Windows Defender"))
             {
                 Log.Info("Tweak:main.defender", "defender удалён");
@@ -811,113 +729,28 @@ namespace Project
                 checkBox_disabledefender.Enabled = false;
                 back_main_12.Visible = false;
             }
-            if (AppServices.TweakCatalog.Get("extra.onedrive").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.onedrive", "OneDrive был удалён");
-                checkBox_onedrive.Enabled = false;
-            }
+            Binder("extra.onedrive").Detect();
             if (exepath == contexpath)
             {
                 Log.Info("App", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
-            if (AppServices.TweakCatalog.Get("pro.bufferbloat").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.bufferbloat", "bufferbloat был применён");
-                checkBox_pro_12.Enabled = false;
-                back_pro_12.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("pro.unlocker").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.unlocker", "unclockewr был применён");
-                checkBox_pro_13.Enabled = false;
-                back_pro_13.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("pro.alwaysontop").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.alwaysontop", "AlwaysOnTop был применён");
-                checkBox_pro_14.Enabled = false;
-                back_pro_14.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.ffmpeg").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.ffmpeg", "FFmpeg был применён");
-                checkBox_ffmpeg.Enabled = false;
-                back_ui_10.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("extra.iconcache").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.iconcache", "Max Cached Icons был применён");
-                checkBox_picture_cache.Enabled = false;
-                back_dop_1.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("extra.mobiletraffic").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.mobiletraffic", "DefaultTTL был применён");
-                checkBox_mobile_traffic.Enabled = false;
-                back_dop_2.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("extra.scoobe").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.scoobe", "ScoobeSystemSettingEnabled был применён");
-                checkBox_nastroyka.Enabled = false;
-                back_dop_3.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("extra.stickykeys").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.stickykeys", "StickyKeys был применён");
-                checkBox_zalipanie.Enabled = false;
-                back_dop_4.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.mica").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.mica", "ExplorerBlurMica был применён");
-                checkBox_mica.Enabled = false;
-                back_ui_11.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("ui.explorerrestart").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:ui.explorerrestart", "restart explorer был применён");
-                checkBox_explorer.Enabled = false;
-                back_ui_9.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("extra.dwmpriority").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.dwmpriority", "dwm.exe priority был применён");
-                checkBox_dwm.Enabled = false;
-                back_dop_6.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("pro.csrss").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.csrss", "csrss.exe priority был применён");
-                checkBox_CSRSS.Enabled = false;
-                back_dop_7.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("main.audio").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.audio", "AllowHeadlessExecution BackgroundAudioPolicy был применён");
-                checkBox_audio.Enabled = false;
-                back_main_13.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("main.dwminput").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.dwminput", "DwmInputUsesIoCompletionPort был применён");
-                checkBox_dwninput.Enabled = false;
-                back_main_14.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("main.powerlatency").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:main.powerlatency", "Power\\ExitLatency был применён");
-                checkBox_tolerate.Enabled = false;
-                back_main_16.Visible = true;
-            }
-            if (AppServices.TweakCatalog.Get("extra.edge").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:extra.edge", "Edge был применён");
-                back_dop_edge.Visible = true;
-                checkBox_edge.Checked = false;
-                checkBox_edge.Enabled = false;
-            }
+            Binder("pro.bufferbloat").Detect();
+            Binder("pro.unlocker").Detect();
+            Binder("pro.alwaysontop").Detect();
+            Binder("ui.ffmpeg").Detect();
+            Binder("extra.iconcache").Detect();
+            Binder("extra.mobiletraffic").Detect();
+            Binder("extra.scoobe").Detect();
+            Binder("extra.stickykeys").Detect();
+            Binder("ui.mica").Detect();
+            Binder("ui.explorerrestart").Detect();
+            Binder("extra.dwmpriority").Detect();
+            Binder("pro.csrss").Detect();
+            Binder("main.audio").Detect();
+            Binder("main.dwminput").Detect();
+            Binder("main.powerlatency").Detect();
+            Binder("extra.edge").Detect();
             if (AppServices.TweakCatalog.Get("pro.windowsupdate").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.windowsupdate", "WindowsUpdate\\AU был применён");
@@ -925,11 +758,7 @@ namespace Project
                 checkBox_pro_3.Enabled = false;
                 back_pro_3.Visible = true;
             }
-            if (AppServices.TweakCatalog.Get("extra.movetemp").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                checkBox_move_temp.Enabled = false;
-                back_dop_movetemp.Visible = true;
-            }
+            Binder("extra.movetemp").Detect();
             #endregion
             #region инет + обнова
             if (!Internet.OK())
@@ -1120,6 +949,7 @@ namespace Project
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Info("App", "closing");
+            notifier.Dispose();
             if (!AppServices.Workspace.Cleanup())
             {
                 Log.Warn("App", "освобождаем память и убиваемся");
@@ -1133,183 +963,35 @@ namespace Project
         async void button1_Click(object sender, EventArgs e)
         {
             #region main
-            if (checkBox_disabledefender.Checked)
-            {
-                using (TweakScope.Apply("main.defender"))
-                {
-                    MessageBox.Show("Защитник будет отключен!" +
-                        "\nЗащита от эксполитов не будет работать." +
-                        "\nОна нужна для работы некоторых античитов." +
-                        "\nНо восстановить защитник можно через вкладку дополнительно.\n" +
-                        "", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    AppServices.TweakCatalog.Get("main.defender").Apply(AppServices.TweakContext);
-                    checkBox_disabledefender.Enabled = false;
-                    checkBox_disabledefender.Checked = false;
-                    label_kalorant.Visible = true;
-                    back_main_12.Visible = true;
-                    ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
-                }
-            }
-            if (checkBox_reg.Checked)
-            {
-                using (TweakScope.Apply("main.regpack"))
-                {
-                    AppServices.TweakCatalog.Get("main.regpack").Apply(AppServices.TweakContext);
-                    checkBox_reg.Enabled = false;
-                    checkBox_reg.Checked = false;
-                    back_main_1.Visible = true;
-                    ShowNotification("Настройки Реестра", "Рекомендуется перезагрузить ПК после применения данного твика!", ToolTipIcon.Warning);
-                }
-            }
-            if (checkBox_dism.Checked)
-            {
-                using (TweakScope.Apply("main.reservedstorage"))
-                {
-                    AppServices.TweakCatalog.Get("main.reservedstorage").Apply(AppServices.TweakContext);
-                    checkBox_dism.Enabled = false;
-                    checkBox_dism.Checked = false;
-                    back_main_2.Visible = true;
-                }
-            }
-            if (checkBox_gibernate.Checked)
-            {
-                using (TweakScope.Apply("main.hibernate"))
-                {
-                    AppServices.TweakCatalog.Get("main.hibernate").Apply(AppServices.TweakContext);
-                        checkBox_gibernate.Enabled = false;
-                    checkBox_gibernate.Checked = false;
-                    back_main_3.Visible = true;
-
-                }
-            }
-            if (checkBox_scheme.Checked)
-            {
-                using (TweakScope.Apply("main.powerscheme"))
-                {
-                    AppServices.TweakCatalog.Get("main.powerscheme").Apply(AppServices.TweakContext);
-                        checkBox_scheme.Enabled = false;
-                    checkBox_scheme.Checked = false;
-                    back_main_4.Visible = true;
-                }
-            }
-            if (checkBox_mpo.Checked)
-            {
-                using (TweakScope.Apply("main.mpo"))
-                {
-                    AppServices.TweakCatalog.Get("main.mpo").Apply(AppServices.TweakContext);
-                    checkBox_mpo.Enabled = false;
-                    checkBox_mpo.Checked = false;
-                    back_main_6.Visible = true;
-                }
-            }
-            if (checkBox_usb.Checked)
-            {
-                using (TweakScope.Apply("main.usb"))
-                {
-                    File.WriteAllText(tempfolder + @"\usbpowersaving.bat", Resources.usbpowersaving);
-                    TweakScope.BackupRegFile($"{tempfolder}/usbpowersaving.cmd");
-                    AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/usbpowersaving.cmd");
-                    AppServices.TweakCatalog.Get("main.usb").Apply(AppServices.TweakContext);
-                    checkBox_usb.Enabled = false;
-                    checkBox_usb.Checked = false;
-                    back_main_7.Visible = true;
-                }
-            }
-            if (checkBox_mtiititit.Checked)
-            {
-                using (TweakScope.Apply("main.mitigations"))
-                {
-                    AppServices.TweakCatalog.Get("main.mitigations").Apply(AppServices.TweakContext);
-                    checkBox_mtiititit.Enabled = false;
-                    checkBox_mtiititit.Checked = false;
-                    back_main_9.Visible = true;
-
-                }
-            }
-            if (checkBox_mmagent.Checked)
-            {
-                using (TweakScope.Apply("main.mmagent"))
-                {
-                    AppServices.TweakCatalog.Get("main.mmagent").Apply(AppServices.TweakContext);
-                    checkBox_mmagent.Enabled = false;
-                    checkBox_mmagent.Checked = false;
-                    back_main_10.Visible = true;
-                }
-            }
+            Binder("main.defender").Apply();
+            Binder("main.regpack").Apply();
+            Binder("main.reservedstorage").Apply();
+            Binder("main.hibernate").Apply();
+            Binder("main.powerscheme").Apply();
+            Binder("main.mpo").Apply();
+            Binder("main.usb").Apply();
+            Binder("main.mitigations").Apply();
+            Binder("main.mmagent").Apply();
             if (checkBox_page.Checked)
             {
-                using (TweakScope.Apply("main.pagefile"))
+                try
                 {
-                    try
-                    {
-                        AppServices.TweakCatalog.Get("main.pagefile").Apply(AppServices.TweakContext);
-                        Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки успешно изменены. Перезагрузите систему для применения изменений.");
-                        checkBox_page.Enabled = false;
-                        checkBox_page.Checked = false;
-                        back_main_11.Visible = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error("Tweak:main.pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
-                    }
-                    ShowNotification("Файл подкачки", "Размер файла подкачки будет изменён после перезагрузки ПК", ToolTipIcon.Info);
+                    Binder("main.pagefile").Apply();
+                    Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки успешно изменены. Перезагрузите систему для применения изменений.");
                 }
-            }
-            if (checkBox_mousefix.Checked)
-            {
-                using (TweakScope.Apply("main.mousefix"))
+                catch (Exception ex)
                 {
-                    AppServices.TweakCatalog.Get("main.mousefix").Apply(AppServices.TweakContext);
-                    checkBox_mousefix.Enabled = false;
-                    checkBox_mousefix.Checked = false;
-                    back_main_5.Visible = true;
+                    Log.Error("Tweak:main.pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
                 }
+                ShowNotification("Файл подкачки", "Размер файла подкачки будет изменён после перезагрузки ПК", ToolTipIcon.Info);
             }
+            Binder("main.mousefix").Apply();
 
             //вторая
-            if (checkBox_audio.Checked)
-            {
-                using (TweakScope.Apply("main.audio"))
-                {
-                    AppServices.Processes.RunSuper($@"regedit /s {tempfolder}\Audio_Lantency.reg", tempfolder + @"\su.exe");
-                    AppServices.TweakCatalog.Get("main.audio").Apply(AppServices.TweakContext);
-                    checkBox_audio.Checked = false;
-                    checkBox_audio.Enabled = false;
-                    back_main_13.Visible = true;
-                }
-            }
-            if (checkBox_dwninput.Checked)
-            {
-                using (TweakScope.Apply("main.dwminput"))
-                {
-                    AppServices.TweakCatalog.Get("main.dwminput").Apply(AppServices.TweakContext);
-                    checkBox_dwninput.Checked = false;
-                    checkBox_dwninput.Enabled = false;
-                    back_main_14.Visible = true;
-                }
-            }
-            if (checkBox_tolerate.Checked)
-            {
-                using (TweakScope.Apply("main.powerlatency"))
-                {
-                    AppServices.TweakCatalog.Get("main.powerlatency").Apply(AppServices.TweakContext);
-                    checkBox_tolerate.Checked = false;
-                    checkBox_tolerate.Enabled = false;
-                    back_main_16.Visible = true;
-                }
-            }
-            if (checkBox_pro_11.Checked)
-            {
-                using (TweakScope.Apply("pro.win32priority"))
-                {
-                    AppServices.TweakCatalog.Get("pro.win32priority").Apply(AppServices.TweakContext);
-                    Win32Priority Win32Priority = new Win32Priority();
-                    Win32Priority.ShowDialog();
-                    checkBox_pro_11.Checked = false;
-                    checkBox_pro_11.Enabled = false;
-                    back_pro_11.Visible = true;
-                }
-            } //Win32Priority
+            Binder("main.audio").Apply();
+            Binder("main.dwminput").Apply();
+            Binder("main.powerlatency").Apply();
+            Binder("pro.win32priority").Apply(); //Win32Priority
             #endregion
             #region gpu
             if (checkBox_ansel.Checked)
@@ -1327,84 +1009,19 @@ namespace Project
                     back_gpu_4.Visible = true;
                 }
             }
-            if (checkBox_hdcp.Checked)
-            {
-                using (TweakScope.Apply("gpu.hdcp"))
-                {
-                    checkBox_hdcp.Checked = false;
-                    checkBox_hdcp.Enabled = false;
-                    AppServices.TweakCatalog.Get("gpu.hdcp").Apply(AppServices.TweakContext);
-                    back_gpu_2.Visible = true;
-                }
-            }
-            if (checkBox_dopNVIDIA_tweaks.Checked)
-            {
-                using (TweakScope.Apply("gpu.nvidia"))
-                {
-                    AppServices.TweakCatalog.Get("gpu.nvidia").Apply(AppServices.TweakContext);
-                    checkBox_dopNVIDIA_tweaks.Checked = false;
-                    checkBox_dopNVIDIA_tweaks.Enabled = false;
-                    back_gpu_3.Visible = true;
-                }
-            }
-            if (checkBox_directplay.Checked)
-            {
-                using (TweakScope.Apply("gpu.directplay"))
-                {
-                    AppServices.TweakCatalog.Get("gpu.directplay").Apply(AppServices.TweakContext);
-                    checkBox_directplay.Checked = false;
-                    checkBox_directplay.Enabled = false;
-                    back_gpu_1.Visible = true;
-                }
-            }
+            Binder("gpu.hdcp").Apply();
+            Binder("gpu.nvidia").Apply();
+            Binder("gpu.directplay").Apply();
             #endregion
             #region ui
-            if (checkBoxUI_Buttons_1.Checked)
-            {
-                using (TweakScope.Apply("ui.buttons"))
-                {
-                    AppServices.TweakCatalog.Get("ui.buttons").Apply(AppServices.TweakContext);
-                }
-                checkBoxUI_Buttons_1.Enabled = false;
-                checkBoxUI_Buttons_1.Checked = false;
-                back_ui_1.Visible = true;
-            }
-            if (checkBoxUI_Buttons_2.Checked)
-            {
-                using (TweakScope.Apply("ui.explorerdetails"))
-                {
-                    AppServices.TweakCatalog.Get("ui.explorerdetails").Apply(AppServices.TweakContext);
-                    checkBoxUI_Buttons_2.Enabled = false;
-                    checkBoxUI_Buttons_2.Checked = false;
-                    back_ui_2.Visible = true;
-                }
-            }
-            if (checkBoxUI_Buttons_4.Checked)
-            {
-                using (TweakScope.Apply("ui.jpegquality"))
-                {
-                    AppServices.TweakCatalog.Get("ui.jpegquality").Apply(AppServices.TweakContext);
-                }
-
-                checkBoxUI_Buttons_4.Enabled = false;
-                checkBoxUI_Buttons_4.Checked = false;
-                back_ui_4.Visible = true;
-            }
-            if (checkBox_bluefolders.Checked)
-            {
-                using (TweakScope.Apply("ui.bluefolders"))
-                {
-                    AppServices.TweakCatalog.Get("ui.bluefolders").Apply(AppServices.TweakContext);
-                    checkBox_bluefolders.Checked = false;
-                    checkBox_bluefolders.Enabled = false;
-                    back_ui_5.Visible = true;
-                }
-            }
+            Binder("ui.buttons").Apply();
+            Binder("ui.explorerdetails").Apply();
+            Binder("ui.jpegquality").Apply();
+            Binder("ui.bluefolders").Apply();
             if (checkBox_contex.Checked)
             {
                 using (TweakScope.Apply("ui.contextmenu"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}");
                     if (!win10)
                     {
                         AppServices.TweakCatalog.Get("ui.contextmenu").Apply(AppServices.TweakContext);
@@ -1416,221 +1033,32 @@ namespace Project
                     }
                 }
             }
-            if (checkBox_shapka.Checked)
-            {
-                using (TweakScope.Apply("ui.win11header"))
-                {
-                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}");
-                    AppServices.TweakCatalog.Get("ui.win11header").Apply(AppServices.TweakContext);
-                    checkBox_shapka.Checked = false;
-                    checkBox_shapka.Enabled = false;
-                    back_ui_7.Visible = true;
-                }
-            }
-            if (checkBox_wotboincontex.Checked)
-            {
-                using (TweakScope.Apply("ui.wotbocontext"))
-                {
-                    AppServices.TweakCatalog.Get("ui.wotbocontext").Apply(AppServices.TweakContext);
-                    checkBox_wotboincontex.Checked = false;
-                    checkBox_wotboincontex.Enabled = false;
-                    back_ui_8.Visible = true;
-                }
-            }
-            if (checkBox_explorer.Checked)
-            {
-                using (TweakScope.Apply("ui.explorerrestart"))
-                {
-                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\explorer");
-                    TweakScope.BackupFile(@"c:\Windows\system32\explorer.bat");
-                    AppServices.TweakCatalog.Get("ui.explorerrestart").Apply(AppServices.TweakContext);
-                    checkBox_explorer.Checked = false;
-                    checkBox_explorer.Enabled = false;
-                    back_ui_9.Visible = true;
-                }
-            }
-            if (checkBox_ffmpeg.Checked)
-            {
-                using (TweakScope.Apply("ui.ffmpeg"))
-                {
-                    ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info);
-                    AppServices.TweakCatalog.Get("ui.ffmpeg").Apply(AppServices.TweakContext);
-                    checkBox_ffmpeg.Enabled = false;
-                    checkBox_ffmpeg.Checked = false;
-                    back_ui_10.Visible = true;
-                }
-            }
-            if (checkBox_mica.Checked)
-            {
-                using (TweakScope.Apply("ui.mica"))
-                {
-                    AppServices.TweakCatalog.Get("ui.mica").Apply(AppServices.TweakContext);
-                    checkBox_mica.Enabled = false;
-                    checkBox_mica.Checked = false;
-                    back_ui_11.Visible = true;
-                }
-            }
-            if (checkBox_animation.Checked)
-            {
-                using (TweakScope.Apply("ui.animations"))
-                {
-                    AppServices.TweakCatalog.Get("ui.animations").Apply(AppServices.TweakContext);
-                    animation = false;
-                    back_animations.Visible = true;
-                    checkBox_animation.Checked = false;
-                    checkBox_animation.Enabled = false;
-                }
-            }
+            Binder("ui.win11header").Apply();
+            Binder("ui.wotbocontext").Apply();
+            Binder("ui.explorerrestart").Apply();
+            Binder("ui.ffmpeg").Apply();
+            Binder("ui.mica").Apply();
+            Binder("ui.animations").Apply();
             #endregion
             #region dop
-            if (checkBox_onedrive.Checked)
-            {
-                using (TweakScope.Apply("extra.onedrive"))
-                {
-                    AppServices.TweakCatalog.Get("extra.onedrive").Apply(AppServices.TweakContext);
-                    checkBox_onedrive.Checked = false;
-                    checkBox_onedrive.Enabled = false;
-                }
-            }
-            if (checkBox_compactos.Checked)
-            {
-                using (TweakScope.Apply("extra.compactos"))
-                {
-                    AppServices.TweakCatalog.Get("extra.compactos").Apply(AppServices.TweakContext);
-                    checkBox_compactos.Checked = false;
-                }
-            }
-            if (checkBox_WinSxS.Checked)
-            {
-                using (TweakScope.Apply("extra.winsxs"))
-                {
-                    AppServices.TweakCatalog.Get("extra.winsxs").Apply(AppServices.TweakContext);
-                    checkBox_WinSxS.Checked = false;
-                }
-            }
-            if (checkBox_temp.Checked)
-            {
-                using (TweakScope.Apply("extra.tempclean"))
-                {
-                    AppServices.TweakCatalog.Get("extra.tempclean").Apply(AppServices.TweakContext);
-                    checkBox_temp.Checked = false;
-                }
-            }
-            if (checkBox_updclean.Checked)
-            {
-                using (TweakScope.Apply("extra.updateclean"))
-                {
-                    AppServices.TweakCatalog.Get("extra.updateclean").Apply(AppServices.TweakContext);
-                    checkBox_updclean.Checked = false;
-                }
-            }
-            if (checkBox_picture_cache.Checked)
-            {
-                using (TweakScope.Apply("extra.iconcache"))
-                {
-                    AppServices.TweakCatalog.Get("extra.iconcache").Apply(AppServices.TweakContext);
-                    checkBox_picture_cache.Checked = false;
-                    checkBox_picture_cache.Enabled = false;
-                    back_dop_1.Visible = true;
-                }
-            }
-            if (checkBox_mobile_traffic.Checked)
-            {
-                using (TweakScope.Apply("extra.mobiletraffic"))
-                {
-                    AppServices.TweakCatalog.Get("extra.mobiletraffic").Apply(AppServices.TweakContext);
-                    checkBox_mobile_traffic.Checked = false;
-                    checkBox_mobile_traffic.Enabled = false;
-                    back_dop_2.Visible = true;
-                }
-            }
-            if (checkBox_nastroyka.Checked)
-            {
-                using (TweakScope.Apply("extra.scoobe"))
-                {
-                    AppServices.TweakCatalog.Get("extra.scoobe").Apply(AppServices.TweakContext);
-                    checkBox_nastroyka.Checked = false;
-                    checkBox_nastroyka.Enabled = false;
-                    back_dop_3.Visible = true;
-                }
-            }
-            if (checkBox_zalipanie.Checked)
-            {
-                using (TweakScope.Apply("extra.stickykeys"))
-                {
-                    AppServices.TweakCatalog.Get("extra.stickykeys").Apply(AppServices.TweakContext);
-                    checkBox_zalipanie.Checked = false;
-                    checkBox_zalipanie.Enabled = false;
-                    back_dop_4.Visible = true;
-                }
-            }
-            if (checkBox_dwm.Checked)
-            {
-                using (TweakScope.Apply("extra.dwmpriority"))
-                {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.ImageFileExecutionOptions + @"\dwm.exe");
-                    AppServices.TweakCatalog.Get("extra.dwmpriority").Apply(AppServices.TweakContext);
-                    checkBox_dwm.Checked = false;
-                    checkBox_dwm.Enabled = false;
-                    back_dop_6.Visible = true;
-                }
-            }
-            if (checkBox_edge.Checked)
-            {
-                using (TweakScope.Apply("extra.edge"))
-                {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.Edge);
-                    AppServices.TweakCatalog.Get("extra.edge").Apply(AppServices.TweakContext);
-                    back_dop_edge.Visible = true;
-                    checkBox_edge.Checked = false;
-                    checkBox_edge.Enabled = false;
-                }
-            }
-            if (checkBox_move_temp.Checked)
-            {
-                using (TweakScope.Apply("extra.movetemp"))
-                {
-                    AppServices.TweakCatalog.Get("extra.movetemp").Apply(AppServices.TweakContext);
-                    checkBox_move_temp.Checked = false;
-                    checkBox_move_temp.Enabled = false;
-                    back_dop_movetemp.Visible = true;
-                }
-            }
+            Binder("extra.onedrive").Apply();
+            Binder("extra.compactos").Apply();
+            Binder("extra.winsxs").Apply();
+            Binder("extra.tempclean").Apply();
+            Binder("extra.updateclean").Apply();
+            Binder("extra.iconcache").Apply();
+            Binder("extra.mobiletraffic").Apply();
+            Binder("extra.scoobe").Apply();
+            Binder("extra.stickykeys").Apply();
+            Binder("extra.dwmpriority").Apply();
+            Binder("extra.edge").Apply();
+            Binder("extra.movetemp").Apply();
             #endregion
             #region pro
-            if (checkBox_pro_1.Checked)
-            {
-                using (TweakScope.Apply("pro.homegallery"))
-                {
-                    AppServices.TweakCatalog.Get("pro.homegallery").Apply(AppServices.TweakContext);
-                    checkBox_pro_1.Checked = false;
-                    checkBox_pro_1.Enabled = false;
-                }
-            } //disable main & gallery folder in explorer.exe
-            if (checkBox_pro_3.Checked)
-            {
-                using (TweakScope.Apply("pro.windowsupdate"))
-                {
-                    AppServices.TweakCatalog.Get("pro.windowsupdate").Apply(AppServices.TweakContext);
-                    checkBox_pro_3.Checked = false;
-                    checkBox_pro_3.Enabled = false;
-                    back_pro_3.Visible = true;
-                }
-            } //winupdates
+            Binder("pro.homegallery").Apply(); //disable main & gallery folder in explorer.exe
+            Binder("pro.windowsupdate").Apply(); //winupdates
 
-            if (checkBox_CSRSS.Checked)
-            {
-                using (TweakScope.Apply("pro.csrss"))
-                {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.ImageFileExecutionOptions + @"\csrss.exe");
-                    AppServices.TweakCatalog.Get("pro.csrss").Apply(AppServices.TweakContext);
-
-                    checkBox_CSRSS.Checked = false;
-                    checkBox_CSRSS.Enabled = false;
-                    back_dop_7.Visible = true;
-                    //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "pro_8", 1);
-                }
-            } //csrss
+            Binder("pro.csrss").Apply(); //csrss
             //if (checkBox_pro_10.Checked)
             //{
             //    Process.Start(new ProcessStartInfo
@@ -1645,53 +1073,9 @@ namespace Project
             //    }).WaitForExit();
             //    checkBox_pro_10.Checked = false;
             //} //cleanmgr
-            if (checkBox_pro_12.Checked)
-            {
-                using (TweakScope.Apply("pro.bufferbloat"))
-                {
-                    DialogResult result = MessageBox.Show(
-                        "Bufferbloat - явление, когда чрезмерная буферизация вызывает увеличение времени прохождения пакетов (Ping) и разброса задержки пакетов (Packetloss)\n\n" +
-                        "Рекомендуется использовать только если у вас нестабильное соединение!\n(Например мобильный интернет и т.д)\n" +
-                        "!Твик может незначительно снизить скорость интернета!\n" +
-                        "В случае если у вас стало хуже, или же вам не нужен этот твик, просто откатите его.\n" +
-                        "Применить?",
-        "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                    {
-                        using (TweakScope.Apply("pro.bufferbloat"))
-                        {
-                            AppServices.TweakCatalog.Get("pro.bufferbloat").Apply(AppServices.TweakContext);
-                        }
-                        checkBox_pro_12.Checked = false;
-                        checkBox_pro_12.Enabled = false;
-                        back_pro_12.Visible = true;
-                            }
-                    else
-                    {
-                        checkBox_pro_12.Checked = false;
-                    }
-                }
-            } //Bufferbloat
-            if (checkBox_pro_13.Checked)
-            {
-                using (TweakScope.Apply("pro.unlocker"))
-                {
-                    AppServices.TweakCatalog.Get("pro.unlocker").Apply(AppServices.TweakContext);
-                    checkBox_pro_13.Checked = false;
-                    checkBox_pro_13.Enabled = false;
-                    back_pro_13.Visible = true;
-                }
-            } //unlocker
-            if (checkBox_pro_14.Checked)
-            {
-                using (TweakScope.Apply("pro.alwaysontop"))
-                {
-                    AppServices.TweakCatalog.Get("pro.alwaysontop").Apply(AppServices.TweakContext);
-                    checkBox_pro_14.Checked = false;
-                    checkBox_pro_14.Enabled = false;
-                    back_pro_14.Visible = true;
-                }
-            }//alwaysontop
+            Binder("pro.bufferbloat").Apply(); //Bufferbloat
+            Binder("pro.unlocker").Apply(); //unlocker
+            Binder("pro.alwaysontop").Apply();//alwaysontop
             #endregion
 
             if (checkBox_tweak_tooltips.Checked)
@@ -2081,114 +1465,50 @@ namespace Project
         #region откаты
         void back_main_1_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.regpack"))
-            {
-                AppServices.TweakCatalog.Get("main.regpack").Rollback(AppServices.TweakContext);
-                checkBox_reg.Enabled = true;
-                back_main_1.Visible = false;
-            }
+            Binder("main.regpack").Rollback();
         } //regpack
         void back_main_2_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.reservedstorage"))
-            {
-                AppServices.TweakCatalog.Get("main.reservedstorage").Rollback(AppServices.TweakContext);
-                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "ReservedStorageState");
-                checkBox_dism.Enabled = true;
-                checkBox_dism.Checked = false;
-                back_main_2.Visible = false;
-            }
+            Binder("main.reservedstorage").Rollback();
         } //dism
         void back_main_3_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.hibernate"))
-            {
-                AppServices.TweakCatalog.Get("main.hibernate").Rollback(AppServices.TweakContext);
-                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "hibernate");
-                checkBox_gibernate.Enabled = true;
-                checkBox_gibernate.Checked = false;
-                back_main_3.Visible = false;
-            }
+            Binder("main.hibernate").Rollback();
         } //powercfg /h off
         void back_main_4_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.powerscheme"))
-            {
-                AppServices.TweakCatalog.Get("main.powerscheme").Rollback(AppServices.TweakContext);
-                checkBox_scheme.Enabled = true;
-                checkBox_scheme.Checked = false;
-                back_main_4.Visible = false;
-            }
+            Binder("main.powerscheme").Rollback();
         }//scheme
         void back_main_5_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.mousefix"))
-            {
-                AppServices.TweakCatalog.Get("main.mousefix").Rollback(AppServices.TweakContext);
-                checkBox_mousefix.Enabled = true;
-                checkBox_mousefix.Checked = false;
-                back_main_5.Visible = false;
-            }
+            Binder("main.mousefix").Rollback();
         } //mouse
         void back_main_6_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.mpo"))
-            {
-                AppServices.TweakCatalog.Get("main.mpo").Rollback(AppServices.TweakContext);
-                checkBox_mpo.Enabled = true;
-                checkBox_mpo.Checked = false;
-                back_main_6.Visible = false;
-            }
+            Binder("main.mpo").Rollback();
         }//mpo
         void back_main_7_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.usb"))
-            {
-                File.WriteAllText(tempfolder + @"\unusbpowersaving.bat", Resources.unusbpowersaving);
-                AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/un_usbpowersaving.cmd");
-                AppServices.TweakCatalog.Get("main.usb").Rollback(AppServices.TweakContext);
-                checkBox_usb.Enabled = true;
-                checkBox_usb.Checked = false;
-                back_main_7.Visible = false;
-            }
+            Binder("main.usb").Rollback();
         }//usbpowersaving
         void back_main_9_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.mitigations"))
-            {
-                AppServices.TweakCatalog.Get("main.mitigations").Rollback(AppServices.TweakContext);
-
-                AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_GenuineIntel.old mcupdate_GenuineIntel.dll", tempfolder + @"\su.exe");
-                AppServices.Processes.RunSuper("ren %SYSTEMROOT%\\System32\\mcupdate_AuthenticAMD.old mcupdate_AuthenticAMD.dll", tempfolder + @"\su.exe");
-
-                checkBox_mtiititit.Enabled = true;
-                checkBox_mtiititit.Checked = false;
-                back_main_9.Visible = false;
-            }
+            Binder("main.mitigations").Rollback();
         }//mititigiig
         void back_main_10_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.mmagent"))
-            {
-                AppServices.TweakCatalog.Get("main.mmagent").Rollback(AppServices.TweakContext);
-                checkBox_mmagent.Enabled = true;
-                checkBox_mmagent.Checked = false;
-                back_main_10.Visible = false;
-            }
+            Binder("main.mmagent").Rollback();
         } //mmagent не буду делать
         void back_main_11_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.pagefile"))
+            try
             {
-                try
-                {
-                    AppServices.TweakCatalog.Get("main.pagefile").Rollback(AppServices.TweakContext);
-                    Log.Info("Tweak:main.pagefile", "[pagefile check] Стандартные настройки файла подкачки восстановлены. Перезагрузите систему для применения изменений.");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Tweak:main.pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
-                }
+                Binder("main.pagefile").Rollback();
+                Log.Info("Tweak:main.pagefile", "[pagefile check] Стандартные настройки файла подкачки восстановлены. Перезагрузите систему для применения изменений.");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Tweak:main.pagefile", "[pagefile check] Произошла ошибка: " + ex.Message, ex);
                 checkBox_page.Enabled = true;
                 checkBox_page.Checked = false;
                 back_main_11.Visible = false;
@@ -2196,162 +1516,69 @@ namespace Project
         } //page file
         void back_main_12_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.defender"))
-            {
-                AppServices.TweakCatalog.Get("main.defender").Rollback(AppServices.TweakContext);
-                back_main_12.Visible = false;
-                //MessageBox.Show("Для восстановления работы защитника выполните перезагрузку!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ShowNotification("Защитник Windows", "Работа защитника будет восстановлена после перезагруки ПК", ToolTipIcon.Warning);
-                checkBox_disabledefender.Enabled = true;
-                checkBox_disabledefender.Checked = false;
-
-            }
+            Binder("main.defender").Rollback();
         } //restoreDEF
         void back_main_13_Click(object sender, EventArgs e) //Audio_Lantency_delete.reg
         {
-            using (TweakScope.Rollback("main.audio"))
-            {
-                AppServices.Processes.RunSuper($@"regedit /s {tempfolder}\Audio_Lantency_delete.reg", tempfolder + @"\su.exe");
-                AppServices.TweakCatalog.Get("main.audio").Rollback(AppServices.TweakContext);
-                checkBox_audio.Checked = false;
-                checkBox_audio.Enabled = true;
-                back_main_13.Visible = false;
-            }
+            Binder("main.audio").Rollback();
         }
 
         void back_main_14_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.dwminput"))
-            {
-                AppServices.TweakCatalog.Get("main.dwminput").Rollback(AppServices.TweakContext);
-                checkBox_dwninput.Checked = false;
-                checkBox_dwninput.Enabled = true;
-                back_main_14.Visible = false;
-            }
+            Binder("main.dwminput").Rollback();
         }
 
         void back_main_16_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("main.powerlatency"))
-            {
-                AppServices.TweakCatalog.Get("main.powerlatency").Rollback(AppServices.TweakContext);
-                checkBox_tolerate.Checked = false;
-                checkBox_tolerate.Enabled = true;
-                back_main_16.Visible = false;
-            }
+            Binder("main.powerlatency").Rollback();
         }
 
 
 
         void back_ui_1_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.buttons"))
-            {
-                AppServices.TweakCatalog.Get("ui.buttons").Rollback(AppServices.TweakContext);
-                checkBoxUI_Buttons_1.Enabled = true;
-                checkBoxUI_Buttons_1.Checked = false;
-                back_ui_1.Visible = false;
-            }
+            Binder("ui.buttons").Rollback();
         } //buttons
         void back_ui_2_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.explorerdetails"))
-            {
-                AppServices.TweakCatalog.Get("ui.explorerdetails").Rollback(AppServices.TweakContext);
-                checkBoxUI_Buttons_2.Enabled = true;
-                checkBoxUI_Buttons_2.Checked = false;
-                back_ui_2.Visible = false;
-            }
+            Binder("ui.explorerdetails").Rollback();
         }//заглушка
 
         void back_ui_4_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.jpegquality"))
-            {
-                AppServices.TweakCatalog.Get("ui.jpegquality").Rollback(AppServices.TweakContext);
-                checkBoxUI_Buttons_4.Enabled = true;
-                checkBoxUI_Buttons_4.Checked = false;
-                back_ui_4.Visible = false;
-            }
+            Binder("ui.jpegquality").Rollback();
         } //jpegwallappers
         void back_ui_5_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.bluefolders"))
-            {
-                AppServices.TweakCatalog.Get("ui.bluefolders").Rollback(AppServices.TweakContext);
-                checkBox_bluefolders.Checked = false;
-                checkBox_bluefolders.Enabled = true;
-                //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders");
-                back_ui_5.Visible = false;
-            }
+            Binder("ui.bluefolders").Rollback();
         }//bluefolders
         void back_ui_6_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.contextmenu"))
-            {
-                AppServices.TweakCatalog.Get("ui.contextmenu").Rollback(AppServices.TweakContext);
-                AppServices.Processes.StartCaptured(@"taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
-                checkBox_contex.Checked = false;
-                checkBox_contex.Enabled = true;
-                back_ui_6.Visible = false;
-            }
+            Binder("ui.contextmenu").Rollback();
         }//contex
         void back_ui_7_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.win11header"))
-            {
-                AppServices.TweakCatalog.Get("ui.win11header").Rollback(AppServices.TweakContext);
-                checkBox_shapka.Checked = false;
-                checkBox_shapka.Enabled = true;
-                back_ui_7.Visible = false;
-            }
+            Binder("ui.win11header").Rollback();
         }//shapka
         void back_ui_8_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.wotbocontext"))
-            {
-                AppServices.TweakCatalog.Get("ui.wotbocontext").Rollback(AppServices.TweakContext);
-                back_ui_8.Visible = false;
-                checkBox_wotboincontex.Enabled = true;
-            }
+            Binder("ui.wotbocontext").Rollback();
         }
         void back_ui_9_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.explorerrestart"))
-            {
-                AppServices.TweakCatalog.Get("ui.explorerrestart").Rollback(AppServices.TweakContext);
-                back_ui_9.Visible = false;
-                checkBox_explorer.Enabled = true;
-            }
+            Binder("ui.explorerrestart").Rollback();
         }
         void back_ui_10_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.ffmpeg"))
-            {
-                AppServices.TweakCatalog.Get("ui.ffmpeg").Rollback(AppServices.TweakContext);
-                back_ui_10.Visible = false;
-                checkBox_ffmpeg.Enabled = true;
-            }
+            Binder("ui.ffmpeg").Rollback();
         } //ffmpeg
         void back_ui_11_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.mica"))
-            {
-                AppServices.TweakCatalog.Get("ui.mica").Rollback(AppServices.TweakContext);
-                checkBox_mica.Enabled = true;
-                checkBox_mica.Checked = false;
-                back_ui_11.Visible = false;
-            }
+            Binder("ui.mica").Rollback();
         }
         void back_animations_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("ui.animations"))
-            {
-                AppServices.TweakCatalog.Get("ui.animations").Rollback(AppServices.TweakContext);
-                animation = true;
-                back_animations.Visible = false;
-                checkBox_animation.Enabled = true;
-            }
+            Binder("ui.animations").Rollback();
         }
         void back_ui_tooltips_Click(object sender, EventArgs e)
         {
@@ -2359,33 +1586,15 @@ namespace Project
         }
         void back_gpu_1_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("gpu.directplay"))
-            {
-                AppServices.TweakCatalog.Get("gpu.directplay").Rollback(AppServices.TweakContext);
-                back_gpu_1.Visible = false;
-                checkBox_directplay.Checked = false;
-                checkBox_directplay.Enabled = true;
-            }
+            Binder("gpu.directplay").Rollback();
         }//directplay
         void back_gpu_2_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("gpu.hdcp"))
-            {
-                checkBox_hdcp.Checked = false;
-                checkBox_hdcp.Enabled = true;
-                AppServices.TweakCatalog.Get("gpu.hdcp").Rollback(AppServices.TweakContext);
-                back_gpu_2.Visible = false;
-            }
+            Binder("gpu.hdcp").Rollback();
         }//hdcp
         void back_gpu_3_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("gpu.nvidia"))
-            {
-                AppServices.TweakCatalog.Get("gpu.nvidia").Rollback(AppServices.TweakContext);
-                checkBox_dopNVIDIA_tweaks.Checked = false;
-                checkBox_dopNVIDIA_tweaks.Enabled = true;
-                back_gpu_3.Visible = false;
-            }
+            Binder("gpu.nvidia").Rollback();
         }//settings nvidia
         void back_gpu_4_Click(object sender, EventArgs e)
         {
@@ -2405,23 +1614,11 @@ namespace Project
 
         void back_pro_1_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.homegallery"))
-            {
-                AppServices.TweakCatalog.Get("pro.homegallery").Rollback(AppServices.TweakContext);
-                checkBox_pro_1.Checked = false;
-                checkBox_pro_1.Enabled = true;
-                back_pro_1.Visible = false;
-            }
+            Binder("pro.homegallery").Rollback();
         }
         void back_pro_3_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.windowsupdate"))
-            {
-                AppServices.TweakCatalog.Get("pro.windowsupdate").Rollback(AppServices.TweakContext);
-                checkBox_pro_3.Checked = false;
-                checkBox_pro_3.Enabled = true;
-                back_pro_3.Visible = false;
-            }
+            Binder("pro.windowsupdate").Rollback();
         }
         void back_pro_4_Click(object sender, EventArgs e)
         {
@@ -2438,13 +1635,7 @@ namespace Project
         }
         void back_pro_8_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.csrss"))
-            {
-                AppServices.TweakCatalog.Get("pro.csrss").Rollback(AppServices.TweakContext);
-                checkBox_CSRSS.Checked = false;
-                checkBox_CSRSS.Enabled = true;
-                back_dop_7.Visible = false;
-            }
+            Binder("pro.csrss").Rollback();
         }
         void back_pro_9_Click(object sender, EventArgs e)
         {
@@ -2452,115 +1643,52 @@ namespace Project
         }
         void back_pro_11_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.win32priority"))
-            {
-                AppServices.TweakCatalog.Get("pro.win32priority").Rollback(AppServices.TweakContext);
-                checkBox_pro_11.Enabled = true;
-                checkBox_pro_11.Checked = false;
-                back_pro_11.Visible = false;
-            }
+            Binder("pro.win32priority").Rollback();
         }
 
         void back_pro_12_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.bufferbloat"))
-            {
-                AppServices.TweakCatalog.Get("pro.bufferbloat").Rollback(AppServices.TweakContext);
-                checkBox_pro_12.Checked = false;
-                checkBox_pro_12.Enabled = true;
-                back_pro_12.Visible = false;
-            }
+            Binder("pro.bufferbloat").Rollback();
         }
         void back_pro_13_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.unlocker"))
-            {
-                AppServices.TweakCatalog.Get("pro.unlocker").Rollback(AppServices.TweakContext);
-                checkBox_pro_13.Checked = false;
-                checkBox_pro_13.Enabled = true;
-                back_pro_13.Visible = false;
-            }
+            Binder("pro.unlocker").Rollback();
         }
         void back_pro_14_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("pro.alwaysontop"))
-            {
-                AppServices.Processes.StartCaptured("taskkill /f /im AlwaysOnTop.exe");
-                AppServices.TweakCatalog.Get("pro.alwaysontop").Rollback(AppServices.TweakContext);
-                checkBox_pro_14.Checked = false;
-                checkBox_pro_14.Enabled = true;
-                back_pro_14.Visible = false;
-            }
+            Binder("pro.alwaysontop").Rollback();
         }
 
 
         void back_dop_1_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.iconcache"))
-            {
-                AppServices.TweakCatalog.Get("extra.iconcache").Rollback(AppServices.TweakContext);
-                checkBox_picture_cache.Enabled = true;
-                back_dop_1.Visible = false;
-            }
+            Binder("extra.iconcache").Rollback();
         }
 
         void back_dop_2_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.mobiletraffic"))
-            {
-                AppServices.TweakCatalog.Get("extra.mobiletraffic").Rollback(AppServices.TweakContext);
-                checkBox_mobile_traffic.Enabled = true;
-                back_dop_2.Visible = false;
-            }
+            Binder("extra.mobiletraffic").Rollback();
         }
         void back_dop_edge_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.edge"))
-            {
-                AppServices.TweakCatalog.Get("extra.edge").Rollback(AppServices.TweakContext);
-                back_dop_edge.Visible = false;
-                checkBox_edge.Checked = false;
-                checkBox_edge.Enabled = true;
-            }
+            Binder("extra.edge").Rollback();
         }
         void back_dop_3_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.scoobe"))
-            {
-                AppServices.TweakCatalog.Get("extra.scoobe").Rollback(AppServices.TweakContext);
-                checkBox_nastroyka.Enabled = true;
-                back_dop_3.Visible = false;
-            }
+            Binder("extra.scoobe").Rollback();
         }
 
         void back_dop_4_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.stickykeys"))
-            {
-                AppServices.TweakCatalog.Get("extra.stickykeys").Rollback(AppServices.TweakContext);
-                checkBox_zalipanie.Enabled = true;
-                back_dop_4.Visible = false;
-            }
+            Binder("extra.stickykeys").Rollback();
         }
         void back_dop_6_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.dwmpriority"))
-            {
-                AppServices.TweakCatalog.Get("extra.dwmpriority").Rollback(AppServices.TweakContext);
-                checkBox_dwm.Checked = false;
-                checkBox_dwm.Enabled = true;
-                back_dop_6.Visible = false;
-            }
+            Binder("extra.dwmpriority").Rollback();
         }
         void back_dop_movetemp_Click(object sender, EventArgs e)
         {
-            using (TweakScope.Rollback("extra.movetemp"))
-            {
-                AppServices.TweakCatalog.Get("extra.movetemp").Rollback(AppServices.TweakContext);
-                checkBox_move_temp.Checked = false;
-                checkBox_move_temp.Enabled = true;
-                back_dop_movetemp.Visible = false;
-            }
+            Binder("extra.movetemp").Rollback();
         }
 
         #endregion

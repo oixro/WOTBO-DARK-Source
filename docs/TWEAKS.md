@@ -71,13 +71,29 @@ public interface ITweak
 | `main.mmagent` | prefetcher `.reg`, `smartctl`, `*-mmagent` | RAM/SSD-детект, `ApplicationPreLaunch`, `MC`/`PC`, `MOAF` |
 | `main.reservedstorage` | DISM | `Set-ReservedStorageState Disabled/Enabled` |
 
-`Form1` для них:
+`Form1` для них использует `TweakUiBinder` (`UI/TweakUiBinder.cs`):
 
-- detect: `TweakCatalog.Get(id).Detect(TweakContext)`;
-- apply: внутри `TweakScope.Apply(id)` — `tweak.Apply(...)`;
-- rollback: внутри `TweakScope.Rollback(id)` — `tweak.Rollback(...)`.
+```csharp
+Bind("extra.edge", checkBox_edge, back_dop_edge, "Edge был применён");
+
+// detect при старте
+Binder("extra.edge").Detect();
+
+// apply и rollback
+Binder("extra.edge").Apply();
+Binder("extra.edge").Rollback();
+```
+
+Binder сам вызывает `TweakScope`, `Detect/Apply/Rollback` и обновляет
+`CheckBox`/`PictureBox`. Специфичные для UI шаги (диалоги, уведомления,
+`animation = false`) передаются колбэками. Исключения — `gpu.ansel`
+(ручная проверка `Unavailable`), `ui.contextmenu` (перезапуск проводника
+с задержкой) и `main.pagefile` (try/catch вокруг apply/rollback).
 
 Бэкапы и old → new по-прежнему делает `RegistryService` + `TweakScope`.
+Бэкапы ключей/файлов, которые раньше делались в `Form1`, перенесены в
+сами твики (`Audio`, `Usb`, `ContextMenu`, `Win11Header`, `ExplorerRestart`,
+`DwmPriority`, `CsrssPriority`, `Edge`).
 
 ## Дальше
 

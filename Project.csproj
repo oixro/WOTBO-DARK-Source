@@ -162,6 +162,13 @@
     <Compile Include="Services\Tweaks\ReservedStorageTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
+    <Compile Include="UI\PanelNavigator.cs" />
+    <Compile Include="UI\FormPainter.cs" />
+    <Compile Include="UI\WindowDragBehavior.cs" />
+    <Compile Include="UI\NativeMethods.cs" />
+    <Compile Include="UI\BalloonNotifier.cs" />
+    <Compile Include="UI\TweakUiBinder.cs" />
+    <Compile Include="UI\HoverAnimator.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

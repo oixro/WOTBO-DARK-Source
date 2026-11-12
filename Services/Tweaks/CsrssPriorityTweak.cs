@@ -27,6 +27,7 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
+            context.BackupRegistryKey(RegistryHive.LocalMachine, Key);
             string perf = Key + @"\PerfOptions";
             context.Registry.WriteValue(RegistryHive.LocalMachine, perf, "CpuPriorityClass", "3", RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.LocalMachine, perf, "IoPriority", "3", RegistryValueKind.DWord);
