@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="App\AppPaths.cs" />
     <Compile Include="App\AppServices.cs" />
+    <Compile Include="App\AppBootstrap.cs" />
     <Compile Include="App\AppSettings.cs" />
     <Compile Include="App\InstanceGuard.cs" />
     <Compile Include="App\Logging\AppLogger.cs" />
@@ -147,6 +148,18 @@
     <Compile Include="Services\Tweaks\UpdateCleanTweak.cs" />
     <Compile Include="Services\Tweaks\TempCleanTweak.cs" />
     <Compile Include="Services\Tweaks\EdgeTweak.cs" />
+    <Compile Include="Services\Tweaks\MicaTweak.cs" />
+    <Compile Include="Services\Tweaks\WotboContextTweak.cs" />
+    <Compile Include="Services\Tweaks\BlueFoldersTweak.cs" />
+    <Compile Include="Services\Tweaks\ExplorerDetailsTweak.cs" />
+    <Compile Include="Services\Tweaks\OneDriveTweak.cs" />
+    <Compile Include="Services\Tweaks\HomeGalleryTweak.cs" />
+    <Compile Include="Services\Tweaks\UnlockerTweak.cs" />
+    <Compile Include="Services\Tweaks\AlwaysOnTopTweak.cs" />
+    <Compile Include="Services\Tweaks\AnimationsTweak.cs" />
+    <Compile Include="Services\Tweaks\Win32PriorityTweak.cs" />
+    <Compile Include="Services\Tweaks\MmAgentTweak.cs" />
+    <Compile Include="Services\Tweaks\ReservedStorageTweak.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="Form1.cs">

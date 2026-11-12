@@ -51,6 +51,12 @@ namespace WOTBO.Services.Registry
         public const string Win11HeaderClsid = @"CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}";
         public const string WindowsUpdatePolicy = @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate";
         public const string FileAssociations = @"SOFTWARE\Classes\SystemFileAssociations";
+        public const string DesktopBackgroundWotbo = @"DesktopBackground\Shell\WOTBO";
+        public const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+        public const string UnlockerFile = @"*\shell\Уничтожить";
+        public const string UnlockerDirectory = @"Directory\shell\Уничтожить";
+        public const string HomeGalleryClsid = @"CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}";
+        public const string GalleryClsid = @"Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}";
         public const string Edge = @"SOFTWARE\Policies\Microsoft\Edge";
         public const string EdgeRestoreUrls = @"SOFTWARE\Policies\Microsoft\Edge\RestoreOnStartupURLs";
 

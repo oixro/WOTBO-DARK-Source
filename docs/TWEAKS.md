@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас тридцать шесть твиков.
+`TweakCatalog` — словарь по `Id`, сейчас сорок восемь твиков.
 
 ## Пилот
 
@@ -58,6 +58,18 @@ public interface ITweak
 | `extra.updateclean` | SoftwareDistribution / DeliveryOptimization | односторонняя |
 | `extra.tempclean` | `%TEMP%` | удаляет всё, кроме `wotbo*.log` |
 | `extra.edge` | `HKLM\SOFTWARE\Policies\Microsoft\Edge` | 122 политики Edge + RestoreOnStartupURLs |
+| `ui.explorerdetails` | `things.reg`/`un_things.reg`, `UseCompactMode` | мелкие настройки проводника; w10 — `Taskmgr_win10_*.reg` |
+| `extra.onedrive` | `OneDriveSetup.exe /uninstall` | одностороннее удаление OneDrive |
+| `pro.homegallery` | `HKLM\...\Explorer` + CLSID Home/Gallery | `HubMode=1`, `System.IsPinnedToNameSpaceTree=0`, CLSID через `su.exe` |
+| `pro.unlocker` | `C:\Windows\unlocker`, `HKCR\*\shell\Уничтожить`, `Directory\shell\Уничтожить` | Unlocker в контекстном меню |
+| `pro.alwaysontop` | `C:\Windows\AlwaysOnTop.exe`, `HKLM\...\Run` | автозапуск AlwaysOnTop |
+| `ui.mica` | `C:\Windows\ExplorerBlurMica.dll`, `config.ini` | прозрачный проводник, `regsvr32` |
+| `ui.wotbocontext` | `HKCR\DesktopBackground\Shell\WOTBO`, `gear.ico`, `wotbo.exe` | пункт WOTBO в меню рабочего стола |
+| `ui.bluefolders` | `imageres.dll`, `imageres.dll.mun` | синие папки; w10 — `imageres.zip`, w11 — `BlueIcon_Minimal.zip` |
+| `ui.animations` | `HKCU\Software\oixro\wotbo` | `animationsEnabled=0`; анимация панелей WOTBO |
+| `pro.win32priority` | `HKLM\...\PriorityControl` | значение выбирает диалог `Win32Priority`, откат → `2` |
+| `main.mmagent` | prefetcher `.reg`, `smartctl`, `*-mmagent` | RAM/SSD-детект, `ApplicationPreLaunch`, `MC`/`PC`, `MOAF` |
+| `main.reservedstorage` | DISM | `Set-ReservedStorageState Disabled/Enabled` |
 
 `Form1` для них:
 
@@ -69,13 +81,9 @@ public interface ITweak
 
 ## Дальше
 
-Переносить остальные твики по категориям, сохраняя порядок применения:
-
-1. Main
-2. GPU
-3. UI
-4. Extra
-5. Pro
+Все твики из `Form1` перенесены в `ITweak`, каталог содержит сорок восемь
+записей. Осталось вынести привязку чекбоксов и стрелок в отдельный
+`TweakUiBinder` и собрать запуск приложения в `AppBootstrap`.
 
 Новый твик = класс `ITweak` + строка в `TweakCatalog.CreateDefault()` +
-привязка UI в `Form1` (позже — `TweakUiBinder`).
+привязка UI в `Form1`.

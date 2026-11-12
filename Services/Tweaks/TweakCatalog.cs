@@ -76,6 +76,18 @@ namespace WOTBO.Services.Tweaks
                 new UpdateCleanTweak(),
                 new TempCleanTweak(),
                 new EdgeTweak(),
+                new MicaTweak(),
+                new WotboContextTweak(),
+                new BlueFoldersTweak(),
+                new ExplorerDetailsTweak(),
+                new OneDriveTweak(),
+                new HomeGalleryTweak(),
+                new UnlockerTweak(),
+                new AlwaysOnTopTweak(),
+                new AnimationsTweak(),
+                new Win32PriorityTweak(),
+                new MmAgentTweak(),
+                new ReservedStorageTweak(),
             });
         }
     }

@@ -72,6 +72,11 @@ namespace WOTBO.Services.Tweaks
             TweakBackupSession.RecordFile(path);
         }
 
+        public void BackupDirectory(string path)
+        {
+            TweakBackupSession.RecordDirectory(path);
+        }
+
         public void BackupRegistryKey(RegistryHive hive, string path)
         {
             TweakBackupSession session = TweakBackupSession.Current;

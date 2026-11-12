@@ -39,14 +39,12 @@ namespace Project
         static string path_ui = tempfolder + @"\ui";
         static string path_dfkiller = tempfolder + @"\DFKiller";
         static string path_scheme = tempfolder + @"\scheme.pow";
-        static string smartctl = tempfolder + @"\smartctl.exe";
         private CheckBox checkBox_tweak_tooltips;
         private PictureBox back_ui_tooltips;
         string curver = (Assembly.GetExecutingAssembly().GetName().Version.ToString(2)).Trim();
         string exename = AppDomain.CurrentDomain.FriendlyName;
         string exepath = Assembly.GetEntryAssembly().Location;
         string contexpath = @"C:\Windows\wotbo.exe";
-        int mmMemory = 0;
         public string uilanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         string logfile = AppPaths.LogFilePath;
         public static string gpu;
@@ -591,7 +589,6 @@ namespace Project
             path_ui = workspace.Ui;
             path_dfkiller = workspace.DfKiller;
             path_scheme = workspace.Scheme;
-            smartctl = workspace.Smartctl;
             #endregion
             #region отключаем чеки
             if (AppServices.TweakCatalog.Get("main.regpack").Detect(AppServices.TweakContext) == TweakState.Applied)
@@ -619,7 +616,7 @@ namespace Project
                 checkBox_scheme.Enabled = false;
                 back_main_4.Visible = true;
             }
-            if (AppServices.Tweaks.IsApplied("ui.animations"))
+            if (AppServices.TweakCatalog.Get("ui.animations").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 animation = false;
                 Log.Info("Tweak:ui.animations", "анимации выключены");
@@ -713,7 +710,7 @@ namespace Project
                 checkBox_mtiititit.Enabled = false;
                 back_main_9.Visible = true;
             }
-            if (AppServices.Tweaks.IsApplied("main.mmagent"))
+            if (AppServices.TweakCatalog.Get("main.mmagent").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:main.mmagent", "mmagent был применён");
                 checkBox_mmagent.Enabled = false;
@@ -737,7 +734,7 @@ namespace Project
                 checkBoxUI_Buttons_1.Enabled = false;
                 back_ui_1.Visible = true;
             }
-            if (AppServices.Tweaks.IsApplied("ui.explorerdetails"))
+            if (AppServices.TweakCatalog.Get("ui.explorerdetails").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.explorerdetails", "litle_explorer_things был применён");
                 checkBoxUI_Buttons_2.Enabled = false;
@@ -768,13 +765,13 @@ namespace Project
             {
 
             } //shapka11
-            if (AppServices.Tweaks.IsApplied("pro.homegallery"))
+            if (AppServices.TweakCatalog.Get("pro.homegallery").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.homegallery", "pro_1 был применён");
                 checkBox_pro_1.Enabled = false;
 
             }
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(RegistryPaths.PriorityControl).GetValue("Win32PrioritySeparation")) != 0x00000002)
+            if (AppServices.TweakCatalog.Get("pro.win32priority").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.win32priority", "Win32PrioritySeparation был применён");
                 checkBox_pro_11.Enabled = false;
@@ -795,19 +792,13 @@ namespace Project
                 back_main_12.Visible = true;
                 label_kalorant.Visible = true;
             }
-            if (File.Exists($@"C:\Windows\System32\imageres.dll_bak"))
+            if (AppServices.TweakCatalog.Get("ui.bluefolders").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
-                Log.Info("Tweak:ui.bluefolders", "синие папки win 10 были применены");
+                Log.Info("Tweak:ui.bluefolders", "синие папки были применены");
                 checkBox_bluefolders.Enabled = false;
                 back_ui_5.Visible = true;
             }
-            if (File.Exists($@"C:\Windows\SystemResources\imageres.dll.mun_bak"))
-            {
-                Log.Info("Tweak:ui.bluefolders", "синие папки win 11 были применены");
-                checkBox_bluefolders.Enabled = false;
-                back_ui_5.Visible = true;
-            }
-            if (Registry.ClassesRoot.OpenSubKey(@"DesktopBackground\Shell\WOTBO")?.GetValue("") != null)
+            if (AppServices.TweakCatalog.Get("ui.wotbocontext").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.wotbocontext", "wotbo in contex был применён");
                 checkBox_wotboincontex.Enabled = false;
@@ -820,7 +811,7 @@ namespace Project
                 checkBox_disabledefender.Enabled = false;
                 back_main_12.Visible = false;
             }
-            if (!File.Exists($@"{SysFolder.UserProfile}\AppData\Local\Microsoft\OneDrive\OneDrive.exe"))
+            if (AppServices.TweakCatalog.Get("extra.onedrive").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:extra.onedrive", "OneDrive был удалён");
                 checkBox_onedrive.Enabled = false;
@@ -836,13 +827,13 @@ namespace Project
                 checkBox_pro_12.Enabled = false;
                 back_pro_12.Visible = true;
             }
-            if (File.Exists(@"C:\Windows\unlocker\Unlocker.exe"))
+            if (AppServices.TweakCatalog.Get("pro.unlocker").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.unlocker", "unclockewr был применён");
                 checkBox_pro_13.Enabled = false;
                 back_pro_13.Visible = true;
             }
-            if (File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
+            if (AppServices.TweakCatalog.Get("pro.alwaysontop").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:pro.alwaysontop", "AlwaysOnTop был применён");
                 checkBox_pro_14.Enabled = false;
@@ -878,7 +869,7 @@ namespace Project
                 checkBox_zalipanie.Enabled = false;
                 back_dop_4.Visible = true;
             }
-            if (File.Exists(@"C:\Windows\ExplorerBlurMica.dll"))
+            if (AppServices.TweakCatalog.Get("ui.mica").Detect(AppServices.TweakContext) == TweakState.Applied)
             {
                 Log.Info("Tweak:ui.mica", "ExplorerBlurMica был применён");
                 checkBox_mica.Enabled = false;
@@ -1174,8 +1165,8 @@ namespace Project
             {
                 using (TweakScope.Apply("main.reservedstorage"))
                 {
-                    AppServices.Processes.StartCaptured(@"Dism /Online /Set-ReservedStorageState /State:Disabled");
-                        checkBox_dism.Enabled = false;
+                    AppServices.TweakCatalog.Get("main.reservedstorage").Apply(AppServices.TweakContext);
+                    checkBox_dism.Enabled = false;
                     checkBox_dism.Checked = false;
                     back_main_2.Visible = true;
                 }
@@ -1239,85 +1230,8 @@ namespace Project
             {
                 using (TweakScope.Apply("main.mmagent"))
                 {
-                    File.WriteAllText(tempfolder + @"\prefetcher hdd.reg", Resources.prefetcher_hdd);
-                    File.WriteAllText(tempfolder + @"\prefetcher ssd.reg", Resources.prefetcher_ssd);
-                    //
-
-                        if (!File.Exists($"{tempfolder}\\DefenderKiller.zip"))
-                        {
-                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/smartctl.exe", $"{tempfolder}\\smartctl.exe");
-                        }
-
-
-                    Process getramGB = Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "powershell.exe",
-                        Arguments = "/command (Get-WmiObject Win32_PhysicalMemory).capacity | Measure-Object -Sum | Foreach {[int]($_.Sum/1GB)}",
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        RedirectStandardOutput = true,
-                    });
-                    string ramGB = ((getramGB.StandardOutput.ReadToEnd())).Trim();
-
-
-                    string systemdisk = Environment.GetEnvironmentVariable("windir").Replace(@"\Windows", "");
-                    //MessageBox.Show(systemdisk);
-                    Process checkssd = Process.Start(new ProcessStartInfo
-                    {
-                        FileName = $"{smartctl}",
-                        Arguments = $"-i {systemdisk}",
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        RedirectStandardOutput = true,
-                    });
-                    string ssd = ((checkssd.StandardOutput.ReadToEnd())).ToLower();
-                    //MessageBox.Show(ssd);
-                    bool isdiskssd = false;
-                    if (ssd.Contains("solid state device"))
-                        isdiskssd = true;
-                    if ((ssd.Contains("ssd")))
-                        isdiskssd = true;
-                    if ((ssd.Contains("nvme")))
-                        isdiskssd = true;
-                    if (isdiskssd)
-                    {
-                        TweakScope.BackupRegFile($"{tempfolder}/prefetcher ssd.reg");
-                        AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/prefetcher ssd.reg");
-                    }
-                    else
-                    {
-                        TweakScope.BackupRegFile($"{tempfolder}/prefetcher hdd.reg");
-                        AppServices.Processes.StartCaptured($"regedit.exe /s {tempfolder}/prefetcher hdd.reg");
-                    }
-                    int ramgbINT = Convert.ToInt32(ramGB) * 32;
-                    if (ramgbINT <= 128)
-                    {
-                        mmMemory = 128;
-                    }
-                    else if (ramgbINT >= 1024)
-                    {
-                        mmMemory = 1024;
-                    }
-                    else
-                    {
-                        mmMemory = ramgbINT;
-                    }
-                    if (win10 == false)
-                    {
-                        AppServices.Processes.StartPowerShell($"enable-mmagent -ApplicationPreLaunch");
-                        AppServices.Processes.StartPowerShell($"enable-mmagent -MC");
-                        AppServices.Processes.StartPowerShell($"disable-mmagent -PC");
-                        AppServices.Processes.StartPowerShell($"set-mmagent -moaf {mmMemory}");
-                    }
-                    else
-                    {
-                        AppServices.Processes.StartPowerShell($"enable-mmagent -ApplicationPreLaunch");
-                        AppServices.Processes.StartPowerShell($"disable-mmagent -MC");
-                        AppServices.Processes.StartPowerShell($"disable-mmagent -PC");
-                        AppServices.Processes.StartPowerShell($"set-mmagent -moaf {mmMemory}");
-                    }
-
-                        checkBox_mmagent.Enabled = false;
+                    AppServices.TweakCatalog.Get("main.mmagent").Apply(AppServices.TweakContext);
+                    checkBox_mmagent.Enabled = false;
                     checkBox_mmagent.Checked = false;
                     back_main_10.Visible = true;
                 }
@@ -1388,7 +1302,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.win32priority"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.PriorityControl);
+                    AppServices.TweakCatalog.Get("pro.win32priority").Apply(AppServices.TweakContext);
                     Win32Priority Win32Priority = new Win32Priority();
                     Win32Priority.ShowDialog();
                     checkBox_pro_11.Checked = false;
@@ -1457,23 +1371,13 @@ namespace Project
             }
             if (checkBoxUI_Buttons_2.Checked)
             {
-                TweakScope.BackupRegFile($"{path_ui}/things.reg");
-                AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/things.reg");
-                AppServices.Processes.StartCaptured(@"rd /s /q ""%userprofile%\3D Objects\""");
-                if (!win10)
+                using (TweakScope.Apply("ui.explorerdetails"))
                 {
-                    AppServices.Processes.StartCaptured(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000001"" /f");
+                    AppServices.TweakCatalog.Get("ui.explorerdetails").Apply(AppServices.TweakContext);
+                    checkBoxUI_Buttons_2.Enabled = false;
+                    checkBoxUI_Buttons_2.Checked = false;
+                    back_ui_2.Visible = true;
                 }
-                else
-                {
-                    TweakScope.BackupRegFile($"{path_ui}/Taskmgr_win10_new.reg");
-                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/Taskmgr_win10_new.reg");
-                }
-
-                AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
-                checkBoxUI_Buttons_2.Enabled = false;
-                checkBoxUI_Buttons_2.Checked = false;
-                back_ui_2.Visible = true;
             }
             if (checkBoxUI_Buttons_4.Checked)
             {
@@ -1490,36 +1394,10 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.bluefolders"))
                 {
-                    TweakScope.BackupFile(@"C:\Windows\System32\imageres.dll");
-                    TweakScope.BackupFile(@"C:\Windows\SystemResources\imageres.dll.mun");
-                    if (win10)
-                    {
-                        File.WriteAllText(tempfolder + @"\blueiconsw10.bat", Resources.blueiconsw10);
-                            if (!File.Exists($"{tempfolder}\\imageres.zip"))
-                            {
-                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/imageres.zip", $"{tempfolder}\\imageres.zip");
-                                ZipFile.ExtractToDirectory($"{tempfolder}\\imageres.zip", tempfolder);
-                            }
-                        await AppServices.Processes.StartCapturedAsync($"{tempfolder}\\blueiconsw10.bat");
-                        checkBox_bluefolders.Checked = false;
-                        checkBox_bluefolders.Enabled = false;
-                        back_ui_5.Visible = true;
-                        //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders", 1);
-                    }
-                    else
-                    {
-                        File.WriteAllText(tempfolder + @"\blueicons.bat", Resources.blueicons);
-                            if (!File.Exists($"{tempfolder}\\BlueIcon_Minimal.zip"))
-                            {
-                                AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/BlueIcon_Minimal.zip", $"{tempfolder}\\BlueIcon_Minimal.zip");
-                                ZipFile.ExtractToDirectory($"{tempfolder}\\BlueIcon_Minimal.zip", tempfolder + "\\BlueIcon Minimal");
-                            }
-                        await AppServices.Processes.StartCapturedAsync($"{tempfolder}\\blueicons.bat");
-                        checkBox_bluefolders.Checked = false;
-                        checkBox_bluefolders.Enabled = false;
-                        back_ui_5.Visible = true;
-                        //AppServices.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders", 1);
-                    }
+                    AppServices.TweakCatalog.Get("ui.bluefolders").Apply(AppServices.TweakContext);
+                    checkBox_bluefolders.Checked = false;
+                    checkBox_bluefolders.Enabled = false;
+                    back_ui_5.Visible = true;
                 }
             }
             if (checkBox_contex.Checked)
@@ -1553,24 +1431,7 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.wotbocontext"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\WOTBO");
-                    TweakScope.BackupFile(@"C:\Windows\gear.ico");
-                    TweakScope.BackupFile(@"C:\Windows\wotbo.exe");
-                    if (!File.Exists(@"C:\Windows\gear.ico"))
-                    {
-                        File.WriteAllBytes(tempfolder + @"\gear.zip", Resources.gear);
-                        ZipFile.ExtractToDirectory(tempfolder + @"\gear.zip", "C:\\Windows");
-                    }
-                    RegistryKey key = Registry.ClassesRoot.CreateSubKey(@"DesktopBackground\Shell\WOTBO", true);
-                    AppServices.Registry.WriteValue(key, "", "WOTBO");
-                    AppServices.Registry.WriteValue(key, "icon", @"C:\Windows\gear.ico");//вставить ico
-                    key.CreateSubKey("command");
-                    key.Close();
-                    if (!File.Exists(@"C:\Windows\wotbo.exe"))
-                    {
-                        File.Copy(exepath, @"C:\Windows\wotbo.exe");
-                    }
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"DesktopBackground\Shell\WOTBO\command", "", contexpath);
+                    AppServices.TweakCatalog.Get("ui.wotbocontext").Apply(AppServices.TweakContext);
                     checkBox_wotboincontex.Checked = false;
                     checkBox_wotboincontex.Enabled = false;
                     back_ui_8.Visible = true;
@@ -1603,16 +1464,7 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.mica"))
                 {
-                        if (!File.Exists($"{tempfolder}\\Release_x64.zip"))
-                        {
-                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/Release_x64.zip", $"{tempfolder}\\Release_x64.zip");
-                            ZipFile.ExtractToDirectory($"{tempfolder}\\Release_x64.zip", tempfolder);
-                        }
-                    TweakScope.BackupFile(@"C:\Windows\ExplorerBlurMica.dll");
-                    TweakScope.BackupFile(@"C:\Windows\config.ini");
-                    File.Copy($@"{tempfolder}\Release\ExplorerBlurMica.dll", @"C:\Windows\ExplorerBlurMica.dll");
-                    File.Copy($@"{tempfolder}\Release\config.ini", @"C:\Windows\config.ini");
-                    AppServices.Processes.StartCaptured($"regsvr32 /s C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
+                    AppServices.TweakCatalog.Get("ui.mica").Apply(AppServices.TweakContext);
                     checkBox_mica.Enabled = false;
                     checkBox_mica.Checked = false;
                     back_ui_11.Visible = true;
@@ -1622,8 +1474,9 @@ namespace Project
             {
                 using (TweakScope.Apply("ui.animations"))
                 {
+                    AppServices.TweakCatalog.Get("ui.animations").Apply(AppServices.TweakContext);
                     animation = false;
-                        back_animations.Visible = true;
+                    back_animations.Visible = true;
                     checkBox_animation.Checked = false;
                     checkBox_animation.Enabled = false;
                 }
@@ -1634,29 +1487,7 @@ namespace Project
             {
                 using (TweakScope.Apply("extra.onedrive"))
                 {
-                    #region new method
-                    // Массив с путями к файлу OneDriveSetup.exe
-                    string[] OneDriveSetup = Directory.GetFiles(@"C:\Windows\System32", "OneDriveSetup.exe", SearchOption.TopDirectoryOnly)
-                                                      .Concat(Directory.GetFiles(@"C:\Windows\SysWOW64", "OneDriveSetup.exe", SearchOption.TopDirectoryOnly))
-                                                      .ToArray();
-
-                    // Проверка наличия хотя бы одного пути к файлу
-                    if (OneDriveSetup.Length > 0)
-                    {
-                        // Путь к первому найденному файлу
-                        string OneDriveSetupPath = OneDriveSetup[0];
-                        TweakScope.BackupFile(OneDriveSetupPath);
-                        Log.Info("Tweak:extra.onedrive", $"путь к Onedrive найден - {OneDriveSetupPath}, переходим к удалению");
-
-                        // Вызов команды для деинсталляции OneDrive
-                        await AppServices.Processes.StartCapturedAsync($"{OneDriveSetupPath} /uninstall");
-                    }
-                    else
-                    {
-                        // Логирование ошибки, если файл не найден
-                        Log.Warn("Tweak:extra.onedrive", "Файл OneDriveSetup.exe не найден");
-                    }
-                    #endregion
+                    AppServices.TweakCatalog.Get("extra.onedrive").Apply(AppServices.TweakContext);
                     checkBox_onedrive.Checked = false;
                     checkBox_onedrive.Enabled = false;
                 }
@@ -1771,20 +1602,9 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.homegallery"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.LocalMachine, RegistryPaths.Explorer);
-                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}");
-                    TweakScope.BackupRegistryKey(RegistryHive.CurrentUser, @"Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}");
-                    {  //HomeDelete
-                        AppServices.Processes.StartCaptured(@"reg add ""HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"" /v ""HubMode"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
-                        AppServices.Processes.RunSuper(@"cmd.exe /c reg add ""HKCR\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000000"" /f", tempfolder + @"\su.exe");
-                        //GaleryDelete
-                        AppServices.Processes.StartCaptured("reg add \"HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}\" /v \"System.IsPinnedToNameSpaceTree\" /t REG_DWORD /d \"00000000\" /f >nul 2>&1");
-                        AppServices.Processes.RunSuper(@"cmd.exe /c reg add ""HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1", tempfolder + @"\su.exe");
-                        //restart explorer
-                        AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe && timeout /t 1 && explorer.exe");
-                                checkBox_pro_1.Checked = false;
-                        checkBox_pro_1.Enabled = false;
-                    }
+                    AppServices.TweakCatalog.Get("pro.homegallery").Apply(AppServices.TweakContext);
+                    checkBox_pro_1.Checked = false;
+                    checkBox_pro_1.Enabled = false;
                 }
             } //disable main & gallery folder in explorer.exe
             if (checkBox_pro_3.Checked)
@@ -1856,28 +1676,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.unlocker"))
                 {
-                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"*\shell\Уничтожить");
-                    TweakScope.BackupRegistryKey(RegistryHive.ClassesRoot, @"Directory\shell\Уничтожить");
-                    TweakScope.BackupDirectory(@"C:\Windows\unlocker");
-                        if (!Directory.Exists($"{tempfolder}\\unlocker.zip"))
-                        {
-                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/unlocker.zip", $"{tempfolder}\\unlocker.zip");
-                            ZipFile.ExtractToDirectory($"{tempfolder}\\unlocker.zip", tempfolder);
-                        }
-                    if (!Directory.Exists($"C:\\Windows\\unlocker"))
-                    {
-                        Directory.Move($"{tempfolder}\\unlocker", $"C:\\Windows\\unlocker");
-                    }
-                    else
-                    {
-                        Directory.Delete($"C:\\Windows\\unlocker", true);
-                        Directory.Move($"{tempfolder}\\unlocker", $"C:\\Windows\\unlocker");
-                    }
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"*\shell\Уничтожить", "Icon", @"C:\Windows\unlocker\Icons\Unlocker.ico");
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"*\shell\Уничтожить\command", "", "\"C:\\Windows\\unlocker\\Unlocker.exe\" /contextMenu \"%1\"");
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"Directory\shell\Уничтожить", "", @"Уничтожить");
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"Directory\shell\Уничтожить", "Icon", @"C:\Windows\unlocker\Icons\Unlocker.ico");
-                    AppServices.Registry.WriteValue(RegistryHive.ClassesRoot, @"Directory\shell\Уничтожить\command", "", "\"C:\\Windows\\unlocker\\Unlocker.exe\" /contextMenu \"%1\"");
+                    AppServices.TweakCatalog.Get("pro.unlocker").Apply(AppServices.TweakContext);
                     checkBox_pro_13.Checked = false;
                     checkBox_pro_13.Enabled = false;
                     back_pro_13.Visible = true;
@@ -1887,13 +1686,7 @@ namespace Project
             {
                 using (TweakScope.Apply("pro.alwaysontop"))
                 {
-                    TweakScope.BackupFile(@"C:\Windows\AlwaysOnTop.exe");
-                        if (!File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
-                        {
-                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/AlwaysOnTop.exe", @"C:\Windows\AlwaysOnTop.exe");
-                        }
-                    AppServices.Registry.WriteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "AlwaysOnTop", @"C:\Windows\AlwaysOnTop.exe");
-                    Process.Start(@"C:\Windows\AlwaysOnTop.exe");
+                    AppServices.TweakCatalog.Get("pro.alwaysontop").Apply(AppServices.TweakContext);
                     checkBox_pro_14.Checked = false;
                     checkBox_pro_14.Enabled = false;
                     back_pro_14.Visible = true;
@@ -2299,7 +2092,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.reservedstorage"))
             {
-                AppServices.Processes.StartCaptured("Dism.exe /Online /Set-ReservedStorageState /State:Enabled");
+                AppServices.TweakCatalog.Get("main.reservedstorage").Rollback(AppServices.TweakContext);
                 //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "ReservedStorageState");
                 checkBox_dism.Enabled = true;
                 checkBox_dism.Checked = false;
@@ -2377,6 +2170,7 @@ namespace Project
         {
             using (TweakScope.Rollback("main.mmagent"))
             {
+                AppServices.TweakCatalog.Get("main.mmagent").Rollback(AppServices.TweakContext);
                 checkBox_mmagent.Enabled = true;
                 checkBox_mmagent.Checked = false;
                 back_main_10.Visible = false;
@@ -2463,17 +2257,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.explorerdetails"))
             {
-                AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/un_things.reg");
-                if (!win10)
-                {
-                    AppServices.Processes.StartCaptured(@"reg add ""HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"" /v ""UseCompactMode"" /t REG_DWORD /d ""00000000"" /f");
-                }
-                else
-                {
-                    AppServices.Processes.StartCaptured($"regedit.exe /s {path_ui}/Taskmgr_win10_default.reg");
-                }
-
-                AppServices.Processes.StartCaptured("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
+                AppServices.TweakCatalog.Get("ui.explorerdetails").Rollback(AppServices.TweakContext);
                 checkBoxUI_Buttons_2.Enabled = true;
                 checkBoxUI_Buttons_2.Checked = false;
                 back_ui_2.Visible = false;
@@ -2494,16 +2278,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.bluefolders"))
             {
-                if (win10)
-                {
-                    File.WriteAllText(tempfolder + @"\deficonsw10.bat", Resources.deficonsw10);
-                    AppServices.Processes.StartCaptured($"{tempfolder}\\deficonsw10.bat");
-                }
-                else
-                {
-                    File.WriteAllText(tempfolder + @"\defblueicons.bat", Resources.defblueicons);
-                    AppServices.Processes.StartCaptured($"{tempfolder}\\defblueicons.bat");
-                }
+                AppServices.TweakCatalog.Get("ui.bluefolders").Rollback(AppServices.TweakContext);
                 checkBox_bluefolders.Checked = false;
                 checkBox_bluefolders.Enabled = true;
                 //AppServices.Registry.DeleteValue(RegistryHive.CurrentUser, RegistryPaths.AppRoot, "bluefolders");
@@ -2535,15 +2310,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.wotbocontext"))
             {
-                Registry.ClassesRoot.DeleteSubKeyTree(@"DesktopBackground\Shell\WOTBO");
-                if (File.Exists(@"C:\Windows\gear.ico"))
-                {
-                    File.Delete(@"C:\Windows\gear.ico");
-                }
-                if (File.Exists(@"C:\Windows\wotbo.exe"))
-                {
-                    File.Delete(contexpath);
-                }
+                AppServices.TweakCatalog.Get("ui.wotbocontext").Rollback(AppServices.TweakContext);
                 back_ui_8.Visible = false;
                 checkBox_wotboincontex.Enabled = true;
             }
@@ -2566,14 +2333,11 @@ namespace Project
                 checkBox_ffmpeg.Enabled = true;
             }
         } //ffmpeg
-        async void back_ui_11_Click(object sender, EventArgs e)
+        void back_ui_11_Click(object sender, EventArgs e)
         {
             using (TweakScope.Rollback("ui.mica"))
             {
-                AppServices.Processes.StartCaptured($"regsvr32 /s /u C:\\Windows\\ExplorerBlurMica.dll & taskkill /f /im explorer.exe & explorer.exe & timeout /t 1 & explorer.exe");
-                await Task.Delay(1000);
-                File.Delete(@"C:\Windows\ExplorerBlurMica.dll");
-                File.Delete(@"C:\Windows\config.ini");
+                AppServices.TweakCatalog.Get("ui.mica").Rollback(AppServices.TweakContext);
                 checkBox_mica.Enabled = true;
                 checkBox_mica.Checked = false;
                 back_ui_11.Visible = false;
@@ -2583,6 +2347,7 @@ namespace Project
         {
             using (TweakScope.Rollback("ui.animations"))
             {
+                AppServices.TweakCatalog.Get("ui.animations").Rollback(AppServices.TweakContext);
                 animation = true;
                 back_animations.Visible = false;
                 checkBox_animation.Enabled = true;
@@ -2642,7 +2407,10 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.homegallery"))
             {
-
+                AppServices.TweakCatalog.Get("pro.homegallery").Rollback(AppServices.TweakContext);
+                checkBox_pro_1.Checked = false;
+                checkBox_pro_1.Enabled = true;
+                back_pro_1.Visible = false;
             }
         }
         void back_pro_3_Click(object sender, EventArgs e)
@@ -2686,7 +2454,7 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.win32priority"))
             {
-                AppServices.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.PriorityControl, "Win32PrioritySeparation", 0x00000002);
+                AppServices.TweakCatalog.Get("pro.win32priority").Rollback(AppServices.TweakContext);
                 checkBox_pro_11.Enabled = true;
                 checkBox_pro_11.Checked = false;
                 back_pro_11.Visible = false;
@@ -2707,31 +2475,21 @@ namespace Project
         {
             using (TweakScope.Rollback("pro.unlocker"))
             {
-                if (Directory.Exists($"C:\\Windows\\unlocker"))
-                {
-                    Directory.Delete($"C:\\Windows\\unlocker", true);
-                }
-                Registry.ClassesRoot.DeleteSubKeyTree(@"*\shell\Уничтожить");
-                Registry.ClassesRoot.DeleteSubKeyTree(@"Directory\shell\Уничтожить");
+                AppServices.TweakCatalog.Get("pro.unlocker").Rollback(AppServices.TweakContext);
                 checkBox_pro_13.Checked = false;
                 checkBox_pro_13.Enabled = true;
                 back_pro_13.Visible = false;
             }
         }
-        async void back_pro_14_Click(object sender, EventArgs e)
+        void back_pro_14_Click(object sender, EventArgs e)
         {
             using (TweakScope.Rollback("pro.alwaysontop"))
             {
                 AppServices.Processes.StartCaptured("taskkill /f /im AlwaysOnTop.exe");
-                AppServices.Registry.DeleteValue(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "AlwaysOnTop");
+                AppServices.TweakCatalog.Get("pro.alwaysontop").Rollback(AppServices.TweakContext);
                 checkBox_pro_14.Checked = false;
                 checkBox_pro_14.Enabled = true;
                 back_pro_14.Visible = false;
-                await Task.Delay(1000);
-                if (File.Exists(@"C:\Windows\AlwaysOnTop.exe"))
-                {
-                    File.Delete(@"C:\Windows\AlwaysOnTop.exe");
-                }
             }
         }
 
