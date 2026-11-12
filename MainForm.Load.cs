@@ -111,8 +111,9 @@ namespace WOTBO
         async void MainForm_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
-            Size = Dpi.ScaleSize(this, 390, 305);
+            ApplyWindowSize();
             CenterToScreen();
+            Log.Debug("UI", $"dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
             SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula

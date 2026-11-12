@@ -313,6 +313,31 @@ namespace WOTBO
             notifier.Show(title, message, icon);
         }
 
+        /// <summary>
+        /// Размер окна по фактическим границам PanelMain после автоскейла.
+        /// Не 390×305, потому что PanelMain шире/выше и на 125–200 % край
+        /// правой колонки мог обрезаться.
+        /// </summary>
+        private void ApplyWindowSize()
+        {
+            if (PanelMain == null) return;
+
+            int width = Math.Max(390, PanelMain.Right);
+            int height = Math.Max(305, PanelMain.Bottom);
+            ClientSize = new Size(width, height);
+        }
+
+        protected override void OnDpiChanged(DpiChangedEventArgs e)
+        {
+            base.OnDpiChanged(e);
+
+            if (!IsHandleCreated || PanelMain == null) return;
+
+            ApplyWindowSize();
+            CenterToScreen();
+            Log.Debug("UI", $"DPI changed {e.DeviceDpiOld}->{e.DeviceDpiNew}, client={ClientSize.Width}x{ClientSize.Height}");
+        }
+
         #endregion
         #region закрытие
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
