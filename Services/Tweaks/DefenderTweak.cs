@@ -1,160 +1,200 @@
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Management;
+using Microsoft.Win32;
+using WOTBO.Services.Registry;
 
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// Отключение Defender через defendnot (WSC fake AV).
-    /// Требует интернет: команда загружается с dnot.sh.
+    /// Отключение Defender.
+    ///
+    /// Кроме прежних .reg-пакетов добавлены актуальные ветки политик и служб
+    /// для 24H2/25H2/26H2. Tamper Protection реестром не отключается — об
+    /// этом пишется предупреждение.
     /// </summary>
     public sealed class DefenderTweak : TweakBase
     {
-        private const string LogCategory = "Tweak:main.defender";
-        private const string AvName = "WOTBO.PRO";
-        private const string InstallCommand =
-            "& ([ScriptBlock]::Create((irm https://dnot.sh/))) --name \"WOTBO.PRO\" --firewall --silent";
-        private const string DisableCommand =
-            "& ([ScriptBlock]::Create((irm https://dnot.sh/))) --disable";
+        private static readonly string[] ModernServices =
+        {
+            "WinDefend",
+            "WdNisSvc",
+            "Sense",
+            "SecurityHealthService",
+        };
 
-        public override string Id { get { return "main.defender"; } }
-        public override string Category { get { return "Main"; } }
+        public override string Id
+        {
+            get { return "main.defender"; }
+        }
+
+        public override string Category
+        {
+            get { return "Main"; }
+        }
 
         public override TweakState Detect(TweakContext context)
         {
-            return IsDefenderDisabled() ? TweakState.Applied : TweakState.NotApplied;
+            return context.Store.IsApplied(Id)
+                ? TweakState.Applied
+                : TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)
         {
-            if (!context.Network.IsAvailable())
+            bool win10 = context.WindowsVersion.Detect().IsWindows10;
+            string root = context.Workspace.Regpack;
+
+            if (win10)
             {
-                context.Log.Warn(LogCategory, "нет интернета — defendnot не запущен");
-                return;
+                RunReg(context, Path.Combine(root, "w10", "win10defenderX.reg"), true);
+            }
+            else
+            {
+                RunReg(context, Path.Combine(root, "w11", "win11defenderX.reg"), true);
+                SetWebThreatServices(context, true);
             }
 
-            string output = RunScript(context, InstallCommand, "defendnot-apply.ps1");
-            context.Log.Info(LogCategory, "defendnot: " + output.Trim());
+            ApplyModernPolicy(context);
+            RunReg(context, Path.Combine(root, "antimalwareserviceexecutable", "!AIO_OFF.reg"), true);
 
-            if (!IsDefenderDisabled())
-            {
-                context.Log.Warn(LogCategory, "defendnot завершился, но Defender не подтверждён как отключённый");
-            }
+            context.Log.Warn(
+                "Tweak:main.defender",
+                "Tamper Protection реестром не отключается; если она включена, часть ключей может игнорироваться");
         }
 
         public override void Rollback(TweakContext context)
         {
-            if (!context.Network.IsAvailable())
+            bool win10 = context.WindowsVersion.Detect().IsWindows10;
+            string root = context.Workspace.Regpack;
+
+            if (win10)
             {
-                context.Log.Warn(LogCategory, "нет интернета — defendnot --disable не запущен");
+                RunReg(context, Path.Combine(root, "w10", "win10defenderX_restore.reg"), true);
+            }
+            else
+            {
+                RunReg(context, Path.Combine(root, "w11", "win11defenderX_restore.reg"), true);
+                SetWebThreatServices(context, false);
+            }
+
+            RollbackModernPolicy(context);
+            RunReg(context, Path.Combine(root, "antimalwareserviceexecutable", "AIO_ON.reg"), true);
+        }
+
+        private static void ApplyModernPolicy(TweakContext context)
+        {
+            TryWrite(context, RegistryPaths.DefenderPolicy, "DisableAntiSpyware", 1);
+            TryWrite(context, RegistryPaths.DefenderPolicy, "DisableAntiVirus", 1);
+            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableRealtimeMonitoring", 1);
+            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableBehaviorMonitoring", 1);
+            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableOnAccessProtection", 1);
+            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableScanOnRealtimeEnable", 1);
+            TryWrite(context, RegistryPaths.DefenderSpynet, "SpynetReporting", 0);
+            TryWrite(context, RegistryPaths.DefenderSpynet, "SubmitSamplesConsent", 2);
+
+            foreach (string service in ModernServices)
+            {
+                TryWrite(context, RegistryPaths.Services + "\\" + service, "Start", 4);
+            }
+        }
+
+        private static void RollbackModernPolicy(TweakContext context)
+        {
+            TryDelete(context, RegistryPaths.DefenderPolicy, "DisableAntiSpyware");
+            TryDelete(context, RegistryPaths.DefenderPolicy, "DisableAntiVirus");
+            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableRealtimeMonitoring");
+            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableBehaviorMonitoring");
+            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableOnAccessProtection");
+            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableScanOnRealtimeEnable");
+            TryDelete(context, RegistryPaths.DefenderSpynet, "SpynetReporting");
+            TryDelete(context, RegistryPaths.DefenderSpynet, "SubmitSamplesConsent");
+
+            foreach (string service in ModernServices)
+            {
+                TryWrite(context, RegistryPaths.Services + "\\" + service, "Start", 2);
+            }
+        }
+
+        private static void SetWebThreatServices(TweakContext context, bool apply)
+        {
+            IReadOnlyList<string> services;
+            try
+            {
+                services = context.Registry.GetSubKeyNames(
+                    RegistryHive.LocalMachine,
+                    RegistryPaths.Services);
+            }
+            catch (Exception ex)
+            {
+                context.Log.Warn("Tweak:main.defender", "не удалось перечислить службы: " + ex.Message);
                 return;
             }
 
-            string output = RunScript(context, DisableCommand, "defendnot-disable.ps1");
-            context.Log.Info(LogCategory, "defendnot --disable: " + output.Trim());
-
-            if (!IsDefenderDisabled())
+            foreach (string service in services)
             {
-                context.Log.Info(LogCategory, "Defender снова активен");
+                if (!service.StartsWith("webthreatdefusersvc_", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                string path = RegistryPaths.Services + "\\" + service;
+                if (apply)
+                {
+                    TryWrite(context, path, "LaunchProtected", 4);
+                    TryWrite(context, path, "Start", 4);
+                    TryWrite(context, path, "Start_old", 4);
+                }
+                else
+                {
+                    TryDelete(context, path, "LaunchProtected");
+                    TryWrite(context, path, "Start", 2);
+                    TryDelete(context, path, "Start_old");
+                }
             }
         }
 
-        public static bool IsDefenderDisabled()
+        private static void TryWrite(TweakContext context, string path, string name, int value)
         {
-            if (!IsFakeAvRegistered())
-            {
-                return false;
-            }
-
-            // Если WMI Defender недоступен, fake AV уже зарегистрирован — считаем отключённым.
             try
             {
-                using (var searcher = new ManagementObjectSearcher(
-                    @"root\Microsoft\Windows\Defender",
-                    "SELECT AntivirusEnabled, RealTimeProtectionEnabled FROM MSFT_MpComputerStatus"))
-                {
-                    foreach (ManagementObject item in searcher.Get())
-                    {
-                        bool antivirus = Convert.ToBoolean(item["AntivirusEnabled"]);
-                        bool realtime = Convert.ToBoolean(item["RealTimeProtectionEnabled"]);
-                        return !antivirus && !realtime;
-                    }
-                }
+                context.Registry.WriteValue(RegistryHive.LocalMachine, path, name, value, RegistryValueKind.DWord);
             }
-            catch
+            catch (Exception ex)
             {
-                return true;
+                context.Log.Warn("Tweak:main.defender", "не удалось записать " + path + "\\" + name + ": " + ex.Message);
             }
-
-            return true;
         }
 
-        private static bool IsFakeAvRegistered()
+        private static void TryDelete(TweakContext context, string path, string name)
         {
             try
             {
-                using (var searcher = new ManagementObjectSearcher(
-                    @"root\SecurityCenter2",
-                    "SELECT displayName FROM AntiVirusProduct"))
-                {
-                    foreach (ManagementObject item in searcher.Get())
-                    {
-                        string name = Convert.ToString(item["displayName"]);
-                        if (name.IndexOf(AvName, StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            return true;
-                        }
-                    }
-                }
+                context.Registry.DeleteValue(RegistryHive.LocalMachine, path, name);
             }
-            catch
+            catch (Exception ex)
             {
+                context.Log.Warn("Tweak:main.defender", "не удалось удалить " + path + "\\" + name + ": " + ex.Message);
             }
-
-            return false;
         }
 
-        private static string RunScript(TweakContext context, string command, string fileName)
+        private static void RunReg(TweakContext context, string path, bool elevated)
         {
-            string script = Path.Combine(context.Workspace.Root, fileName);
-            string log = Path.Combine(context.Workspace.Root, "defendnot.log");
-            File.WriteAllText(
-                script,
-                "$ErrorActionPreference = 'Continue'\r\n" + command + " *> \"" + log + "\"\r\n");
-
-            string powershell = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Windows),
-                @"System32\WindowsPowerShell\v1.0\powershell.exe");
-
-            try
+            if (!File.Exists(path))
             {
-                using (var process = Process.Start(new ProcessStartInfo
-                {
-                    FileName = powershell,
-                    Arguments = "-NoProfile -ExecutionPolicy Bypass -File \"" + script + "\"",
-                    UseShellExecute = true,
-                    WindowStyle = ProcessWindowStyle.Normal,
-                }))
-                {
-                    if (process != null)
-                    {
-                        process.WaitForExit();
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                return "powershell start failed: " + exception.Message;
+                context.Log.Warn("Tweak:main.defender", "файл не найден: " + path);
+                return;
             }
 
-            try
+            context.BackupRegFile(path);
+            string command = "regedit.exe /s \"" + path + "\"";
+            if (elevated)
             {
-                return File.Exists(log) ? File.ReadAllText(log) : string.Empty;
+                context.Processes.RunSuper(command, context.Workspace.SuExecutable);
             }
-            catch
+            else
             {
-                return string.Empty;
+                context.Processes.StartCaptured(command);
             }
         }
     }

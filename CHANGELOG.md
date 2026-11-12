@@ -64,8 +64,6 @@
 - Обновлены статические ссылки: FastStone `FSViewerSetup85.exe`,
   HWiNFO `hwi64_860.exe`.
 - AnyDesk заменён на RustDesk с парсером последней версии.
-- `main.defender` заменён на `es3n1n/defendnot`: WSC fake AV `WOTBO.PRO`,
-  интернет обязателен, состояние проверяется через WSC/WMI.
 - `ui.mica` обновляется из последнего релиза `Maplespe/ExplorerBlurMica`
   с fallback на `2.1.0`.
 - EULA переписана, получила тёмную тему и компактный размер; пункт про
