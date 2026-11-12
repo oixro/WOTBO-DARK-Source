@@ -386,6 +386,8 @@ public sealed class TweakUiBinder
   5. `ProTweaks`: Home/Gallery, Windows Update, CSRSS, Bufferbloat, Unlocker,
      AlwaysOnTop.
 - Каждый твик: `Detect`, `Apply`, `Rollback`, без ссылок на контролы.
+- **Статус:** выполнено — сорок восемь твиков в `TweakCatalog`, `Form1`
+  только вызывает `Detect/Apply/Rollback` и обновляет чекбоксы/стрелки.
 - **DoD:** для каждого твика проверено: detect до/после, apply, rollback,
   повторный apply; состояние чекбокса и стрелки отката совпадает с реестром.
 

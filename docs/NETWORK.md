@@ -87,6 +87,25 @@ endpoint — для них остаются статические ссылки.
 ошибке открывают прежний статический URL. FFmpeg-твик использует тот же
 сервис; при недоступности API остаётся fallback на 7.1.
 
+## Ресурсы твиков
+
+Часть твиков скачивает вспомогательные файлы из
+`raw.githubusercontent.com/oixro/WOTBO/main/resources/`:
+
+```text
+Release_x64.zip       ui.mica
+imageres.zip          ui.bluefolders (Windows 10)
+BlueIcon_Minimal.zip  ui.bluefolders (Windows 11)
+unlocker.zip          pro.unlocker
+AlwaysOnTop.exe       pro.alwaysontop
+smartctl.exe          main.mmagent
+```
+
+`gear.zip` для `ui.wotbocontext` и `scheme.pow` для `main.powerscheme`
+остаются встроенными ресурсами. Все загрузки идут через
+`INetworkService.DownloadFile`, ошибки попадают в лог с категорией
+`Network`.
+
 ## Что осталось
 
 - `DownloadService` с прогрессом и отменой — по мере необходимости.
