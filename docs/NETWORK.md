@@ -78,12 +78,12 @@ obs          obsproject/obs-studio, Windows-x64-Installer.exe
 qbittorrent  qbittorrent/qBittorrent, _x64_setup.exe
 klite        codecguide.com, K-Lite_*_Mega.exe
 wiztree      diskanalyzer.com, wiztree_*_portable.zip
-dotnet6      dotnet release-metadata, dotnet-runtime-*-win-x64.exe
+rustdesk     rustdesk/rustdesk, x86_64.exe
 ```
 
 Кнопки К-Lite, WizTree и .NET 6 также используют latest с fallback.
-HWiNFO, MSI Afterburner, FastStone, CentBrowser, VC++ Runtimes и
-CrystalDiskInfo отдают 403/404 либо не имеют стабильного машинного
+HWiNFO, MSI Afterburner, FastStone, CentBrowser и VC++ Runtimes
+отдают 403/404 либо не имеют стабильного машинного
 endpoint — для них остаются статические ссылки.
 
 Кнопки вкладки «Программы» описаны в `App/ProgramLinks.cs` и сначала пробуют

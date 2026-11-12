@@ -57,7 +57,6 @@ namespace WOTBO
             this.checkBox_mobile_traffic = new System.Windows.Forms.CheckBox();
             this.checkBox_WinSxS = new System.Windows.Forms.CheckBox();
             this.checkBox_picture_cache = new System.Windows.Forms.CheckBox();
-            this.label_download_23 = new System.Windows.Forms.Label();
             this.label_download_21 = new System.Windows.Forms.Label();
             this.label_download_20 = new System.Windows.Forms.Label();
             this.label_download_18 = new System.Windows.Forms.Label();
@@ -72,7 +71,6 @@ namespace WOTBO
             this.label_download_4 = new System.Windows.Forms.Label();
             this.label_download_3 = new System.Windows.Forms.Label();
             this.label_download_2 = new System.Windows.Forms.Label();
-            this.label_download_1 = new System.Windows.Forms.Label();
             this.label_ddu = new System.Windows.Forms.Label();
             this.label_nvcleaninstall = new System.Windows.Forms.Label();
             this.checkBox_dopNVIDIA_tweaks = new System.Windows.Forms.CheckBox();
@@ -143,8 +141,6 @@ namespace WOTBO
             this.label7 = new System.Windows.Forms.Label();
             this.panel_sorry = new System.Windows.Forms.Panel();
             this.label_download_24 = new System.Windows.Forms.Label();
-            this.label_download_22 = new System.Windows.Forms.Label();
-            this.label_download_19 = new System.Windows.Forms.Label();
             this.label_download_16 = new System.Windows.Forms.Label();
             this.label_download_10 = new System.Windows.Forms.Label();
             this.label_download_9 = new System.Windows.Forms.Label();
@@ -632,29 +628,17 @@ namespace WOTBO
             this.checkBox_picture_cache.UseVisualStyleBackColor = false;
             this.checkBox_picture_cache.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
-            // label_download_23
-            // 
-            this.label_download_23.AutoSize = true;
-            this.label_download_23.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_download_23.ForeColor = System.Drawing.Color.White;
-            this.label_download_23.Location = new System.Drawing.Point(110, 185);
-            this.label_download_23.Name = "label_download_23";
-            this.label_download_23.Size = new System.Drawing.Size(101, 13);
-            this.label_download_23.TabIndex = 0;
-            this.label_download_23.Text = "22. CrystallDiskInfo";
-            this.toolTip1.SetToolTip(this.label_download_23, "Программа для мониторинга состояния дисков");
-            this.label_download_23.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_21
             // 
             this.label_download_21.AutoSize = true;
             this.label_download_21.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_21.ForeColor = System.Drawing.Color.White;
-            this.label_download_21.Location = new System.Drawing.Point(110, 145);
+            this.label_download_21.Location = new System.Drawing.Point(110, 125);
             this.label_download_21.Name = "label_download_21";
             this.label_download_21.Size = new System.Drawing.Size(143, 13);
             this.label_download_21.TabIndex = 0;
-            this.label_download_21.Text = "20. FastStone Image Viewer";
+            this.label_download_21.Text = "18. FastStone Image Viewer";
             this.toolTip1.SetToolTip(this.label_download_21, "Лучшая программа для просмотра фотографий");
             this.label_download_21.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -663,12 +647,12 @@ namespace WOTBO
             this.label_download_20.AutoSize = true;
             this.label_download_20.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_20.ForeColor = System.Drawing.Color.White;
-            this.label_download_20.Location = new System.Drawing.Point(110, 125);
+            this.label_download_20.Location = new System.Drawing.Point(110, 105);
             this.label_download_20.Name = "label_download_20";
             this.label_download_20.Size = new System.Drawing.Size(68, 13);
             this.label_download_20.TabIndex = 0;
-            this.label_download_20.Text = "19. AnyDesk";
-            this.toolTip1.SetToolTip(this.label_download_20, "Лучшая программа для удалённого управления компьютером");
+            this.label_download_20.Text = "17. RustDesk";
+            this.toolTip1.SetToolTip(this.label_download_20, "Открытый аналог AnyDesk для удалённого управления компьютером");
             this.label_download_20.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_18
@@ -680,7 +664,7 @@ namespace WOTBO
             this.label_download_18.Name = "label_download_18";
             this.label_download_18.Size = new System.Drawing.Size(65, 13);
             this.label_download_18.TabIndex = 0;
-            this.label_download_18.Text = "17. WizTree";
+            this.label_download_18.Text = "16. WizTree";
             this.toolTip1.SetToolTip(this.label_download_18, "Программа позволяющая опрелить чем занято место на диске");
             this.label_download_18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -693,7 +677,7 @@ namespace WOTBO
             this.label_download_17.Name = "label_download_17";
             this.label_download_17.Size = new System.Drawing.Size(91, 13);
             this.label_download_17.TabIndex = 0;
-            this.label_download_17.Text = "16. Cent Browser";
+            this.label_download_17.Text = "15. Cent Browser";
             this.toolTip1.SetToolTip(this.label_download_17, "Лучший браузер\r\n(Прокаченный Google Chrome, имеющий больше настроек)");
             this.label_download_17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -706,7 +690,7 @@ namespace WOTBO
             this.label_download_15.Name = "label_download_15";
             this.label_download_15.Size = new System.Drawing.Size(80, 13);
             this.label_download_15.TabIndex = 0;
-            this.label_download_15.Text = "14. HWINFO64";
+            this.label_download_15.Text = "13. HWINFO64";
             this.toolTip1.SetToolTip(this.label_download_15, "Одна из лучших программ для мониторинга состояния компьютера");
             this.label_download_15.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -719,7 +703,7 @@ namespace WOTBO
             this.label_download_14.Name = "label_download_14";
             this.label_download_14.Size = new System.Drawing.Size(80, 13);
             this.label_download_14.TabIndex = 0;
-            this.label_download_14.Text = "13. qBitTorrent";
+            this.label_download_14.Text = "12. qBitTorrent";
             this.toolTip1.SetToolTip(this.label_download_14, "Лучший торрент клиент");
             this.label_download_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -728,11 +712,11 @@ namespace WOTBO
             this.label_download_13.AutoSize = true;
             this.label_download_13.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_13.ForeColor = System.Drawing.Color.White;
-            this.label_download_13.Location = new System.Drawing.Point(3, 225);
+            this.label_download_13.Location = new System.Drawing.Point(3, 205);
             this.label_download_13.Name = "label_download_13";
             this.label_download_13.Size = new System.Drawing.Size(111, 13);
             this.label_download_13.TabIndex = 0;
-            this.label_download_13.Text = "12. K-Lite Codec Pack";
+            this.label_download_13.Text = "11. K-Lite Codec Pack";
             this.toolTip1.SetToolTip(this.label_download_13, "Лучший плеер для Windows");
             this.label_download_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -741,11 +725,11 @@ namespace WOTBO
             this.label_download_11.AutoSize = true;
             this.label_download_11.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_11.ForeColor = System.Drawing.Color.White;
-            this.label_download_11.Location = new System.Drawing.Point(3, 205);
+            this.label_download_11.Location = new System.Drawing.Point(3, 185);
             this.label_download_11.Name = "label_download_11";
             this.label_download_11.Size = new System.Drawing.Size(46, 13);
             this.label_download_11.TabIndex = 0;
-            this.label_download_11.Text = "11. OBS";
+            this.label_download_11.Text = "10. OBS";
             this.toolTip1.SetToolTip(this.label_download_11, "Лучшая программа для записи");
             this.label_download_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -754,11 +738,11 @@ namespace WOTBO
             this.label_download_8.AutoSize = true;
             this.label_download_8.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_8.ForeColor = System.Drawing.Color.White;
-            this.label_download_8.Location = new System.Drawing.Point(3, 145);
+            this.label_download_8.Location = new System.Drawing.Point(3, 125);
             this.label_download_8.Name = "label_download_8";
             this.label_download_8.Size = new System.Drawing.Size(54, 13);
             this.label_download_8.TabIndex = 0;
-            this.label_download_8.Text = "8. ShareX";
+            this.label_download_8.Text = "7. ShareX";
             this.toolTip1.SetToolTip(this.label_download_8, "Лучшая программа для скриншотов");
             this.label_download_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -767,11 +751,11 @@ namespace WOTBO
             this.label_download_6.AutoSize = true;
             this.label_download_6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_6.ForeColor = System.Drawing.Color.White;
-            this.label_download_6.Location = new System.Drawing.Point(3, 105);
+            this.label_download_6.Location = new System.Drawing.Point(3, 85);
             this.label_download_6.Name = "label_download_6";
             this.label_download_6.Size = new System.Drawing.Size(106, 13);
             this.label_download_6.TabIndex = 0;
-            this.label_download_6.Text = "6. C++ Redists pack";
+            this.label_download_6.Text = "5. C++ Redists pack";
             this.toolTip1.SetToolTip(this.label_download_6, "Необходимая библиотека для работы игр и программ");
             this.label_download_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -780,11 +764,11 @@ namespace WOTBO
             this.label_download_5.AutoSize = true;
             this.label_download_5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_5.ForeColor = System.Drawing.Color.White;
-            this.label_download_5.Location = new System.Drawing.Point(3, 85);
+            this.label_download_5.Location = new System.Drawing.Point(3, 65);
             this.label_download_5.Name = "label_download_5";
             this.label_download_5.Size = new System.Drawing.Size(54, 13);
             this.label_download_5.TabIndex = 0;
-            this.label_download_5.Text = "5. DirectX";
+            this.label_download_5.Text = "4. DirectX";
             this.toolTip1.SetToolTip(this.label_download_5, "Необходимая библиотека для работы игр и программ");
             this.label_download_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -793,11 +777,11 @@ namespace WOTBO
             this.label_download_4.AutoSize = true;
             this.label_download_4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_4.ForeColor = System.Drawing.Color.White;
-            this.label_download_4.Location = new System.Drawing.Point(3, 65);
+            this.label_download_4.Location = new System.Drawing.Point(3, 45);
             this.label_download_4.Name = "label_download_4";
             this.label_download_4.Size = new System.Drawing.Size(44, 13);
             this.label_download_4.TabIndex = 0;
-            this.label_download_4.Text = "4. 7-Zip";
+            this.label_download_4.Text = "3. 7-Zip";
             this.toolTip1.SetToolTip(this.label_download_4, "Лучший архиватор");
             this.label_download_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -806,11 +790,11 @@ namespace WOTBO
             this.label_download_3.AutoSize = true;
             this.label_download_3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_3.ForeColor = System.Drawing.Color.White;
-            this.label_download_3.Location = new System.Drawing.Point(3, 45);
+            this.label_download_3.Location = new System.Drawing.Point(3, 25);
             this.label_download_3.Name = "label_download_3";
             this.label_download_3.Size = new System.Drawing.Size(95, 13);
             this.label_download_3.TabIndex = 0;
-            this.label_download_3.Text = "3. Msi Afterburner";
+            this.label_download_3.Text = "2. Msi Afterburner";
             this.toolTip1.SetToolTip(this.label_download_3, "Программа для настройки видеокарты");
             this.label_download_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -819,26 +803,14 @@ namespace WOTBO
             this.label_download_2.AutoSize = true;
             this.label_download_2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_2.ForeColor = System.Drawing.Color.White;
-            this.label_download_2.Location = new System.Drawing.Point(3, 25);
+            this.label_download_2.Location = new System.Drawing.Point(3, 5);
             this.label_download_2.Name = "label_download_2";
             this.label_download_2.Size = new System.Drawing.Size(77, 13);
             this.label_download_2.TabIndex = 0;
-            this.label_download_2.Text = "2. Notepad++";
+            this.label_download_2.Text = "1. Notepad++";
             this.toolTip1.SetToolTip(this.label_download_2, "Лучшая замена блокнота с расширенным функционалом");
             this.label_download_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
-            // label_download_1
-            // 
-            this.label_download_1.AutoSize = true;
-            this.label_download_1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_download_1.ForeColor = System.Drawing.Color.White;
-            this.label_download_1.Location = new System.Drawing.Point(3, 5);
-            this.label_download_1.Name = "label_download_1";
-            this.label_download_1.Size = new System.Drawing.Size(97, 13);
-            this.label_download_1.TabIndex = 0;
-            this.label_download_1.Text = "1. Win 10 Tweaker";
-            this.toolTip1.SetToolTip(this.label_download_1, "Программа по расширенной настройке Windows");
-            this.label_download_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_ddu
             // 
@@ -1898,11 +1870,8 @@ namespace WOTBO
             // 
             this.panel_sorry.BackColor = System.Drawing.Color.Transparent;
             this.panel_sorry.Controls.Add(this.label_download_24);
-            this.panel_sorry.Controls.Add(this.label_download_23);
-            this.panel_sorry.Controls.Add(this.label_download_22);
             this.panel_sorry.Controls.Add(this.label_download_21);
             this.panel_sorry.Controls.Add(this.label_download_20);
-            this.panel_sorry.Controls.Add(this.label_download_19);
             this.panel_sorry.Controls.Add(this.label_download_18);
             this.panel_sorry.Controls.Add(this.label_download_17);
             this.panel_sorry.Controls.Add(this.label_download_16);
@@ -1919,7 +1888,6 @@ namespace WOTBO
             this.panel_sorry.Controls.Add(this.label_download_4);
             this.panel_sorry.Controls.Add(this.label_download_3);
             this.panel_sorry.Controls.Add(this.label_download_2);
-            this.panel_sorry.Controls.Add(this.label_download_1);
             this.panel_sorry.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel_sorry.Location = new System.Drawing.Point(1284, 33);
             this.panel_sorry.Name = "panel_sorry";
@@ -1932,36 +1900,14 @@ namespace WOTBO
             this.label_download_24.AutoSize = true;
             this.label_download_24.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_24.ForeColor = System.Drawing.Color.White;
-            this.label_download_24.Location = new System.Drawing.Point(110, 205);
+            this.label_download_24.Location = new System.Drawing.Point(110, 145);
             this.label_download_24.Name = "label_download_24";
             this.label_download_24.Size = new System.Drawing.Size(147, 13);
             this.label_download_24.TabIndex = 0;
-            this.label_download_24.Text = "23. AMD Auto-Detect Drivers";
+            this.label_download_24.Text = "19. AMD Auto-Detect Drivers";
             this.label_download_24.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
-            // label_download_22
             // 
-            this.label_download_22.AutoSize = true;
-            this.label_download_22.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_download_22.ForeColor = System.Drawing.Color.White;
-            this.label_download_22.Location = new System.Drawing.Point(110, 165);
-            this.label_download_22.Name = "label_download_22";
-            this.label_download_22.Size = new System.Drawing.Size(110, 13);
-            this.label_download_22.TabIndex = 0;
-            this.label_download_22.Text = "21. .NET 6.0 Runtime";
-            this.label_download_22.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
-            // 
-            // label_download_19
-            // 
-            this.label_download_19.AutoSize = true;
-            this.label_download_19.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_download_19.ForeColor = System.Drawing.Color.White;
-            this.label_download_19.Location = new System.Drawing.Point(110, 105);
-            this.label_download_19.Name = "label_download_19";
-            this.label_download_19.Size = new System.Drawing.Size(121, 13);
-            this.label_download_19.TabIndex = 0;
-            this.label_download_19.Text = "18. EpicGamesLauncher";
-            this.label_download_19.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_16
             // 
@@ -1972,7 +1918,7 @@ namespace WOTBO
             this.label_download_16.Name = "label_download_16";
             this.label_download_16.Size = new System.Drawing.Size(99, 13);
             this.label_download_16.TabIndex = 0;
-            this.label_download_16.Text = "15. Google Chrome";
+            this.label_download_16.Text = "14. Google Chrome";
             this.label_download_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_10
@@ -1980,11 +1926,11 @@ namespace WOTBO
             this.label_download_10.AutoSize = true;
             this.label_download_10.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_10.ForeColor = System.Drawing.Color.White;
-            this.label_download_10.Location = new System.Drawing.Point(3, 185);
+            this.label_download_10.Location = new System.Drawing.Point(3, 165);
             this.label_download_10.Name = "label_download_10";
             this.label_download_10.Size = new System.Drawing.Size(61, 13);
             this.label_download_10.TabIndex = 0;
-            this.label_download_10.Text = "10. Discord";
+            this.label_download_10.Text = "9. Discord";
             this.label_download_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_9
@@ -1992,11 +1938,11 @@ namespace WOTBO
             this.label_download_9.AutoSize = true;
             this.label_download_9.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_9.ForeColor = System.Drawing.Color.White;
-            this.label_download_9.Location = new System.Drawing.Point(3, 165);
+            this.label_download_9.Location = new System.Drawing.Point(3, 145);
             this.label_download_9.Name = "label_download_9";
             this.label_download_9.Size = new System.Drawing.Size(64, 13);
             this.label_download_9.TabIndex = 0;
-            this.label_download_9.Text = "9. Telegram";
+            this.label_download_9.Text = "8. Telegram";
             this.label_download_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_7
@@ -2004,11 +1950,11 @@ namespace WOTBO
             this.label_download_7.AutoSize = true;
             this.label_download_7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_download_7.ForeColor = System.Drawing.Color.White;
-            this.label_download_7.Location = new System.Drawing.Point(3, 125);
+            this.label_download_7.Location = new System.Drawing.Point(3, 105);
             this.label_download_7.Name = "label_download_7";
             this.label_download_7.Size = new System.Drawing.Size(50, 13);
             this.label_download_7.TabIndex = 0;
-            this.label_download_7.Text = "7. Steam";
+            this.label_download_7.Text = "6. Steam";
             this.label_download_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // panel2
@@ -2760,11 +2706,8 @@ namespace WOTBO
         private System.Windows.Forms.Panel panel_5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel_sorry;
-        private System.Windows.Forms.Label label_download_23;
-        private System.Windows.Forms.Label label_download_22;
         private System.Windows.Forms.Label label_download_21;
         private System.Windows.Forms.Label label_download_20;
-        private System.Windows.Forms.Label label_download_19;
         private System.Windows.Forms.Label label_download_18;
         private System.Windows.Forms.Label label_download_17;
         private System.Windows.Forms.Label label_download_16;
@@ -2781,7 +2724,6 @@ namespace WOTBO
         private System.Windows.Forms.Label label_download_4;
         private System.Windows.Forms.Label label_download_3;
         private System.Windows.Forms.Label label_download_2;
-        private System.Windows.Forms.Label label_download_1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox back_gpu_4;
         private System.Windows.Forms.PictureBox back_gpu_3;

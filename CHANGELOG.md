@@ -63,6 +63,9 @@
   (`390×305` × DPI), координаты в коде масштабируются через `Dpi`.
 - Обновлены статические ссылки: FastStone `FSViewerSetup85.exe`,
   HWiNFO `hwi64_860.exe`.
+- AnyDesk заменён на RustDesk с парсером последней версии.
+- Со страницы загрузок убраны Win10 Tweaker, Epic Games Launcher,
+  CrystalDiskInfo и .NET 6 Runtime.
 - Сайт: `https://wotbo.pro/` → `https://oixro.github.io/wotbo-site/`.
 - README сокращён до личных заметок; добавлен `CHANGELOG.md`.
 

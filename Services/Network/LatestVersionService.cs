@@ -98,16 +98,14 @@ namespace WOTBO.Services.Network
                     return GetLatestAssetUrlAsync("qbittorrent/qBittorrent", "_x64_setup.exe");
                 case "7zip":
                     return GetLatestAssetUrlAsync("ip7z/7zip", "-x64.exe");
-                case "crystaldiskinfo":
-                    return GetLatestAssetUrlAsync("CrystalDewWorld/CrystalDiskInfo", ".exe");
+                case "rustdesk":
+                    return GetLatestAssetUrlAsync("rustdesk/rustdesk", "x86_64.exe", ".exe");
                 case "ffmpeg":
                     return GetLatestAssetUrlAsync("GyanD/codexffmpeg", "essentials_build", ".zip");
                 case "klite":
                     return GetKLiteUrlAsync();
                 case "wiztree":
                     return GetWizTreeUrlAsync();
-                case "dotnet6":
-                    return GetDotNetRuntimeUrlAsync("6.0");
                 default:
                     return Task.FromResult<string>(null);
             }
@@ -165,34 +163,6 @@ namespace WOTBO.Services.Network
                 }
 
                 return null;
-            });
-        }
-
-        private Task<string> GetDotNetRuntimeUrlAsync(string major)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    string json = _network.DownloadString(
-                        "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/" + major + "/releases.json");
-                    Match match = Regex.Match(json, @"""release-version""\s*:\s*""([0-9.]+)""");
-                    if (!match.Success)
-                    {
-                        return null;
-                    }
-
-                    string version = match.Groups[1].Value;
-                    string url = "https://builds.dotnet.microsoft.com/dotnet/Runtime/" + version +
-                                 "/dotnet-runtime-" + version + "-win-x64.exe";
-                    _log.Info(Category, ".NET " + major + " -> " + version);
-                    return url;
-                }
-                catch (Exception ex)
-                {
-                    _log.Warn(Category, ".NET " + major + ": " + ex.Message);
-                    return null;
-                }
             });
         }
 

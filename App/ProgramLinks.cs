@@ -21,7 +21,6 @@ namespace WOTBO.App
 
         private static readonly Link[] Links =
         {
-            Direct("label_download_1", "https://win10tweaker.ru/"),
             Latest("label_download_2", "notepadpp", "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7.5/npp.8.7.5.Installer.x64.exe"),
             Direct("label_download_3", "https://www.msi.com/Landing/afterburner/graphics-cards"),
             Latest("label_download_4", "7zip", "https://www.7-zip.org/a/7z2409-x64.exe"),
@@ -38,11 +37,9 @@ namespace WOTBO.App
             Direct("label_download_16", "https://www.google.com/chrome/"),
             Direct("label_download_17", "https://static.centbrowser.com/win_stable/5.1.1130.129/centbrowser_5.1.1130.129_x64.exe"),
             Latest("label_download_18", "wiztree", "https://diskanalyzer.com/files/wiztree_4_23_portable.zip"),
-            Direct("label_download_19", "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncherInstaller.msi"),
-            Direct("label_download_20", "https://anydesk.com/ru/downloads/thank-you?dv=win_exe"),
+            Direct("label_download_18", "https://diskanalyzer.com/files/wiztree_4_23_portable.zip"),
+            Latest("label_download_20", "rustdesk", "https://github.com/rustdesk/rustdesk/releases/download/1.5.3/rustdesk-1.5.3-x86_64.exe"),
             Direct("label_download_21", "https://www.faststonesoft.net/DN/FSViewerSetup85.exe"),
-            Latest("label_download_22", "dotnet6", "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-6.0.28-windows-x64-installer"),
-            Latest("label_download_23", "crystaldiskinfo", "https://deac-riga.dl.sourceforge.net/project/crystaldiskinfo/9.2.3/CrystalDiskInfo9_2_3.exe"),
             Direct("label_download_24", "https://www.amd.com/en/support/download/drivers.html"),
             Direct("label_ddu", "https://www.wagnardsoft.com/display-driver-uninstaller-DDU-"),
             Direct("label_nvcleaninstall", "https://www.techpowerup.com/download/techpowerup-nvcleanstall/"),
