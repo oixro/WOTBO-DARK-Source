@@ -15,7 +15,7 @@ namespace WOTBO.Services.Storage
     /// <summary>
     /// DISM /Online /Get-ReservedStorageState.
     ///
-    /// Раньше запускался в инициализаторе статического поля Form1, из-за чего
+    /// Раньше запускался в инициализаторе статического поля MainForm, из-за чего
     /// DISM стартовал до Load и процесс не освобождался. Теперь — явный
     /// асинхронный вызов в Load.
     /// </summary>

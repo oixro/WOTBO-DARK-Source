@@ -5,7 +5,7 @@ using WOTBO.Services.Registry;
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// Registry-часть аудио-твика. Сам .reg-пакет запускает Form1,
+    /// Registry-часть аудио-твика. Сам .reg-пакет запускает MainForm,
     /// потому что он идёт через su.exe.
     /// </summary>
     public sealed class AudioTweak : TweakBase

@@ -4,7 +4,7 @@ using WOTBO.Services.Registry;
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// USB power saving. Registry-часть; .bat/.cmd запускает Form1,
+    /// USB power saving. Registry-часть; .bat/.cmd запускает MainForm,
     /// потому что там нужен текущий tempfolder.
     /// </summary>
     public sealed class UsbPowerTweak : TweakBase

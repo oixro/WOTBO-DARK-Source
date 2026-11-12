@@ -23,7 +23,7 @@ namespace WOTBO.Services.Processes
 
         /// <summary>
         /// Бывший <c>scmd</c>: <c>cmd /c command</c>. Если <paramref name="hidden"/>,
-        /// окно скрывается (так делали Form2/Form4).
+        /// окно скрывается (так делали EulaForm/MsiModeForm).
         /// </summary>
         void StartDetached(string command, bool hidden = false);
 

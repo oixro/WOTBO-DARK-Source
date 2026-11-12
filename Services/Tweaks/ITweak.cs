@@ -89,7 +89,7 @@ namespace WOTBO.Services.Tweaks
 
     /// <summary>
     /// Один твик: проверка состояния, применение и откат.
-    /// Не знает о чекбоксах и стрелках — это делает Form1.
+    /// Не знает о чекбоксах и стрелках — это делает MainForm.
     /// </summary>
     public interface ITweak
     {
