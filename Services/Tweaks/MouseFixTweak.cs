@@ -42,6 +42,7 @@ namespace WOTBO.Services.Tweaks
 
         private const string MousePath = @"Control Panel\Mouse";
         private const string DefaultUserMousePath = @".DEFAULT\Control Panel\Mouse";
+        private const int RawMouseThrottleDuration = 0x14;
 
         public override string Id
         {
@@ -59,11 +60,16 @@ namespace WOTBO.Services.Tweaks
             object speed = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "MouseSpeed");
             object xCurve = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseXCurve");
             object yCurve = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseYCurve");
+            object rawMouseThrottle = context.Registry.GetValue(
+                RegistryHive.CurrentUser,
+                MousePath,
+                "RawMouseThrottleDuration");
 
             return Convert.ToString(sensitivity) == "10"
                 && Convert.ToString(speed) == "0"
                 && BytesEqual(xCurve as byte[], FixXCurve)
                 && BytesEqual(yCurve as byte[], FixYCurve)
+                && Convert.ToInt32(rawMouseThrottle ?? -1) == RawMouseThrottleDuration
                 ? TweakState.Applied
                 : TweakState.NotApplied;
         }
@@ -89,6 +95,12 @@ namespace WOTBO.Services.Tweaks
             context.Registry.WriteValue(RegistryHive.CurrentUser, MousePath, "MouseSpeed", "0", RegistryValueKind.String);
             context.Registry.WriteValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseXCurve", FixXCurve, RegistryValueKind.Binary);
             context.Registry.WriteValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseYCurve", FixYCurve, RegistryValueKind.Binary);
+            context.Registry.WriteValue(
+                RegistryHive.CurrentUser,
+                MousePath,
+                "RawMouseThrottleDuration",
+                RawMouseThrottleDuration,
+                RegistryValueKind.DWord);
             context.Registry.WriteValue(RegistryHive.Users, DefaultUserMousePath, "MouseSpeed", "0", RegistryValueKind.String);
             context.Registry.WriteValue(RegistryHive.Users, DefaultUserMousePath, "MouseThreshold1", "0", RegistryValueKind.String);
             context.Registry.WriteValue(RegistryHive.Users, DefaultUserMousePath, "MouseThreshold2", "0", RegistryValueKind.String);
@@ -100,6 +112,7 @@ namespace WOTBO.Services.Tweaks
             // остальные значения восстановит TweakScope из бэкапа.
             context.Registry.WriteValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseXCurve", DefaultXCurve, RegistryValueKind.Binary);
             context.Registry.WriteValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseYCurve", DefaultYCurve, RegistryValueKind.Binary);
+            context.Registry.DeleteValue(RegistryHive.CurrentUser, MousePath, "RawMouseThrottleDuration");
         }
     }
 }
