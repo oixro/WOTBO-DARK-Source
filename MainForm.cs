@@ -85,6 +85,8 @@ namespace WOTBO
                 AnimationEnabled = () => animation,
             };
             SetupTweakBinders();
+            ProgramLinks.Attach(this, OpenUrl);
+            SetupNavigation();
 
             #region двигаем окно
             WindowDragBehavior.Attach(new List<Control> { LabelHead, PanelHead, logo });

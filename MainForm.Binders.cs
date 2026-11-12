@@ -64,8 +64,10 @@ namespace WOTBO
                 uncheckOnDetect);
 
             tweakBinders[id] = binder;
+            TweakHoverInfo.Register(checkBox.Name, id);
             if (rollback != null)
             {
+                TweakHoverInfo.Register(rollback.Name, id);
                 rollback.Click += (sender, args) => binder.Rollback();
             }
 
@@ -156,7 +158,8 @@ namespace WOTBO
 
             Bind("pro.homegallery", checkBox_pro_1, back_pro_1, "pro_1 был применён",
                 showRollbackOnApply: false, showRollbackOnDetect: false);
-            Bind("pro.windowsupdate", checkBox_pro_3, back_pro_3);
+            Bind("pro.windowsupdate", checkBox_pro_3, back_pro_3, "WindowsUpdate\\AU был применён",
+                uncheckOnDetect: true);
             Bind("pro.csrss", checkBox_CSRSS, back_dop_7, "csrss.exe priority был применён");
             Bind("pro.bufferbloat", checkBox_pro_12, back_pro_12, "bufferbloat был применён",
                 confirmApply: () => MessageBox.Show(
@@ -169,6 +172,9 @@ namespace WOTBO
             Bind("pro.unlocker", checkBox_pro_13, back_pro_13, "unclockewr был применён");
             Bind("pro.alwaysontop", checkBox_pro_14, back_pro_14, "AlwaysOnTop был применён",
                 inRollback: () => AppServices.Processes.StartCaptured("taskkill /f /im AlwaysOnTop.exe"));
+
+            TweakHoverInfo.Register(checkBox_ansel.Name, "gpu.ansel");
+            TweakHoverInfo.Register(back_gpu_4.Name, "gpu.ansel");
         }
         #endregion
     }

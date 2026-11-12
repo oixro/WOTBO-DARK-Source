@@ -29,71 +29,30 @@ namespace WOTBO
     public partial class MainForm
     {
         #region перемещение по пунктам
-        #region main    
-        void label1_Click(object sender, EventArgs e)
+        private void SetupNavigation()
         {
-            ChangePanel(panel1);
-            //panel1.Visible = true;
-            //panel1.Location = panel1.Location;
-            button_main_1.Visible = true;
-            button_main_2.Visible = true;
-            panel_main_navigate.Visible = true;
-            panel_main_navigate.Location = Dpi.Scale(this, 195, 284);
+            var navigation = new NavigationController(this, ChangePanel);
 
-        } //main        
-        void button_main_1_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel1);
-            //panel1.Visible = true;
-            //panel1.Location = panel1.Location;
-            button_main_1.Visible = true;
-            button_main_2.Visible = true;
-            panel_main_navigate.Visible = true;
-            panel_main_navigate.Location = Dpi.Scale(this, 195, 284);
-        }
-        void button_main_2_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel_main_2);
-            //panel_main_2.Visible = true;
-            //panel_main_2.Location = panel1.Location;
-            button_main_1.Visible = true;
-            button_main_2.Visible = true;
-            panel_main_navigate.Visible = true;
-            panel_main_navigate.Location = Dpi.Scale(this, 195, 284);
-        }
-        #endregion
-        #region ui
-        void label_interface_Click(object sender, EventArgs e)
-        {
+            navigation.Bind(label_main, panel1, panel_main_navigate, button_main_1, button_main_2);
+            navigation.Bind(button_main_1, panel1, panel_main_navigate, button_main_1, button_main_2);
+            navigation.Bind(button_main_2, panel_main_2, panel_main_navigate, button_main_1, button_main_2);
 
-            ChangePanel(panel_ui_1);
-            //panel_ui_1.Visible = true;
-            //panel_ui_1.Location = panel1.Location;
-            button_ui_new_1.Visible = true;
-            button_ui_new_2.Visible = true;
-            panel_ui_navigate.Visible = true;
-            panel_ui_navigate.Location = Dpi.Scale(this, 195, 284);
+            navigation.Bind(label_interface, panel_ui_1, panel_ui_navigate, button_ui_new_1, button_ui_new_2);
+            navigation.Bind(button_ui_new_1, panel_ui_1, panel_ui_navigate);
+            navigation.Bind(button_ui_new_2, panel_ui_2, panel_ui_navigate);
 
-        }//ui
-        void button_ui_1_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel_ui_1);
-            //panel_ui_1.Visible = true;
-            //panel_ui_1.Location = panel1.Location;
-            panel_ui_navigate.Visible = true;
+            navigation.Bind(label_dop, panel_dop, panel_dop_navigate, button_dop_new_1, button_dop_new_2);
+            navigation.Bind(button_dop_new_1, panel_dop, panel_dop_navigate);
+            navigation.Bind(button_dop_new_2, panel_dop_2, panel_dop_navigate);
+
+            navigation.Bind(label_progs, panel_sorry);
+            navigation.Bind(label_pc, panel_5);
+
+            label_gpu.Click += (sender, args) => ShowGpuPanel();
         }
-        void button_ui_2_Click(object sender, EventArgs e)
+
+        private void ShowGpuPanel()
         {
-            ChangePanel(panel_ui_2);
-            //panel_ui_2.Visible = true;
-            //panel_ui_2.Location = panel1.Location;
-            panel_ui_navigate.Visible = true;
-        }
-        #endregion
-        #region gpu
-        void label2_Click(object sender, EventArgs e)
-        {
-            #region directplay
             bool directplay = AppServices.TweakCatalog.Get("gpu.directplay").Detect(AppServices.TweakContext) == TweakState.Applied;
             if (directplay)
             {
@@ -102,49 +61,8 @@ namespace WOTBO
             }
 
             Log.Info("Tweak:gpu.directplay", $"DirectPlay установлен: {directplay}");
-            #endregion
             ChangePanel(panel2);
-        } //gpu
-        #endregion
-        #region dop
-        void label3_Click(object sender, EventArgs e) //dop
-        {
-            ChangePanel(panel_dop);
-            //panel_dop.Visible = true;
-            //panel_dop.Location = panel1.Location;
-            button_dop_new_1.Visible = true;
-            button_dop_new_2.Visible = true;
-            panel_dop_navigate.Visible = true;
-            panel_dop_navigate.Location = Dpi.Scale(this, 195, 284);
         }
-        void button_dop_new_1_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel_dop);
-            //panel_dop.Visible = true;
-            //panel_dop.Location = panel1.Location;
-            panel_dop_navigate.Visible = true;
-        }
-        void button_dop_new_2_Click(object sender, EventArgs e)
-        {
-            ChangePanel(panel_dop_2);
-            //panel_dop_2.Visible = true;
-            //panel_dop_2.Location = panel1.Location;
-            panel_dop_navigate.Visible = true;
-        }
-        #endregion
-        #region dowloads
-        void label6_Click(object sender, EventArgs e) // проги
-        {
-            ChangePanel(panel_sorry);
-        }
-        #endregion
-        #region pc info
-        void label8_Click(object sender, EventArgs e) //pc info
-        {
-            ChangePanel(panel_5);
-        }
-        #endregion
-
         #endregion
     }
 }

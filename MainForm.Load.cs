@@ -116,19 +116,14 @@ namespace WOTBO
             SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula
-            if (!InstanceGuard.TryAcquire())
-            {
-                Log.Warn("App", "InstanceExists, relaunch");
-                AppServices.Processes.StartCaptured($"taskkill /f /im {exename} && \"{exepath}\"");
-                Log.Info("App", "cmd на перезапуск вызван, ждём когда приебашит меня");
-            }
-            if (Registry.CurrentUser.OpenSubKey(RegistryPaths.AppRoot)?.GetValue("eula") == null)
+            AppServices.Startup.EnsureSingleInstance(exename, exepath);
+            if (!AppServices.Startup.IsEulaAccepted())
             {
                 Log.Info("App", "eula null");
                 EulaForm eula = new EulaForm();
                 eula.ShowDialog();
             }
-            AppServices.Tweaks.MigrateLegacyFlags();
+            AppServices.Startup.MigrateState();
             #endregion
             #region проверка версии Windows
             WindowsVersionInfo winVersion = AppServices.WindowsVersion.Detect();
@@ -237,33 +232,7 @@ namespace WOTBO
             #endregion
             Binder("main.mpo").Detect();
             Binder("main.usb").Detect();
-            if (AppServices.Tweaks.IsApplied("main.bcdedit"))
-            {
-                Log.Warn("Tweak:main.bcdedit", "bcdedit был применён, откатываем нахуй");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue tscsyncpolicy");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue bootux");
-                AppServices.Processes.StartCaptured("bcdedit /set bootmenupolicy standard");
-                AppServices.Processes.StartCaptured("bcdedit /set hypervisorlaunchtype Auto");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue tpmbootentropy");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue quietboot");
-                AppServices.Processes.StartCaptured("bcdedit /set nx optin");
-                AppServices.Processes.StartCaptured("bcdedit /set allowedinmemorysettings 0x17000077");
-                AppServices.Processes.StartCaptured("bcdedit /set isolatedcontext Yes");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue vsmlaunchtype");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue vm");
-                AppServices.Processes.StartCaptured("reg delete \"HKLM\\Software\\Policies\\Microsoft\\FVE\" /v \"DisableExternalDMAUnderLock\" /f");
-                AppServices.Processes.StartCaptured("reg delete \"HKLM\\Software\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v \"EnableVirtualizationBasedSecurity\" /f");
-                AppServices.Processes.StartCaptured("reg delete \"HKLM\\Software\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v \"HVCIMATRequired\" /f");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue firstmegabytepolicy");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue avoidlowmemory");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue nolowmem");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue configaccesspolicy");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue x2apicpolicy");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue usephysicaldestination");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue usefirmwarepcisettings");
-                AppServices.Processes.StartCaptured("bcdedit /deletevalue uselegacyapicmode");
-                AppServices.Tweaks.Remove("main.bcdedit");
-            }
+            AppServices.LegacyCleanup.Cleanup();
             Binder("main.mitigations").Detect();
             Binder("main.mmagent").Detect();
             #region pagefile
@@ -292,13 +261,6 @@ namespace WOTBO
             } //shapka11
             Binder("pro.homegallery").Detect();
             Binder("pro.win32priority").Detect();
-            if (Convert.ToInt32(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")?.GetValue("NoAutoUpdate")) == 1)
-            {
-                Log.Info("Tweak:pro.windowsupdate", "NoAutoUpdate был применён");
-                checkBox_pro_3.Enabled = false;
-                back_pro_3.Visible = true;
-
-            }
             Binder("main.defender").Detect();
             Binder("ui.bluefolders").Detect();
             Binder("ui.wotbocontext").Detect();
@@ -331,13 +293,7 @@ namespace WOTBO
             Binder("main.dwminput").Detect();
             Binder("main.powerlatency").Detect();
             Binder("extra.edge").Detect();
-            if (AppServices.TweakCatalog.Get("pro.windowsupdate").Detect(AppServices.TweakContext) == TweakState.Applied)
-            {
-                Log.Info("Tweak:pro.windowsupdate", "WindowsUpdate\\AU был применён");
-                checkBox_pro_3.Checked = false;
-                checkBox_pro_3.Enabled = false;
-                back_pro_3.Visible = true;
-            }
+            Binder("pro.windowsupdate").Detect();
             Binder("extra.movetemp").Detect();
             #endregion
             #region инет + обнова
@@ -368,7 +324,7 @@ namespace WOTBO
             {
                 try
                 {
-                    UpdateInfo update = await AppServices.Updates.CheckAsync(curver);
+                    UpdateInfo update = await AppServices.UpdateCoordinator.CheckAsync(curver);
                     switch (update.Status)
                     {
                         case UpdateStatus.Actual:
@@ -377,37 +333,9 @@ namespace WOTBO
                             break;
 
                         case UpdateStatus.Newer:
-                            File.WriteAllText("lastchange.json", update.ChangeLog ?? string.Empty);
                             MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\nБудет выполнено обновление\n\n" +
                             $"Список изменений:\n {update.ChangeLog}", "", MessageBoxButtons.OK);
-
-                            Log.Info("Update", $"скачиваем новую");
-                            AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/WOTBO.exe", "new.exe");
-                            void updateCMD(string line)
-                            {
-                                try
-                                {
-                                    Process.Start(new ProcessStartInfo
-                                    {
-                                        FileName = "cmd.exe",
-                                        Arguments = $"/c {line}",
-                                        WindowStyle = ProcessWindowStyle.Hidden
-                                    });
-                                }
-                                catch (Exception ex)
-                                {
-                                    Log.Warn("Update", "не удалось запустить обновление: " + ex.Message);
-                                }
-                            }
-                            updateCMD($"taskkill /f /im \"{exename}\" &&" +
-                                $" timeout /t 1 &&" +
-                                $" del \"{exepath}\" /f /q &&" +
-                                $" del \"{contexpath}\" /f /q &&" +
-                                $" del \"lastchange.json\" /f /q &&" +
-                                $" copy new.exe \"{contexpath}\" &&" +
-                                $" ren new.exe \"{exename}\" &&" +
-                                $" del \"new.exe\" /f /q &" +
-                                $" \"{exepath}\"");
+                            AppServices.UpdateCoordinator.Install(update, exename, exepath, contexpath);
                             break;
 
                         case UpdateStatus.Dev:
@@ -481,48 +409,7 @@ namespace WOTBO
             }//не nvidia
             #endregion
             #region распаковка в temp
-            Log.Info("Temp", "распаковка в temp");
-            Directory.CreateDirectory(tempfolder);
-            Log.Info("Temp", $"tempfolder создан - {tempfolder}");
-            File.WriteAllBytes(path_regpack7z, Resources.regpack);
-            Log.Info("Temp", $"path_regpack7z создан - {path_regpack7z}");
-            if (!Directory.Exists(path_regpack))
-                ZipFile.ExtractToDirectory($"{path_regpack7z}", $"{path_regpack}");
-            Log.Info("Temp", $"path_regpack7z распакован - {path_regpack}");
-            File.WriteAllBytes(tempfolder + @"\su.exe", Resources.su);
-            Log.Info("Temp", $"su.exe распакован");
-            File.WriteAllText(tempfolder + @"\Audio_Lantency.reg", Resources.Audio_Lantency);
-            Log.Info("Temp", $"Audio_Lantency.reg распакован");
-            File.WriteAllText(tempfolder + @"\Audio_Lantency_delete.reg", Resources.Audio_Lantency_delete);
-            Log.Info("Temp", $"Audio_Lantency_delete.reg распакован");
-            File.WriteAllText(tempfolder + @"\updates.reg", Resources.updates);
-            Log.Info("Temp", $"updates.reg распакован");
-            if (!Directory.Exists(path_ui))
-            {
-                File.WriteAllBytes(path_uizip, Resources.ui);
-                ZipFile.ExtractToDirectory($"{path_uizip}", $"{path_ui}");
-                Log.Info("Temp", $"ui.zip распакован - {path_ui}");
-            }
-            if (!File.Exists(@"c:\Windows\system32\explorer.bat"))
-            {
-                File.WriteAllText(@"c:\Windows\system32\explorer.bat", Resources.explor);
-            }
-            #endregion
-            #region old_crap_uninstaller
-            if (File.Exists(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe"))
-            {
-                Process[] processes = Process.GetProcessesByName("BackgroundMonitoringServices");
-                if (processes.Length > 0)
-                {
-                    Log.Info("System", $"BackgroundMonitoringServices был найден - {processes.Length}");
-                    AppServices.Processes.StartCaptured("taskkill /f /im BackgroundMonitoringServices.exe");
-                    File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
-                }
-                else
-                {
-                    File.Delete(@"C:\Windows\System32\drivers\BackgroundMonitoringServices.exe");
-                }
-            }
+            AppServices.ResourceExtractor.Extract(workspace);
             #endregion
         }
         #endregion

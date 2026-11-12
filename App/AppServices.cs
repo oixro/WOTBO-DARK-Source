@@ -41,6 +41,9 @@ namespace WOTBO.App
         private static readonly Lazy<ILatestVersionService> LatestVersionsLazy =
             new Lazy<ILatestVersionService>(() => new LatestVersionService(Network, Log.Instance));
 
+        private static readonly Lazy<UpdateCoordinator> UpdateCoordinatorLazy =
+            new Lazy<UpdateCoordinator>(() => new UpdateCoordinator(Updates, Network, Log.Instance));
+
         private static readonly Lazy<IWindowsVersionService> WindowsVersionLazy =
             new Lazy<IWindowsVersionService>(() => new WindowsVersionService(Registry));
 
@@ -55,6 +58,15 @@ namespace WOTBO.App
 
         private static readonly Lazy<IReservedStorageService> ReservedStorageLazy =
             new Lazy<IReservedStorageService>(() => new ReservedStorageService(Processes, Log.Instance));
+
+        private static readonly Lazy<IResourceExtractor> ResourceExtractorLazy =
+            new Lazy<IResourceExtractor>(() => new ResourceExtractor(Log.Instance));
+
+        private static readonly Lazy<ILegacyCleanupService> LegacyCleanupLazy =
+            new Lazy<ILegacyCleanupService>(() => new LegacyCleanupService(Processes, Tweaks, Log.Instance));
+
+        private static readonly Lazy<StartupWorkflow> StartupLazy =
+            new Lazy<StartupWorkflow>(() => new StartupWorkflow(Registry, Processes, Tweaks, Log.Instance));
 
         private static readonly Lazy<TweakContext> TweakContextLazy =
             new Lazy<TweakContext>(() => new TweakContext(
@@ -99,6 +111,12 @@ namespace WOTBO.App
             get { return UpdatesLazy.Value; }
         }
 
+        /// <summary>Проверка и установка обновления.</summary>
+        public static UpdateCoordinator UpdateCoordinator
+        {
+            get { return UpdateCoordinatorLazy.Value; }
+        }
+
         /// <summary>Последние версии программ и ffmpeg.</summary>
         public static ILatestVersionService LatestVersions
         {
@@ -133,6 +151,24 @@ namespace WOTBO.App
         public static IReservedStorageService ReservedStorage
         {
             get { return ReservedStorageLazy.Value; }
+        }
+
+        /// <summary>Распаковка встроенных ресурсов.</summary>
+        public static IResourceExtractor ResourceExtractor
+        {
+            get { return ResourceExtractorLazy.Value; }
+        }
+
+        /// <summary>Уборка legacy-артефактов при старте.</summary>
+        public static ILegacyCleanupService LegacyCleanup
+        {
+            get { return LegacyCleanupLazy.Value; }
+        }
+
+        /// <summary>Стартовые шаги без привязки к контролам.</summary>
+        public static StartupWorkflow Startup
+        {
+            get { return StartupLazy.Value; }
         }
 
         /// <summary>Зависимости твиков.</summary>

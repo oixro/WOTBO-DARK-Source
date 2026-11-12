@@ -2,7 +2,7 @@
 
 WinForms · .NET Framework 4.8 · C# · Windows-only · **x64**
 
-> **Статус:** P0–P3 завершены — см. `docs/P0-RESULT.md`, `docs/TWEAKS.md`.
+> **Статус:** P0–P6 завершены — см. `docs/P0-RESULT.md`, `docs/TWEAKS.md`.
 > Этап 4 (UI-инфраструктура) завершён: `TweakUiBinder`, `PanelNavigator`,
 > `FormPainter`, `HoverAnimator`, `WindowDragBehavior`, `BalloonNotifier`,
 > `NativeMethods`. Добавлены `AppPaths`, логгер (`docs/LOGGING.md`),
@@ -416,12 +416,13 @@ public sealed class TweakUiBinder
   8. распаковка ресурсов, 9. legacy-cleanup.
 - `async void` — только обработчики событий; внутри `try/catch` + лог.
 - Цель: `MainForm.cs` < 500 строк.
-- **Статус:** `MainForm.cs` — 329 строк. Логика разложена по partial-файлам:
+- **Статус:** `MainForm.cs` — 331 строка. Логика разложена по partial-файлам:
   `MainForm.Binders.cs`, `MainForm.Load.cs`, `MainForm.Tweaks.cs`,
-  `MainForm.Features.cs`, `MainForm.Navigation.cs`, `MainForm.Downloads.cs`,
-  `MainForm.Rollbacks.cs`. Обработчики стрелок отката удалены: клики
-  подключает `TweakUiBinder`. Дальше — вынос `Load` в сервисы
-  (`StartupWorkflow`, `ResourceExtractor`) и навигации в контроллер.
+  `MainForm.Features.cs`, `MainForm.Navigation.cs`, `MainForm.Rollbacks.cs`.
+  Стартовые шаги вынесены в `StartupWorkflow`, `ResourceExtractor`,
+  `LegacyCleanupService`, `UpdateCoordinator`; ссылки — в `ProgramLinks`;
+  навигация — в `NavigationController`; карта подсказок строится из
+  `TweakUiBinder.Register`.
 - **DoD:** сценарии первого запуска и повторного запуска идентичны baseline.
 
 ### Этап 6. Переименование и namespace (опционально, после стабилизации)

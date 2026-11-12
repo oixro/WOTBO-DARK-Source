@@ -22,103 +22,18 @@ namespace WOTBO.UI
     public static class TweakHoverInfo
     {
         private static readonly Dictionary<string, string> ControlToTweak =
-            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                // Применение
-                { "checkBox_disabledefender", "main.defender" },
-                { "checkBox_reg", "main.regpack" },
-                { "checkBox_dism", "main.reservedstorage" },
-                { "checkBox_gibernate", "main.hibernate" },
-                { "checkBox_scheme", "main.powerscheme" },
-                { "checkBox_mpo", "main.mpo" },
-                { "checkBox_usb", "main.usb" },
-                { "checkBox_mtiititit", "main.mitigations" },
-                { "checkBox_mmagent", "main.mmagent" },
-                { "checkBox_page", "main.pagefile" },
-                { "checkBox_mousefix", "main.mousefix" },
-                { "checkBox_audio", "main.audio" },
-                { "checkBox_dwninput", "main.dwminput" },
-                { "checkBox_tolerate", "main.powerlatency" },
-                { "checkBox_pro_11", "pro.win32priority" },
-                { "checkBox_ansel", "gpu.ansel" },
-                { "checkBox_hdcp", "gpu.hdcp" },
-                { "checkBox_dopNVIDIA_tweaks", "gpu.nvidia" },
-                { "checkBox_directplay", "gpu.directplay" },
-                { "checkBox_bluefolders", "ui.bluefolders" },
-                { "checkBox_contex", "ui.contextmenu" },
-                { "checkBox_shapka", "ui.win11header" },
-                { "checkBox_wotboincontex", "ui.wotbocontext" },
-                { "checkBox_explorer", "ui.explorerrestart" },
-                { "checkBox_ffmpeg", "ui.ffmpeg" },
-                { "checkBox_mica", "ui.mica" },
-                { "checkBox_animation", "ui.animations" },
-                { "checkBox_onedrive", "extra.onedrive" },
-                { "checkBox_compactos", "extra.compactos" },
-                { "checkBox_WinSxS", "extra.winsxs" },
-                { "checkBox_temp", "extra.tempclean" },
-                { "checkBox_updclean", "extra.updateclean" },
-                { "checkBox_picture_cache", "extra.iconcache" },
-                { "checkBox_mobile_traffic", "extra.mobiletraffic" },
-                { "checkBox_nastroyka", "extra.scoobe" },
-                { "checkBox_zalipanie", "extra.stickykeys" },
-                { "checkBox_dwm", "extra.dwmpriority" },
-                { "checkBox_edge", "extra.edge" },
-                { "checkBox_move_temp", "extra.movetemp" },
-                { "checkBox_pro_1", "pro.homegallery" },
-                { "checkBox_pro_3", "pro.windowsupdate" },
-                { "checkBox_CSRSS", "pro.csrss" },
-                { "checkBox_pro_12", "pro.bufferbloat" },
-                { "checkBox_pro_13", "pro.unlocker" },
-                { "checkBox_pro_14", "pro.alwaysontop" },
-                { "checkBoxUI_Buttons_1", "ui.buttons" },
-                { "checkBoxUI_Buttons_2", "ui.explorerdetails" },
-                { "checkBoxUI_Buttons_4", "ui.jpegquality" },
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-                // Стрелки отката
-                { "back_main_1", "main.regpack" },
-                { "back_main_2", "main.reservedstorage" },
-                { "back_main_3", "main.hibernate" },
-                { "back_main_4", "main.powerscheme" },
-                { "back_main_5", "main.mousefix" },
-                { "back_main_6", "main.mpo" },
-                { "back_main_7", "main.usb" },
-                { "back_main_9", "main.mitigations" },
-                { "back_main_10", "main.mmagent" },
-                { "back_main_11", "main.pagefile" },
-                { "back_main_12", "main.defender" },
-                { "back_main_13", "main.audio" },
-                { "back_main_14", "main.dwminput" },
-                { "back_main_16", "main.powerlatency" },
-                { "back_ui_1", "ui.buttons" },
-                { "back_ui_2", "ui.explorerdetails" },
-                { "back_ui_4", "ui.jpegquality" },
-                { "back_ui_5", "ui.bluefolders" },
-                { "back_ui_6", "ui.contextmenu" },
-                { "back_ui_7", "ui.win11header" },
-                { "back_ui_8", "ui.wotbocontext" },
-                { "back_ui_9", "ui.explorerrestart" },
-                { "back_ui_10", "ui.ffmpeg" },
-                { "back_ui_11", "ui.mica" },
-                { "back_animations", "ui.animations" },
-                { "back_gpu_1", "gpu.directplay" },
-                { "back_gpu_2", "gpu.hdcp" },
-                { "back_gpu_3", "gpu.nvidia" },
-                { "back_gpu_4", "gpu.ansel" },
-                { "back_pro_1", "pro.homegallery" },
-                { "back_pro_3", "pro.windowsupdate" },
-                { "back_pro_11", "pro.win32priority" },
-                { "back_pro_12", "pro.bufferbloat" },
-                { "back_pro_13", "pro.unlocker" },
-                { "back_pro_14", "pro.alwaysontop" },
-                { "back_dop_1", "extra.iconcache" },
-                { "back_dop_2", "extra.mobiletraffic" },
-                { "back_dop_edge", "extra.edge" },
-                { "back_dop_3", "extra.scoobe" },
-                { "back_dop_4", "extra.stickykeys" },
-                { "back_dop_6", "extra.dwmpriority" },
-                { "back_dop_7", "pro.csrss" },
-                { "back_dop_movetemp", "extra.movetemp" },
-            };
+        /// <summary>Регистрация контрола из TweakUiBinder.</summary>
+        public static void Register(string controlName, string tweakId)
+        {
+            if (string.IsNullOrEmpty(controlName) || string.IsNullOrEmpty(tweakId))
+            {
+                return;
+            }
+
+            ControlToTweak[controlName] = tweakId;
+        }
 
         private const int MaxRegistryValues = 5;
         private const int MaxExportValues = 3;

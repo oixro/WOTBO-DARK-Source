@@ -68,17 +68,17 @@ Properties/                    # Resources.resx, AssemblyInfo, Settings
 ## Архитектура
 
 ```text
-App/                 AppBootstrap, AppPaths, AppServices, логирование, TweakScope
+App/                 AppBootstrap, StartupWorkflow, ProgramLinks, AppServices, TweakScope
 Services/Tweaks/     ITweak, TweakBase, TweakContext, TweakCatalog, 48 твиков
 Services/Registry/   RegistryService и RegistryPaths
 Services/State/      состояние, бэкапы и восстановление
-Services/Network/    загрузки, GitHub API, последние версии программ
-Services/Storage/    TempWorkspace, ReservedStorageService
-Services/Windows/    определение версии Windows
-UI/                  TweakUiBinder, PanelNavigator, DPI, painter, notifier
-MainForm.cs          поля, конструктор, закрытие (329 строк)
+Services/Network/    загрузки, GitHub API, UpdateCoordinator, версии программ
+Services/Storage/    TempWorkspace, ResourceExtractor, ReservedStorageService
+Services/Windows/    определение версии Windows, LegacyCleanupService
+UI/                  TweakUiBinder, PanelNavigator, NavigationController, DPI
+MainForm.cs          поля, конструктор, закрытие (331 строка)
 MainForm.*.cs        partial-файлы: Binders, Load, Tweaks, Features,
-                     Navigation, Downloads, Rollbacks
+                     Navigation, Rollbacks
 ```
 
 ## Новый твик
@@ -94,8 +94,8 @@ Detect/Apply/Rollback и обновление чекбокса/стрелки д
 
 ## Статус
 
-Идёт поэтапный рефакторинг. Завершены **P0–P5**: окружение и сборка,
+Идёт поэтапный рефакторинг. Завершены **P0–P6**: окружение и сборка,
 инфраструктурные сервисы, 48 твиков на `ITweak`, UI-инфраструктура
-(`TweakUiBinder`, `PanelNavigator`, `BalloonNotifier`), DPI awareness
-([docs/DPI.md](docs/DPI.md)) и разгрузка `MainForm` (329 строк, partial-файлы
-по ответственности).
+(`TweakUiBinder`, `PanelNavigator`, `NavigationController`), DPI awareness
+([docs/DPI.md](docs/DPI.md)), разгрузка `MainForm` (331 строка) и
+переименование форм в namespace `WOTBO`.

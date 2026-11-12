@@ -17,3 +17,19 @@ jobs:
 
       - name: Build Release x64
         run: msbuild Project.sln /m /p:Configuration=Release /p:Platform=x64 /v:minimal
+
+      - name: Verify PE machine
+        shell: pwsh
+        run: |
+          $path = "bin/Release/WOTBO.exe"
+          if (!(Test-Path $path)) { throw "WOTBO.exe not found" }
+          $bytes = [IO.File]::ReadAllBytes((Resolve-Path $path))
+          $pe = [BitConverter]::ToInt32($bytes, 0x3c)
+          $machine = [BitConverter]::ToUInt16($bytes, $pe + 4)
+          if ($machine -ne 0x8664) { throw ("Expected x64, got 0x{0:X4}" -f $machine) }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WOTBO-x64
+          path: bin/Release/WOTBO.exe

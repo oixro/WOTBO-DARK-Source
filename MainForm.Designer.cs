@@ -643,7 +643,6 @@ namespace WOTBO
             this.label_download_23.TabIndex = 0;
             this.label_download_23.Text = "22. CrystallDiskInfo";
             this.toolTip1.SetToolTip(this.label_download_23, "Программа для мониторинга состояния дисков");
-            this.label_download_23.Click += new System.EventHandler(this.label_download_23_Click);
             this.label_download_23.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_21
@@ -657,7 +656,6 @@ namespace WOTBO
             this.label_download_21.TabIndex = 0;
             this.label_download_21.Text = "20. FastStone Image Viewer";
             this.toolTip1.SetToolTip(this.label_download_21, "Лучшая программа для просмотра фотографий");
-            this.label_download_21.Click += new System.EventHandler(this.label_download_21_Click);
             this.label_download_21.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_20
@@ -671,7 +669,6 @@ namespace WOTBO
             this.label_download_20.TabIndex = 0;
             this.label_download_20.Text = "19. AnyDesk";
             this.toolTip1.SetToolTip(this.label_download_20, "Лучшая программа для удалённого управления компьютером");
-            this.label_download_20.Click += new System.EventHandler(this.label_download_20_Click);
             this.label_download_20.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_18
@@ -685,7 +682,6 @@ namespace WOTBO
             this.label_download_18.TabIndex = 0;
             this.label_download_18.Text = "17. WizTree";
             this.toolTip1.SetToolTip(this.label_download_18, "Программа позволяющая опрелить чем занято место на диске");
-            this.label_download_18.Click += new System.EventHandler(this.label_download_18_Click);
             this.label_download_18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_17
@@ -699,7 +695,6 @@ namespace WOTBO
             this.label_download_17.TabIndex = 0;
             this.label_download_17.Text = "16. Cent Browser";
             this.toolTip1.SetToolTip(this.label_download_17, "Лучший браузер\r\n(Прокаченный Google Chrome, имеющий больше настроек)");
-            this.label_download_17.Click += new System.EventHandler(this.label_download_17_Click);
             this.label_download_17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_15
@@ -713,7 +708,6 @@ namespace WOTBO
             this.label_download_15.TabIndex = 0;
             this.label_download_15.Text = "14. HWINFO64";
             this.toolTip1.SetToolTip(this.label_download_15, "Одна из лучших программ для мониторинга состояния компьютера");
-            this.label_download_15.Click += new System.EventHandler(this.label_download_15_Click);
             this.label_download_15.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_14
@@ -727,7 +721,6 @@ namespace WOTBO
             this.label_download_14.TabIndex = 0;
             this.label_download_14.Text = "13. qBitTorrent";
             this.toolTip1.SetToolTip(this.label_download_14, "Лучший торрент клиент");
-            this.label_download_14.Click += new System.EventHandler(this.label_download_14_Click);
             this.label_download_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_13
@@ -741,7 +734,6 @@ namespace WOTBO
             this.label_download_13.TabIndex = 0;
             this.label_download_13.Text = "12. K-Lite Codec Pack";
             this.toolTip1.SetToolTip(this.label_download_13, "Лучший плеер для Windows");
-            this.label_download_13.Click += new System.EventHandler(this.label_download_13_Click);
             this.label_download_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_11
@@ -755,7 +747,6 @@ namespace WOTBO
             this.label_download_11.TabIndex = 0;
             this.label_download_11.Text = "11. OBS";
             this.toolTip1.SetToolTip(this.label_download_11, "Лучшая программа для записи");
-            this.label_download_11.Click += new System.EventHandler(this.label_download_11_Click);
             this.label_download_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_8
@@ -769,7 +760,6 @@ namespace WOTBO
             this.label_download_8.TabIndex = 0;
             this.label_download_8.Text = "8. ShareX";
             this.toolTip1.SetToolTip(this.label_download_8, "Лучшая программа для скриншотов");
-            this.label_download_8.Click += new System.EventHandler(this.label_download_8_Click);
             this.label_download_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_6
@@ -783,7 +773,6 @@ namespace WOTBO
             this.label_download_6.TabIndex = 0;
             this.label_download_6.Text = "6. C++ Redists pack";
             this.toolTip1.SetToolTip(this.label_download_6, "Необходимая библиотека для работы игр и программ");
-            this.label_download_6.Click += new System.EventHandler(this.label_download_6_Click);
             this.label_download_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_5
@@ -797,7 +786,6 @@ namespace WOTBO
             this.label_download_5.TabIndex = 0;
             this.label_download_5.Text = "5. DirectX";
             this.toolTip1.SetToolTip(this.label_download_5, "Необходимая библиотека для работы игр и программ");
-            this.label_download_5.Click += new System.EventHandler(this.label_download_5_Click);
             this.label_download_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_4
@@ -811,7 +799,6 @@ namespace WOTBO
             this.label_download_4.TabIndex = 0;
             this.label_download_4.Text = "4. 7-Zip";
             this.toolTip1.SetToolTip(this.label_download_4, "Лучший архиватор");
-            this.label_download_4.Click += new System.EventHandler(this.label_download_4_Click);
             this.label_download_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_3
@@ -825,7 +812,6 @@ namespace WOTBO
             this.label_download_3.TabIndex = 0;
             this.label_download_3.Text = "3. Msi Afterburner";
             this.toolTip1.SetToolTip(this.label_download_3, "Программа для настройки видеокарты");
-            this.label_download_3.Click += new System.EventHandler(this.label_download_3_Click);
             this.label_download_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_2
@@ -839,7 +825,6 @@ namespace WOTBO
             this.label_download_2.TabIndex = 0;
             this.label_download_2.Text = "2. Notepad++";
             this.toolTip1.SetToolTip(this.label_download_2, "Лучшая замена блокнота с расширенным функционалом");
-            this.label_download_2.Click += new System.EventHandler(this.label_download_2_Click);
             this.label_download_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_1
@@ -853,7 +838,6 @@ namespace WOTBO
             this.label_download_1.TabIndex = 0;
             this.label_download_1.Text = "1. Win 10 Tweaker";
             this.toolTip1.SetToolTip(this.label_download_1, "Программа по расширенной настройке Windows");
-            this.label_download_1.Click += new System.EventHandler(this.label_download_1_Click);
             this.label_download_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_ddu
@@ -867,7 +851,6 @@ namespace WOTBO
             this.label_ddu.TabIndex = 13;
             this.label_ddu.Text = "Скачать DDU";
             this.toolTip1.SetToolTip(this.label_ddu, "Лучшая программа для удаления драйверов для видеокарты");
-            this.label_ddu.Click += new System.EventHandler(this.label_ddu_Click);
             this.label_ddu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_nvcleaninstall
@@ -881,7 +864,6 @@ namespace WOTBO
             this.label_nvcleaninstall.TabIndex = 12;
             this.label_nvcleaninstall.Text = "Скачать NVCleanInstall";
             this.toolTip1.SetToolTip(this.label_nvcleaninstall, "Лучшая программа для установки драйверов для видеокарты\n(Только для NVIDIA)");
-            this.label_nvcleaninstall.Click += new System.EventHandler(this.label_nvcleaninstall_Click);
             this.label_nvcleaninstall.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // checkBox_dopNVIDIA_tweaks
@@ -1165,7 +1147,6 @@ namespace WOTBO
             this.button_ui_new_2.TabStop = false;
             this.button_ui_new_2.Text = "2";
             this.button_ui_new_2.UseVisualStyleBackColor = true;
-            this.button_ui_new_2.Click += new System.EventHandler(this.button_ui_2_Click);
             this.button_ui_new_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // button_ui_new_1
@@ -1182,7 +1163,6 @@ namespace WOTBO
             this.button_ui_new_1.TabStop = false;
             this.button_ui_new_1.Text = "1";
             this.button_ui_new_1.UseVisualStyleBackColor = true;
-            this.button_ui_new_1.Click += new System.EventHandler(this.button_ui_1_Click);
             this.button_ui_new_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel1
@@ -1977,7 +1957,6 @@ namespace WOTBO
             this.label_download_24.Size = new System.Drawing.Size(147, 13);
             this.label_download_24.TabIndex = 0;
             this.label_download_24.Text = "23. AMD Auto-Detect Drivers";
-            this.label_download_24.Click += new System.EventHandler(this.label_download_24_Click);
             this.label_download_24.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_22
@@ -1990,7 +1969,6 @@ namespace WOTBO
             this.label_download_22.Size = new System.Drawing.Size(110, 13);
             this.label_download_22.TabIndex = 0;
             this.label_download_22.Text = "21. .NET 6.0 Runtime";
-            this.label_download_22.Click += new System.EventHandler(this.label_download_22_Click);
             this.label_download_22.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_19
@@ -2003,7 +1981,6 @@ namespace WOTBO
             this.label_download_19.Size = new System.Drawing.Size(121, 13);
             this.label_download_19.TabIndex = 0;
             this.label_download_19.Text = "18. EpicGamesLauncher";
-            this.label_download_19.Click += new System.EventHandler(this.label_download_19_Click);
             this.label_download_19.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_16
@@ -2016,7 +1993,6 @@ namespace WOTBO
             this.label_download_16.Size = new System.Drawing.Size(99, 13);
             this.label_download_16.TabIndex = 0;
             this.label_download_16.Text = "15. Google Chrome";
-            this.label_download_16.Click += new System.EventHandler(this.label_download_16_Click);
             this.label_download_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_10
@@ -2029,7 +2005,6 @@ namespace WOTBO
             this.label_download_10.Size = new System.Drawing.Size(61, 13);
             this.label_download_10.TabIndex = 0;
             this.label_download_10.Text = "10. Discord";
-            this.label_download_10.Click += new System.EventHandler(this.label_download_10_Click);
             this.label_download_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_9
@@ -2042,7 +2017,6 @@ namespace WOTBO
             this.label_download_9.Size = new System.Drawing.Size(64, 13);
             this.label_download_9.TabIndex = 0;
             this.label_download_9.Text = "9. Telegram";
-            this.label_download_9.Click += new System.EventHandler(this.label_download_9_Click);
             this.label_download_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_download_7
@@ -2055,7 +2029,6 @@ namespace WOTBO
             this.label_download_7.Size = new System.Drawing.Size(50, 13);
             this.label_download_7.TabIndex = 0;
             this.label_download_7.Text = "7. Steam";
-            this.label_download_7.Click += new System.EventHandler(this.label_download_7_Click);
             this.label_download_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // panel2
@@ -2302,7 +2275,6 @@ namespace WOTBO
             this.label_main.Size = new System.Drawing.Size(69, 13);
             this.label_main.TabIndex = 23;
             this.label_main.Text = "1. Основное";
-            this.label_main.Click += new System.EventHandler(this.label1_Click);
             this.label_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_site
@@ -2328,7 +2300,6 @@ namespace WOTBO
             this.label_gpu.Size = new System.Drawing.Size(40, 13);
             this.label_gpu.TabIndex = 24;
             this.label_gpu.Text = "3. GPU";
-            this.label_gpu.Click += new System.EventHandler(this.label2_Click);
             this.label_gpu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // button_new
@@ -2359,7 +2330,6 @@ namespace WOTBO
             this.label_dop.Size = new System.Drawing.Size(100, 13);
             this.label_dop.TabIndex = 25;
             this.label_dop.Text = "4. Дополнительно";
-            this.label_dop.Click += new System.EventHandler(this.label3_Click);
             this.label_dop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_winver
@@ -2387,7 +2357,6 @@ namespace WOTBO
             this.label_progs.Size = new System.Drawing.Size(95, 13);
             this.label_progs.TabIndex = 28;
             this.label_progs.Text = "5. Скачать проги";
-            this.label_progs.Click += new System.EventHandler(this.label6_Click);
             this.label_progs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_ver
@@ -2415,7 +2384,6 @@ namespace WOTBO
             this.label_interface.Size = new System.Drawing.Size(76, 13);
             this.label_interface.TabIndex = 30;
             this.label_interface.Text = "2. Интерфейс";
-            this.label_interface.Click += new System.EventHandler(this.label_interface_Click);
             this.label_interface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_pc
@@ -2428,7 +2396,6 @@ namespace WOTBO
             this.label_pc.Size = new System.Drawing.Size(56, 13);
             this.label_pc.TabIndex = 29;
             this.label_pc.Text = "6. PC Info";
-            this.label_pc.Click += new System.EventHandler(this.label8_Click);
             this.label_pc.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // panel_dop_navigate
@@ -2455,7 +2422,6 @@ namespace WOTBO
             this.button_dop_new_2.TabStop = false;
             this.button_dop_new_2.Text = "2";
             this.button_dop_new_2.UseVisualStyleBackColor = true;
-            this.button_dop_new_2.Click += new System.EventHandler(this.button_dop_new_2_Click);
             this.button_dop_new_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // button_dop_new_1
@@ -2472,7 +2438,6 @@ namespace WOTBO
             this.button_dop_new_1.TabStop = false;
             this.button_dop_new_1.Text = "1";
             this.button_dop_new_1.UseVisualStyleBackColor = true;
-            this.button_dop_new_1.Click += new System.EventHandler(this.button_dop_new_1_Click);
             this.button_dop_new_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel_dop_2
@@ -2566,7 +2531,6 @@ namespace WOTBO
             this.button_main_2.TabStop = false;
             this.button_main_2.Text = "2";
             this.button_main_2.UseVisualStyleBackColor = true;
-            this.button_main_2.Click += new System.EventHandler(this.button_main_2_Click);
             this.button_main_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // button_main_1
@@ -2583,7 +2547,6 @@ namespace WOTBO
             this.button_main_1.TabStop = false;
             this.button_main_1.Text = "1";
             this.button_main_1.UseVisualStyleBackColor = true;
-            this.button_main_1.Click += new System.EventHandler(this.button_main_1_Click);
             this.button_main_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel_main_2

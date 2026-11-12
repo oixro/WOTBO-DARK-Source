@@ -81,6 +81,8 @@
     <Compile Include="App\AppPaths.cs" />
     <Compile Include="App\AppServices.cs" />
     <Compile Include="App\AppBootstrap.cs" />
+    <Compile Include="App\StartupWorkflow.cs" />
+    <Compile Include="App\ProgramLinks.cs" />
     <Compile Include="App\AppSettings.cs" />
     <Compile Include="App\InstanceGuard.cs" />
     <Compile Include="App\Logging\AppLogger.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Services\Network\IGitHubUpdateService.cs" />
     <Compile Include="Services\Network\GitHubUpdateService.cs" />
     <Compile Include="Services\Network\LatestVersionService.cs" />
+    <Compile Include="Services\Network\UpdateCoordinator.cs" />
     <Compile Include="Services\Network\NetworkService.cs" />
     <Compile Include="Services\Processes\IProcessService.cs" />
     <Compile Include="Services\Processes\ProcessService.cs" />
@@ -109,6 +112,8 @@
     <Compile Include="Services\State\TweakStateStore.cs" />
     <Compile Include="Services\Storage\TempWorkspace.cs" />
     <Compile Include="Services\Storage\ReservedStorageService.cs" />
+    <Compile Include="Services\Storage\ResourceExtractor.cs" />
+    <Compile Include="Services\Windows\LegacyCleanupService.cs" />
     <Compile Include="Services\Tweaks\ITweak.cs" />
     <Compile Include="Services\Tweaks\TweakBase.cs" />
     <Compile Include="Services\Tweaks\TweakCatalog.cs" />
@@ -170,6 +175,7 @@
     <Compile Include="UI\TweakUiBinder.cs" />
     <Compile Include="UI\HoverAnimator.cs" />
     <Compile Include="UI\Dpi.cs" />
+    <Compile Include="UI\NavigationController.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,9 +195,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Navigation.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm.Downloads.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Rollbacks.cs">

@@ -40,7 +40,9 @@ ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 
 ## Проверка обновлений
 
-`GitHubUpdateService` (`IGitHubUpdateService`) вынесен из `MainForm_Load`:
+`UpdateCoordinator` объединяет проверку и установку обновления; UI только
+показывает сообщение и вызывает `Install`. Проверка — `GitHubUpdateService`
+(`IGitHubUpdateService`):
 
 ```csharp
 UpdateInfo update = await AppServices.Updates.CheckAsync(curver);
@@ -84,8 +86,8 @@ HWiNFO, MSI Afterburner, FastStone, CentBrowser, VC++ Runtimes и
 CrystalDiskInfo отдают 403/404 либо не имеют стабильного машинного
 endpoint — для них остаются статические ссылки.
 
-Кнопки вкладки «Программы» сначала пробуют получить последнюю версию, а при
-ошибке открывают прежний статический URL. FFmpeg-твик использует тот же
+Кнопки вкладки «Программы» описаны в `App/ProgramLinks.cs` и сначала пробуют
+получить последнюю версию, а при ошибке открывают прежний статический URL. FFmpeg-твик использует тот же
 сервис; при недоступности API остаётся fallback на 7.1.
 
 ## Ресурсы твиков
