@@ -416,6 +416,12 @@ public sealed class TweakUiBinder
   8. распаковка ресурсов, 9. legacy-cleanup.
 - `async void` — только обработчики событий; внутри `try/catch` + лог.
 - Цель: `MainForm.cs` < 500 строк.
+- **Статус:** `Form1.cs` — 329 строк. Логика разложена по partial-файлам:
+  `Form1.Binders.cs`, `Form1.Load.cs`, `Form1.Tweaks.cs`,
+  `Form1.Features.cs`, `Form1.Navigation.cs`, `Form1.Downloads.cs`,
+  `Form1.Rollbacks.cs`. Обработчики стрелок отката удалены: клики
+  подключает `TweakUiBinder`. Дальше — вынос `Load` в сервисы
+  (`StartupWorkflow`, `ResourceExtractor`) и навигации в контроллер.
 - **DoD:** сценарии первого запуска и повторного запуска идентичны baseline.
 
 ### Этап 6. Переименование и namespace (опционально, после стабилизации)
@@ -431,6 +437,10 @@ public sealed class TweakUiBinder
 - Убрать пустые `catch`, добавить логирование.
 - Null-safe реестр, `using` для ключей, таймауты процессам и загрузкам.
 - Отдельным коммитом — баги из раздела 10.
+- **Статус:** исправлены MSI-архив, двойной запуск DefenderKiller, мёртвый
+  `checkBox1`, пустой `catch`, сравнение версий через `Version`,
+  освобождение `NotifyIcon`/`Timer`, DNS-таймаут. Остались ручной
+  smoke-тест опасных твиков и проверка 125/150 %.
 - **DoD:** каждый баг закрыт отдельным проверяемым изменением.
 
 ### Этап 8. Сборка и проверки
@@ -438,6 +448,8 @@ public sealed class TweakUiBinder
 - Оставить classic csproj (WinForms Designer + .NET 4.8).
 - Добавить `.editorconfig`, при желании — Windows CI (сборка Release x64).
 - Обновить README с архитектурой и правилами добавления твика.
+- **Статус:** `.editorconfig` уже был в репозитории; добавлен GitHub Actions
+  (`.github/workflows/build.yml`, `Release|x64`).
 - **DoD:** новый твик добавляется одним классом + одной строкой в каталоге и binder.
 
 ---

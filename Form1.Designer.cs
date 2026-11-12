@@ -139,7 +139,6 @@ namespace Project
             this.label_delete_defender = new System.Windows.Forms.Label();
             this.label_activate = new System.Windows.Forms.Label();
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel_5 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.panel_sorry = new System.Windows.Forms.Panel();
@@ -1235,7 +1234,6 @@ namespace Project
             this.back_main_12.TabIndex = 10;
             this.back_main_12.TabStop = false;
             this.back_main_12.Visible = false;
-            this.back_main_12.Click += new System.EventHandler(this.back_main_12_Click);
             this.back_main_12.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_11
@@ -1252,7 +1250,6 @@ namespace Project
             this.back_main_11.TabIndex = 10;
             this.back_main_11.TabStop = false;
             this.back_main_11.Visible = false;
-            this.back_main_11.Click += new System.EventHandler(this.back_main_11_Click);
             this.back_main_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_10
@@ -1269,7 +1266,6 @@ namespace Project
             this.back_main_10.TabIndex = 10;
             this.back_main_10.TabStop = false;
             this.back_main_10.Visible = false;
-            this.back_main_10.Click += new System.EventHandler(this.back_main_10_Click);
             this.back_main_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_9
@@ -1286,7 +1282,6 @@ namespace Project
             this.back_main_9.TabIndex = 10;
             this.back_main_9.TabStop = false;
             this.back_main_9.Visible = false;
-            this.back_main_9.Click += new System.EventHandler(this.back_main_9_Click);
             this.back_main_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_11
@@ -1303,7 +1298,6 @@ namespace Project
             this.back_pro_11.TabIndex = 12;
             this.back_pro_11.TabStop = false;
             this.back_pro_11.Visible = false;
-            this.back_pro_11.Click += new System.EventHandler(this.back_pro_11_Click);
             this.back_pro_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_7
@@ -1320,7 +1314,6 @@ namespace Project
             this.back_main_7.TabIndex = 10;
             this.back_main_7.TabStop = false;
             this.back_main_7.Visible = false;
-            this.back_main_7.Click += new System.EventHandler(this.back_main_7_Click);
             this.back_main_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_6
@@ -1337,7 +1330,6 @@ namespace Project
             this.back_main_6.TabIndex = 10;
             this.back_main_6.TabStop = false;
             this.back_main_6.Visible = false;
-            this.back_main_6.Click += new System.EventHandler(this.back_main_6_Click);
             this.back_main_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_5
@@ -1354,7 +1346,6 @@ namespace Project
             this.back_main_5.TabIndex = 10;
             this.back_main_5.TabStop = false;
             this.back_main_5.Visible = false;
-            this.back_main_5.Click += new System.EventHandler(this.back_main_5_Click);
             this.back_main_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_4
@@ -1371,7 +1362,6 @@ namespace Project
             this.back_main_4.TabIndex = 10;
             this.back_main_4.TabStop = false;
             this.back_main_4.Visible = false;
-            this.back_main_4.Click += new System.EventHandler(this.back_main_4_Click);
             this.back_main_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_3
@@ -1388,7 +1378,6 @@ namespace Project
             this.back_main_3.TabIndex = 10;
             this.back_main_3.TabStop = false;
             this.back_main_3.Visible = false;
-            this.back_main_3.Click += new System.EventHandler(this.back_main_3_Click);
             this.back_main_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_2
@@ -1405,7 +1394,6 @@ namespace Project
             this.back_main_2.TabIndex = 10;
             this.back_main_2.TabStop = false;
             this.back_main_2.Visible = false;
-            this.back_main_2.Click += new System.EventHandler(this.back_main_2_Click);
             this.back_main_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_1
@@ -1422,7 +1410,6 @@ namespace Project
             this.back_main_1.TabIndex = 10;
             this.back_main_1.TabStop = false;
             this.back_main_1.Visible = false;
-            this.back_main_1.Click += new System.EventHandler(this.back_main_1_Click);
             this.back_main_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // panel_ui_1
@@ -1483,7 +1470,6 @@ namespace Project
             this.back_ui_10.TabIndex = 23;
             this.back_ui_10.TabStop = false;
             this.back_ui_10.Visible = false;
-            this.back_ui_10.Click += new System.EventHandler(this.back_ui_10_Click);
             this.back_ui_10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_9
@@ -1500,7 +1486,6 @@ namespace Project
             this.back_ui_9.TabIndex = 11;
             this.back_ui_9.TabStop = false;
             this.back_ui_9.Visible = false;
-            this.back_ui_9.Click += new System.EventHandler(this.back_ui_9_Click);
             this.back_ui_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_8
@@ -1517,7 +1502,6 @@ namespace Project
             this.back_ui_8.TabIndex = 11;
             this.back_ui_8.TabStop = false;
             this.back_ui_8.Visible = false;
-            this.back_ui_8.Click += new System.EventHandler(this.back_ui_8_Click);
             this.back_ui_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_mica
@@ -1547,7 +1531,6 @@ namespace Project
             this.back_ui_7.TabIndex = 11;
             this.back_ui_7.TabStop = false;
             this.back_ui_7.Visible = false;
-            this.back_ui_7.Click += new System.EventHandler(this.back_ui_7_Click);
             this.back_ui_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_6
@@ -1564,7 +1547,6 @@ namespace Project
             this.back_ui_6.TabIndex = 11;
             this.back_ui_6.TabStop = false;
             this.back_ui_6.Visible = false;
-            this.back_ui_6.Click += new System.EventHandler(this.back_ui_6_Click);
             this.back_ui_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_11
@@ -1581,7 +1563,6 @@ namespace Project
             this.back_ui_11.TabIndex = 11;
             this.back_ui_11.TabStop = false;
             this.back_ui_11.Visible = false;
-            this.back_ui_11.Click += new System.EventHandler(this.back_ui_11_Click);
             this.back_ui_11.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_5
@@ -1598,7 +1579,6 @@ namespace Project
             this.back_ui_5.TabIndex = 11;
             this.back_ui_5.TabStop = false;
             this.back_ui_5.Visible = false;
-            this.back_ui_5.Click += new System.EventHandler(this.back_ui_5_Click);
             this.back_ui_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_4
@@ -1615,7 +1595,6 @@ namespace Project
             this.back_ui_4.TabIndex = 11;
             this.back_ui_4.TabStop = false;
             this.back_ui_4.Visible = false;
-            this.back_ui_4.Click += new System.EventHandler(this.back_ui_4_Click);
             this.back_ui_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_2
@@ -1632,7 +1611,6 @@ namespace Project
             this.back_ui_2.TabIndex = 11;
             this.back_ui_2.TabStop = false;
             this.back_ui_2.Visible = false;
-            this.back_ui_2.Click += new System.EventHandler(this.back_ui_2_Click);
             this.back_ui_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_1
@@ -1649,7 +1627,6 @@ namespace Project
             this.back_ui_1.TabIndex = 11;
             this.back_ui_1.TabStop = false;
             this.back_ui_1.Visible = false;
-            this.back_ui_1.Click += new System.EventHandler(this.back_ui_1_Click);
             this.back_ui_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_explorer
@@ -1738,7 +1715,6 @@ namespace Project
             this.back_animations.TabIndex = 12;
             this.back_animations.TabStop = false;
             this.back_animations.Visible = false;
-            this.back_animations.Click += new System.EventHandler(this.back_animations_Click);
             this.back_animations.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_14
@@ -1755,7 +1731,6 @@ namespace Project
             this.back_pro_14.TabIndex = 12;
             this.back_pro_14.TabStop = false;
             this.back_pro_14.Visible = false;
-            this.back_pro_14.Click += new System.EventHandler(this.back_pro_14_Click);
             this.back_pro_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_13
@@ -1772,7 +1747,6 @@ namespace Project
             this.back_pro_13.TabIndex = 12;
             this.back_pro_13.TabStop = false;
             this.back_pro_13.Visible = false;
-            this.back_pro_13.Click += new System.EventHandler(this.back_pro_13_Click);
             this.back_pro_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_1
@@ -1789,7 +1763,6 @@ namespace Project
             this.back_pro_1.TabIndex = 12;
             this.back_pro_1.TabStop = false;
             this.back_pro_1.Visible = false;
-            this.back_pro_1.Click += new System.EventHandler(this.back_pro_1_Click);
             this.back_pro_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // panel_dop
@@ -1811,7 +1784,6 @@ namespace Project
             this.panel_dop.Controls.Add(this.checkBox_mobile_traffic);
             this.panel_dop.Controls.Add(this.checkBox_WinSxS);
             this.panel_dop.Controls.Add(this.checkBox_onedrive);
-            this.panel_dop.Controls.Add(this.checkBox1);
             this.panel_dop.Controls.Add(this.checkBox_picture_cache);
             this.panel_dop.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel_dop.ForeColor = System.Drawing.Color.White;
@@ -1835,7 +1807,6 @@ namespace Project
             this.back_dop_movetemp.TabIndex = 12;
             this.back_dop_movetemp.TabStop = false;
             this.back_dop_movetemp.Visible = false;
-            this.back_dop_movetemp.Click += new System.EventHandler(this.back_dop_movetemp_Click);
             this.back_dop_movetemp.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_4
@@ -1852,7 +1823,6 @@ namespace Project
             this.back_dop_4.TabIndex = 11;
             this.back_dop_4.TabStop = false;
             this.back_dop_4.Visible = false;
-            this.back_dop_4.Click += new System.EventHandler(this.back_dop_4_Click);
             this.back_dop_4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_3
@@ -1869,7 +1839,6 @@ namespace Project
             this.back_dop_3.TabIndex = 11;
             this.back_dop_3.TabStop = false;
             this.back_dop_3.Visible = false;
-            this.back_dop_3.Click += new System.EventHandler(this.back_dop_3_Click);
             this.back_dop_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_2
@@ -1886,7 +1855,6 @@ namespace Project
             this.back_dop_2.TabIndex = 11;
             this.back_dop_2.TabStop = false;
             this.back_dop_2.Visible = false;
-            this.back_dop_2.Click += new System.EventHandler(this.back_dop_2_Click);
             this.back_dop_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_1
@@ -1903,7 +1871,6 @@ namespace Project
             this.back_dop_1.TabIndex = 11;
             this.back_dop_1.TabStop = false;
             this.back_dop_1.Visible = false;
-            this.back_dop_1.Click += new System.EventHandler(this.back_dop_1_Click);
             this.back_dop_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // label_delete_defender
@@ -1945,17 +1912,6 @@ namespace Project
             this.checkBox_onedrive.Text = "Удалить OneDrive";
             this.checkBox_onedrive.UseVisualStyleBackColor = false;
             this.checkBox_onedrive.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(290, 185);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(251, 17);
-            this.checkBox1.TabIndex = 3;
-            this.checkBox1.Tag = "";
-            this.checkBox1.Text = "Отключить снижение громкости микрофона";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // panel_5
             // 
@@ -2167,7 +2123,6 @@ namespace Project
             this.back_gpu_3.TabIndex = 11;
             this.back_gpu_3.TabStop = false;
             this.back_gpu_3.Visible = false;
-            this.back_gpu_3.Click += new System.EventHandler(this.back_gpu_3_Click);
             this.back_gpu_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_gpu_2
@@ -2184,7 +2139,6 @@ namespace Project
             this.back_gpu_2.TabIndex = 11;
             this.back_gpu_2.TabStop = false;
             this.back_gpu_2.Visible = false;
-            this.back_gpu_2.Click += new System.EventHandler(this.back_gpu_2_Click);
             this.back_gpu_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_gpu_1
@@ -2201,7 +2155,6 @@ namespace Project
             this.back_gpu_1.TabIndex = 11;
             this.back_gpu_1.TabStop = false;
             this.back_gpu_1.Visible = false;
-            this.back_gpu_1.Click += new System.EventHandler(this.back_gpu_1_Click);
             this.back_gpu_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_directplay
@@ -2232,7 +2185,6 @@ namespace Project
             this.back_pro_12.TabIndex = 22;
             this.back_pro_12.TabStop = false;
             this.back_pro_12.Visible = false;
-            this.back_pro_12.Click += new System.EventHandler(this.back_pro_12_Click);
             this.back_pro_12.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_3
@@ -2249,7 +2201,6 @@ namespace Project
             this.back_pro_3.TabIndex = 12;
             this.back_pro_3.TabStop = false;
             this.back_pro_3.Visible = false;
-            this.back_pro_3.Click += new System.EventHandler(this.back_pro_3_Click);
             this.back_pro_3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_7
@@ -2266,7 +2217,6 @@ namespace Project
             this.back_dop_7.TabIndex = 12;
             this.back_dop_7.TabStop = false;
             this.back_dop_7.Visible = false;
-            this.back_dop_7.Click += new System.EventHandler(this.back_pro_8_Click);
             this.back_dop_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // PanelHead
@@ -2574,7 +2524,6 @@ namespace Project
             this.back_dop_6.TabIndex = 13;
             this.back_dop_6.TabStop = false;
             this.back_dop_6.Visible = false;
-            this.back_dop_6.Click += new System.EventHandler(this.back_dop_6_Click);
             this.back_dop_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_dop_edge
@@ -2591,7 +2540,6 @@ namespace Project
             this.back_dop_edge.TabIndex = 12;
             this.back_dop_edge.TabStop = false;
             this.back_dop_edge.Visible = false;
-            this.back_dop_edge.Click += new System.EventHandler(this.back_dop_edge_Click);
             this.back_dop_edge.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // panel_main_navigate
@@ -2682,7 +2630,6 @@ namespace Project
             this.back_main_16.TabIndex = 12;
             this.back_main_16.TabStop = false;
             this.back_main_16.Visible = false;
-            this.back_main_16.Click += new System.EventHandler(this.back_main_16_Click);
             this.back_main_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_14
@@ -2699,7 +2646,6 @@ namespace Project
             this.back_main_14.TabIndex = 12;
             this.back_main_14.TabStop = false;
             this.back_main_14.Visible = false;
-            this.back_main_14.Click += new System.EventHandler(this.back_main_14_Click);
             this.back_main_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_main_13
@@ -2716,7 +2662,6 @@ namespace Project
             this.back_main_13.TabIndex = 12;
             this.back_main_13.TabStop = false;
             this.back_main_13.Visible = false;
-            this.back_main_13.Click += new System.EventHandler(this.back_main_13_Click);
             this.back_main_13.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // WOTBO
@@ -2877,7 +2822,6 @@ namespace Project
         private System.Windows.Forms.CheckBox checkBox_mobile_traffic;
         private System.Windows.Forms.CheckBox checkBox_WinSxS;
         private System.Windows.Forms.CheckBox checkBox_onedrive;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox_picture_cache;
         private System.Windows.Forms.Panel panel_5;
         private System.Windows.Forms.Label label7;

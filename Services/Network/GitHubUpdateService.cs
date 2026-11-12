@@ -1,16 +1,12 @@
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using WOTBO.App.Logging;
 
 namespace WOTBO.Services.Network
 {
     /// <summary>
-    /// Проверка обновлений WOTBO.
-    ///
-    /// Сравнение версий намеренно оставлено прежним: строки
-    /// <c>ver.json</c> и локальная версия приводятся к <c>double</c>.
-    /// Переход на SemVer — отдельным изменением, чтобы не менять поведение.
+    /// Проверка обновлений WOTBO. Версии сравниваются через <see cref="Version"/>,
+    /// чтобы корректно обрабатывать 2.9 → 2.10.
     /// </summary>
     public sealed class GitHubUpdateService : IGitHubUpdateService
     {
@@ -43,14 +39,15 @@ namespace WOTBO.Services.Network
                 {
                     info.RemoteVersion = _network.DownloadString(VersionUrl).Trim();
 
-                    double local = Convert.ToDouble(localVersion, CultureInfo.InvariantCulture);
-                    double remote = Convert.ToDouble(info.RemoteVersion, CultureInfo.InvariantCulture);
+                    Version local = ParseVersion(localVersion);
+                    Version remote = ParseVersion(info.RemoteVersion);
+                    int comparison = local.CompareTo(remote);
 
-                    if (local == remote)
+                    if (comparison == 0)
                     {
                         info.Status = UpdateStatus.Actual;
                     }
-                    else if (local < remote)
+                    else if (comparison < 0)
                     {
                         info.Status = UpdateStatus.Newer;
                         try
@@ -78,6 +75,18 @@ namespace WOTBO.Services.Network
                     return info;
                 }
             });
+        }
+
+        private static Version ParseVersion(string value)
+        {
+            string text = (value ?? string.Empty).Trim().TrimStart('v', 'V');
+            Version version;
+            if (!Version.TryParse(text, out version))
+            {
+                throw new FormatException("Некорректная версия: " + value);
+            }
+
+            return version;
         }
     }
 }

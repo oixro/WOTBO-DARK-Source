@@ -67,7 +67,8 @@ Properties/                    # Resources.resx, AssemblyInfo, Settings
 
 ## Статус
 
-Идёт поэтапный рефакторинг. Завершены **P0–P4**: окружение и сборка,
+Идёт поэтапный рефакторинг. Завершены **P0–P5**: окружение и сборка,
 инфраструктурные сервисы, 48 твиков на `ITweak`, UI-инфраструктура
-(`TweakUiBinder`, `PanelNavigator`, `BalloonNotifier`) и DPI awareness
-([docs/DPI.md](docs/DPI.md)).
+(`TweakUiBinder`, `PanelNavigator`, `BalloonNotifier`), DPI awareness
+([docs/DPI.md](docs/DPI.md)) и разгрузка `Form1` (329 строк, partial-файлы
+по ответственности).
