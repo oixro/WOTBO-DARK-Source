@@ -184,10 +184,7 @@ namespace WOTBO
             if (reservedStorageDisabled)
             {
                 Log.Info("Tweak:main.reservedstorage", "ReservedStorage выключен в Windows — твик считается применённым");
-                if (!AppServices.Tweaks.IsApplied("main.reservedstorage"))
-                {
-                    AppServices.Tweaks.MarkApplied("main.reservedstorage", null);
-                }
+                AppServices.Tweaks.Reconcile("main.reservedstorage", true);
 
                 checkBox_dism.Checked = false;
                 checkBox_dism.Enabled = false;
@@ -196,10 +193,7 @@ namespace WOTBO
             else
             {
                 Log.Info("Tweak:main.reservedstorage", "ReservedStorage включён — твик доступен");
-                if (AppServices.Tweaks.IsApplied("main.reservedstorage"))
-                {
-                    AppServices.Tweaks.Remove("main.reservedstorage");
-                }
+                AppServices.Tweaks.Reconcile("main.reservedstorage", false);
 
                 checkBox_dism.Checked = false;
                 checkBox_dism.Enabled = true;
@@ -246,7 +240,9 @@ namespace WOTBO
             }
             bool IsMouseFixKeyPresent()
             {
-                return AppServices.TweakCatalog.Get("main.mousefix").Detect(AppServices.TweakContext) == TweakState.Applied;
+                bool applied = AppServices.TweakCatalog.Get("main.mousefix").Detect(AppServices.TweakContext) == TweakState.Applied;
+                AppServices.Tweaks.Reconcile("main.mousefix", applied);
+                return applied;
             }
             UpdateMouseFixCheckBox();
             #endregion
@@ -256,7 +252,9 @@ namespace WOTBO
             Binder("main.mitigations").Detect();
             Binder("main.mmagent").Detect();
             #region pagefile
-            if (AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext) == TweakState.Applied)
+            TweakState pagefileState = AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext);
+            AppServices.Tweaks.Reconcile("main.pagefile", pagefileState == TweakState.Applied);
+            if (pagefileState == TweakState.Applied)
             {
                 Log.Info("Tweak:main.pagefile", "[pagefile check] Параметры файла подкачки уже установлены.");
                 checkBox_page.Enabled = false;
@@ -315,7 +313,6 @@ namespace WOTBO
             Binder("extra.edge").Detect();
             Binder("pro.windowsupdate").Detect();
             Binder("extra.movetemp").Detect();
-            AppServices.StateReconciler.Reconcile();
             #endregion
             #region инет + обнова
             if (!Internet.OK())
@@ -390,7 +387,9 @@ namespace WOTBO
                 nvidia = true;
                 Log.Info("GPU", $"GPU IS NVIDIA? - {nvidia}, gpu is - {gpu}");
 
-                if (AppServices.TweakCatalog.Get("gpu.hdcp").Detect(AppServices.TweakContext) == TweakState.Applied)
+                TweakState hdcpState = AppServices.TweakCatalog.Get("gpu.hdcp").Detect(AppServices.TweakContext);
+                AppServices.Tweaks.Reconcile("gpu.hdcp", hdcpState == TweakState.Applied);
+                if (hdcpState == TweakState.Applied)
                 {
                     Log.Info("Tweak:gpu.hdcp", $"hdcp disabled");
                     checkBox_hdcp.Checked = false;
@@ -398,7 +397,9 @@ namespace WOTBO
                     back_gpu_2.Visible = true;
                 } //hdcp check
 
-                if (AppServices.TweakCatalog.Get("gpu.nvidia").Detect(AppServices.TweakContext) == TweakState.Applied)
+                TweakState nvidiaState = AppServices.TweakCatalog.Get("gpu.nvidia").Detect(AppServices.TweakContext);
+                AppServices.Tweaks.Reconcile("gpu.nvidia", nvidiaState == TweakState.Applied);
+                if (nvidiaState == TweakState.Applied)
                 {
                     Log.Info("Tweak:gpu.nvidia", $"DisplayPowerSaving disabled");
                     checkBox_dopNVIDIA_tweaks.Enabled = false;
@@ -406,6 +407,10 @@ namespace WOTBO
                 }//tweaksnvidia
 
                 TweakState anselState = AppServices.TweakCatalog.Get("gpu.ansel").Detect(AppServices.TweakContext);
+                if (anselState != TweakState.Unavailable)
+                {
+                    AppServices.Tweaks.Reconcile("gpu.ansel", anselState == TweakState.Applied);
+                }
                 if (anselState == TweakState.Applied)
                 {
                     Log.Info("Tweak:gpu.ansel", $"anselstate == \"0\"");

@@ -110,7 +110,6 @@
     <Compile Include="Services\State\TweakBackup.cs" />
     <Compile Include="Services\State\TweakBackupSession.cs" />
     <Compile Include="Services\State\TweakStateStore.cs" />
-    <Compile Include="Services\State\TweakStateReconciler.cs" />
     <Compile Include="Services\Storage\TempWorkspace.cs" />
     <Compile Include="Services\Storage\ReservedStorageService.cs" />
     <Compile Include="Services\Storage\ResourceExtractor.cs" />

@@ -49,12 +49,14 @@ HKCU\Software\oixro\wotbo\Backups\<tweak-id>
 
 ## Сверка с фактическим состоянием
 
-После detect всех твиков `TweakStateReconciler` проходит каталог ещё раз:
+`TweakUiBinder.Detect` при каждом старте сразу сверяет результат `Detect`
+с `TweakStateStore`:
 
 - `Detect == Applied`, а состояния нет → `MarkApplied`;
-- `Detect != Applied`, а состояние есть → `Remove`;
-- `Unavailable` не трогает состояние;
-- store-only твики сверяются сами с собой и не меняются.
+- `Detect != Applied`, а состояние есть → `Remove`.
+
+Отдельного полного прохода по всем 48 твикам нет: дорогие проверки
+(`gpu.directplay`, `gpu.ansel`) не запускаются, пока не нужны.
 
 Это синхронизирует чекбокс, стрелку отката и `TweakHoverInfo`.
 Для одноразовых твиков (`tempclean`, `updateclean`, `winsxs`, `compactos`)

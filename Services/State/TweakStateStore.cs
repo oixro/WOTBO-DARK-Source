@@ -137,6 +137,21 @@ namespace WOTBO.Services.State
             return false;
         }
 
+        /// <summary>
+        /// Привести сохранённое состояние к фактическому результату Detect.
+        /// </summary>
+        public void Reconcile(string tweakId, bool applied)
+        {
+            if (applied && !IsApplied(tweakId))
+            {
+                MarkApplied(tweakId, null);
+            }
+            else if (!applied && IsApplied(tweakId))
+            {
+                Remove(tweakId);
+            }
+        }
+
         public bool HasBackup(string tweakId)
         {
             object data = _registry.GetValue(RegistryHive.CurrentUser, BackupKeyPath(tweakId), "data");

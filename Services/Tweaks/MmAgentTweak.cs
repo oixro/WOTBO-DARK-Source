@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Management;
 using WOTBO.Properties;
 
 namespace WOTBO.Services.Tweaks
@@ -17,38 +18,35 @@ namespace WOTBO.Services.Tweaks
         {
             try
             {
-                string output = context.Processes
-                    .ReadOutputAsync(
-                        "powershell.exe",
-                        "/command \"$m=Get-MMAgent; Write-Output ($m.ApplicationPreLaunch.ToString() + '|' + $m.MemoryCompression.ToString() + '|' + $m.PageCombining.ToString())\"")
-                    .GetAwaiter()
-                    .GetResult();
-
-                foreach (string rawLine in output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    string[] parts = rawLine.Trim().Split('|');
-                    bool applicationPreLaunch;
-                    bool memoryCompression;
-                    bool pageCombining;
-                    if (parts.Length == 3
-                        && bool.TryParse(parts[0], out applicationPreLaunch)
-                        && bool.TryParse(parts[1], out memoryCompression)
-                        && bool.TryParse(parts[2], out pageCombining))
+                var scope = new ManagementScope(@"root\Microsoft\Windows\PS_MMAgent");
+                scope.Connect();
+                using (var cls = new ManagementClass(scope, new ManagementPath("PS_MMAgent"), null))
                     {
-                        bool win10 = context.WindowsVersion.Detect().IsWindows10;
-                        bool expectedCompression = !win10;
-                        return applicationPreLaunch && memoryCompression == expectedCompression && !pageCombining
-                            ? TweakState.Applied
-                            : TweakState.NotApplied;
+                        ManagementBaseObject inParams = cls.GetMethodParameters("Get");
+                        using (ManagementBaseObject outParams = cls.InvokeMethod("Get", inParams, null))
+                        {
+                            var output = outParams["cmdletOutput"] as ManagementBaseObject;
+                            if (output != null)
+                            {
+                                bool applicationPreLaunch = Convert.ToBoolean(output["ApplicationPreLaunch"]);
+                                bool memoryCompression = Convert.ToBoolean(output["MemoryCompression"]);
+                                bool pageCombining = Convert.ToBoolean(output["PageCombining"]);
+                                bool win10 = context.WindowsVersion.Detect().IsWindows10;
+                                bool expectedCompression = !win10;
+
+                                return applicationPreLaunch && memoryCompression == expectedCompression && !pageCombining
+                                    ? TweakState.Applied
+                                    : TweakState.NotApplied;
+                            }
+                        }
                     }
-                }
             }
             catch (Exception exception)
             {
                 context.Log.Debug("Tweak:main.mmagent", "detect: " + exception.Message);
             }
 
-            return TweakState.NotApplied;
+            return context.Store.IsApplied(Id) ? TweakState.Applied : TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)

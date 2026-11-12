@@ -97,7 +97,7 @@ Binder сам вызывает `TweakScope`, `Detect/Apply/Rollback` и обно
 
 ## Сверка состояния
 
-`TweakStateReconciler` при старте сверяет `Detect` с `TweakStateStore`.
+`TweakUiBinder.Detect` при старте сверяет `Detect` с `TweakStateStore`.
 Твики с фактическим detect (`bufferbloat`, `ui.buttons`, `main.mmagent`,
 `main.mousefix`, `pro.homegallery`, `main.reservedstorage` и другие)
 обновляют store автоматически. Store-only остаются только там, где

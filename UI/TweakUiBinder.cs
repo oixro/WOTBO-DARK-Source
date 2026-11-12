@@ -74,7 +74,10 @@ namespace WOTBO.UI
         /// <summary>Detect при старте. Возвращает true, если твик применён.</summary>
         public bool Detect()
         {
-            if (Tweak().Detect(AppServices.TweakContext) != TweakState.Applied)
+            TweakState state = Tweak().Detect(AppServices.TweakContext);
+            AppServices.Tweaks.Reconcile(_id, state == TweakState.Applied);
+
+            if (state != TweakState.Applied)
             {
                 return false;
             }
