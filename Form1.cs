@@ -533,6 +533,8 @@ namespace Project
         async void Form1_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
+            Size = Dpi.ScaleSize(this, 390, 305);
+            CenterToScreen();
             SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula

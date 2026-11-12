@@ -2721,10 +2721,10 @@ namespace Project
             // 
             // WOTBO
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(44)))), ((int)(((byte)(55)))));
-            this.ClientSize = new System.Drawing.Size(2000, 570);
+            this.ClientSize = new System.Drawing.Size(390, 305);
             this.Controls.Add(this.panel_main_2);
             this.Controls.Add(this.panel_main_navigate);
             this.Controls.Add(this.panel_dop_2);
