@@ -24,18 +24,18 @@ namespace WOTBO.UI
             Control[] alwaysVisible = visible ?? new Control[0];
             trigger.Click += (sender, args) =>
             {
-                if (navBar != null)
-                {
-                    navBar.Location = Dpi.Scale(_form, 195, 284);
-                    navBar.Visible = true;
-                }
+                _navigate(panel);
 
                 foreach (Control control in alwaysVisible)
                 {
                     if (control != null) control.Visible = true;
                 }
 
-                _navigate(panel);
+                if (navBar != null)
+                {
+                    navBar.Location = Dpi.Scale(_form, 195, 284);
+                    navBar.Visible = true;
+                }
             };
         }
     }

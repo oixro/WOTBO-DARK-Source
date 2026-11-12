@@ -1274,7 +1274,6 @@ namespace WOTBO
             this.back_pro_11.Location = new System.Drawing.Point(0, 225);
             this.back_pro_11.Name = "back_pro_11";
             this.back_pro_11.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_pro_11.TabIndex = 12;
             this.back_pro_11.TabStop = false;
             this.back_pro_11.Visible = false;
@@ -1446,7 +1445,6 @@ namespace WOTBO
             this.back_ui_10.Location = new System.Drawing.Point(1, 185);
             this.back_ui_10.Name = "back_ui_10";
             this.back_ui_10.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_10.TabIndex = 23;
             this.back_ui_10.TabStop = false;
             this.back_ui_10.Visible = false;
@@ -1462,7 +1460,6 @@ namespace WOTBO
             this.back_ui_9.Location = new System.Drawing.Point(0, 162);
             this.back_ui_9.Name = "back_ui_9";
             this.back_ui_9.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_9.TabIndex = 11;
             this.back_ui_9.TabStop = false;
             this.back_ui_9.Visible = false;
@@ -1478,7 +1475,6 @@ namespace WOTBO
             this.back_ui_8.Location = new System.Drawing.Point(0, 131);
             this.back_ui_8.Name = "back_ui_8";
             this.back_ui_8.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_8.TabIndex = 11;
             this.back_ui_8.TabStop = false;
             this.back_ui_8.Visible = false;
@@ -1507,7 +1503,6 @@ namespace WOTBO
             this.back_ui_7.Location = new System.Drawing.Point(0, 105);
             this.back_ui_7.Name = "back_ui_7";
             this.back_ui_7.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_7.TabIndex = 11;
             this.back_ui_7.TabStop = false;
             this.back_ui_7.Visible = false;
@@ -1523,7 +1518,6 @@ namespace WOTBO
             this.back_ui_6.Location = new System.Drawing.Point(0, 85);
             this.back_ui_6.Name = "back_ui_6";
             this.back_ui_6.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_6.TabIndex = 11;
             this.back_ui_6.TabStop = false;
             this.back_ui_6.Visible = false;
@@ -1539,7 +1533,6 @@ namespace WOTBO
             this.back_ui_11.Location = new System.Drawing.Point(0, 205);
             this.back_ui_11.Name = "back_ui_11";
             this.back_ui_11.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_11.TabIndex = 11;
             this.back_ui_11.TabStop = false;
             this.back_ui_11.Visible = false;
@@ -1555,7 +1548,6 @@ namespace WOTBO
             this.back_ui_5.Location = new System.Drawing.Point(0, 65);
             this.back_ui_5.Name = "back_ui_5";
             this.back_ui_5.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_5.TabIndex = 11;
             this.back_ui_5.TabStop = false;
             this.back_ui_5.Visible = false;
@@ -1571,7 +1563,6 @@ namespace WOTBO
             this.back_ui_4.Location = new System.Drawing.Point(0, 45);
             this.back_ui_4.Name = "back_ui_4";
             this.back_ui_4.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_4.TabIndex = 11;
             this.back_ui_4.TabStop = false;
             this.back_ui_4.Visible = false;
@@ -1587,7 +1578,6 @@ namespace WOTBO
             this.back_ui_2.Location = new System.Drawing.Point(0, 25);
             this.back_ui_2.Name = "back_ui_2";
             this.back_ui_2.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_2.TabIndex = 11;
             this.back_ui_2.TabStop = false;
             this.back_ui_2.Visible = false;
@@ -1603,7 +1593,6 @@ namespace WOTBO
             this.back_ui_1.Location = new System.Drawing.Point(0, 5);
             this.back_ui_1.Name = "back_ui_1";
             this.back_ui_1.Size = new System.Drawing.Size(15, 15);
-            this.back_ui_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_ui_1.TabIndex = 11;
             this.back_ui_1.TabStop = false;
             this.back_ui_1.Visible = false;
@@ -1691,7 +1680,6 @@ namespace WOTBO
             this.back_animations.Location = new System.Drawing.Point(0, 65);
             this.back_animations.Name = "back_animations";
             this.back_animations.Size = new System.Drawing.Size(15, 15);
-            this.back_animations.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_animations.TabIndex = 12;
             this.back_animations.TabStop = false;
             this.back_animations.Visible = false;
@@ -1707,7 +1695,6 @@ namespace WOTBO
             this.back_pro_14.Location = new System.Drawing.Point(0, 45);
             this.back_pro_14.Name = "back_pro_14";
             this.back_pro_14.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_14.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_pro_14.TabIndex = 12;
             this.back_pro_14.TabStop = false;
             this.back_pro_14.Visible = false;
@@ -1723,7 +1710,6 @@ namespace WOTBO
             this.back_pro_13.Location = new System.Drawing.Point(0, 25);
             this.back_pro_13.Name = "back_pro_13";
             this.back_pro_13.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_13.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_pro_13.TabIndex = 12;
             this.back_pro_13.TabStop = false;
             this.back_pro_13.Visible = false;
@@ -1739,7 +1725,6 @@ namespace WOTBO
             this.back_pro_1.Location = new System.Drawing.Point(0, 5);
             this.back_pro_1.Name = "back_pro_1";
             this.back_pro_1.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_pro_1.TabIndex = 12;
             this.back_pro_1.TabStop = false;
             this.back_pro_1.Visible = false;
@@ -1783,7 +1768,6 @@ namespace WOTBO
             this.back_dop_movetemp.Location = new System.Drawing.Point(0, 225);
             this.back_dop_movetemp.Name = "back_dop_movetemp";
             this.back_dop_movetemp.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_movetemp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_movetemp.TabIndex = 12;
             this.back_dop_movetemp.TabStop = false;
             this.back_dop_movetemp.Visible = false;
@@ -1799,7 +1783,6 @@ namespace WOTBO
             this.back_dop_4.Location = new System.Drawing.Point(0, 205);
             this.back_dop_4.Name = "back_dop_4";
             this.back_dop_4.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_4.TabIndex = 11;
             this.back_dop_4.TabStop = false;
             this.back_dop_4.Visible = false;
@@ -1815,7 +1798,6 @@ namespace WOTBO
             this.back_dop_3.Location = new System.Drawing.Point(0, 185);
             this.back_dop_3.Name = "back_dop_3";
             this.back_dop_3.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_3.TabIndex = 11;
             this.back_dop_3.TabStop = false;
             this.back_dop_3.Visible = false;
@@ -1831,7 +1813,6 @@ namespace WOTBO
             this.back_dop_2.Location = new System.Drawing.Point(0, 165);
             this.back_dop_2.Name = "back_dop_2";
             this.back_dop_2.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_2.TabIndex = 11;
             this.back_dop_2.TabStop = false;
             this.back_dop_2.Visible = false;
@@ -1847,7 +1828,6 @@ namespace WOTBO
             this.back_dop_1.Location = new System.Drawing.Point(0, 145);
             this.back_dop_1.Name = "back_dop_1";
             this.back_dop_1.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_1.TabIndex = 11;
             this.back_dop_1.TabStop = false;
             this.back_dop_1.Visible = false;
@@ -2075,7 +2055,6 @@ namespace WOTBO
             this.back_gpu_4.Location = new System.Drawing.Point(0, 125);
             this.back_gpu_4.Name = "back_gpu_4";
             this.back_gpu_4.Size = new System.Drawing.Size(15, 15);
-            this.back_gpu_4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_gpu_4.TabIndex = 11;
             this.back_gpu_4.TabStop = false;
             this.back_gpu_4.Visible = false;
@@ -2092,7 +2071,6 @@ namespace WOTBO
             this.back_gpu_3.Location = new System.Drawing.Point(0, 105);
             this.back_gpu_3.Name = "back_gpu_3";
             this.back_gpu_3.Size = new System.Drawing.Size(15, 15);
-            this.back_gpu_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_gpu_3.TabIndex = 11;
             this.back_gpu_3.TabStop = false;
             this.back_gpu_3.Visible = false;
@@ -2108,7 +2086,6 @@ namespace WOTBO
             this.back_gpu_2.Location = new System.Drawing.Point(0, 85);
             this.back_gpu_2.Name = "back_gpu_2";
             this.back_gpu_2.Size = new System.Drawing.Size(15, 15);
-            this.back_gpu_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_gpu_2.TabIndex = 11;
             this.back_gpu_2.TabStop = false;
             this.back_gpu_2.Visible = false;
@@ -2124,7 +2101,6 @@ namespace WOTBO
             this.back_gpu_1.Location = new System.Drawing.Point(0, 65);
             this.back_gpu_1.Name = "back_gpu_1";
             this.back_gpu_1.Size = new System.Drawing.Size(15, 15);
-            this.back_gpu_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_gpu_1.TabIndex = 11;
             this.back_gpu_1.TabStop = false;
             this.back_gpu_1.Visible = false;
@@ -2154,7 +2130,6 @@ namespace WOTBO
             this.back_pro_12.Location = new System.Drawing.Point(0, 85);
             this.back_pro_12.Name = "back_pro_12";
             this.back_pro_12.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_pro_12.TabIndex = 22;
             this.back_pro_12.TabStop = false;
             this.back_pro_12.Visible = false;
@@ -2170,7 +2145,6 @@ namespace WOTBO
             this.back_pro_3.Location = new System.Drawing.Point(0, 65);
             this.back_pro_3.Name = "back_pro_3";
             this.back_pro_3.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_pro_3.TabIndex = 12;
             this.back_pro_3.TabStop = false;
             this.back_pro_3.Visible = false;
@@ -2186,7 +2160,6 @@ namespace WOTBO
             this.back_dop_7.Location = new System.Drawing.Point(0, 26);
             this.back_dop_7.Name = "back_dop_7";
             this.back_dop_7.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_7.TabIndex = 12;
             this.back_dop_7.TabStop = false;
             this.back_dop_7.Visible = false;
@@ -2485,7 +2458,6 @@ namespace WOTBO
             this.back_dop_6.Location = new System.Drawing.Point(0, 5);
             this.back_dop_6.Name = "back_dop_6";
             this.back_dop_6.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_6.TabIndex = 13;
             this.back_dop_6.TabStop = false;
             this.back_dop_6.Visible = false;
@@ -2501,7 +2473,6 @@ namespace WOTBO
             this.back_dop_edge.Location = new System.Drawing.Point(0, 45);
             this.back_dop_edge.Name = "back_dop_edge";
             this.back_dop_edge.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_edge.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.back_dop_edge.TabIndex = 12;
             this.back_dop_edge.TabStop = false;
             this.back_dop_edge.Visible = false;
