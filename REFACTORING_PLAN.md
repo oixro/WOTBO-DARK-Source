@@ -430,6 +430,8 @@ public sealed class TweakUiBinder
   `FormShadow → ShadowForm`, `Win32Priority → Win32PriorityForm`.
 - Namespace `test1/Project/WOTBO` → `WOTBO.*`.
 - Обновить `.csproj` (`Compile Include`, `DependentUpon`, `.resx`) и `Program.cs`.
+- **Статус:** не выполнялся — этап помечен как опциональный; текущие имена
+  стабильны и не мешают сборке.
 - **DoD:** дизайнер открывается, сборка и запуск проходят.
 
 ### Этап 7. Качество и найденные баги (после паритета)

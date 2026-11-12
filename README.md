@@ -65,6 +65,33 @@ Resources/                     # встроенные .reg/.bat/.zip/.exe
 Properties/                    # Resources.resx, AssemblyInfo, Settings
 ```
 
+## Архитектура
+
+```text
+App/                 AppBootstrap, AppPaths, AppServices, логирование, TweakScope
+Services/Tweaks/     ITweak, TweakBase, TweakContext, TweakCatalog, 48 твиков
+Services/Registry/   RegistryService и RegistryPaths
+Services/State/      состояние, бэкапы и восстановление
+Services/Network/    загрузки, GitHub API, последние версии программ
+Services/Storage/    TempWorkspace, ReservedStorageService
+Services/Windows/    определение версии Windows
+UI/                  TweakUiBinder, PanelNavigator, DPI, painter, notifier
+Form1.cs             поля, конструктор, закрытие (329 строк)
+Form1.*.cs           partial-файлы: Binders, Load, Tweaks, Features,
+                     Navigation, Downloads, Rollbacks
+```
+
+## Новый твик
+
+1. Добавить класс-наследник `TweakBase` в `Services/Tweaks/`.
+2. Указать файл в `Project.csproj`.
+3. Зарегистрировать экземпляр в `TweakCatalog.CreateDefault()`.
+4. Добавить `Bind(...)` в `Form1.SetupTweakBinders()`.
+5. Обновить `docs/TWEAKS.md`.
+
+Detect/Apply/Rollback и обновление чекбокса/стрелки делает
+`TweakUiBinder`; UI-специфичные шаги передаются колбэками.
+
 ## Статус
 
 Идёт поэтапный рефакторинг. Завершены **P0–P5**: окружение и сборка,
