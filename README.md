@@ -4,6 +4,8 @@
 
 Сайт: https://oixro.github.io/wotbo-site/
 
+Changelog: [CHANGELOG.md](CHANGELOG.md)
+
 ## Заметки
 
 - Версия: `2.34`.
