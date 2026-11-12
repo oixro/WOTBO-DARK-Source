@@ -180,12 +180,31 @@ namespace WOTBO
             #region отключаем чеки
             Binder("main.regpack").Detect();//regpack
             string reservedStorageState = await AppServices.ReservedStorage.GetStateAsync();
-            if (AppServices.ReservedStorage.IsDisabled(reservedStorageState))
+            bool reservedStorageDisabled = AppServices.ReservedStorage.IsDisabled(reservedStorageState);
+            if (reservedStorageDisabled)
             {
-                Log.Info("Tweak:main.reservedstorage", "ReservedStorage был применён");
+                Log.Info("Tweak:main.reservedstorage", "ReservedStorage выключен в Windows — твик считается применённым");
+                if (!AppServices.Tweaks.IsApplied("main.reservedstorage"))
+                {
+                    AppServices.Tweaks.MarkApplied("main.reservedstorage", null);
+                }
+
+                checkBox_dism.Checked = false;
                 checkBox_dism.Enabled = false;
                 back_main_2.Visible = true;
-            } //old reserved
+            }
+            else
+            {
+                Log.Info("Tweak:main.reservedstorage", "ReservedStorage включён — твик доступен");
+                if (AppServices.Tweaks.IsApplied("main.reservedstorage"))
+                {
+                    AppServices.Tweaks.Remove("main.reservedstorage");
+                }
+
+                checkBox_dism.Checked = false;
+                checkBox_dism.Enabled = true;
+                back_main_2.Visible = false;
+            } //reserved storage
             Binder("main.hibernate").Detect();
             Binder("main.powerscheme").Detect();
             Binder("ui.animations").Detect();//анимации
