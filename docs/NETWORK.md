@@ -80,8 +80,6 @@ klite        codecguide.com, K-Lite_*_Mega.exe
 wiztree      diskanalyzer.com, wiztree_*_portable.zip
 rustdesk     rustdesk/rustdesk, x86_64.exe
 explorerblurmica Maplespe/ExplorerBlurMica, Release_x64.zip
-defenderdisable  pgkt04/defender-control, disable-defender.exe
-defenderenable   pgkt04/defender-control, enable-defender.exe
 ```
 
 Кнопки К-Lite, WizTree и .NET 6 также используют latest с fallback.

@@ -2,71 +2,59 @@
 
 ## Что делает `DefenderTweak`
 
-Твик заменён на [pgkt04/defender-control](https://github.com/pgkt04/defender-control)
-(MIT). WOTBO не хранит бинарник внутри себя: при применении скачивается
-последний `disable-defender.exe` из GitHub Releases, при откате —
-`enable-defender.exe`.
+1. Запускает прежний `.reg`-пакет (`win10defenderX.reg` или
+   `win11defenderX.reg`) через `su.exe`.
+2. На Windows 11 проходит по всем службам `webthreatdefusersvc_*` и ставит:
+   - `LaunchProtected=4`
+   - `Start=4`
+   - `Start_old=4`
+3. Применяет современные политики:
+   - `HKLM\SOFTWARE\Policies\Microsoft\Windows Defender`
+     - `DisableAntiSpyware=1`
+     - `DisableAntiVirus=1`
+   - `...\Real-Time Protection`
+     - `DisableRealtimeMonitoring=1`
+     - `DisableBehaviorMonitoring=1`
+     - `DisableOnAccessProtection=1`
+     - `DisableScanOnRealtimeEnable=1`
+   - `...\Spynet`
+     - `SpynetReporting=0`
+     - `SubmitSamplesConsent=2`
+   - службы `WinDefend`, `WdNisSvc`, `Sense`, `SecurityHealthService` —
+     `Start=4`.
+4. Запускает `!AIO_OFF.reg`.
 
-Применение:
+Откат запускает restore-пакеты, возвращает `webthreatdefusersvc_*`,
+удаляет современные политики и возвращает службам `Start=2`.
 
-1. скачивает `disable-defender.exe` в `c:\Windows\oixro`;
-2. запускает `disable-defender.exe -s`;
-3. инструмент перезапускается от `TrustedInstaller`;
-4. отключает политики и службы Defender;
-5. переименовывает драйверы `WdFilter.sys`, `WdBoot.sys` и движок
-   Defender в `.OLD`;
-6. сохраняет restore-манифест:
-   ```text
-   C:\ProgramData\defender-control\soft-deleted.txt
-   ```
+## Важно: Tamper Protection
 
-Для полного эффекта нужна перезагрузка.
-
-## Detect
-
-`main.defender` считается применённым, если существует restore-манифест:
+`DisableAntiSpyware` и политики Defender игнорируются, если включена
+**Tamper Protection**. Реестром она не отключается — только вручную в
+Windows Security или политикой организации. В лог пишется явное
+предупреждение:
 
 ```text
-C:\ProgramData\defender-control\soft-deleted.txt
+Tamper Protection реестром не отключается; если она включена,
+часть ключей может игнорироваться
 ```
 
-Если пользователь применял старый WOTBO 2.33/2.34, где Defender
-отключался `.reg`-пакетами, манифеста нет → твик снова доступен для
-применения.
-
-## Откат
-
-1. скачивает `enable-defender.exe`;
-2. запускает `enable-defender.exe -s`;
-3. инструмент возвращает `.OLD`-файлы, политики, владельцев и службу
-   `WinDefend`;
-4. после перезагрузки Defender должен вернуться.
-
-## Важно
-
-- **Tamper Protection** нужно выключить вручную:
-  Windows Security → Virus & threat protection → Manage settings.
-- **Real-time protection** лучше временно выключить: Defender помечает
-  `defender-control` как `HackTool:Win32/DefenderControl` и может удалить
-  скачанный exe.
-- После применения и отката нужна **перезагрузка**.
-- Инструмент работает с драйверами и `TrustedInstaller`. На снапшоте VM
-  это безопасно, на рабочей системе — на свой риск.
-- Если Defender не вернулся:
-  ```text
-  DISM /Online /Cleanup-Image /RestoreHealth
-  sfc /scannow
-  ```
-  затем перезагрузка. В крайнем случае — repair upgrade Windows.
-
-## Что удалено из старого твика
-
-Старые `.reg`-пакеты `win10defenderX.reg` / `win11defenderX.reg`,
-`webthreatdefusersvc_*`, `!AIO_OFF.reg` и ручные политики больше не
-используются для `main.defender`. Их заменяет `defender-control`.
+Поэтому после применения может потребоваться перезагрузка и ручная
+проверка состояния.
 
 ## Бэкапы
 
-WOTBO не делает свой бэкап файлов Defender: восстановление выполняет
-`enable-defender.exe` по своему манифесту. В `TweakStateStore` для
-`main.defender` остаются только `applied` и `appliedAt`.
+Перед каждым `.reg` вызывается `TweakContext.BackupRegFile`, затем
+`TweakScope.Restore` возвращает значения и подветки. Современные политики
+и службы сохраняются через обычный `RegistryService` (old → new).
+
+`supercmd` сохранён: все защищённые операции идут через
+`su.exe /wrs cmd.exe /c ...`.
+
+## Ограничения
+
+- Часть ключей принадлежит `TrustedInstaller`; ошибки записи логируются и
+  не валят весь твик.
+- Поведение Defender зависит от версии Windows и политик организации.
+- Твик не гарантирует отключение на системах с включённой Tamper
+  Protection.
