@@ -76,8 +76,8 @@ Services/Network/    загрузки, GitHub API, последние верси
 Services/Storage/    TempWorkspace, ReservedStorageService
 Services/Windows/    определение версии Windows
 UI/                  TweakUiBinder, PanelNavigator, DPI, painter, notifier
-Form1.cs             поля, конструктор, закрытие (329 строк)
-Form1.*.cs           partial-файлы: Binders, Load, Tweaks, Features,
+MainForm.cs          поля, конструктор, закрытие (329 строк)
+MainForm.*.cs        partial-файлы: Binders, Load, Tweaks, Features,
                      Navigation, Downloads, Rollbacks
 ```
 
@@ -86,7 +86,7 @@ Form1.*.cs           partial-файлы: Binders, Load, Tweaks, Features,
 1. Добавить класс-наследник `TweakBase` в `Services/Tweaks/`.
 2. Указать файл в `Project.csproj`.
 3. Зарегистрировать экземпляр в `TweakCatalog.CreateDefault()`.
-4. Добавить `Bind(...)` в `Form1.SetupTweakBinders()`.
+4. Добавить `Bind(...)` в `MainForm.SetupTweakBinders()`.
 5. Обновить `docs/TWEAKS.md`.
 
 Detect/Apply/Rollback и обновление чекбокса/стрелки делает
@@ -97,5 +97,5 @@ Detect/Apply/Rollback и обновление чекбокса/стрелки д
 Идёт поэтапный рефакторинг. Завершены **P0–P5**: окружение и сборка,
 инфраструктурные сервисы, 48 твиков на `ITweak`, UI-инфраструктура
 (`TweakUiBinder`, `PanelNavigator`, `BalloonNotifier`), DPI awareness
-([docs/DPI.md](docs/DPI.md)) и разгрузка `Form1` (329 строк, partial-файлы
+([docs/DPI.md](docs/DPI.md)) и разгрузка `MainForm` (329 строк, partial-файлы
 по ответственности).

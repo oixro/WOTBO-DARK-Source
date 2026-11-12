@@ -38,7 +38,7 @@ Size = Dpi.ScaleSize(this, 15, 15);
 
 `Dpi.Factor` берёт `Control.DeviceDpi / 96`. Это используется в:
 
-- размере окна: `Size = Dpi.ScaleSize(this, 390, 305)` в `Form1_Load`;
+- размере окна: `Size = Dpi.ScaleSize(this, 390, 305)` в `MainForm_Load`;
 - `PanelNavigator` — `405 → 105`, верх `36`;
 - дополнительных элементах вкладки «Интерфейс»;
 - расположении `DirectPlay` без NVIDIA;

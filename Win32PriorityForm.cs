@@ -6,9 +6,9 @@ using WOTBO.App;
 
 namespace WOTBO
 {
-    public partial class Win32Priority : Form
+    public partial class Win32PriorityForm : Form
     {
-        public Win32Priority()
+        public Win32PriorityForm()
         {
             InitializeComponent();
         }

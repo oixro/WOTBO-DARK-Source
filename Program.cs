@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using WOTBO.App;
 
-namespace test1
+namespace WOTBO
 {
     internal static class Program
     {

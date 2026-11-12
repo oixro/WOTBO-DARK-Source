@@ -1,6 +1,6 @@
 ﻿namespace WOTBO
 {
-    partial class Form2
+    partial class EulaForm
     {
         /// <summary>
         /// Required designer variable.
@@ -77,12 +77,12 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form2";
+            this.Name = "EulaForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Лицензионное соглашение";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Form2_Load);
+            this.Load += new System.EventHandler(this.EulaForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,7 +1,7 @@
 # Железо и экран
 
 `IWmiSystemInfoService` (`Services/Hardware`) заменил
-`GetStringFromWMI/GetDoubleFromWMI/GetRAMSize/GetRAMFrequency` из `Form1`.
+`GetStringFromWMI/GetDoubleFromWMI/GetRAMSize/GetRAMFrequency` из `MainForm`.
 
 - `GetString(class, property)` — первое значение WMI или `""`;
 - `GetDouble(...)` — число или `-1`;
@@ -18,7 +18,7 @@
 
 Ошибки WMI/экрана пишутся в `DEBUG [Hardware]`, а не глотаются.
 
-`LoadSystemInfoAsync` в `Form1` только собирает строку для `label7` и
+`LoadSystemInfoAsync` в `MainForm` только собирает строку для `label7` и
 логирует её в `[System]`; логика запросов вынесена в сервисы.
 
 Файлы: `Services/Hardware/WmiSystemInfoService.cs`,
@@ -37,5 +37,5 @@
   (`true`/`false`/`null`, если утилита не найдена);
 - `SetAnsel(bool)` — `on`/`off` через прежний fire-and-forget запуск.
 
-Определение Ansel больше не дублируется в `Form1` и откате: обе ветки
+Определение Ansel больше не дублируется в `MainForm` и откате: обе ветки
 вызывают `AppServices.Gpu`.

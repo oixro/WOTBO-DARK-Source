@@ -1,7 +1,7 @@
 # Сеть
 
 `INetworkService` (`Services/Network`) заменил `Internet.OK()` и прямые
-`WebClient` в `Form1`.
+`WebClient` в `MainForm`.
 
 ## Методы
 
@@ -40,7 +40,7 @@ ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 
 ## Проверка обновлений
 
-`GitHubUpdateService` (`IGitHubUpdateService`) вынесен из `Form1_Load`:
+`GitHubUpdateService` (`IGitHubUpdateService`) вынесен из `MainForm_Load`:
 
 ```csharp
 UpdateInfo update = await AppServices.Updates.CheckAsync(curver);

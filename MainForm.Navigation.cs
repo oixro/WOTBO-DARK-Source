@@ -24,9 +24,9 @@ using WOTBO.Services.Registry;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
-namespace Project
+namespace WOTBO
 {
-    public partial class WOTBO
+    public partial class MainForm
     {
         #region перемещение по пунктам
         #region main    

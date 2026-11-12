@@ -7,11 +7,11 @@ using WOTBO.App;
 
 namespace WOTBO
 {
-    public partial class Form2 : Form
+    public partial class EulaForm : Form
     {
         string exepath = Assembly.GetEntryAssembly().Location;
         string exename = AppDomain.CurrentDomain.FriendlyName;
-        public Form2()
+        public EulaForm()
         {
             InitializeComponent();
         }
@@ -21,7 +21,7 @@ namespace WOTBO
         {
             AppServices.Processes.StartDetached(line, true);
         }
-        private void Form2_Load(object sender, EventArgs e)
+        private void EulaForm_Load(object sender, EventArgs e)
         {
             TopMost = true;
             if (Registry.CurrentUser.OpenSubKey(@"Software\oixro\wotbo") == null)

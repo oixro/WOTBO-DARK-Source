@@ -4,10 +4,10 @@ using WOTBO.App;
 
 namespace WOTBO
 {
-    public partial class Form4 : Form
+    public partial class MsiModeForm : Form
     {
         static string tempfolder = @"c:\Windows\oixro";
-        public Form4()
+        public MsiModeForm()
         {
             InitializeComponent();
         }

@@ -24,9 +24,9 @@ using WOTBO.Services.Registry;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
-namespace Project
+namespace WOTBO
 {
-    public partial class WOTBO : FormShadow
+    public partial class MainForm : ShadowForm
     {
         #region переменные
         string version = $"build - {Assembly.GetExecutingAssembly().GetName().Version.ToString(2)}";
@@ -74,7 +74,7 @@ namespace Project
         public bool animation = true;
         #endregion
         #region default crap
-        public WOTBO()
+        public MainForm()
         {
             InitializeComponent();
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
@@ -313,7 +313,7 @@ namespace Project
 
         #endregion
         #region закрытие
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Info("App", "closing");
             notifier.Dispose();

@@ -24,9 +24,9 @@ using WOTBO.Services.Registry;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
-namespace Project
+namespace WOTBO
 {
-    public partial class WOTBO
+    public partial class MainForm
     {
         #region TweakUiBinder
         private TweakUiBinder Bind(
@@ -113,7 +113,7 @@ namespace Project
             Bind("main.dwminput", checkBox_dwninput, back_main_14, "DwmInputUsesIoCompletionPort был применён");
             Bind("main.powerlatency", checkBox_tolerate, back_main_16, "Power\\ExitLatency был применён");
             Bind("pro.win32priority", checkBox_pro_11, back_pro_11, "Win32PrioritySeparation был применён",
-                inApply: () => new Win32Priority().ShowDialog());
+                inApply: () => new Win32PriorityForm().ShowDialog());
 
             Bind("gpu.hdcp", checkBox_hdcp, back_gpu_2);
             Bind("gpu.nvidia", checkBox_dopNVIDIA_tweaks, back_gpu_3);

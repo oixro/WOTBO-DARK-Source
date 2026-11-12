@@ -24,9 +24,9 @@ using WOTBO.Services.Registry;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
-namespace Project
+namespace WOTBO
 {
-    public partial class WOTBO
+    public partial class MainForm
     {
         #region открытие
         private void SetupTweakTooltipsToggle()
@@ -108,7 +108,7 @@ namespace Project
             }
         }
 
-        async void Form1_Load(object sender, EventArgs e)
+        async void MainForm_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
             Size = Dpi.ScaleSize(this, 390, 305);
@@ -125,7 +125,7 @@ namespace Project
             if (Registry.CurrentUser.OpenSubKey(RegistryPaths.AppRoot)?.GetValue("eula") == null)
             {
                 Log.Info("App", "eula null");
-                Form2 eula = new Form2();
+                EulaForm eula = new EulaForm();
                 eula.ShowDialog();
             }
             AppServices.Tweaks.MigrateLegacyFlags();

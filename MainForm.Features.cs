@@ -24,9 +24,9 @@ using WOTBO.Services.Registry;
 using WOTBO.Services.Tweaks;
 using WOTBO.Services.Windows;
 using WOTBO.UI;
-namespace Project
+namespace WOTBO
 {
-    public partial class WOTBO
+    public partial class MainForm
     {
         #region курсоры
         void label_cursors_Click_1(object sender, EventArgs e)
@@ -96,7 +96,7 @@ namespace Project
 
             if (File.Exists(exe))
             {
-                Form4 msimode = new Form4();
+                MsiModeForm msimode = new MsiModeForm();
                 Process.Start(exe);
                 msimode.ShowDialog();
             }

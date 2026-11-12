@@ -1,7 +1,7 @@
 # Процессы
 
 `IProcessService` (`Services/Processes`) заменяет локальные
-`hcmd/scmd/powershell/supercmd/OpenUrl` из `Form1`, `Form2`, `Form4`.
+`hcmd/scmd/powershell/supercmd/OpenUrl` из `MainForm`, `Form2`, `Form4`.
 
 ## Методы
 
@@ -20,7 +20,7 @@
 
 ## Совместимость
 
-Локальные обёртки `hcmd/hcmdAsync/scmd/powershell/supercmd` в `Form1`
+Локальные обёртки `hcmd/hcmdAsync/scmd/powershell/supercmd` в `MainForm`
 удалены: все вызовы идут напрямую в `AppServices.Processes`.
 `supercmd` заменён на `RunSuper(command, tempfolder + @"\su.exe")`.
 

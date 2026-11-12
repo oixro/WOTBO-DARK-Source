@@ -170,46 +170,46 @@
     <Compile Include="UI\TweakUiBinder.cs" />
     <Compile Include="UI\HoverAnimator.cs" />
     <Compile Include="UI\Dpi.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Binders.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Binders.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Load.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Load.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Tweaks.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Tweaks.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Features.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Features.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Navigation.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Navigation.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Downloads.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Downloads.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Rollbacks.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Rollbacks.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form2.cs">
+    <Compile Include="EulaForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <Compile Include="EulaForm.Designer.cs">
+      <DependentUpon>EulaForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form4.cs">
+    <Compile Include="MsiModeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form4.Designer.cs">
-      <DependentUpon>Form4.cs</DependentUpon>
+    <Compile Include="MsiModeForm.Designer.cs">
+      <DependentUpon>MsiModeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormShadow.cs">
+    <Compile Include="ShadowForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Internet.cs" />
@@ -220,28 +220,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Win32Priority.cs">
+    <Compile Include="Win32PriorityForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Win32Priority.Designer.cs">
-      <DependentUpon>Win32Priority.cs</DependentUpon>
+    <Compile Include="Win32PriorityForm.Designer.cs">
+      <DependentUpon>Win32PriorityForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form4.resx">
-      <DependentUpon>Form4.cs</DependentUpon>
+    <EmbeddedResource Include="MsiModeForm.resx">
+      <DependentUpon>MsiModeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormShadow.resx">
-      <DependentUpon>FormShadow.cs</DependentUpon>
+    <EmbeddedResource Include="ShadowForm.resx">
+      <DependentUpon>ShadowForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Win32Priority.resx">
-      <DependentUpon>Win32Priority.cs</DependentUpon>
+    <EmbeddedResource Include="Win32PriorityForm.resx">
+      <DependentUpon>Win32PriorityForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">

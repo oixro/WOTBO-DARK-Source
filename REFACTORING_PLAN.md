@@ -388,7 +388,7 @@ public sealed class TweakUiBinder
   5. `ProTweaks`: Home/Gallery, Windows Update, CSRSS, Bufferbloat, Unlocker,
      AlwaysOnTop.
 - Каждый твик: `Detect`, `Apply`, `Rollback`, без ссылок на контролы.
-- **Статус:** выполнено — сорок восемь твиков в `TweakCatalog`, `Form1`
+- **Статус:** выполнено — сорок восемь твиков в `TweakCatalog`, `MainForm`
   только вызывает `Detect/Apply/Rollback` и обновляет чекбоксы/стрелки.
 - **DoD:** для каждого твика проверено: detect до/после, apply, rollback,
   повторный apply; состояние чекбокса и стрелки отката совпадает с реестром.
@@ -399,9 +399,9 @@ public sealed class TweakUiBinder
 - `TweakUiBinder` — привязка чекбоксов и PictureBox.
 - `FormPainter`, `HoverAnimator`, `WindowDragBehavior`, `BalloonNotifier`.
 - `Helpers/Win32/NativeMethods` — собрать все `DllImport`.
-- **Статус:** выполнено. `Form1` использует `TweakUiBinder` (47 связок),
+- **Статус:** выполнено. `MainForm` использует `TweakUiBinder` (47 связок),
   `PanelNavigator`, `FormPainter`, `HoverAnimator`, `WindowDragBehavior`,
-  `BalloonNotifier` и `NativeMethods`; `Form1.cs` сократился с 2567 до
+  `BalloonNotifier` и `NativeMethods`; `MainForm.cs` сократился с 2567 до
   ~1700 строк.
 - **DoD:** визуально идентично эталонным скриншотам; анимации и перетаскивание
   работают; уведомления те же.
@@ -416,10 +416,10 @@ public sealed class TweakUiBinder
   8. распаковка ресурсов, 9. legacy-cleanup.
 - `async void` — только обработчики событий; внутри `try/catch` + лог.
 - Цель: `MainForm.cs` < 500 строк.
-- **Статус:** `Form1.cs` — 329 строк. Логика разложена по partial-файлам:
-  `Form1.Binders.cs`, `Form1.Load.cs`, `Form1.Tweaks.cs`,
-  `Form1.Features.cs`, `Form1.Navigation.cs`, `Form1.Downloads.cs`,
-  `Form1.Rollbacks.cs`. Обработчики стрелок отката удалены: клики
+- **Статус:** `MainForm.cs` — 329 строк. Логика разложена по partial-файлам:
+  `MainForm.Binders.cs`, `MainForm.Load.cs`, `MainForm.Tweaks.cs`,
+  `MainForm.Features.cs`, `MainForm.Navigation.cs`, `MainForm.Downloads.cs`,
+  `MainForm.Rollbacks.cs`. Обработчики стрелок отката удалены: клики
   подключает `TweakUiBinder`. Дальше — вынос `Load` в сервисы
   (`StartupWorkflow`, `ResourceExtractor`) и навигации в контроллер.
 - **DoD:** сценарии первого запуска и повторного запуска идентичны baseline.
@@ -430,8 +430,9 @@ public sealed class TweakUiBinder
   `FormShadow → ShadowForm`, `Win32Priority → Win32PriorityForm`.
 - Namespace `test1/Project/WOTBO` → `WOTBO.*`.
 - Обновить `.csproj` (`Compile Include`, `DependentUpon`, `.resx`) и `Program.cs`.
-- **Статус:** не выполнялся — этап помечен как опциональный; текущие имена
-  стабильны и не мешают сборке.
+- **Статус:** выполнено. `Form1 → MainForm`, `Form2 → EulaForm`,
+  `Form4 → MsiModeForm`, `FormShadow → ShadowForm`,
+  `Win32Priority → Win32PriorityForm`; namespace `test1/Project → WOTBO`.
 - **DoD:** дизайнер открывается, сборка и запуск проходят.
 
 ### Этап 7. Качество и найденные баги (после паритета)

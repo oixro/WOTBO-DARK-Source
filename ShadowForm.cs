@@ -2,16 +2,16 @@
 using System.Windows.Forms;
 using WOTBO.UI;
 
-namespace Project
+namespace WOTBO
 {
     // Наследуемся от Form
-    public class FormShadow : Form
+    public class ShadowForm : Form
     {
         #region Тень формы + перетаскивание окна + предотвращение разворачивания
 #if !DEBUG
         readonly bool m_aeroEnabled;
 
-        public FormShadow() => m_aeroEnabled = CheckAeroEnabled();
+        public ShadowForm() => m_aeroEnabled = CheckAeroEnabled();
 
         bool CheckAeroEnabled()
         {

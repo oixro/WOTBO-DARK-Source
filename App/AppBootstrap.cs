@@ -20,7 +20,7 @@ namespace WOTBO.App
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
 
-            Application.Run(new Project.WOTBO());
+            Application.Run(new MainForm());
         }
 
         private static void OnThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
