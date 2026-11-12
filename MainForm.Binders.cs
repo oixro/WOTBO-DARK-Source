@@ -89,10 +89,13 @@ namespace WOTBO
                     label_kalorant.Visible = true;
                 },
                 beforeApply: () => MessageBox.Show(
-                    "Защитник будет отключен!\nЗащита от эксполитов не будет работать.\n" +
-                    "Она нужна для работы некоторых античитов.\n" +
-                    "Но восстановить защитник можно через вкладку дополнительно.\n",
-                    "", MessageBoxButtons.OK, MessageBoxIcon.Warning),
+                    "Защитник будет отключён через defender-control.\n\n" +
+                    "Перед применением выключите Tamper Protection в Windows Security.\n" +
+                    "Defender может пометить инструмент как HackTool и удалить его.\n" +
+                    "После применения потребуется перезагрузка.\n" +
+                    "Защита от эксплойтов и античиты могут перестать работать.\n\n" +
+                    "Восстановить защитник можно стрелкой отката.",
+                    "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning),
                 afterApply: () =>
                 {
                     label_kalorant.Visible = true;

@@ -66,6 +66,8 @@
 - AnyDesk заменён на RustDesk с парсером последней версии.
 - `ui.mica` обновляется из последнего релиза `Maplespe/ExplorerBlurMica`
   с fallback на `2.1.0`.
+- `main.defender` заменён на `pgkt04/defender-control`: latest
+  disable/enable exe, restore-манифест в `%ProgramData%`.
 - EULA переписана, получила тёмную тему и компактный размер; пункт про
   правый клик вынесен отдельно.
 - Со страницы загрузок убраны Win10 Tweaker, Epic Games Launcher,

@@ -102,6 +102,10 @@ namespace WOTBO.Services.Network
                     return GetLatestAssetUrlAsync("rustdesk/rustdesk", "x86_64.exe", ".exe");
                 case "explorerblurmica":
                     return GetLatestAssetUrlAsync("Maplespe/ExplorerBlurMica", "Release_x64.zip", ".zip");
+                case "defenderdisable":
+                    return GetLatestAssetUrlAsync("pgkt04/defender-control", "disable-defender.exe", ".exe");
+                case "defenderenable":
+                    return GetLatestAssetUrlAsync("pgkt04/defender-control", "enable-defender.exe", ".exe");
                 case "ffmpeg":
                     return GetLatestAssetUrlAsync("GyanD/codexffmpeg", "essentials_build", ".zip");
                 case "klite":

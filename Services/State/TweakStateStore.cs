@@ -66,6 +66,7 @@ namespace WOTBO.Services.State
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 "main.reservedstorage",
+                "main.defender",
                 "main.hibernate",
                 "main.powerscheme",
                 "gpu.ansel",
