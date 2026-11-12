@@ -54,6 +54,7 @@ namespace WOTBO
         private void ShowGpuPanel()
         {
             bool directplay = AppServices.TweakCatalog.Get("gpu.directplay").Detect(AppServices.TweakContext) == TweakState.Applied;
+            AppServices.Tweaks.Reconcile("gpu.directplay", directplay);
             if (directplay)
             {
                 checkBox_directplay.Enabled = false;
