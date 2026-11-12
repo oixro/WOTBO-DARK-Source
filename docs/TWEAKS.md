@@ -95,11 +95,13 @@ Binder сам вызывает `TweakScope`, `Detect/Apply/Rollback` и обно
 сами твики (`Audio`, `Usb`, `ContextMenu`, `Win11Header`, `ExplorerRestart`,
 `DwmPriority`, `CsrssPriority`, `Edge`).
 
-## Дальше
+## Сверка состояния
 
-Все твики из `Form1` перенесены в `ITweak`, каталог содержит сорок восемь
-записей. Осталось вынести привязку чекбоксов и стрелок в отдельный
-`TweakUiBinder` и собрать запуск приложения в `AppBootstrap`.
+`TweakStateReconciler` при старте сверяет `Detect` с `TweakStateStore`.
+Твики с фактическим detect (`bufferbloat`, `ui.buttons`, `main.mmagent`,
+`main.mousefix`, `pro.homegallery`, `main.reservedstorage` и другие)
+обновляют store автоматически. Store-only остаются только там, где
+фактическое состояние проверить нельзя или это одноразовая операция.
 
 Новый твик = класс `ITweak` + строка в `TweakCatalog.CreateDefault()` +
-привязка UI в `Form1`.
+привязка UI в `MainForm.Binders.cs`.

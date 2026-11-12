@@ -75,6 +75,10 @@ namespace WOTBO.App
         private static readonly Lazy<TweakCatalog> TweakCatalogLazy =
             new Lazy<TweakCatalog>(TweakCatalog.CreateDefault);
 
+        private static readonly Lazy<TweakStateReconciler> StateReconcilerLazy =
+            new Lazy<TweakStateReconciler>(() => new TweakStateReconciler(
+                TweakCatalog, TweakContext, Tweaks, Log.Instance));
+
         /// <summary>Реестр x64 (<c>RegistryView.Registry64</c>).</summary>
         public static IRegistryService Registry
         {
@@ -181,6 +185,12 @@ namespace WOTBO.App
         public static TweakCatalog TweakCatalog
         {
             get { return TweakCatalogLazy.Value; }
+        }
+
+        /// <summary>Сверка состояния твиков с фактическим Detect.</summary>
+        public static TweakStateReconciler StateReconciler
+        {
+            get { return StateReconcilerLazy.Value; }
         }
     }
 }

@@ -15,7 +15,40 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            return context.Store.IsApplied(Id) ? TweakState.Applied : TweakState.NotApplied;
+            try
+            {
+                string output = context.Processes
+                    .ReadOutputAsync(
+                        "powershell.exe",
+                        "/command \"$m=Get-MMAgent; Write-Output ($m.ApplicationPreLaunch.ToString() + '|' + $m.MemoryCompression.ToString() + '|' + $m.PageCombining.ToString())\"")
+                    .GetAwaiter()
+                    .GetResult();
+
+                foreach (string rawLine in output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string[] parts = rawLine.Trim().Split('|');
+                    bool applicationPreLaunch;
+                    bool memoryCompression;
+                    bool pageCombining;
+                    if (parts.Length == 3
+                        && bool.TryParse(parts[0], out applicationPreLaunch)
+                        && bool.TryParse(parts[1], out memoryCompression)
+                        && bool.TryParse(parts[2], out pageCombining))
+                    {
+                        bool win10 = context.WindowsVersion.Detect().IsWindows10;
+                        bool expectedCompression = !win10;
+                        return applicationPreLaunch && memoryCompression == expectedCompression && !pageCombining
+                            ? TweakState.Applied
+                            : TweakState.NotApplied;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                context.Log.Debug("Tweak:main.mmagent", "detect: " + exception.Message);
+            }
+
+            return TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)

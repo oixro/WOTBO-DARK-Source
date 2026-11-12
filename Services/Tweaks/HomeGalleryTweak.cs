@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Win32;
 using WOTBO.Services.Registry;
 
@@ -11,7 +12,26 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            return context.Store.IsApplied(Id) ? TweakState.Applied : TweakState.NotApplied;
+            if (context.WindowsVersion.Detect().IsWindows10)
+            {
+                return TweakState.NotApplied;
+            }
+
+            object hub = context.Registry.GetValue(RegistryHive.LocalMachine, RegistryPaths.Explorer, "HubMode");
+            object home = context.Registry.GetValue(
+                RegistryHive.ClassesRoot,
+                RegistryPaths.HomeGalleryClsid,
+                "System.IsPinnedToNameSpaceTree");
+            object gallery = context.Registry.GetValue(
+                RegistryHive.CurrentUser,
+                RegistryPaths.GalleryClsid,
+                "System.IsPinnedToNameSpaceTree");
+
+            return Convert.ToInt32(hub ?? 0) == 1
+                && Convert.ToInt32(home ?? -1) == 0
+                && Convert.ToInt32(gallery ?? -1) == 1
+                ? TweakState.Applied
+                : TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)

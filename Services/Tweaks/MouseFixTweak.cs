@@ -55,9 +55,32 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            return context.Store.IsApplied(Id)
+            object sensitivity = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "MouseSensitivity");
+            object speed = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "MouseSpeed");
+            object xCurve = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseXCurve");
+            object yCurve = context.Registry.GetValue(RegistryHive.CurrentUser, MousePath, "SmoothMouseYCurve");
+
+            return Convert.ToString(sensitivity) == "10"
+                && Convert.ToString(speed) == "0"
+                && BytesEqual(xCurve as byte[], FixXCurve)
+                && BytesEqual(yCurve as byte[], FixYCurve)
                 ? TweakState.Applied
                 : TweakState.NotApplied;
+        }
+
+        private static bool BytesEqual(byte[] left, byte[] right)
+        {
+            if (left == null || right == null || left.Length != right.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Length; i++)
+            {
+                if (left[i] != right[i]) return false;
+            }
+
+            return true;
         }
 
         public override void Apply(TweakContext context)

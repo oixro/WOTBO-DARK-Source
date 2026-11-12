@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Win32;
 using WOTBO.Services.Registry;
 
@@ -11,7 +12,12 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            return context.Store.IsApplied(Id) ? TweakState.Applied : TweakState.NotApplied;
+            object height = context.Registry.GetValue(RegistryHive.CurrentUser, RegistryPaths.WindowMetrics, "CaptionHeight");
+            object width = context.Registry.GetValue(RegistryHive.CurrentUser, RegistryPaths.WindowMetrics, "CaptionWidth");
+
+            return Convert.ToString(height) == "-270" && Convert.ToString(width) == "-270"
+                ? TweakState.Applied
+                : TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)

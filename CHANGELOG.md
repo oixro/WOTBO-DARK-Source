@@ -82,6 +82,11 @@
   (`BringToFront`), а устаревшие анимации отменяются по generation-токену;
 - координаты навигации считаются по фактической ширине `PanelMain`, потому
   что `DeviceDpi` мог вернуть 96 при масштабе 125–200 %;
+- добавлен `TweakStateReconciler`: store синхронизируется с фактическим
+  `Detect` при старте;
+- `bufferbloat`, `ui.buttons`, `main.mmagent`, `main.mousefix` и
+  `pro.homegallery` теперь проверяют реальное состояние, а не только
+  историю применения;
 - `MSI_util_v3.exe`: больше не распаковывается `cursors.zip`;
 - `DefenderKiller`: убран двойной запуск и удаление архива;
 - обновление: `rd` по exe заменена на `del new.exe`, ошибки запуска

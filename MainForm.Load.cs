@@ -315,6 +315,7 @@ namespace WOTBO
             Binder("extra.edge").Detect();
             Binder("pro.windowsupdate").Detect();
             Binder("extra.movetemp").Detect();
+            AppServices.StateReconciler.Reconcile();
             #endregion
             #region инет + обнова
             if (!Internet.OK())
