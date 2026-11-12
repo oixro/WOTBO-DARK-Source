@@ -4,23 +4,6 @@
 
 Сайт: https://oixro.github.io/wotbo-site/
 
-## Сборка
-
-```bash
-export WOTBO_VM_SSH=wotbo-vm
-./build/remote-build.sh
-```
-
-Результат:
-
-```text
-artifacts/x64/Release/WOTBO.exe
-artifacts/logs/build-Release-*.log
-```
-
-VM: Windows 11, VS 2022 Build Tools, .NET Framework 4.8 targeting pack, OpenSSH.
-Настройка VM — `docs/VM-SETUP.md`.
-
 ## Заметки
 
 - Версия: `2.34`.
