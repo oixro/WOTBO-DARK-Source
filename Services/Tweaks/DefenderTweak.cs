@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Management;
 
@@ -117,11 +118,44 @@ namespace WOTBO.Services.Tweaks
         private static string RunScript(TweakContext context, string command, string fileName)
         {
             string script = Path.Combine(context.Workspace.Root, fileName);
-            File.WriteAllText(script, command);
+            string log = Path.Combine(context.Workspace.Root, "defendnot.log");
+            File.WriteAllText(
+                script,
+                "$ErrorActionPreference = 'Continue'\r\n" + command + " *> \"" + log + "\"\r\n");
 
-            return context.Processes.ReadOutputAsync(
-                "powershell.exe",
-                "-NoProfile -ExecutionPolicy Bypass -File \"" + script + "\"").GetAwaiter().GetResult();
+            string powershell = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Windows),
+                @"System32\WindowsPowerShell\v1.0\powershell.exe");
+
+            try
+            {
+                using (var process = Process.Start(new ProcessStartInfo
+                {
+                    FileName = powershell,
+                    Arguments = "-NoProfile -ExecutionPolicy Bypass -File \"" + script + "\"",
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Normal,
+                }))
+                {
+                    if (process != null)
+                    {
+                        process.WaitForExit();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                return "powershell start failed: " + exception.Message;
+            }
+
+            try
+            {
+                return File.Exists(log) ? File.ReadAllText(log) : string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }
