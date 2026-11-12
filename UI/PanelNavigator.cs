@@ -20,6 +20,7 @@ namespace WOTBO.UI
         private readonly Form _form;
         private readonly Panel _main;
         private readonly Panel _head;
+        private int _generation;
 
         public PanelNavigator(Form form, Panel main, Panel head)
         {
@@ -37,6 +38,8 @@ namespace WOTBO.UI
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
 
+            int generation = ++_generation;
+
             foreach (Control control in _form.Controls)
             {
                 Panel panel = control as Panel;
@@ -52,12 +55,18 @@ namespace WOTBO.UI
 
             target.Location = new Point(startX, top);
             target.Visible = true;
+            target.BringToFront();
 
             int delayPerStep = DurationMs / Steps;
             bool animate = AnimationEnabled();
 
             for (int i = 0; i <= Steps; i++)
             {
+                if (generation != _generation)
+                {
+                    return;
+                }
+
                 if (animate)
                 {
                     float t = (float)i / Steps;
@@ -73,6 +82,8 @@ namespace WOTBO.UI
                     target.Location = new Point(endX, top);
                 }
             }
+
+            target.BringToFront();
         }
     }
 }

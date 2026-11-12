@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using WOTBO.App.Logging;
 
 namespace WOTBO.UI
 {
@@ -35,7 +36,10 @@ namespace WOTBO.UI
                 {
                     navBar.Location = Dpi.Scale(_form, 195, 284);
                     navBar.Visible = true;
+                    navBar.BringToFront();
                 }
+
+                Log.Debug("UI", $"nav {panel.Name} target={panel.Bounds} nav={navBar?.Bounds}");
             };
         }
     }
