@@ -1,6 +1,6 @@
 # WOTBO
 
-Мой инструмент для настройки Windows. WinForms, .NET Framework 4.8, x64, classic csproj.
+**W**indows **o**ptimization **t**ool **b**y **o**ixro. WinForms, .NET Framework 4.8, x64, classic csproj.
 
 Сайт: https://oixro.github.io/wotbo-site/
 
