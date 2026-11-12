@@ -1,8 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using WOTBO.UI;
 using WOTBO.App;
 
 namespace WOTBO
@@ -14,6 +16,33 @@ namespace WOTBO
         public EulaForm()
         {
             InitializeComponent();
+            Theme();
+        }
+
+        private void Theme()
+        {
+            BackColor = Color.FromArgb(35, 44, 55);
+            FormPainter.Apply(this, Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55));
+
+            Font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label1.Font = Font;
+            label1.BackColor = Color.Transparent;
+            label1.ForeColor = Color.White;
+
+            StyleButton(button1);
+            StyleButton(button2);
+        }
+
+        private static void StyleButton(Button button)
+        {
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 1;
+            button.FlatAppearance.BorderColor = Color.FromArgb(120, 137, 150);
+            button.FlatAppearance.MouseOverBackColor = Color.FromArgb(39, 52, 59);
+            button.FlatAppearance.MouseDownBackColor = Color.FromArgb(33, 46, 52);
+            button.BackColor = Color.FromArgb(44, 57, 67);
+            button.ForeColor = Color.White;
+            button.UseVisualStyleBackColor = false;
         }
 
         int k = 0;
@@ -42,8 +71,9 @@ namespace WOTBO
 "3. Сначала посмотрите гайд на канале: вопросы, ответ на которые уже есть в видео, останутся без ответа.\n" +
 "4. Если гайд не помог — опишите конфигурацию ПК и что именно вы делали перед появлением проблемы. Без этих деталей разобраться невозможно.\n" +
 "5. Сообщения в стиле «не работает» без описания проблемы игнорируются. Уважайте своё и чужое время.\n" +
-$"6. Если кнопка «{button1.Text}» не срабатывает — перечитайте этот текст. Принять EULA можно правым кликом по кнопке.\n" +
-"7. WOTBO проверялся только на оригинальных версиях Windows. На кастомных сборках возможны ошибки, автор за их последствия не отвечает.";
+$"6. Если кнопка «{button1.Text}» не срабатывает — перечитайте этот текст.\n" +
+"7. Принять EULA можно правым кликом по кнопке.\n" +
+"8. WOTBO проверялся только на оригинальных версиях Windows. На кастомных сборках возможны ошибки, автор за их последствия не отвечает.";
             }
         }
 
@@ -54,7 +84,7 @@ $"6. Если кнопка «{button1.Text}» не срабатывает — п
                 k++;
                 if (k >= 2)
                 {
-                    MessageBox.Show("Пожалуйста, прочитайте условия и примите их правым кликом по кнопке.", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Пожалуйста, прочитайте условия использования WOTBO", "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
             }

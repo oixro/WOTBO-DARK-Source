@@ -66,6 +66,8 @@
 - AnyDesk заменён на RustDesk с парсером последней версии.
 - `ui.mica` обновляется из последнего релиза `Maplespe/ExplorerBlurMica`
   с fallback на `2.1.0`.
+- EULA переписана, получила тёмную тему и компактный размер; пункт про
+  правый клик вынесен отдельно.
 - Со страницы загрузок убраны Win10 Tweaker, Epic Games Launcher,
   CrystalDiskInfo и .NET 6 Runtime.
 - Сайт: `https://wotbo.pro/` → `https://oixro.github.io/wotbo-site/`.
