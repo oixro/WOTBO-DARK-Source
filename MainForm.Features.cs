@@ -139,10 +139,10 @@ namespace WOTBO
             }
         }
         #endregion
-        #region wotbo.pro
+        #region site
         void label_site_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://wotbo.pro/");
+            OpenUrl("https://oixro.github.io/wotbo-site/");
         }
         #endregion
         #region kalorant
