@@ -92,7 +92,7 @@ HKCU\Software\oixro\wotbo\Backups\<tweak-id>
 `applied` и `appliedAt`, без `data`:
 
 ```text
-main.reservedstorage, main.hibernate, main.powerscheme,
+main.reservedstorage, main.defender, main.hibernate, main.powerscheme,
 gpu.ansel, gpu.directplay, ui.animations,
 extra.compactos, extra.winsxs, extra.tempclean,
 extra.updateclean, pro.bufferbloat

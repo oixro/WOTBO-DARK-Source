@@ -24,6 +24,7 @@ namespace WOTBO.UI
         private readonly Action _inRollback;
         private readonly Action _afterRollback;
         private readonly Func<bool> _confirmApply;
+        private readonly Func<bool> _confirmRollback;
         private readonly bool _disableOnApply;
         private readonly bool _showRollbackOnApply;
         private readonly bool _showRollbackOnDetect;
@@ -41,6 +42,7 @@ namespace WOTBO.UI
             Action inRollback = null,
             Action afterRollback = null,
             Func<bool> confirmApply = null,
+            Func<bool> confirmRollback = null,
             bool disableOnApply = true,
             bool showRollbackOnApply = true,
             bool showRollbackOnDetect = true,
@@ -60,6 +62,7 @@ namespace WOTBO.UI
             _inRollback = inRollback;
             _afterRollback = afterRollback;
             _confirmApply = confirmApply;
+            _confirmRollback = confirmRollback;
             _disableOnApply = disableOnApply;
             _showRollbackOnApply = showRollbackOnApply;
             _showRollbackOnDetect = showRollbackOnDetect;
@@ -154,6 +157,11 @@ namespace WOTBO.UI
         /// <summary>Штатный откат из обработчика стрелки.</summary>
         public void Rollback()
         {
+            if (_confirmRollback != null && !_confirmRollback())
+            {
+                return;
+            }
+
             using (TweakScope.Rollback(_id))
             {
                 Tweak().Rollback(AppServices.TweakContext);

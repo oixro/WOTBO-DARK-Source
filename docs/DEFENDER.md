@@ -1,60 +1,58 @@
 # Defender
 
-## Что делает `DefenderTweak`
+## Решение: defendnot
 
-1. Запускает прежний `.reg`-пакет (`win10defenderX.reg` или
-   `win11defenderX.reg`) через `su.exe`.
-2. На Windows 11 проходит по всем службам `webthreatdefusersvc_*` и ставит:
-   - `LaunchProtected=4`
-   - `Start=4`
-   - `Start_old=4`
-3. Применяет современные политики:
-   - `HKLM\SOFTWARE\Policies\Microsoft\Windows Defender`
-     - `DisableAntiSpyware=1`
-     - `DisableAntiVirus=1`
-   - `...\Real-Time Protection`
-     - `DisableRealtimeMonitoring=1`
-     - `DisableBehaviorMonitoring=1`
-     - `DisableOnAccessProtection=1`
-     - `DisableScanOnRealtimeEnable=1`
-   - `...\Spynet`
-     - `SpynetReporting=0`
-     - `SubmitSamplesConsent=2`
-   - службы `WinDefend`, `WdNisSvc`, `Sense`, `SecurityHealthService` —
-     `Start=4`.
-4. Запускает `!AIO_OFF.reg`.
+`main.defender` использует [es3n1n/defendnot](https://github.com/es3n1n/defendnot)
+(Apache-2.0). Это WSC-регистрация фейкового антивируса `WOTBO.PRO`,
+а не переименование драйверов.
 
-Откат запускает restore-пакеты, возвращает `webthreatdefusersvc_*`,
-удаляет современные политики и возвращает службам `Start=2`.
+### Требование: интернет
 
-## Важно: Tamper Protection
+Без интернета чекбокс `Отключить Windows Defender` отключается:
+команда загружается с `https://dnot.sh/`.
 
-`DisableAntiSpyware` и политики Defender игнорируются, если включена
-**Tamper Protection**. Реестром она не отключается — только вручную в
-Windows Security или политикой организации. В лог пишется явное
-предупреждение:
+## Применение
 
-```text
-Tamper Protection реестром не отключается; если она включена,
-часть ключей может игнорироваться
+1. WOTBO открывает окно с просьбой отключить:
+   - **Real-time protection**;
+   - **Tamper Protection**;
+   - **Smart App Control** (если доступно).
+2. Сразу открываются страницы Windows Security:
+   ```text
+   windowsdefender://threatsettings/
+   windowsdefender://appbrowser/
+   ```
+3. После подтверждения выполняется:
+   ```powershell
+   & ([ScriptBlock]::Create((irm https://dnot.sh/))) --name "WOTBO.PRO" --firewall --silent
+   ```
+4. WOTBO проверяет фактическое состояние Defender через WSC/WMI.
+
+## Откат
+
+```powershell
+& ([ScriptBlock]::Create((irm https://dnot.sh/))) --disable
 ```
 
-Поэтому после применения может потребоваться перезагрузка и ручная
-проверка состояния.
+После команды проверяется, что Defender снова активен.
 
-## Бэкапы
+## Как определяется состояние
 
-Перед каждым `.reg` вызывается `TweakContext.BackupRegFile`, затем
-`TweakScope.Restore` возвращает значения и подветки. Современные политики
-и службы сохраняются через обычный `RegistryService` (old → new).
+`Detect` смотрит:
 
-`supercmd` сохранён: все защищённые операции идут через
-`su.exe /wrs cmd.exe /c ...`.
+1. зарегистрирован ли в `root\SecurityCenter2\AntiVirusProduct`
+   продукт `WOTBO.PRO`;
+2. если да — читает `MSFT_MpComputerStatus`:
+   - `AntivirusEnabled`;
+   - `RealTimeProtectionEnabled`.
+
+Твик считается применённым только если fake AV зарегистрирован и Defender
+не активен. Если WMI недоступен, наличие `WOTBO.PRO` считается признаком
+отключённого Defender.
 
 ## Ограничения
 
-- Часть ключей принадлежит `TrustedInstaller`; ошибки записи логируются и
-  не валят весь твик.
-- Поведение Defender зависит от версии Windows и политик организации.
-- Твик не гарантирует отключение на системах с включённой Tamper
-  Protection.
+- Нужен интернет для apply и rollback.
+- Defendnot должен оставаться на диске: он добавляет себя в автозапуск.
+- На новых Windows 11 может понадобиться отключить Smart App Control.
+- Defendnot не удаляет файлы Defender; он работает через WSC.

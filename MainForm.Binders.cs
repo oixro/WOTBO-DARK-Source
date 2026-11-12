@@ -41,6 +41,7 @@ namespace WOTBO
             Action inRollback = null,
             Action afterRollback = null,
             Func<bool> confirmApply = null,
+            Func<bool> confirmRollback = null,
             bool disableOnApply = true,
             bool showRollbackOnApply = true,
             bool showRollbackOnDetect = true,
@@ -58,6 +59,7 @@ namespace WOTBO
                 inRollback,
                 afterRollback,
                 confirmApply,
+                confirmRollback,
                 disableOnApply,
                 showRollbackOnApply,
                 showRollbackOnDetect,
@@ -79,6 +81,49 @@ namespace WOTBO
             return tweakBinders[id];
         }
 
+        private bool ConfirmDefenderApply()
+        {
+            if (!AppServices.Network.IsAvailable())
+            {
+                MessageBox.Show(
+                    "Для отключения Defender нужен интернет: команда defendnot загружается с dnot.sh.",
+                    "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo("windowsdefender://threatsettings/") { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo("windowsdefender://appbrowser/") { UseShellExecute = true });
+            }
+            catch
+            {
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Откройте Windows Security и отключите:\n" +
+                "• Real-time protection\n" +
+                "• Tamper Protection\n" +
+                "• Smart App Control (если доступно)\n\n" +
+                "После этого нажмите ОК — WOTBO запустит defendnot с именем WOTBO.PRO.",
+                "WOTBO", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            return result == DialogResult.OK;
+        }
+
+        private bool ConfirmDefenderRollback()
+        {
+            if (!AppServices.Network.IsAvailable())
+            {
+                MessageBox.Show(
+                    "Для восстановления Defender нужен интернет: команда defendnot --disable загружается с dnot.sh.",
+                    "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
         private void SetupTweakBinders()
         {
             Bind("main.defender", checkBox_disabledefender, back_main_12,
@@ -88,17 +133,31 @@ namespace WOTBO
                     label_delete_defender.Enabled = true;
                     label_kalorant.Visible = true;
                 },
-                beforeApply: () => MessageBox.Show(
-                    "Защитник будет отключен!\nЗащита от эксполитов не будет работать.\n" +
-                    "Она нужна для работы некоторых античитов.\n" +
-                    "Но восстановить защитник можно через вкладку дополнительно.\n",
-                    "", MessageBoxButtons.OK, MessageBoxIcon.Warning),
+                confirmApply: ConfirmDefenderApply,
+                confirmRollback: ConfirmDefenderRollback,
                 afterApply: () =>
                 {
                     label_kalorant.Visible = true;
-                    ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
+                    bool disabled = AppServices.TweakCatalog.Get("main.defender")
+                        .Detect(AppServices.TweakContext) == TweakState.Applied;
+                    ShowNotification(
+                        "Защитник",
+                        disabled
+                            ? "Defender отключён и подтверждён как неактивный."
+                            : "Команда выполнена, но Defender всё ещё активен. Проверьте Tamper Protection и Smart App Control.",
+                        disabled ? ToolTipIcon.Info : ToolTipIcon.Warning);
                 },
-                afterRollback: () => ShowNotification("Защитник Windows", "Работа защитника будет восстановлена после перезагруки ПК", ToolTipIcon.Warning));
+                afterRollback: () =>
+                {
+                    bool disabled = AppServices.TweakCatalog.Get("main.defender")
+                        .Detect(AppServices.TweakContext) == TweakState.Applied;
+                    ShowNotification(
+                        "Защитник Windows",
+                        disabled
+                            ? "Defender всё ещё отключён. Проверьте статус вручную."
+                            : "Defender снова активен.",
+                        disabled ? ToolTipIcon.Warning : ToolTipIcon.Info);
+                });
 
             Bind("main.regpack", checkBox_reg, back_main_1, "regpack был применён",
                 afterApply: () => ShowNotification("Настройки Реестра", "Рекомендуется перезагрузить ПК после применения данного твика!", ToolTipIcon.Warning));

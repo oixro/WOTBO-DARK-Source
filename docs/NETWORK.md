@@ -82,7 +82,10 @@ rustdesk     rustdesk/rustdesk, x86_64.exe
 explorerblurmica Maplespe/ExplorerBlurMica, Release_x64.zip
 ```
 
-Кнопки К-Lite, WizTree и .NET 6 также используют latest с fallback.
+Кнопки К-Lite и WizTree также используют latest с fallback.
+
+Defender использует `https://dnot.sh/` (install/`--disable`), без отдельного
+GitHub-парсера: без интернета твик недоступен.
 HWiNFO, MSI Afterburner, FastStone, CentBrowser и VC++ Runtimes
 отдают 403/404 либо не имеют стабильного машинного
 endpoint — для них остаются статические ссылки.

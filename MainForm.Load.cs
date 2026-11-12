@@ -319,6 +319,7 @@ namespace WOTBO
             {
                 Log.Warn("Network", $"инета нету");
                 checkBox_bluefolders.Enabled = false;
+                checkBox_disabledefender.Enabled = false;
                 label_nvcleaninstall.Enabled = false;
                 label_activate.Enabled = false;
                 label_ddu.Enabled = false;
