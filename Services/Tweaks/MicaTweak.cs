@@ -1,7 +1,6 @@
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
-using WOTBO.Properties;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -25,9 +24,17 @@ namespace WOTBO.Services.Tweaks
             string zip = Path.Combine(root, "Release_x64.zip");
             if (!File.Exists(zip))
             {
-                context.Network.DownloadFile(
-                    "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/Release_x64.zip",
-                    zip);
+                string url = context.LatestVersions
+                    .GetProgramUrlAsync("explorerblurmica")
+                    .GetAwaiter()
+                    .GetResult();
+
+                if (string.IsNullOrEmpty(url))
+                {
+                    url = "https://github.com/Maplespe/ExplorerBlurMica/releases/download/2.1.0/Release_x64.zip";
+                }
+
+                context.Network.DownloadFile(url, zip);
                 ZipFile.ExtractToDirectory(zip, root);
             }
 

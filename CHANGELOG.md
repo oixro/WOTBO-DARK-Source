@@ -64,6 +64,8 @@
 - Обновлены статические ссылки: FastStone `FSViewerSetup85.exe`,
   HWiNFO `hwi64_860.exe`.
 - AnyDesk заменён на RustDesk с парсером последней версии.
+- `ui.mica` обновляется из последнего релиза `Maplespe/ExplorerBlurMica`
+  с fallback на `2.1.0`.
 - Со страницы загрузок убраны Win10 Tweaker, Epic Games Launcher,
   CrystalDiskInfo и .NET 6 Runtime.
 - Сайт: `https://wotbo.pro/` → `https://oixro.github.io/wotbo-site/`.

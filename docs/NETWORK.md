@@ -79,6 +79,7 @@ qbittorrent  qbittorrent/qBittorrent, _x64_setup.exe
 klite        codecguide.com, K-Lite_*_Mega.exe
 wiztree      diskanalyzer.com, wiztree_*_portable.zip
 rustdesk     rustdesk/rustdesk, x86_64.exe
+explorerblurmica Maplespe/ExplorerBlurMica, Release_x64.zip
 ```
 
 Кнопки К-Lite, WizTree и .NET 6 также используют latest с fallback.
@@ -96,7 +97,6 @@ endpoint — для них остаются статические ссылки.
 `raw.githubusercontent.com/oixro/WOTBO/main/resources/`:
 
 ```text
-Release_x64.zip       ui.mica
 imageres.zip          ui.bluefolders (Windows 10)
 BlueIcon_Minimal.zip  ui.bluefolders (Windows 11)
 unlocker.zip          pro.unlocker
@@ -104,6 +104,8 @@ AlwaysOnTop.exe       pro.alwaysontop
 smartctl.exe          main.mmagent
 ```
 
+`ui.mica` скачивает `Release_x64.zip` из последнего релиза
+`Maplespe/ExplorerBlurMica` (fallback — `2.1.0`).
 `gear.zip` для `ui.wotbocontext` и `scheme.pow` для `main.powerscheme`
 остаются встроенными ресурсами. Все загрузки идут через
 `INetworkService.DownloadFile`, ошибки попадают в лог с категорией

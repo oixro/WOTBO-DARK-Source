@@ -63,7 +63,7 @@ public interface ITweak
 | `pro.homegallery` | `HKLM\...\Explorer` + CLSID Home/Gallery | `HubMode=1`, `System.IsPinnedToNameSpaceTree=0`, CLSID через `su.exe` |
 | `pro.unlocker` | `C:\Windows\unlocker`, `HKCR\*\shell\Уничтожить`, `Directory\shell\Уничтожить` | Unlocker в контекстном меню |
 | `pro.alwaysontop` | `C:\Windows\AlwaysOnTop.exe`, `HKLM\...\Run` | автозапуск AlwaysOnTop |
-| `ui.mica` | `C:\Windows\ExplorerBlurMica.dll`, `config.ini` | прозрачный проводник, `regsvr32` |
+| `ui.mica` | `C:\Windows\ExplorerBlurMica.dll`, `config.ini` | прозрачный проводник, latest `Maplespe/ExplorerBlurMica` |
 | `ui.wotbocontext` | `HKCR\DesktopBackground\Shell\WOTBO`, `gear.ico`, `wotbo.exe` | пункт WOTBO в меню рабочего стола |
 | `ui.bluefolders` | `imageres.dll`, `imageres.dll.mun` | синие папки; w10 — `imageres.zip`, w11 — `BlueIcon_Minimal.zip` |
 | `ui.animations` | `HKCU\Software\oixro\wotbo` | `animationsEnabled=0`; анимация панелей WOTBO |

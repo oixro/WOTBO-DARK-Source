@@ -100,6 +100,8 @@ namespace WOTBO.Services.Network
                     return GetLatestAssetUrlAsync("ip7z/7zip", "-x64.exe");
                 case "rustdesk":
                     return GetLatestAssetUrlAsync("rustdesk/rustdesk", "x86_64.exe", ".exe");
+                case "explorerblurmica":
+                    return GetLatestAssetUrlAsync("Maplespe/ExplorerBlurMica", "Release_x64.zip", ".zip");
                 case "ffmpeg":
                     return GetLatestAssetUrlAsync("GyanD/codexffmpeg", "essentials_build", ".zip");
                 case "klite":
