@@ -78,6 +78,7 @@ namespace WOTBO
         {
             InitializeComponent();
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
+            Dpi.Configure(PanelMain, 395f);
 
             notifier = new BalloonNotifier();
             panelNavigator = new PanelNavigator(this, PanelMain, PanelHead)

@@ -11,9 +11,35 @@ namespace WOTBO.UI
     /// </summary>
     public static class Dpi
     {
+        private static Control _reference;
+        private static float _designWidth;
+
+        /// <summary>
+        /// Задаёт контроль, по ширине которого вычисляется масштаб.
+        /// Нужно потому, что DeviceDpi может вернуть 96 даже при
+        /// масштабировании 125–200 %.
+        /// </summary>
+        public static void Configure(Control reference, float designWidth)
+        {
+            _reference = reference;
+            _designWidth = designWidth;
+        }
+
         public static float Factor(Control control)
         {
             if (control == null) return 1f;
+
+            if (_reference != null && !_reference.IsDisposed &&
+                _reference.Width > 0 && _designWidth > 0)
+            {
+                Form referenceForm = _reference.FindForm();
+                Form form = control as Form;
+                if (form == null) form = control.FindForm();
+                if (referenceForm == null || form == null || referenceForm == form)
+                {
+                    return _reference.Width / _designWidth;
+                }
+            }
 
             int dpi = control.DeviceDpi;
             if (dpi <= 0)

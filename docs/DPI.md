@@ -36,7 +36,10 @@ Location = Dpi.Scale(this, 20, 85);
 Size = Dpi.ScaleSize(this, 15, 15);
 ```
 
-`Dpi.Factor` берёт `Control.DeviceDpi / 96`. Это используется в:
+`Dpi.Factor` считает масштаб по ширине `PanelMain / 395` (с fallback на
+`Control.DeviceDpi / 96`). Это надёжнее: на некоторых системах
+`DeviceDpi` возвращает 96 даже при масштабе 125–200 %, а WinForms при этом
+уже масштабирует контролы. Используется в:
 
 - размере окна: `ApplyWindowSize()` берёт фактические границы `PanelMain`;
 - `PanelNavigator` — `405 → 105`, верх `36`;
