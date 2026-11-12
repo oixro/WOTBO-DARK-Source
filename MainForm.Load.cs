@@ -394,8 +394,9 @@ namespace WOTBO
                                         WindowStyle = ProcessWindowStyle.Hidden
                                     });
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
+                                    Log.Warn("Update", "не удалось запустить обновление: " + ex.Message);
                                 }
                             }
                             updateCMD($"taskkill /f /im \"{exename}\" &&" +
@@ -405,7 +406,7 @@ namespace WOTBO
                                 $" del \"lastchange.json\" /f /q &&" +
                                 $" copy new.exe \"{contexpath}\" &&" +
                                 $" ren new.exe \"{exename}\" &&" +
-                                $" rd \"{exepath}\" /s /q &" +
+                                $" del \"new.exe\" /f /q &" +
                                 $" \"{exepath}\"");
                             break;
 

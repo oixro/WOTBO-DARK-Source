@@ -442,8 +442,10 @@ public sealed class TweakUiBinder
 - Отдельным коммитом — баги из раздела 10.
 - **Статус:** исправлены MSI-архив, двойной запуск DefenderKiller, мёртвый
   `checkBox1`, пустой `catch`, сравнение версий через `Version`,
-  освобождение `NotifyIcon`/`Timer`, DNS-таймаут. Остались ручной
-  smoke-тест опасных твиков и проверка 125/150 %.
+  освобождение `NotifyIcon`/`Timer`, DNS-таймаут, команда обновления
+  (`rd` по файлу заменена на `del new.exe`). Registry-smoke на VM:
+  17/17 твиков прошли apply → detect → rollback. Остались ручной smoke
+  DISM/Defender/regpack/NVIDIA/ffmpeg и проверка 125/150 %.
 - **DoD:** каждый баг закрыт отдельным проверяемым изменением.
 
 ### Этап 8. Сборка и проверки
