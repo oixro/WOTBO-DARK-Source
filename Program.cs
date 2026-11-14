@@ -16,6 +16,24 @@ namespace WOTBO
                 return;
             }
 
+            string screenshotDirectory;
+            float screenshotScale;
+            if (TryGetScreenshotMode(out screenshotDirectory, out screenshotScale))
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                using (var form = new MainForm())
+                {
+                    form.Show();
+                    PumpMessages(4000);
+                    form.ExportScreenshots(screenshotDirectory, screenshotScale);
+                    form.Close();
+                }
+
+                return;
+            }
+
             string resultMode;
             if (TryGetResultMode(out resultMode))
             {
@@ -26,6 +44,49 @@ namespace WOTBO
             }
 
             AppBootstrap.Run();
+        }
+
+        /// <summary>
+        /// <c>WOTBO.exe --export-screenshots &lt;dir&gt; [scale]</c> — сохранить
+        /// по одному PNG на каждый раздел (для сайта).
+        /// </summary>
+        private static bool TryGetScreenshotMode(out string directory, out float scale)
+        {
+            directory = null;
+            scale = 1f;
+            string[] args = Environment.GetCommandLineArgs();
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (!string.Equals(args[i], "--export-screenshots", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                directory = i + 1 < args.Length ? args[i + 1] : "screenshots";
+                if (i + 2 < args.Length)
+                {
+                    float.TryParse(
+                        args[i + 2],
+                        System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out scale);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void PumpMessages(int milliseconds)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            while (watch.ElapsedMilliseconds < milliseconds)
+            {
+                Application.DoEvents();
+                System.Threading.Thread.Sleep(10);
+            }
         }
 
         /// <summary>
