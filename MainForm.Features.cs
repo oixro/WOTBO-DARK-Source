@@ -109,7 +109,7 @@ namespace WOTBO
         #region site
         void label_site_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://oixro.github.io/wotbo-site/");
+            OpenUrl("https://wotbo.pro/");
         }
         #endregion
         #region inspector

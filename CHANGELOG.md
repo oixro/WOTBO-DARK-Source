@@ -2,6 +2,10 @@
 
 ## 2.34-beta — 2026-11-15
 
+### Сайт
+
+- Кнопка «Сайт» и README ведут на `https://wotbo.pro/` (вместо GitHub Pages).
+
 ### Скорость запуска
 
 - В `TweakUiBinder.Detect` добавлен замер: твики дольше 8 мс пишут время
@@ -156,7 +160,7 @@
   правый клик вынесен отдельно.
 - Со страницы загрузок убраны Win10 Tweaker, Epic Games Launcher,
   CrystalDiskInfo и .NET 6 Runtime.
-- Сайт: `https://wotbo.pro/` → `https://oixro.github.io/wotbo-site/`.
+- Сайт: `https://wotbo.pro/`.
 - README сокращён до личных заметок; добавлен `CHANGELOG.md`.
 
 ### Исправлено
