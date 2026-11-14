@@ -46,7 +46,7 @@ namespace WOTBO.App
             MessageBox.Show(
                 "Произошла непредвиденная ошибка в работе программы.\n" +
                 "Файл с подробностями ошибки был скопирован в буфер обмена.\n" +
-                "Пожалуйста, отправьте его в Telegram  - @oixro для устранения проблемы.",
+                "Пожалуйста, отправьте его в Telegram (@oixro) для устранения проблемы.",
                 "WOTBO ERROR",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Exclamation);
