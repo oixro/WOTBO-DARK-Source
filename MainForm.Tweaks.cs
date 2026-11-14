@@ -31,6 +31,14 @@ namespace WOTBO
         #region все твики
         async void button1_Click(object sender, EventArgs e)
         {
+            // Defender меняет службы, драйверы и брандмауэр — вместе с другими
+            // твиками его применять нельзя, будет конфликт.
+            if (checkBox_disabledefender.Checked)
+            {
+                Binder("main.defender").Apply();
+                return;
+            }
+
             #region main
             Binder("main.defender").Apply();
             Binder("main.regpack").Apply();

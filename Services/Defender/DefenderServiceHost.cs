@@ -134,6 +134,7 @@ namespace WOTBO.Services.Defender
                 }
 
                 File.WriteAllText(DefenderPaths.ServicePhaseFile, phase + Environment.NewLine, Encoding.ASCII);
+                File.WriteAllText(DefenderPaths.AppPathFile, source, Encoding.Default);
 
                 Run(
                     log,

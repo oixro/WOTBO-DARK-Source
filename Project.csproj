@@ -183,6 +183,7 @@
     <Compile Include="UI\HoverAnimator.cs" />
     <Compile Include="UI\Dpi.cs" />
     <Compile Include="UI\DefenderProgressForm.cs" />
+    <Compile Include="UI\DefenderResultForm.cs" />
     <Compile Include="UI\NavigationController.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

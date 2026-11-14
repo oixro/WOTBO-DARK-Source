@@ -121,7 +121,6 @@ function Get-DefenderDirectories {
     $list = New-Object System.Collections.Generic.List[string]
     $list.Add((Join-Path $env:ProgramFiles 'Windows Defender'))
     $list.Add((Join-Path $env:ProgramFiles 'Windows Defender Advanced Threat Protection'))
-    $list.Add((Join-Path $env:ProgramData 'Microsoft\Windows Defender'))
     $list.Add((Join-Path $env:ProgramData 'Microsoft\Windows Defender Advanced Threat Protection'))
     $list.Add((Join-Path $env:ProgramData 'Microsoft\Windows Security Health'))
     if (${env:ProgramFiles(x86)}) {
@@ -311,12 +310,15 @@ function Rename-DefenderDirectories($Journal) {
     $ok = $true
     foreach ($entry in @($Journal.files)) {
         if (-not (Test-Path -LiteralPath $entry.path)) { continue }
+
         if (Test-Path -LiteralPath $entry.bak) {
-            Write-Log ('already renamed: ' + $entry.path)
-            continue
+            Remove-Item -LiteralPath $entry.bak -Recurse -Force -ErrorAction SilentlyContinue
         }
+
         try {
-            Move-Item -LiteralPath $entry.path -Destination $entry.bak -Force -ErrorAction Stop
+            # Rename-Item, а не Move-Item -Force: при существующей цели
+            # Move-Item складывает папку внутрь неё и ломает дерево.
+            Rename-Item -LiteralPath $entry.path -NewName (Split-Path -Leaf $entry.bak) -ErrorAction Stop
             $entry.renamed = $true
             Write-Log ('renamed: ' + $entry.path)
         } catch {
@@ -332,16 +334,30 @@ function Disable-DefenderServices {
     foreach ($name in Get-DefenderServiceNames) {
         $key = 'HKLM:\SYSTEM\CurrentControlSet\Services\' + $name
         if (-not (Test-Path -LiteralPath $key)) { continue }
-        try {
-            Set-ItemProperty -LiteralPath $key -Name 'Start' -Value 4 -Type DWord -Force -ErrorAction Stop
+
+        # sc config идёт через SCM и работает там, где прямой write в реестр
+        # получает "access denied" (защищённые службы Defender).
+        Exec 'sc.exe' @('config', $name, 'start=', 'disabled') | Out-Null
+
+        $start = (Get-ItemProperty -LiteralPath $key -Name 'Start' -ErrorAction SilentlyContinue).Start
+        if ($start -ne 4) {
+            try {
+                Set-ItemProperty -LiteralPath $key -Name 'Start' -Value 4 -Type DWord -Force -ErrorAction Stop
+                $start = 4
+            } catch { }
+        }
+
+        if ($start -eq 4) {
             $protected = Get-ItemProperty -LiteralPath $key -Name 'LaunchProtected' -ErrorAction SilentlyContinue
             if ($protected) {
-                Set-ItemProperty -LiteralPath $key -Name 'LaunchProtected' -Value 4 -Type DWord -Force -ErrorAction Stop
+                try {
+                    Set-ItemProperty -LiteralPath $key -Name 'LaunchProtected' -Value 4 -Type DWord -Force -ErrorAction Stop
+                } catch { }
             }
             Write-Log ('disabled service: ' + $name)
-        } catch {
+        } else {
             $ok = $false
-            Write-Log ('service write failed: ' + $name + ' :: ' + $_.Exception.Message)
+            Write-Log ('service still enabled: ' + $name)
         }
     }
     return $ok
@@ -465,6 +481,31 @@ function Write-VerifyFile($Status) {
     try { Set-Content -LiteralPath $script:VerifyPath -Value $lines -Encoding ASCII } catch { }
 }
 
+function Register-ResultLauncher([string]$Mode) {
+    $exe = ''
+    $appPath = Join-Path $script:Root 'app-path.txt'
+    if (Test-Path -LiteralPath $appPath) {
+        $exe = (Get-Content -LiteralPath $appPath -Raw).Trim()
+    }
+    if (-not $exe -or -not (Test-Path -LiteralPath $exe)) {
+        $exe = Join-Path $script:Root 'WotboDefender.exe'
+    }
+    if (-not (Test-Path -LiteralPath $exe)) {
+        Write-Log 'result launcher: exe not found'
+        return
+    }
+
+    try {
+        Set-ItemProperty -LiteralPath ('Registry::' + $script:RunOnceKey) `
+            -Name 'WotboDefenderResult' `
+            -Value ('"' + $exe + '" --defender-result ' + $Mode) `
+            -Type String -Force
+        Write-Log ('result launcher registered: ' + $Mode)
+    } catch {
+        Write-Log ('result launcher failed: ' + $_.Exception.Message)
+    }
+}
+
 function Remove-SafeBoot {
     Exec 'bcdedit.exe' @('/deletevalue', '{current}', 'safeboot') | Out-Null
     Write-Log 'safeboot flag removed'
@@ -505,7 +546,6 @@ function Remove-ArmedHelpers {
     }
 
     try {
-        Exec 'schtasks.exe' @('/delete', '/tn', '\WOTBO\DefenderFinalize', '/f') | Out-Null
         Exec 'sc.exe' @('delete', 'WotboDefender') | Out-Null
         Remove-Item -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\WotboDefender' -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Control\SafeBoot\Network\WotboDefender' -Recurse -Force -ErrorAction SilentlyContinue
@@ -571,14 +611,8 @@ function Invoke-Apply {
         return
     }
 
-    if ($journal.stage -eq 'applied') {
+    if ($journal.stage -eq 'applied' -and -not $SafeMode) {
         Write-Log 'already applied'
-        if ($SafeMode) {
-            Remove-SafeBoot
-            Remove-StageTasks
-            Remove-ArmedHelpers
-            Write-State 'applied' 'ok' 'already applied'
-        }
         return
     }
 
@@ -591,6 +625,15 @@ function Invoke-Apply {
             Write-State 'blocked' 'blocked' 'windefend is protected by tamper protection'
             return
         }
+    } else {
+        # В safe mode службы обычно не запущены, но SecurityHealth/MDCoreSvc
+        # могут работать и возвращать Defender в строй — гасим их.
+        foreach ($name in @('SecurityHealthService', 'Sense', 'MDCoreSvc', 'WinDefend')) {
+            $service = Get-Service -Name $name -ErrorAction SilentlyContinue
+            if ($service -and $service.Status -ne 'Stopped') {
+                Exec 'sc.exe' @('stop', $name) | Out-Null
+            }
+        }
     }
 
     foreach ($path in @(Get-DefenderDirectories)) {
@@ -599,6 +642,10 @@ function Invoke-Apply {
 
     $renamed = Rename-DefenderDirectories $journal
     $services = Disable-DefenderServices
+    if (-not $services) {
+        Start-Sleep -Seconds 4
+        $services = Disable-DefenderServices
+    }
     Disable-DefenderTasks $journal
     Apply-DefenderPolicies
     Disable-Firewall $journal
@@ -622,21 +669,40 @@ function Invoke-Apply {
     if ($SafeMode) {
         Remove-SafeBoot
         Remove-StageTasks
+        Register-ResultLauncher 'apply'
         Write-Log 'rebooting to normal mode'
         Start-Sleep -Seconds 2
-        Exec 'shutdown.exe' @('/r', '/t', '10', '/f', '/c', 'WOTBO: Defender disabled, rebooting') | Out-Null
+        Exec 'shutdown.exe' @('/r', '/t', '0', '/f', '/c', 'WOTBO: Defender disabled, rebooting') | Out-Null
     }
 }
 
 function Restore-DefenderDirectories($Journal) {
     foreach ($entry in @($Journal.files)) {
+        # владельца возвращаем даже если папку переименовать не удалось
+        if (-not $entry.renamed) {
+            if ($entry.ownerSid -and (Test-Path -LiteralPath $entry.path)) {
+                & icacls.exe $entry.path /setowner ('*' + $entry.ownerSid) /t /c /q 2>&1 | Out-Null
+            }
+            continue
+        }
         if (-not (Test-Path -LiteralPath $entry.bak)) { continue }
+
         try {
             if (Test-Path -LiteralPath $entry.path) {
-                Remove-Item -LiteralPath $entry.path -Recurse -Force -ErrorAction SilentlyContinue
+                $items = @(Get-ChildItem -LiteralPath $entry.path -Force -ErrorAction SilentlyContinue)
+                if ($items.Count -gt 0) {
+                    # Не удаляем непустую папку: откладываем её рядом.
+                    $conflict = (Split-Path -Leaf $entry.path) + '.conflict-' + (Get-Date -Format 'yyyyMMddHHmmss')
+                    Rename-Item -LiteralPath $entry.path -NewName $conflict -ErrorAction SilentlyContinue
+                    Write-Log ('conflict dir kept: ' + $conflict)
+                } else {
+                    Remove-Item -LiteralPath $entry.path -Recurse -Force -ErrorAction SilentlyContinue
+                }
             }
-            Move-Item -LiteralPath $entry.bak -Destination $entry.path -Force -ErrorAction Stop
+
+            Rename-Item -LiteralPath $entry.bak -NewName (Split-Path -Leaf $entry.path) -ErrorAction Stop
             Write-Log ('restored path: ' + $entry.path)
+
             if ($entry.ownerSid) {
                 & icacls.exe $entry.path /setowner ('*' + $entry.ownerSid) /t /c /q 2>&1 | ForEach-Object { Write-Log ('  ' + [string]$_) } | Out-Null
             }
@@ -646,22 +712,72 @@ function Restore-DefenderDirectories($Journal) {
     }
 }
 
+function Get-RegExportShape([string]$File) {
+    $shape = @{}
+    $key = $null
+    foreach ($line in Get-Content -LiteralPath $File) {
+        if ($line -match '^\[(.+)\]$') {
+            $key = $Matches[1]
+            if (-not $shape.ContainsKey($key)) { $shape[$key] = @() }
+            continue
+        }
+        if (-not $key) { continue }
+        if ($line -match '^"([^"]*)"=') {
+            $shape[$key] = @($shape[$key]) + $Matches[1]
+        } elseif ($line -match '^@=') {
+            $shape[$key] = @($shape[$key]) + ''
+        }
+    }
+    return $shape
+}
+
+function Remove-ExtraRegistryData($Shape) {
+    foreach ($key in $Shape.Keys) {
+        $path = 'Registry::' + $key
+        if (-not (Test-Path -LiteralPath $path)) { continue }
+
+        $allowed = @($Shape[$key])
+        $item = Get-Item -LiteralPath $path -ErrorAction SilentlyContinue
+        if ($item) {
+            foreach ($name in $item.GetValueNames()) {
+                if ($allowed -notcontains $name) {
+                    Remove-ItemProperty -LiteralPath $path -Name $name -Force -ErrorAction SilentlyContinue
+                }
+            }
+        }
+
+        foreach ($sub in Get-ChildItem -LiteralPath $path -ErrorAction SilentlyContinue) {
+            $full = $key + '\' + $sub.PSChildName
+            if (-not $Shape.ContainsKey($full)) {
+                Remove-Item -LiteralPath $sub.PSPath -Recurse -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+}
+
 function Import-Registry($Journal) {
     $exports = @($Journal.exports)
     for ($i = $exports.Count - 1; $i -ge 0; $i--) {
         $entry = $exports[$i]
-        if ($entry.existed) {
-            if (Test-Path -LiteralPath $entry.file) {
-                # reg import только добавляет и перезаписывает, поэтому сначала
-                # удаляем ветку целиком: иначе значения, записанные твиком,
-                # останутся (например, политики Defender).
-                Exec 'reg.exe' @('delete', $entry.key, '/f') | Out-Null
-                Exec 'reg.exe' @('import', $entry.file) | Out-Null
-            } else {
-                Write-Log ('export missing: ' + $entry.file)
-            }
-        } else {
+        if (-not $entry.existed) {
             Exec 'reg.exe' @('delete', $entry.key, '/f') | Out-Null
+            continue
+        }
+
+        if (-not (Test-Path -LiteralPath $entry.file)) {
+            Write-Log ('export missing: ' + $entry.file)
+            continue
+        }
+
+        # Сначала импорт (он только добавляет и перезаписывает), потом удаление
+        # лишнего. Удалять защищённую ветку целиком нельзя: если импорт не
+        # пройдёт (ключи служб), останется пустой ключ без ServiceDll.
+        Exec 'reg.exe' @('import', $entry.file) | Out-Null
+        try {
+            $shape = Get-RegExportShape $entry.file
+            Remove-ExtraRegistryData $shape
+        } catch {
+            Write-Log ('prune failed: ' + $entry.key + ' :: ' + $_.Exception.Message)
         }
     }
 }
@@ -721,14 +837,8 @@ function Invoke-Restore {
 
     Write-Log ('restore stage=' + $journal.stage + ' safeMode=' + [string]$SafeMode)
 
-    if ($journal.stage -eq 'restored') {
+    if ($journal.stage -eq 'restored' -and -not $SafeMode) {
         Write-Log 'already restored'
-        if ($SafeMode) {
-            Remove-SafeBoot
-            Remove-StageTasks
-            Remove-ArmedHelpers
-            Write-State 'restored' 'ok' 'already restored'
-        }
         return
     }
 
@@ -739,6 +849,13 @@ function Invoke-Restore {
     Enable-Firewall $journal
     Remove-DefenderExclusions $journal
     Start-DefenderServices
+
+    $enginePath = Join-Path $env:ProgramFiles 'Windows Defender\MsMpEng.exe'
+    if (-not (Test-Path -LiteralPath $enginePath)) {
+        Write-Log ('WARNING: ' + $enginePath + ' is missing after restore')
+    } else {
+        Write-Log ('engine present: ' + $enginePath)
+    }
 
     try {
         Set-MpPreference -DisableRealtimeMonitoring $false -ErrorAction SilentlyContinue
@@ -762,8 +879,9 @@ function Invoke-Restore {
             Exec 'schtasks.exe' @('/create', '/tn', '\WOTBO\DefenderFinalize', '/tr', $finalize, '/sc', 'onstart', '/delay', '0001:00', '/ru', 'SYSTEM', '/f') | Out-Null
             Write-Log 'finalize task scheduled'
         }
+        Register-ResultLauncher 'restore'
         Start-Sleep -Seconds 2
-        Exec 'shutdown.exe' @('/r', '/t', '10', '/f', '/c', 'WOTBO: Defender restored, rebooting') | Out-Null
+        Exec 'shutdown.exe' @('/r', '/t', '0', '/f', '/c', 'WOTBO: Defender restored, rebooting') | Out-Null
     }
 }
 
@@ -819,7 +937,7 @@ function Invoke-Watchdog {
     Remove-StageTasks
     if ($stage -ne 'applied' -and $stage -ne 'restored') {
         Write-State 'failed' 'error' 'safe mode stage did not finish'
-        Exec 'shutdown.exe' @('/r', '/t', '10', '/f', '/c', 'WOTBO: safe mode stage failed, rebooting') | Out-Null
+        Exec 'shutdown.exe' @('/r', '/t', '0', '/f', '/c', 'WOTBO: safe mode stage failed, rebooting') | Out-Null
     }
 }
 
@@ -889,6 +1007,6 @@ try {
         Remove-SafeBoot
         Remove-StageTasks
         Remove-ArmedHelpers
-        Exec 'shutdown.exe' @('/r', '/t', '10', '/f', '/c', 'WOTBO: failed, rebooting to normal mode') | Out-Null
+        Exec 'shutdown.exe' @('/r', '/t', '0', '/f', '/c', 'WOTBO: failed, rebooting to normal mode') | Out-Null
     }
 }

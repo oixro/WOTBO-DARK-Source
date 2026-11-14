@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Win32;
 using WOTBO.Services.Defender;
+using WOTBO.Services.Windows;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -74,6 +75,22 @@ namespace WOTBO.Services.Tweaks
             LastOutcome = DefenderOutcome.None;
             LastDetails = null;
 
+            // Проверяем до любых изменений: если TP/RTP включены, Defender
+            // всё равно не даст себя выключить, и состояние не должно
+            // выглядеть как «подготовлено».
+            DefenderProtectionState protection = DefenderStatus.GetProtection();
+            if (protection.Available && (protection.TamperProtection || protection.RealTimeProtection))
+            {
+                context.Log.Warn(
+                    LogCategory,
+                    "защита от подделки или защита в реальном времени включена — отключение остановлено");
+                Fail(
+                    context,
+                    "Перед отключением выключите в «Безопасности Windows» защиту от подделки " +
+                    "и защиту в реальном времени.");
+                return;
+            }
+
             if (!DefenderEngine.EnsurePayload(context.Log))
             {
                 Fail(context, "не удалось распаковать движок Defender");
@@ -96,9 +113,13 @@ namespace WOTBO.Services.Tweaks
             DefenderEngine.MirrorBackup(context.Log);
             context.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows Defender");
 
-            if (DefenderStatus.IsTamperProtected())
+            // На Windows 11 защитник защищает свои службы даже после остановки,
+            // поэтому всегда идём через безопасный режим. На Windows 10 хватает
+            // обычного применения.
+            WindowsVersionInfo version = context.WindowsVersion.Detect();
+            if (version.IsWindows11)
             {
-                context.Log.Warn(LogCategory, "Tamper Protection включена — нужен безопасный режим");
+                context.Log.Info(LogCategory, "Windows 11 — применяем через безопасный режим");
                 StartSafeMode(context, DefenderOutcome.SafeModeApply);
                 return;
             }
@@ -187,9 +208,9 @@ namespace WOTBO.Services.Tweaks
         }
 
         /// <summary>Перезагрузить ПК, чтобы применить или откатить изменения.</summary>
-        public static void Reboot(TweakContext context, int seconds)
+        public static void Reboot(TweakContext context)
         {
-            DefenderSafeMode.RebootNow(context.Log, seconds);
+            DefenderSafeMode.RebootNow(context.Log, 0);
         }
 
         private static void StartSafeMode(TweakContext context, DefenderOutcome outcome)

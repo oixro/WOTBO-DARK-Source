@@ -112,14 +112,6 @@ namespace WOTBO
             OpenUrl("https://oixro.github.io/wotbo-site/");
         }
         #endregion
-        #region kalorant
-        void label_kalorant_Click(object sender, EventArgs e)
-        {
-            TweakScope.BackupRegFile($"{path_regpack}/exploitscfg.reg");
-            AppServices.Processes.StartCaptured($"regedit.exe /s {path_regpack}/exploitscfg.reg");
-            label_kalorant.Visible = false;
-        }
-        #endregion
         #region inspector
         void label_inspector_Click(object sender, EventArgs e)
         {

@@ -97,6 +97,39 @@ namespace WOTBO
 
         private bool ConfirmDefenderApply()
         {
+            DefenderProtectionState protection = DefenderStatus.GetProtection();
+
+            if (protection.Available && (protection.TamperProtection || protection.RealTimeProtection))
+            {
+                string what = protection.TamperProtection
+                    ? "защиту от подделки (Tamper Protection)"
+                    : "защиту в реальном времени (Real-time protection)";
+
+                MessageBox.Show(
+                    "Перед отключением Windows Defender нужно вручную выключить:\n" +
+                    "• защиту от подделки (Tamper Protection);\n" +
+                    "• защиту в реальном времени (Real-time protection).\n\n" +
+                    "Сейчас включена " + what + ".\n\n" +
+                    "Откройте «Безопасность Windows» → «Защита от вирусов и угроз» →\n" +
+                    "«Управление параметрами», выключите обе защиты и повторите.",
+                    "Сначала отключите защиты",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                try
+                {
+                    Process.Start(new ProcessStartInfo("windowsdefender://threatsettings/")
+                    {
+                        UseShellExecute = true,
+                    });
+                }
+                catch
+                {
+                }
+
+                return false;
+            }
+
             DialogResult answer = MessageBox.Show(
                 "Windows Defender будет отключён полностью:\n" +
                 "• защита в реальном времени, облачная защита и проверка загрузки;\n" +
@@ -108,8 +141,8 @@ namespace WOTBO
                 "• Windows Update может пытаться вернуть компоненты защитника;\n" +
                 "• файлы защитника переименовываются, а не удаляются, поэтому\n" +
                 "  откат возможен стрелкой отката;\n" +
-                "• если включена защита от подделки, WOTBO перезагрузит ПК\n" +
-                "  в безопасный режим (две перезагрузки).\n\n" +
+                "• на Windows 11 WOTBO перезагрузит ПК в безопасный режим\n" +
+                "  (две перезагрузки, всё автоматически).\n\n" +
                 "Продолжить?",
                 "Отключение Windows Defender",
                 MessageBoxButtons.YesNo,
@@ -138,35 +171,6 @@ namespace WOTBO
                 }
             }
 
-            if (DefenderStatus.IsTamperProtected())
-            {
-                DialogResult tamper = MessageBox.Show(
-                    "Включена защита от подделки (Tamper Protection).\n" +
-                    "Обычным способом остановить Defender нельзя.\n\n" +
-                    "Да — перезагрузить в безопасный режим и отключить автоматически.\n" +
-                    "Нет — отменить и отключить защиту вручную в «Безопасности Windows».",
-                    "Tamper Protection",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1);
-
-                if (tamper != DialogResult.Yes)
-                {
-                    try
-                    {
-                        Process.Start(new ProcessStartInfo("windowsdefender://threatsettings/")
-                        {
-                            UseShellExecute = true,
-                        });
-                    }
-                    catch
-                    {
-                    }
-
-                    return false;
-                }
-            }
-
             return true;
         }
 
@@ -185,8 +189,6 @@ namespace WOTBO
 
         private void HandleDefenderApplied()
         {
-            label_kalorant.Visible = true;
-
             switch (DefenderTweak.LastOutcome)
             {
                 case DefenderTweak.DefenderOutcome.Applied:
@@ -206,8 +208,8 @@ namespace WOTBO
                 case DefenderTweak.DefenderOutcome.SafeModeApply:
                     OfferDefenderReboot(
                         "Нужна перезагрузка в безопасный режим.\n\n" +
-                        "WOTBO применит изменения автоматически и вернёт обычный режим.\n" +
-                        "Понадобятся две перезагрузки. Не выключайте ПК.",
+                        "WOTBO применит изменения автоматически, вернёт обычный режим\n" +
+                        "и после загрузки покажет результат. Понадобятся две перезагрузки.",
                         false);
                     break;
 
@@ -267,10 +269,10 @@ namespace WOTBO
                 return;
             }
 
-            DefenderTweak.Reboot(AppServices.TweakContext, 20);
+            DefenderTweak.Reboot(AppServices.TweakContext);
             ShowNotification(
                 "Защитник",
-                "Перезагрузка через 20 секунд. Сохраните работу.",
+                "Перезагрузка…",
                 ToolTipIcon.Warning);
         }
 
@@ -302,11 +304,89 @@ namespace WOTBO
                 MessageBoxIcon.Warning);
         }
 
+        private readonly System.Collections.Generic.Dictionary<Control, bool> _defenderLockEnabled =
+            new System.Collections.Generic.Dictionary<Control, bool>();
+
+        private readonly System.Collections.Generic.Dictionary<Control, bool> _defenderLockVisible =
+            new System.Collections.Generic.Dictionary<Control, bool>();
+
+        /// <summary>
+        /// Отключение Defender меняет службы и брандмауэр, поэтому вместе с ним
+        /// нельзя применять другие твики: пока чекбокс отмечен, остальные
+        /// блокируются, а стрелки отката скрываются.
+        /// </summary>
+        private void ApplyDefenderExclusiveMode(bool locked)
+        {
+            if (locked)
+            {
+                _defenderLockEnabled.Clear();
+                _defenderLockVisible.Clear();
+
+                foreach (CheckBox box in DescendantControls<CheckBox>(this))
+                {
+                    if (box == checkBox_disabledefender)
+                    {
+                        continue;
+                    }
+
+                    _defenderLockEnabled[box] = box.Enabled;
+                    box.Enabled = false;
+                }
+
+                foreach (PictureBox back in DescendantControls<PictureBox>(this))
+                {
+                    if (back.Name == null || !back.Name.StartsWith("back_", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
+                    _defenderLockVisible[back] = back.Visible;
+                    back.Visible = false;
+                }
+
+                return;
+            }
+
+            foreach (var pair in _defenderLockEnabled)
+            {
+                pair.Key.Enabled = pair.Value;
+            }
+
+            foreach (var pair in _defenderLockVisible)
+            {
+                pair.Key.Visible = pair.Value;
+            }
+
+            _defenderLockEnabled.Clear();
+            _defenderLockVisible.Clear();
+        }
+
+        private static System.Collections.Generic.IEnumerable<T> DescendantControls<T>(Control root)
+            where T : Control
+        {
+            foreach (Control child in root.Controls)
+            {
+                T typed = child as T;
+                if (typed != null)
+                {
+                    yield return typed;
+                }
+
+                foreach (T nested in DescendantControls<T>(child))
+                {
+                    yield return nested;
+                }
+            }
+        }
+
         private void SetupTweakBinders()
         {
+            checkBox_disabledefender.CheckedChanged +=
+                (sender, args) => ApplyDefenderExclusiveMode(checkBox_disabledefender.Checked);
+
             Bind("main.defender", checkBox_disabledefender, back_main_12,
                 "defenderdisabled был применён",
-                onDetected: () => label_kalorant.Visible = true,
+                onDetected: () => { },
                 confirmApply: ConfirmDefenderApply,
                 confirmRollback: ConfirmDefenderRollback,
                 wrap: DefenderProgress,

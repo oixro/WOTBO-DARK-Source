@@ -44,6 +44,12 @@ namespace WOTBO.Services.Defender
             get { return Path.Combine(Root, "WotboDefender.exe"); }
         }
 
+        /// <summary>Путь к настоящему WOTBO.exe — чтобы открыть окно результата.</summary>
+        public static string AppPathFile
+        {
+            get { return Path.Combine(Root, "app-path.txt"); }
+        }
+
         /// <summary>Файл с фазой для службы: apply или restore.</summary>
         public static string ServicePhaseFile
         {

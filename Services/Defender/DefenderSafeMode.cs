@@ -47,8 +47,6 @@ namespace WOTBO.Services.Defender
 
             WriteUndoBat(log);
             WriteDesktopHelpers(log);
-            SetRunOnce(log);
-            SetUserinit(log);
 
             if (!Run(log, "bcdedit.exe", "/set {current} safeboot minimal"))
             {
@@ -70,7 +68,6 @@ namespace WOTBO.Services.Defender
             DefenderServiceControl.Remove(log);
             RemoveDesktopHelpers(log);
             RemoveRunOnce(log);
-            RemoveUserinit(log);
             Run(log, "bcdedit.exe", "/deletevalue {current} safeboot");
             WriteState("aborted", "ok", "safe mode cancelled");
             log.Info(LogCategory, "безопасный режим отменён");
@@ -173,87 +170,6 @@ namespace WOTBO.Services.Defender
             catch (Exception exception)
             {
                 log.Warn(LogCategory, "не удалось убрать RunOnce: " + exception.Message);
-            }
-        }
-
-        /// <summary>
-        /// Добавить запуск в <c>Winlogon\Userinit</c>. Планировщик задач в
-        /// безопасном режиме задачи не запускает, а Userinit работает всегда.
-        /// </summary>
-        private static void SetUserinit(IAppLogger log)
-        {
-            try
-            {
-                using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
-                    WinlogonKey, true))
-                {
-                    if (key == null)
-                    {
-                        log.Warn(LogCategory, "ветка Winlogon недоступна");
-                        return;
-                    }
-
-                    string current = key.GetValue(UserinitValue) as string ?? string.Empty;
-                    string hook = DefenderPaths.LoginRunner;
-
-                    if (current.IndexOf(hook, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        return;
-                    }
-
-                    Directory.CreateDirectory(DefenderPaths.Root);
-                    File.WriteAllText(
-                        Path.Combine(DefenderPaths.Root, "userinit-original.txt"),
-                        current,
-                        Encoding.Default);
-
-                    string updated = current.TrimEnd().TrimEnd(',') + "," + hook;
-                    key.SetValue(UserinitValue, updated, Microsoft.Win32.RegistryValueKind.String);
-                    log.Info(LogCategory, "Userinit-хук добавлен: " + updated);
-                }
-            }
-            catch (Exception exception)
-            {
-                log.Warn(LogCategory, "не удалось добавить Userinit: " + exception.Message);
-            }
-        }
-
-        private static void RemoveUserinit(IAppLogger log)
-        {
-            try
-            {
-                string originalFile = Path.Combine(DefenderPaths.Root, "userinit-original.txt");
-
-                using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
-                    WinlogonKey, true))
-                {
-                    if (key == null)
-                    {
-                        return;
-                    }
-
-                    if (File.Exists(originalFile))
-                    {
-                        key.SetValue(
-                            UserinitValue,
-                            File.ReadAllText(originalFile),
-                            Microsoft.Win32.RegistryValueKind.String);
-                        File.Delete(originalFile);
-                        return;
-                    }
-
-                    string current = key.GetValue(UserinitValue) as string;
-                    string hook = DefenderPaths.LoginRunner;
-                    if (current != null && current.IndexOf(hook, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        string cleaned = current.Replace("," + hook, string.Empty).Replace(hook, string.Empty);
-                        key.SetValue(UserinitValue, cleaned, Microsoft.Win32.RegistryValueKind.String);
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                log.Warn(LogCategory, "не удалось убрать Userinit: " + exception.Message);
             }
         }
 

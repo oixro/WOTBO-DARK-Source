@@ -87,7 +87,6 @@ namespace WOTBO
             this.checkBox_dwninput = new System.Windows.Forms.CheckBox();
             this.checkBox_audio = new System.Windows.Forms.CheckBox();
             this.checkBox_move_temp = new System.Windows.Forms.CheckBox();
-            this.label_kalorant = new System.Windows.Forms.Label();
             this.checkBox_animation = new System.Windows.Forms.CheckBox();
             this.checkBox_edge = new System.Windows.Forms.CheckBox();
             this.panel_ui_navigate = new System.Windows.Forms.Panel();
@@ -1048,25 +1047,6 @@ namespace WOTBO
             this.checkBox_move_temp.UseVisualStyleBackColor = true;
             this.checkBox_move_temp.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
-            // label_kalorant
-            // 
-            this.label_kalorant.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_kalorant.AutoSize = true;
-            this.label_kalorant.Cursor = System.Windows.Forms.Cursors.Help;
-            this.label_kalorant.ForeColor = System.Drawing.Color.White;
-            this.label_kalorant.Location = new System.Drawing.Point(203, 26);
-            this.label_kalorant.Name = "label_kalorant";
-            this.label_kalorant.Size = new System.Drawing.Size(12, 13);
-            this.label_kalorant.TabIndex = 35;
-            this.label_kalorant.Text = "?";
-            this.label_kalorant.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip1.SetToolTip(this.label_kalorant, "Если вы играете в Valorant - нажав на эту кнопку вы можете вернуть защиту от эксп" +
-        "лоитов.\r\n(Чтобы античит работал)\r\n");
-            this.label_kalorant.Visible = false;
-            this.label_kalorant.Click += new System.EventHandler(this.label_kalorant_Click);
-            // 
             // checkBox_animation
             // 
             this.checkBox_animation.AutoSize = true;
@@ -1139,7 +1119,6 @@ namespace WOTBO
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.label_kalorant);
             this.panel1.Controls.Add(this.back_main_12);
             this.panel1.Controls.Add(this.back_main_11);
             this.panel1.Controls.Add(this.back_main_10);
@@ -2783,7 +2762,6 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_move_temp;
         private System.Windows.Forms.PictureBox back_dop_movetemp;
         private System.Windows.Forms.Label label_site;
-        private System.Windows.Forms.Label label_kalorant;
         private System.Windows.Forms.Label label_download_24;
         private System.Windows.Forms.CheckBox checkBox_animation;
         private System.Windows.Forms.PictureBox back_animations;

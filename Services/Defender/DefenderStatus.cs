@@ -43,6 +43,18 @@ namespace WOTBO.Services.Defender
         public string Details { get; set; }
     }
 
+    /// <summary>Состояние защит, которые мешают отключению.</summary>
+    internal sealed class DefenderProtectionState
+    {
+        public bool Available { get; set; }
+
+        public bool TamperProtection { get; set; }
+
+        public bool RealTimeProtection { get; set; }
+
+        public bool AntivirusEnabled { get; set; }
+    }
+
     internal static class DefenderStatus
     {
         private const string LogCategory = "Defender";
@@ -66,7 +78,14 @@ namespace WOTBO.Services.Defender
             "MpsSvc",
         };
 
-        /// <summary>Быстрая проверка для Detect: службы и драйверы выключены.</summary>
+        /// <summary>
+        /// Быстрая проверка для Detect.
+        ///
+        /// На 24H2+ службы защищены: Start может вернуться в Manual, но
+        /// платформа в Program Files переименована и движок не запускается.
+        /// Поэтому опираемся на «движок отсутствует/не работает», а не только
+        /// на Start=4.
+        /// </summary>
         public static bool IsFullyDisabled()
         {
             if (IsServiceRunning("WinDefend"))
@@ -75,18 +94,24 @@ namespace WOTBO.Services.Defender
             }
 
             int? start = ReadStart("WinDefend");
-            if (start.HasValue && start.Value != 4)
-            {
-                return false;
-            }
-
             int? filter = ReadStart("WdFilter");
-            if (filter.HasValue && filter.Value != 4)
+            if ((start.HasValue && start.Value == 4)
+                && (!filter.HasValue || filter.Value == 4))
             {
-                return false;
+                return true;
             }
 
-            return start.HasValue || filter.HasValue || IsDefenderAbsent();
+            return IsPlatformRenamed() || IsDefenderAbsent();
+        }
+
+        /// <summary>Платформа в Program Files переименована в .wotbo_bak.</summary>
+        public static bool IsPlatformRenamed()
+        {
+            string platform = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                "Windows Defender");
+            return !System.IO.Directory.Exists(platform)
+                && System.IO.Directory.Exists(platform + ".wotbo_bak");
         }
 
         /// <summary>Служба WinDefend отсутствует или её файлы переименованы.</summary>
@@ -114,6 +139,51 @@ namespace WOTBO.Services.Defender
                 {
                     return key != null;
                 }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>TP/RTP/Antivirus одним запросом (для предупреждений и гвардов).</summary>
+        public static DefenderProtectionState GetProtection()
+        {
+            var state = new DefenderProtectionState();
+
+            try
+            {
+                using (var searcher = new ManagementObjectSearcher(
+                    @"root\Microsoft\Windows\Defender",
+                    "SELECT IsTamperProtected, RealTimeProtectionEnabled, AntivirusEnabled FROM MSFT_MpComputerStatus"))
+                {
+                    foreach (ManagementObject item in searcher.Get())
+                    {
+                        state.Available = true;
+                        state.TamperProtection = ToBool(item["IsTamperProtected"]);
+                        state.RealTimeProtection = ToBool(item["RealTimeProtectionEnabled"]);
+                        state.AntivirusEnabled = ToBool(item["AntivirusEnabled"]);
+                        return state;
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            return state;
+        }
+
+        private static bool ToBool(object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                return Convert.ToBoolean(value, CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -249,15 +319,6 @@ namespace WOTBO.Services.Defender
             string processesText = verification.Processes ?? string.Empty;
             bool engineRunning = processesText.IndexOf("MsMpEng", StringComparison.OrdinalIgnoreCase) >= 0;
 
-            verification.DefenderOn =
-                string.Equals(verification.WinDefend, "Running", StringComparison.OrdinalIgnoreCase)
-                || engineRunning;
-
-            verification.DefenderOff = !verification.DefenderOn;
-
-            verification.NeedsReboot = verification.DefenderOff
-                && string.Equals(verification.WdFilter, "Running", StringComparison.OrdinalIgnoreCase);
-
             string antivirus;
             values.TryGetValue("antivirus", out antivirus);
             string realtime;
@@ -265,6 +326,16 @@ namespace WOTBO.Services.Defender
 
             verification.Antivirus = antivirus;
             verification.Realtime = realtime;
+
+            verification.DefenderOn =
+                string.Equals(verification.WinDefend, "Running", StringComparison.OrdinalIgnoreCase)
+                || engineRunning;
+
+            verification.DefenderOff = !verification.DefenderOn
+                && !string.Equals(antivirus, "1", StringComparison.OrdinalIgnoreCase);
+
+            verification.NeedsReboot = verification.DefenderOff
+                && string.Equals(verification.WdFilter, "Running", StringComparison.OrdinalIgnoreCase);
 
             verification.Details = string.Format(
                 CultureInfo.InvariantCulture,
