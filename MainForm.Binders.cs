@@ -444,6 +444,7 @@ namespace WOTBO
             Bind("ui.ffmpeg", checkBox_ffmpeg, back_ui_10, "FFmpeg был применён",
                 beforeApply: () => ShowNotification("FFMPEG", "Ожидайте скачивания FFMPEG. Программа не зависла!", ToolTipIcon.Info));
             Bind("ui.mica", checkBox_mica, back_ui_11, "ExplorerBlurMica был применён");
+            Bind("ui.cursors", checkBox_cursors, back_ui_12, "курсоры были установлены");
             Bind("ui.animations", checkBox_animation, back_animations, "анимации выключены",
                 onDetected: () => animation = false,
                 afterApply: () => animation = false,

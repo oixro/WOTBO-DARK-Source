@@ -77,6 +77,7 @@ namespace WOTBO.Services.Tweaks
                 new TempCleanTweak(),
                 new EdgeTweak(),
                 new MicaTweak(),
+                new CursorsTweak(),
                 new WotboContextTweak(),
                 new BlueFoldersTweak(),
                 new ExplorerDetailsTweak(),

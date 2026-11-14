@@ -106,7 +106,8 @@ namespace WOTBO
             this.back_main_2 = new System.Windows.Forms.PictureBox();
             this.back_main_1 = new System.Windows.Forms.PictureBox();
             this.panel_ui_1 = new System.Windows.Forms.Panel();
-            this.label_cursors = new System.Windows.Forms.Label();
+            this.checkBox_cursors = new System.Windows.Forms.CheckBox();
+            this.back_ui_12 = new System.Windows.Forms.PictureBox();
             this.back_ui_10 = new System.Windows.Forms.PictureBox();
             this.back_ui_9 = new System.Windows.Forms.PictureBox();
             this.back_ui_8 = new System.Windows.Forms.PictureBox();
@@ -1344,7 +1345,8 @@ namespace WOTBO
             // panel_ui_1
             // 
             this.panel_ui_1.BackColor = System.Drawing.Color.Transparent;
-            this.panel_ui_1.Controls.Add(this.label_cursors);
+            this.panel_ui_1.Controls.Add(this.checkBox_cursors);
+            this.panel_ui_1.Controls.Add(this.back_ui_12);
             this.panel_ui_1.Controls.Add(this.back_ui_10);
             this.panel_ui_1.Controls.Add(this.back_ui_9);
             this.panel_ui_1.Controls.Add(this.back_ui_8);
@@ -1372,18 +1374,33 @@ namespace WOTBO
             this.panel_ui_1.TabIndex = 37;
             this.panel_ui_1.Visible = false;
             // 
-            // label_cursors
+            // checkBox_cursors
             // 
-            this.label_cursors.AutoSize = true;
-            this.label_cursors.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_cursors.ForeColor = System.Drawing.Color.White;
-            this.label_cursors.Location = new System.Drawing.Point(20, 205);
-            this.label_cursors.Name = "label_cursors";
-            this.label_cursors.Size = new System.Drawing.Size(148, 13);
-            this.label_cursors.TabIndex = 22;
-            this.label_cursors.Text = "Установить новые курсоры";
-            this.label_cursors.Click += new System.EventHandler(this.label_cursors_Click_1);
-            this.label_cursors.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
+            this.checkBox_cursors.AutoSize = true;
+            this.checkBox_cursors.ForeColor = System.Drawing.Color.White;
+            this.checkBox_cursors.Location = new System.Drawing.Point(20, 205);
+            this.checkBox_cursors.Name = "checkBox_cursors";
+            this.checkBox_cursors.Size = new System.Drawing.Size(190, 17);
+            this.checkBox_cursors.TabIndex = 22;
+            this.checkBox_cursors.Text = "Установить новые курсоры";
+            this.toolTip1.SetToolTip(this.checkBox_cursors, "Ставит курсоры W11 HDPI под текущую тему Windows (светлая/тёмная).\r\n(Скачивается один раз, откат возвращает прежние курсоры)");
+            this.checkBox_cursors.UseVisualStyleBackColor = true;
+            this.checkBox_cursors.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_ui_12
+            // 
+            this.back_ui_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_ui_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_ui_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_ui_12.Location = new System.Drawing.Point(0, 205);
+            this.back_ui_12.Name = "back_ui_12";
+            this.back_ui_12.Size = new System.Drawing.Size(15, 15);
+            this.back_ui_12.TabIndex = 23;
+            this.back_ui_12.TabStop = false;
+            this.back_ui_12.Visible = false;
+            this.back_ui_12.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_ui_10
             // 
@@ -2756,7 +2773,8 @@ namespace WOTBO
         private System.Windows.Forms.PictureBox back_main_14;
         private System.Windows.Forms.PictureBox back_main_16;
         private System.Windows.Forms.PictureBox back_dop_edge;
-        private System.Windows.Forms.Label label_cursors;
+        private System.Windows.Forms.CheckBox checkBox_cursors;
+        private System.Windows.Forms.PictureBox back_ui_12;
         private System.Windows.Forms.Label label_activate;
         private System.Windows.Forms.Label label_msimode;
         private System.Windows.Forms.CheckBox checkBox_move_temp;

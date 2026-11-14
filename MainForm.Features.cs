@@ -28,48 +28,6 @@ namespace WOTBO
 {
     public partial class MainForm
     {
-        #region курсоры
-        void label_cursors_Click_1(object sender, EventArgs e)
-        {
-                if (!File.Exists($"{tempfolder}\\cursors.zip"))
-                {
-                    AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/cursors.zip", $"{tempfolder}\\cursors.zip");
-                    ZipFile.ExtractToDirectory($"{tempfolder}\\cursors.zip", tempfolder);
-                }
-            if (MessageBox.Show($"Установить светлый или тёмный курсор?\nДа - светлый\nНет - тёмный", "WOTBO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                InstallCursor($@"{tempfolder}\cursors\light\small\base\Install.inf");
-            }
-            else
-            {
-                InstallCursor($@"{tempfolder}\cursors\dark\small\base\Install.inf");
-            }
-        }
-
-        public void InstallCursor(string installerFilePath)
-        {
-            string command = @"C:\WINDOWS\System32\rundll32.exe";
-            string arguments = "setupapi,InstallHinfSection DefaultInstall 132 " + installerFilePath;
-
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/c \"{command} {arguments}\"",
-                Verb = "runas",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            Process process = new Process
-            {
-                StartInfo = startInfo
-            };
-
-            process.Start();
-            process.WaitForExit();
-        }
-        #endregion
         #region activation
         void label_activate_Click(object sender, EventArgs e)
         {

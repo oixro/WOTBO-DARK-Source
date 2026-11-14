@@ -1,26 +1,31 @@
 using System;
-using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
-using WOTBO.Properties;
+using System.Threading;
+using Microsoft.Win32;
+using Win32Registry = Microsoft.Win32.Registry;
 
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// Импорт и активация power scheme.
+    /// Схема питания (U)_Shingeki_no_Windows_8.0.
     ///
-    /// Отличия от старого кода: команды powercfg выполняются по очереди и
-    /// ожидаются, перед импортом запоминается активная схема, откат
-    /// возвращает её и удаляет импортированную. Старый
-    /// <c>-restoredefaultschemes</c> при apply убран.
+    /// Ветка <c>PowerSchemes</c> закрыта даже для администратора, поэтому
+    /// .reg импортируется одноразовой задачей от SYSTEM, после чего схема
+    /// активируется через powercfg. Откат возвращает прежнюю схему и удаляет
+    /// импортированную.
     /// </summary>
     public sealed class PowerSchemeTweak : TweakBase
     {
+        private const string SchemeGuid = "f11ccd69-bf9c-459c-9114-66ebd91073e8";
         private const string PreviousName = "previousScheme";
-        private const string ImportedName = "importedScheme";
-        private const string GuidPattern = @"GUID:\s*([0-9a-fA-F-]{36})";
+        private const string PowerSchemes = @"SYSTEM\CurrentControlSet\Control\Power\User\PowerSchemes";
+        private const string SchemeKey = PowerSchemes + @"\" + SchemeGuid;
+        private const string ResourceSuffix = "scheme_shingeki.reg";
+        private const string RestoreSchemeGuid = "381b4222-f694-41f0-9685-ff5bb260df2e";
         private const string HighPerformanceGuid = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
-        private const string BalancedGuid = "381b4222-f694-41f0-9685-ff5bb260df2e";
 
         public override string Id
         {
@@ -34,7 +39,8 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            return context.Store.IsApplied(Id)
+            string active = GetActiveScheme(context);
+            return string.Equals(active, SchemeGuid, StringComparison.OrdinalIgnoreCase)
                 ? TweakState.Applied
                 : TweakState.NotApplied;
         }
@@ -42,58 +48,175 @@ namespace WOTBO.Services.Tweaks
         public override void Apply(TweakContext context)
         {
             string previous = GetActiveScheme(context);
-            string path = context.Workspace.Scheme;
-            File.WriteAllBytes(path, Resources.scheme);
-
-            string guid = Guid.NewGuid().ToString();
-            context.Log.Debug("Tweak:main.powerscheme", guid);
-
-            Run(context, $"-import \"{path}\" {guid}");
-            bool imported = SchemeExists(context, guid);
-
-            if (imported)
-            {
-                Run(context, $"-setactive {guid}");
-            }
-
-            if (!imported || !IsActive(context, guid))
-            {
-                // Встроенный scheme.pow может не импортироваться на новых
-                // сборках Windows. Не оставляем пользователя без схемы.
-                context.Log.Warn("Tweak:main.powerscheme", "импорт схемы не удался, включаю High performance");
-                if (!TrySetActive(context, HighPerformanceGuid))
-                {
-                    context.Log.Warn("Tweak:main.powerscheme", "High performance недоступна, включаю Balanced");
-                    TrySetActive(context, BalancedGuid);
-                }
-            }
-
             if (!string.IsNullOrEmpty(previous))
             {
                 context.Store.WriteExtra(Id, PreviousName, previous);
             }
 
-            if (imported)
+            string path = Path.Combine(context.Workspace.Root, "scheme_shingeki.reg");
+            if (!WriteSchemeFile(path, context))
             {
-                context.Store.WriteExtra(Id, ImportedName, guid);
+                return;
+            }
+
+            // Ветки схемы до импорта нет — бэкап зафиксирует это и откат удалит её.
+            context.BackupRegistryKey(RegistryHive.LocalMachine, SchemeKey);
+
+            // Ветка PowerSchemes защищена: regedit от администратора получает
+            // "Access is denied". Импорт делаем задачей от SYSTEM.
+            RunAsSystem(context, "regedit.exe /s \"" + path + "\"");
+            WaitForKey(context);
+
+            if (!SchemeExists(context))
+            {
+                context.Log.Warn("Tweak:main.powerscheme", "схема не появилась после импорта .reg");
+                return;
+            }
+
+            Run(context, "-setactive " + SchemeGuid);
+
+            if (!IsActive(context, SchemeGuid))
+            {
+                context.Log.Warn("Tweak:main.powerscheme", "не удалось активировать схему");
+
+                if (!TrySetActive(context, HighPerformanceGuid))
+                {
+                    TrySetActive(context, RestoreSchemeGuid);
+                }
             }
         }
 
         public override void Rollback(TweakContext context)
         {
             string previous = context.Store.ReadExtra(Id, PreviousName) as string;
-            string imported = context.Store.ReadExtra(Id, ImportedName) as string;
 
             if (string.IsNullOrEmpty(previous) || !TrySetActive(context, previous))
             {
-                // Совместимость со старым поведением, если GUID не сохранился
-                // или схема уже удалена.
-                Run(context, "-restoredefaultschemes");
+                TrySetActive(context, RestoreSchemeGuid);
             }
 
-            if (!string.IsNullOrEmpty(imported))
+            if (RegistryKeyExists(context))
             {
-                Run(context, $"-delete {imported}");
+                Run(context, "-delete " + SchemeGuid);
+            }
+
+            if (RegistryKeyExists(context))
+            {
+                RunAsSystem(context, "reg.exe delete \"HKLM\\" + SchemeKey + "\" /f");
+                WaitForKey(context, true);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить команду от SYSTEM через одноразовую задачу: ключи
+        /// PowerSchemes недоступны даже администратору.
+        /// </summary>
+        private static void RunAsSystem(TweakContext context, string command)
+        {
+            const string taskName = @"\WOTBO\PowerSchemeHelper";
+            string runner = Path.Combine(context.Workspace.Root, "powerscheme-helper.cmd");
+
+            try
+            {
+                File.WriteAllText(runner, "@echo off\r\n" + command + "\r\n");
+
+                context.Processes
+                    .ReadOutputAsync("schtasks.exe", "/create /tn \"" + taskName + "\" /tr \"" + runner + "\" /sc once /st 23:59 /ru SYSTEM /f")
+                    .GetAwaiter()
+                    .GetResult();
+
+                context.Processes
+                    .ReadOutputAsync("schtasks.exe", "/run /tn \"" + taskName + "\"")
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (Exception exception)
+            {
+                context.Log.Error("Tweak:main.powerscheme", "не удалось выполнить команду от SYSTEM", exception);
+            }
+        }
+
+        private static void WaitForKey(TweakContext context, bool absent = false)
+        {
+            for (int i = 0; i < 75; i++)
+            {
+                bool exists = RegistryKeyExists(context);
+                if (absent ? !exists : exists)
+                {
+                    break;
+                }
+
+                Thread.Sleep(200);
+            }
+
+            try
+            {
+                context.Processes
+                    .ReadOutputAsync("schtasks.exe", "/delete /tn \"\\WOTBO\\PowerSchemeHelper\" /f")
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch
+            {
+            }
+        }
+
+        private static string SchemeKeyOf(string guid)
+        {
+            return PowerSchemes + @"\" + guid;
+        }
+
+        private static bool RegistryKeyExists(TweakContext context)
+        {
+            try
+            {
+                using (RegistryKey key = Win32Registry.LocalMachine.OpenSubKey(SchemeKey))
+                {
+                    return key != null;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool WriteSchemeFile(string path, TweakContext context)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                string name = assembly.GetManifestResourceNames()
+                    .FirstOrDefault(n => n.EndsWith(ResourceSuffix, StringComparison.OrdinalIgnoreCase));
+
+                if (string.IsNullOrEmpty(name))
+                {
+                    context.Log.Warn("Tweak:main.powerscheme", "встроенный .reg схемы не найден");
+                    return false;
+                }
+
+                using (Stream stream = assembly.GetManifestResourceStream(name))
+                {
+                    if (stream == null)
+                    {
+                        context.Log.Warn("Tweak:main.powerscheme", "не удалось открыть ресурс схемы");
+                        return false;
+                    }
+
+                    using (var file = new FileStream(path, FileMode.Create, FileAccess.Write))
+                    {
+                        stream.CopyTo(file);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                context.Log.Error("Tweak:main.powerscheme", "не удалось записать .reg схемы", exception);
+                return false;
             }
         }
 
@@ -104,7 +227,7 @@ namespace WOTBO.Services.Tweaks
                 return false;
             }
 
-            Run(context, $"-setactive {guid}");
+            Run(context, "-setactive " + guid);
             return IsActive(context, guid);
         }
 
@@ -113,15 +236,24 @@ namespace WOTBO.Services.Tweaks
             return string.Equals(GetActiveScheme(context), guid, StringComparison.OrdinalIgnoreCase);
         }
 
+        private static bool SchemeExists(TweakContext context)
+        {
+            return SchemeExists(context, SchemeGuid);
+        }
+
         private static bool SchemeExists(TweakContext context, string guid)
         {
-            string list = context.Processes
-                .ReadOutputAsync("powercfg.exe", "-list")
-                .GetAwaiter()
-                .GetResult();
-
-            return !string.IsNullOrEmpty(list)
-                && list.IndexOf(guid, StringComparison.OrdinalIgnoreCase) >= 0;
+            try
+            {
+                using (RegistryKey key = Win32Registry.LocalMachine.OpenSubKey(SchemeKeyOf(guid)))
+                {
+                    return key != null;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static string GetActiveScheme(TweakContext context)
@@ -131,7 +263,11 @@ namespace WOTBO.Services.Tweaks
                 .GetAwaiter()
                 .GetResult();
 
-            Match match = Regex.Match(output ?? string.Empty, GuidPattern, RegexOptions.IgnoreCase);
+            Match match = Regex.Match(
+                output ?? string.Empty,
+                @"GUID:\s*([0-9a-fA-F-]{36})",
+                RegexOptions.IgnoreCase);
+
             return match.Success ? match.Groups[1].Value : null;
         }
 

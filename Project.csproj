@@ -64,6 +64,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
@@ -143,6 +144,7 @@
     <Compile Include="Services\Defender\DefenderSafeMode.cs" />
     <Compile Include="Services\Defender\DefenderServiceHost.cs" />
     <Compile Include="Services\Defender\DefenderStatus.cs" />
+    <Compile Include="Services\Tweaks\CursorsTweak.cs" />
     <Compile Include="Services\Tweaks\DefenderTweak.cs" />
     <Compile Include="Services\Tweaks\HdcpTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaTweaksTweak.cs" />
@@ -282,6 +284,7 @@
     <None Include="Resources\prefetcher ssd.reg" />
     <None Include="Resources\regpack.zip" />
     <EmbeddedResource Include="Resources\defender-engine.ps1" />
+    <EmbeddedResource Include="Resources\scheme_shingeki.reg" />
     <None Include="Resources\scheme.pow" />
     <None Include="Resources\ui.zip" />
     <None Include="Resources\unmousefix.reg" />

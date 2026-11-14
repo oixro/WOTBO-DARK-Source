@@ -321,6 +321,7 @@ namespace WOTBO
             Binder("extra.scoobe").Detect();
             Binder("extra.stickykeys").Detect();
             Binder("ui.mica").Detect();
+            Binder("ui.cursors").Detect();
             Binder("ui.explorerrestart").Detect();
             Binder("extra.dwmpriority").Detect();
             Binder("pro.csrss").Detect();
@@ -473,7 +474,7 @@ namespace WOTBO
                 checkBox_pro_14.Enabled = false;
                 checkBox_ffmpeg.Enabled = false;
                 checkBox_mica.Enabled = false;
-                label_cursors.Enabled = false;
+                checkBox_cursors.Enabled = false;
                 label_inspector.Enabled = false;
                 label_site.Enabled = false;
 
