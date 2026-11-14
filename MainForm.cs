@@ -271,6 +271,7 @@ namespace WOTBO
         #region анимка
         async public void ChangePanel(Panel NewPanel)
         {
+            HighlightNav(NewPanel);
             await panelNavigator.NavigateAsync(NewPanel);
         }
         #endregion
@@ -344,6 +345,29 @@ namespace WOTBO
             int width = Math.Max(390, PanelMain.Right);
             int height = Math.Max(305, PanelMain.Bottom);
             ClientSize = new Size(width, height);
+
+            CenterHeader();
+        }
+
+        /// <summary>
+        /// Ставит иконку и название по центру шапки. Позиции в дизайнере
+        /// фиксированные, поэтому после DPI-масштабирования их нужно
+        /// пересчитать.
+        /// </summary>
+        private void CenterHeader()
+        {
+            if (PanelHead == null || logo == null || LabelHead == null) return;
+
+            int gap = Dpi.Scale(this, 4);
+            int total = logo.Width + gap + LabelHead.Width;
+            int left = (PanelHead.ClientSize.Width - total) / 2;
+            if (left < 0) left = 0;
+
+            logo.Left = left;
+            LabelHead.Left = left + logo.Width + gap;
+
+            logo.Top = (PanelHead.ClientSize.Height - logo.Height) / 2;
+            LabelHead.Top = (PanelHead.ClientSize.Height - LabelHead.Height) / 2;
         }
 
         protected override void OnDpiChanged(DpiChangedEventArgs e)
@@ -353,6 +377,7 @@ namespace WOTBO
             if (!IsHandleCreated || PanelMain == null) return;
 
             ApplyWindowSize();
+            CenterHeader();
             CenterToScreen();
             Log.Debug("UI", $"DPI changed {e.DeviceDpiOld}->{e.DeviceDpiNew}, client={ClientSize.Width}x{ClientSize.Height}");
         }

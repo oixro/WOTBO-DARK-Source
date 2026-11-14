@@ -49,6 +49,57 @@ namespace WOTBO
             navigation.Bind(label_pc, panel_5);
 
             label_gpu.Click += (sender, args) => ShowGpuPanel();
+
+            SetupNavHighlight();
+        }
+
+        private readonly Dictionary<Label, Font> _navFonts = new Dictionary<Label, Font>();
+        private readonly Dictionary<Label, Font> _navActiveFonts = new Dictionary<Label, Font>();
+
+        private static readonly Color NavActiveColor = Color.White;
+        private static readonly Color NavInactiveColor = Color.Silver;
+
+        /// <summary>
+        /// Подсветка текущего раздела: активный пункт белый и жирный,
+        /// остальные — серые. Раньше все пункты выглядели одинаково.
+        /// </summary>
+        private void SetupNavHighlight()
+        {
+            Label[] labels = { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc };
+
+            foreach (Label label in labels)
+            {
+                if (label == null) continue;
+                _navFonts[label] = label.Font;
+                // Подчёркивание не меняет ширину текста (в отличие от Bold):
+                // «4. Дополнительно» в bold заезжало под панель контента.
+                _navActiveFonts[label] = new Font(label.Font, FontStyle.Underline);
+            }
+
+            HighlightNav(panel1);
+        }
+
+        private void HighlightNav(Panel panel)
+        {
+            if (panel == null) return;
+
+            Label active = null;
+
+            if (panel == panel1 || panel == panel_main_2) active = label_main;
+            else if (panel == panel_ui_1 || panel == panel_ui_2) active = label_interface;
+            else if (panel == panel2) active = label_gpu;
+            else if (panel == panel_dop || panel == panel_dop_2) active = label_dop;
+            else if (panel == panel_sorry) active = label_progs;
+            else if (panel == panel_5) active = label_pc;
+
+            if (active == null) return;
+
+            foreach (Label label in _navFonts.Keys)
+            {
+                bool on = label == active;
+                label.ForeColor = on ? NavActiveColor : NavInactiveColor;
+                label.Font = on ? _navActiveFonts[label] : _navFonts[label];
+            }
         }
 
         private void ShowGpuPanel()

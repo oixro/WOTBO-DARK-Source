@@ -115,6 +115,9 @@ namespace WOTBO
             target.Location = new Point(Dpi.Scale(this, 105), Dpi.Scale(this, 36));
             target.Visible = true;
             target.BringToFront();
+
+            // Подсветка раздела должна соответствовать снимаемой вкладке.
+            HighlightNav(target);
         }
 
         /// <summary>Прокрутить очередь сообщений, чтобы отработали анимации.</summary>
