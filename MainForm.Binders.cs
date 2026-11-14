@@ -322,6 +322,8 @@ namespace WOTBO
                 _defenderLockEnabled.Clear();
                 _defenderLockVisible.Clear();
 
+                int uncheckedCount = 0;
+
                 foreach (CheckBox box in DescendantControls<CheckBox>(this))
                 {
                     if (box == checkBox_disabledefender)
@@ -330,7 +332,24 @@ namespace WOTBO
                     }
 
                     _defenderLockEnabled[box] = box.Enabled;
+
+                    if (box.Checked)
+                    {
+                        box.Checked = false;
+                        uncheckedCount++;
+                    }
+
                     box.Enabled = false;
+                }
+
+                if (uncheckedCount > 0)
+                {
+                    ShowNotification(
+                        "Защитник",
+                        "Другие твики сняты: отключение Windows Defender меняет службы " +
+                        "и брандмауэр, поэтому вместе с ним они не применяются. " +
+                        "Выберите их отдельно после перезагрузки.",
+                        ToolTipIcon.Info);
                 }
 
                 foreach (PictureBox back in DescendantControls<PictureBox>(this))
