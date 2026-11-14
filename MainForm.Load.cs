@@ -451,6 +451,11 @@ namespace WOTBO
         /// </summary>
         private async Task CheckForUpdatesAsync()
         {
+            if (ScreenshotMode)
+            {
+                return;
+            }
+
             // Уступаем кадру: DNS-проверка внутри Internet.OK() синхронная
             // и иначе задержит первый показ окна.
             await Task.Yield();

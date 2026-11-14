@@ -508,7 +508,7 @@ namespace WOTBO
             this.checkBox_zalipanie.AutoSize = true;
             this.checkBox_zalipanie.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_zalipanie.ForeColor = System.Drawing.Color.White;
-            this.checkBox_zalipanie.Location = new System.Drawing.Point(20, 205);
+            this.checkBox_zalipanie.Location = new System.Drawing.Point(20, 185);
             this.checkBox_zalipanie.Name = "checkBox_zalipanie";
             this.checkBox_zalipanie.Size = new System.Drawing.Size(182, 17);
             this.checkBox_zalipanie.TabIndex = 3;
@@ -523,7 +523,7 @@ namespace WOTBO
             this.checkBox_updclean.AutoSize = true;
             this.checkBox_updclean.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_updclean.ForeColor = System.Drawing.Color.White;
-            this.checkBox_updclean.Location = new System.Drawing.Point(20, 125);
+            this.checkBox_updclean.Location = new System.Drawing.Point(20, 105);
             this.checkBox_updclean.Name = "checkBox_updclean";
             this.checkBox_updclean.Size = new System.Drawing.Size(207, 17);
             this.checkBox_updclean.TabIndex = 11;
@@ -538,7 +538,7 @@ namespace WOTBO
             this.checkBox_temp.AutoSize = true;
             this.checkBox_temp.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_temp.ForeColor = System.Drawing.Color.White;
-            this.checkBox_temp.Location = new System.Drawing.Point(20, 105);
+            this.checkBox_temp.Location = new System.Drawing.Point(20, 85);
             this.checkBox_temp.Name = "checkBox_temp";
             this.checkBox_temp.Size = new System.Drawing.Size(171, 17);
             this.checkBox_temp.TabIndex = 10;
@@ -553,7 +553,7 @@ namespace WOTBO
             this.checkBox_nastroyka.AutoSize = true;
             this.checkBox_nastroyka.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_nastroyka.ForeColor = System.Drawing.Color.White;
-            this.checkBox_nastroyka.Location = new System.Drawing.Point(20, 185);
+            this.checkBox_nastroyka.Location = new System.Drawing.Point(20, 165);
             this.checkBox_nastroyka.Name = "checkBox_nastroyka";
             this.checkBox_nastroyka.Size = new System.Drawing.Size(249, 17);
             this.checkBox_nastroyka.TabIndex = 3;
@@ -568,7 +568,7 @@ namespace WOTBO
             this.checkBox_compactos.AutoSize = true;
             this.checkBox_compactos.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_compactos.ForeColor = System.Drawing.Color.White;
-            this.checkBox_compactos.Location = new System.Drawing.Point(20, 85);
+            this.checkBox_compactos.Location = new System.Drawing.Point(20, 65);
             this.checkBox_compactos.Name = "checkBox_compactos";
             this.checkBox_compactos.Size = new System.Drawing.Size(102, 17);
             this.checkBox_compactos.TabIndex = 9;
@@ -583,7 +583,7 @@ namespace WOTBO
             this.checkBox_mobile_traffic.AutoSize = true;
             this.checkBox_mobile_traffic.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_mobile_traffic.ForeColor = System.Drawing.Color.White;
-            this.checkBox_mobile_traffic.Location = new System.Drawing.Point(20, 165);
+            this.checkBox_mobile_traffic.Location = new System.Drawing.Point(20, 145);
             this.checkBox_mobile_traffic.Name = "checkBox_mobile_traffic";
             this.checkBox_mobile_traffic.Size = new System.Drawing.Size(244, 17);
             this.checkBox_mobile_traffic.TabIndex = 3;
@@ -599,7 +599,7 @@ namespace WOTBO
             this.checkBox_WinSxS.AutoSize = true;
             this.checkBox_WinSxS.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_WinSxS.ForeColor = System.Drawing.Color.White;
-            this.checkBox_WinSxS.Location = new System.Drawing.Point(20, 65);
+            this.checkBox_WinSxS.Location = new System.Drawing.Point(20, 45);
             this.checkBox_WinSxS.Name = "checkBox_WinSxS";
             this.checkBox_WinSxS.Size = new System.Drawing.Size(168, 17);
             this.checkBox_WinSxS.TabIndex = 8;
@@ -615,7 +615,7 @@ namespace WOTBO
             this.checkBox_picture_cache.AutoSize = true;
             this.checkBox_picture_cache.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_picture_cache.ForeColor = System.Drawing.Color.White;
-            this.checkBox_picture_cache.Location = new System.Drawing.Point(20, 145);
+            this.checkBox_picture_cache.Location = new System.Drawing.Point(20, 125);
             this.checkBox_picture_cache.Name = "checkBox_picture_cache";
             this.checkBox_picture_cache.Size = new System.Drawing.Size(173, 17);
             this.checkBox_picture_cache.TabIndex = 3;
@@ -1037,7 +1037,7 @@ namespace WOTBO
             // 
             this.checkBox_move_temp.AutoSize = true;
             this.checkBox_move_temp.ForeColor = System.Drawing.Color.White;
-            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 225);
+            this.checkBox_move_temp.Location = new System.Drawing.Point(20, 205);
             this.checkBox_move_temp.Name = "checkBox_move_temp";
             this.checkBox_move_temp.Size = new System.Drawing.Size(190, 17);
             this.checkBox_move_temp.TabIndex = 20;
@@ -1714,7 +1714,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_movetemp.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_movetemp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 225);
+            this.back_dop_movetemp.Location = new System.Drawing.Point(0, 205);
             this.back_dop_movetemp.Name = "back_dop_movetemp";
             this.back_dop_movetemp.Size = new System.Drawing.Size(15, 15);
             this.back_dop_movetemp.TabIndex = 12;
@@ -1729,7 +1729,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_4.Location = new System.Drawing.Point(0, 205);
+            this.back_dop_4.Location = new System.Drawing.Point(0, 185);
             this.back_dop_4.Name = "back_dop_4";
             this.back_dop_4.Size = new System.Drawing.Size(15, 15);
             this.back_dop_4.TabIndex = 11;
@@ -1744,7 +1744,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_3.Location = new System.Drawing.Point(0, 185);
+            this.back_dop_3.Location = new System.Drawing.Point(0, 165);
             this.back_dop_3.Name = "back_dop_3";
             this.back_dop_3.Size = new System.Drawing.Size(15, 15);
             this.back_dop_3.TabIndex = 11;
@@ -1759,7 +1759,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_2.Location = new System.Drawing.Point(0, 165);
+            this.back_dop_2.Location = new System.Drawing.Point(0, 145);
             this.back_dop_2.Name = "back_dop_2";
             this.back_dop_2.Size = new System.Drawing.Size(15, 15);
             this.back_dop_2.TabIndex = 11;
@@ -1774,7 +1774,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_1.Location = new System.Drawing.Point(0, 145);
+            this.back_dop_1.Location = new System.Drawing.Point(0, 125);
             this.back_dop_1.Name = "back_dop_1";
             this.back_dop_1.Size = new System.Drawing.Size(15, 15);
             this.back_dop_1.TabIndex = 11;
@@ -1802,7 +1802,7 @@ namespace WOTBO
             this.checkBox_onedrive.AutoSize = true;
             this.checkBox_onedrive.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_onedrive.ForeColor = System.Drawing.Color.White;
-            this.checkBox_onedrive.Location = new System.Drawing.Point(20, 45);
+            this.checkBox_onedrive.Location = new System.Drawing.Point(20, 25);
             this.checkBox_onedrive.Name = "checkBox_onedrive";
             this.checkBox_onedrive.Size = new System.Drawing.Size(118, 17);
             this.checkBox_onedrive.TabIndex = 6;

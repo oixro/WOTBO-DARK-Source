@@ -23,6 +23,8 @@ namespace WOTBO
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
+                MainForm.ScreenshotMode = true;
+
                 using (var form = new MainForm())
                 {
                     form.Show();

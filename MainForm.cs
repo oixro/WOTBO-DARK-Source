@@ -71,6 +71,9 @@ namespace WOTBO
             public static string ProgramData => AppPaths.ProgramData;
         }
         public bool animation = true;
+
+        /// <summary>Режим съёмки скриншотов: без тостов и проверки обновлений.</summary>
+        public static bool ScreenshotMode { get; set; }
         #endregion
         #region default crap
         public MainForm()
@@ -321,6 +324,11 @@ namespace WOTBO
         // Универсальный метод для отображения уведомления
         public void ShowNotification(string title, string message, ToolTipIcon icon = ToolTipIcon.None)
         {
+            if (ScreenshotMode)
+            {
+                return;
+            }
+
             notifier.Show(title, message, icon);
         }
 
