@@ -333,7 +333,7 @@ namespace WOTBO
                 label_inspector.Enabled = false;
                 label_site.Enabled = false;
 
-                MessageBox.Show("Нет доступа в интернет!\nПроврека на обновления, и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
+                MessageBox.Show("Нет доступа в интернет!\nПроверка обновлений и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
     MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
 

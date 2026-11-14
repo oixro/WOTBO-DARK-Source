@@ -178,7 +178,7 @@ namespace WOTBO.UI
             }
 
             _summary.Text = string.Format(
-                "Проверок пройдено: {0} из {1}",
+                "Пройдено проверок: {0} из {1}",
                 passed,
                 rows.Count);
 
@@ -235,7 +235,7 @@ namespace WOTBO.UI
                 rows.Add(new CheckRow("Служба WinDefend отключена", windefendStart == 4 && !windefend, true));
                 rows.Add(new CheckRow("Драйвер WdFilter отключён", wdfilterStart == 4, true));
                 rows.Add(new CheckRow("Драйвер WdBoot отключён", wdbootStart == 4, true));
-                rows.Add(new CheckRow("Движок MsMpEng не запущен", !engineRunning, true));
+                rows.Add(new CheckRow("Движок MsMpEng не работает", !engineRunning, true));
                 rows.Add(new CheckRow("Антивирус выключен", !antivirus, true));
                 rows.Add(new CheckRow("Защита в реальном времени выключена", !realtime, true));
                 rows.Add(new CheckRow("Служба «Безопасность Windows» отключена", securityStart == 4, true));

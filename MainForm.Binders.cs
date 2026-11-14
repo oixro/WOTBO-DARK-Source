@@ -102,8 +102,8 @@ namespace WOTBO
             if (protection.Available && (protection.TamperProtection || protection.RealTimeProtection))
             {
                 string what = protection.TamperProtection
-                    ? "защиту от подделки (Tamper Protection)"
-                    : "защиту в реальном времени (Real-time protection)";
+                    ? "защита от подделки (Tamper Protection)"
+                    : "защита в реальном времени (Real-time protection)";
 
                 MessageBox.Show(
                     "Перед отключением Windows Defender нужно вручную выключить:\n" +
@@ -178,7 +178,7 @@ namespace WOTBO
         {
             return MessageBox.Show(
                 "Восстановить Windows Defender?\n\n" +
-                "Файлы защитника будут возвращены из *.wotbo_bak, службы, драйверы,\n" +
+                "Файлы защитника вернутся из *.wotbo_bak, а службы, драйверы,\n" +
                 "задачи, брандмауэр и SmartScreen — в прежнее состояние.\n\n" +
                 "Продолжить?",
                 "Восстановление Windows Defender",
