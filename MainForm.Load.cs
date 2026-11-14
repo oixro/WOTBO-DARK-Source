@@ -109,7 +109,7 @@ namespace WOTBO
             }
         }
 
-        void MainForm_Load(object sender, EventArgs e)
+        async void MainForm_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
             ApplyWindowSize();
@@ -187,10 +187,20 @@ namespace WOTBO
             // Сеть и GitHub не должны задерживать показ окна.
             _ = CheckForUpdatesAsync();
             #endregion
-            #region позиция, размеры и показ
-            Opacity = 1;
-            Log.Info("UI", $"окно показано");
+            #region позиция, размеры и плавный запуск
+            if (SystemInformation.UserInteractive)
+            {
+                for (Opacity = 0; Opacity < 1; Opacity += .1) await Task.Delay(7);
+            }
+            else
+            {
+                // В неинтерактивной сессии Opacity бросает Win32Exception.
+                Opacity = 1;
+            }
+
+            Log.Info("UI", $"плавно открылись");
             #endregion
+            BeginInvoke(new Action(DetectHeavyTweaks));
             DetectGpuTweaks();
         }
 
@@ -256,7 +266,7 @@ namespace WOTBO
             Binder("main.usb").Detect();
             AppServices.LegacyCleanup.Cleanup();
             Binder("main.mitigations").Detect();
-            Binder("main.mmagent").Detect();
+            // WMI PS_MMAgent и netsh bufferbloat — отдельным проходом после fade.
             #region pagefile
             TweakState pagefileState = AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext);
             AppServices.Tweaks.Reconcile("main.pagefile", pagefileState == TweakState.Applied);
@@ -302,7 +312,7 @@ namespace WOTBO
                 Log.Info("App", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
-            Binder("pro.bufferbloat").Detect();
+
             Binder("pro.unlocker").Detect();
             Binder("pro.alwaysontop").Detect();
             Binder("ui.ffmpeg").Detect();
@@ -323,6 +333,16 @@ namespace WOTBO
             #endregion
             detectWatch.Stop();
             Log.Debug("UI", $"detect loop: {detectWatch.ElapsedMilliseconds} мс");
+        }
+
+        /// <summary>
+        /// Тяжёлые детекты (WMI и netsh), которые не должны задерживать показ
+        /// окна. Запускаются после fade, обновляют только свои чекбоксы.
+        /// </summary>
+        private void DetectHeavyTweaks()
+        {
+            Binder("main.mmagent").Detect();
+            Binder("pro.bufferbloat").Detect();
         }
 
         /// <summary>GPU-детекты и WMI-запрос имени GPU — тоже после первого кадра.</summary>
