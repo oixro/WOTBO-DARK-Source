@@ -176,29 +176,42 @@ namespace WOTBO
             path_uizip = workspace.UiZip;
             path_ui = workspace.Ui;
             path_scheme = workspace.Scheme;
-            #endregion
-            #region отключаем чеки
-            Binder("main.regpack").Detect();//regpack
-            string reservedStorageState = await AppServices.ReservedStorage.GetStateAsync();
-            bool reservedStorageDisabled = AppServices.ReservedStorage.IsDisabled(reservedStorageState);
-            if (reservedStorageDisabled)
-            {
-                Log.Info("Tweak:main.reservedstorage", "ReservedStorage выключен в Windows — твик считается применённым");
-                AppServices.Tweaks.Reconcile("main.reservedstorage", true);
 
-                checkBox_dism.Checked = false;
-                checkBox_dism.Enabled = false;
-                back_main_2.Visible = true;
+            AppServices.ResourceExtractor.Extract(workspace);
+            #endregion
+            // Detect-ы и WMI не должны задерживать первый кадр.
+            BeginInvoke(new Action(DetectAllTweaks));
+
+            #region инет + обнова
+            // Сеть и GitHub не должны задерживать показ окна.
+            _ = CheckForUpdatesAsync();
+            #endregion
+            #region позиция, размеры и плавный запуск
+            if (SystemInformation.UserInteractive)
+            {
+                for (Opacity = 0.6; Opacity < 1; Opacity += .2) await Task.Delay(10);
             }
             else
             {
-                Log.Info("Tweak:main.reservedstorage", "ReservedStorage включён — твик доступен");
-                AppServices.Tweaks.Reconcile("main.reservedstorage", false);
+                Opacity = 1;
+            }
 
-                checkBox_dism.Checked = false;
-                checkBox_dism.Enabled = true;
-                back_main_2.Visible = false;
-            } //reserved storage
+            Log.Info("UI", $"окно показано");
+            #endregion
+            BeginInvoke(new Action(DetectGpuTweaks));
+        }
+
+        /// <summary>
+        /// Все Detect-ы твиков. Выполняются после первого кадра, чтобы окно
+        /// появлялось сразу; в логе видно, сколько занял каждый тяжёлый твик.
+        /// </summary>
+        private void DetectAllTweaks()
+        {
+            #region отключаем чеки
+            var detectWatch = Stopwatch.StartNew();
+
+            Binder("main.regpack").Detect();//regpack
+            UpdateReservedStorageState();
             Binder("main.hibernate").Detect();
             Binder("main.powerscheme").Detect();
             Binder("ui.animations").Detect();//анимации
@@ -250,7 +263,8 @@ namespace WOTBO
             Binder("main.usb").Detect();
             AppServices.LegacyCleanup.Cleanup();
             Binder("main.mitigations").Detect();
-            Binder("main.mmagent").Detect();
+            // WMI-запрос PS_MMAgent (~60 мс) выполняем после первого кадра.
+            BeginInvoke(new Action(() => Binder("main.mmagent").Detect()));
             #region pagefile
             TweakState pagefileState = AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext);
             AppServices.Tweaks.Reconcile("main.pagefile", pagefileState == TweakState.Applied);
@@ -296,7 +310,8 @@ namespace WOTBO
                 Log.Info("App", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
-            Binder("pro.bufferbloat").Detect();
+            // netsh внутри Detect занимает ~270 мс — переносим после первого кадра.
+            BeginInvoke(new Action(() => Binder("pro.bufferbloat").Detect()));
             Binder("pro.unlocker").Detect();
             Binder("pro.alwaysontop").Detect();
             Binder("ui.ffmpeg").Detect();
@@ -315,71 +330,13 @@ namespace WOTBO
             Binder("pro.windowsupdate").Detect();
             Binder("extra.movetemp").Detect();
             #endregion
-            #region инет + обнова
-            if (!Internet.OK())
-            {
-                Log.Warn("Network", $"инета нету");
-                checkBox_bluefolders.Enabled = false;
-                label_nvcleaninstall.Enabled = false;
-                label_activate.Enabled = false;
-                label_ddu.Enabled = false;
-                label_progs.Enabled = false;
-                checkBox_mmagent.Enabled = false;
-                checkBox_pro_13.Enabled = false;
-                checkBox_pro_14.Enabled = false;
-                checkBox_ffmpeg.Enabled = false;
-                checkBox_mica.Enabled = false;
-                label_cursors.Enabled = false;
-                label_inspector.Enabled = false;
-                label_site.Enabled = false;
+            detectWatch.Stop();
+            Log.Debug("UI", $"detect loop: {detectWatch.ElapsedMilliseconds} мс");
+        }
 
-                MessageBox.Show("Нет доступа в интернет!\nПроверка обновлений и некоторые функции недоступны.", "Windows optimization tool by oixro (WOTBO)",
-    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-
-            }
-            else
-            {
-                try
-                {
-                    UpdateInfo update = await AppServices.UpdateCoordinator.CheckAsync(curver);
-                    switch (update.Status)
-                    {
-                        case UpdateStatus.Actual:
-                            Log.Info("Update", $"версия актуальная");
-                            label_ver.Text = $"{version}";
-                            break;
-
-                        case UpdateStatus.Newer:
-                            MessageBox.Show($"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\nБудет выполнено обновление\n\n" +
-                            $"Список изменений:\n {update.ChangeLog}", "", MessageBoxButtons.OK);
-                            AppServices.UpdateCoordinator.Install(update, exename, exepath, contexpath);
-                            break;
-
-                        case UpdateStatus.Dev:
-                            Log.Info("Update", $"версия dev");
-                            label_ver.Text = $"d{version}";
-                            break;
-
-                        case UpdateStatus.NoInternet:
-                            Log.Warn("Update", "инета нету при проверке обновления");
-                            break;
-
-                        case UpdateStatus.Error:
-                            Log.Warn("Update", "ошибка проверки обновления: " + update.Error);
-                            break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Update", "проверка обновления не удалась", ex);
-                }
-            }
-            #endregion
-            #region позиция, размеры и плавный запуск
-            for (Opacity = 0; Opacity < 1; Opacity += .1) await Task.Delay(7);
-            Log.Info("UI", $"плавно открылись");
-            #endregion
+        /// <summary>GPU-детекты и WMI-запрос имени GPU — тоже после первого кадра.</summary>
+        private void DetectGpuTweaks()
+        {
             #region получаем инфу о видеодырке
             gpu = AppServices.Gpu.GetName();
             if (AppServices.Gpu.IsNvidia(gpu))
@@ -434,9 +391,117 @@ namespace WOTBO
                 back_gpu_1.Location = Dpi.Scale(this, 0, 45);
             }//не nvidia
             #endregion
-            #region распаковка в temp
-            AppServices.ResourceExtractor.Extract(workspace);
-            #endregion
+        }
+
+        /// <summary>
+        /// DISM /Get-ReservedStorageState — самый долгий одиночный вызов на
+        /// старте (~190 мс). Запускается в фоне, чекбокс обновится по ответу.
+        /// </summary>
+        private async void UpdateReservedStorageState()
+        {
+            checkBox_dism.Checked = false;
+            checkBox_dism.Enabled = false;
+            back_main_2.Visible = false;
+
+            try
+            {
+                string state = await AppServices.ReservedStorage.GetStateAsync();
+                bool disabled = AppServices.ReservedStorage.IsDisabled(state);
+
+                if (disabled)
+                {
+                    Log.Info("Tweak:main.reservedstorage", "ReservedStorage выключен в Windows — твик считается применённым");
+                    AppServices.Tweaks.Reconcile("main.reservedstorage", true);
+
+                    checkBox_dism.Checked = false;
+                    checkBox_dism.Enabled = false;
+                    back_main_2.Visible = true;
+                }
+                else
+                {
+                    Log.Info("Tweak:main.reservedstorage", "ReservedStorage включён — твик доступен");
+                    AppServices.Tweaks.Reconcile("main.reservedstorage", false);
+
+                    checkBox_dism.Checked = false;
+                    checkBox_dism.Enabled = true;
+                    back_main_2.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Tweak:main.reservedstorage", "не удалось получить состояние: " + ex.Message);
+                checkBox_dism.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Проверка обновления и доступности сети. Раньше ждалась до показа
+        /// окна (~700 мс), теперь выполняется после первого кадра.
+        /// </summary>
+        private async Task CheckForUpdatesAsync()
+        {
+            if (!Internet.OK())
+            {
+                Log.Warn("Network", "инета нету");
+                checkBox_bluefolders.Enabled = false;
+                label_nvcleaninstall.Enabled = false;
+                label_activate.Enabled = false;
+                label_ddu.Enabled = false;
+                label_progs.Enabled = false;
+                checkBox_mmagent.Enabled = false;
+                checkBox_pro_13.Enabled = false;
+                checkBox_pro_14.Enabled = false;
+                checkBox_ffmpeg.Enabled = false;
+                checkBox_mica.Enabled = false;
+                label_cursors.Enabled = false;
+                label_inspector.Enabled = false;
+                label_site.Enabled = false;
+
+                MessageBox.Show(
+                    "Нет доступа в интернет!\nПроверка обновлений и некоторые функции недоступны.",
+                    "Windows optimization tool by oixro (WOTBO)",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                UpdateInfo update = await AppServices.UpdateCoordinator.CheckAsync(curver);
+                switch (update.Status)
+                {
+                    case UpdateStatus.Actual:
+                        Log.Info("Update", "версия актуальная");
+                        label_ver.Text = $"{version}";
+                        break;
+
+                    case UpdateStatus.Newer:
+                        MessageBox.Show(
+                            $"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\nБудет выполнено обновление\n\n" +
+                            $"Список изменений:\n {update.ChangeLog}",
+                            "",
+                            MessageBoxButtons.OK);
+                        AppServices.UpdateCoordinator.Install(update, exename, exepath, contexpath);
+                        break;
+
+                    case UpdateStatus.Dev:
+                        Log.Info("Update", "версия dev");
+                        label_ver.Text = $"d{version}";
+                        break;
+
+                    case UpdateStatus.NoInternet:
+                        Log.Warn("Update", "инета нету при проверке обновления");
+                        break;
+
+                    case UpdateStatus.Error:
+                        Log.Warn("Update", "ошибка проверки обновления: " + update.Error);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Update", "проверка обновления не удалась", ex);
+            }
         }
         #endregion
     }

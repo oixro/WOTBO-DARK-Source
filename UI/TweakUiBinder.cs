@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using WOTBO.App;
 using WOTBO.App.Logging;
@@ -80,7 +81,15 @@ namespace WOTBO.UI
         /// <summary>Detect при старте. Возвращает true, если твик применён.</summary>
         public bool Detect()
         {
+            var watch = Stopwatch.StartNew();
             TweakState state = Tweak().Detect(AppServices.TweakContext);
+            watch.Stop();
+
+            if (watch.ElapsedMilliseconds >= 8)
+            {
+                Log.Debug("Tweak:" + _id, $"detect {watch.ElapsedMilliseconds} мс");
+            }
+
             AppServices.Tweaks.Reconcile(_id, state == TweakState.Applied);
 
             if (state != TweakState.Applied)

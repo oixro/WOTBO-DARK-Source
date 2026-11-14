@@ -75,10 +75,15 @@ namespace WOTBO
         #region default crap
         public MainForm()
         {
+            var startupWatch = Stopwatch.StartNew();
+
             InitializeComponent();
+            Log.Debug("Startup", $"InitializeComponent: {startupWatch.ElapsedMilliseconds} мс");
+
             AppIcon.Apply(this);
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
             Dpi.Configure(PanelMain, 395f);
+            Log.Debug("Startup", $"Dpi.Configure: {startupWatch.ElapsedMilliseconds} мс");
 
             notifier = new BalloonNotifier();
             panelNavigator = new PanelNavigator(this, PanelMain, PanelHead)
@@ -86,8 +91,11 @@ namespace WOTBO
                 AnimationEnabled = () => animation,
             };
             SetupTweakBinders();
+            Log.Debug("Startup", $"SetupTweakBinders: {startupWatch.ElapsedMilliseconds} мс");
+
             ProgramLinks.Attach(this, OpenUrl);
             SetupNavigation();
+            Log.Debug("Startup", $"ProgramLinks+Navigation: {startupWatch.ElapsedMilliseconds} мс");
 
             #region двигаем окно
             WindowDragBehavior.Attach(new List<Control> { LabelHead, PanelHead, logo });
@@ -99,6 +107,7 @@ namespace WOTBO
             Size = new System.Drawing.Size(390, 305);
             CenterToScreen();
             Controls.OfType<Panel>().ToList().ForEach(x => x.GetType().GetProperty("DoubleBuffered")?.SetValue(x, true));
+            Log.Debug("Startup", $"painting+size: {startupWatch.ElapsedMilliseconds} мс");
 
             #endregion
             #region LoadSystemInfoAsync

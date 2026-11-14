@@ -1156,7 +1156,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_12.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_12.BackgroundImage")));
+            this.back_main_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_12.Location = new System.Drawing.Point(0, 25);
             this.back_main_12.Name = "back_main_12";
@@ -1172,7 +1172,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_11.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_11.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_11.BackgroundImage")));
+            this.back_main_11.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_11.Location = new System.Drawing.Point(0, 185);
             this.back_main_11.Name = "back_main_11";
@@ -1188,7 +1188,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_10.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_10.BackgroundImage")));
+            this.back_main_10.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_10.Location = new System.Drawing.Point(0, 165);
             this.back_main_10.Name = "back_main_10";
@@ -1204,7 +1204,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_9.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_9.BackgroundImage")));
+            this.back_main_9.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_9.Location = new System.Drawing.Point(0, 145);
             this.back_main_9.Name = "back_main_9";
@@ -1219,7 +1219,7 @@ namespace WOTBO
             this.back_pro_11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_11.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_11.BackgroundImage")));
+            this.back_pro_11.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_11.Location = new System.Drawing.Point(0, 225);
             this.back_pro_11.Name = "back_pro_11";
@@ -1235,7 +1235,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_7.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_7.BackgroundImage")));
+            this.back_main_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_7.Location = new System.Drawing.Point(0, 125);
             this.back_main_7.Name = "back_main_7";
@@ -1251,7 +1251,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_6.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_6.BackgroundImage")));
+            this.back_main_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_6.Location = new System.Drawing.Point(0, 107);
             this.back_main_6.Name = "back_main_6";
@@ -1267,7 +1267,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_5.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_5.BackgroundImage")));
+            this.back_main_5.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_5.Location = new System.Drawing.Point(0, 85);
             this.back_main_5.Name = "back_main_5";
@@ -1283,7 +1283,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_4.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_4.BackgroundImage")));
+            this.back_main_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_4.Location = new System.Drawing.Point(0, 66);
             this.back_main_4.Name = "back_main_4";
@@ -1299,7 +1299,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_3.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_3.BackgroundImage")));
+            this.back_main_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_3.Location = new System.Drawing.Point(0, 45);
             this.back_main_3.Name = "back_main_3";
@@ -1315,7 +1315,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_2.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_2.BackgroundImage")));
+            this.back_main_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_2.Location = new System.Drawing.Point(0, 205);
             this.back_main_2.Name = "back_main_2";
@@ -1331,7 +1331,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_1.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_1.BackgroundImage")));
+            this.back_main_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_1.Location = new System.Drawing.Point(0, 5);
             this.back_main_1.Name = "back_main_1";
@@ -1390,7 +1390,7 @@ namespace WOTBO
             this.back_ui_10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_10.BackgroundImage")));
+            this.back_ui_10.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_10.Location = new System.Drawing.Point(1, 185);
             this.back_ui_10.Name = "back_ui_10";
@@ -1405,7 +1405,7 @@ namespace WOTBO
             this.back_ui_9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_9.BackgroundImage")));
+            this.back_ui_9.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_9.Location = new System.Drawing.Point(0, 162);
             this.back_ui_9.Name = "back_ui_9";
@@ -1420,7 +1420,7 @@ namespace WOTBO
             this.back_ui_8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_8.BackgroundImage")));
+            this.back_ui_8.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_8.Location = new System.Drawing.Point(0, 131);
             this.back_ui_8.Name = "back_ui_8";
@@ -1448,7 +1448,7 @@ namespace WOTBO
             this.back_ui_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_7.BackgroundImage")));
+            this.back_ui_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_7.Location = new System.Drawing.Point(0, 105);
             this.back_ui_7.Name = "back_ui_7";
@@ -1463,7 +1463,7 @@ namespace WOTBO
             this.back_ui_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_6.BackgroundImage")));
+            this.back_ui_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_6.Location = new System.Drawing.Point(0, 85);
             this.back_ui_6.Name = "back_ui_6";
@@ -1493,7 +1493,7 @@ namespace WOTBO
             this.back_ui_5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_5.BackgroundImage")));
+            this.back_ui_5.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_5.Location = new System.Drawing.Point(0, 65);
             this.back_ui_5.Name = "back_ui_5";
@@ -1508,7 +1508,7 @@ namespace WOTBO
             this.back_ui_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_4.BackgroundImage")));
+            this.back_ui_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_4.Location = new System.Drawing.Point(0, 45);
             this.back_ui_4.Name = "back_ui_4";
@@ -1523,7 +1523,7 @@ namespace WOTBO
             this.back_ui_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_2.BackgroundImage")));
+            this.back_ui_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_2.Location = new System.Drawing.Point(0, 25);
             this.back_ui_2.Name = "back_ui_2";
@@ -1538,7 +1538,7 @@ namespace WOTBO
             this.back_ui_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_ui_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_ui_1.BackgroundImage")));
+            this.back_ui_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_1.Location = new System.Drawing.Point(0, 5);
             this.back_ui_1.Name = "back_ui_1";
@@ -1625,7 +1625,7 @@ namespace WOTBO
             this.back_animations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_animations.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_animations.BackgroundImage")));
+            this.back_animations.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_animations.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_animations.Location = new System.Drawing.Point(0, 65);
             this.back_animations.Name = "back_animations";
@@ -1640,7 +1640,7 @@ namespace WOTBO
             this.back_pro_14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_14.BackgroundImage")));
+            this.back_pro_14.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_14.Location = new System.Drawing.Point(0, 45);
             this.back_pro_14.Name = "back_pro_14";
@@ -1655,7 +1655,7 @@ namespace WOTBO
             this.back_pro_13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_13.BackgroundImage")));
+            this.back_pro_13.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_13.Location = new System.Drawing.Point(0, 25);
             this.back_pro_13.Name = "back_pro_13";
@@ -1670,7 +1670,7 @@ namespace WOTBO
             this.back_pro_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_1.BackgroundImage")));
+            this.back_pro_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_1.Location = new System.Drawing.Point(0, 5);
             this.back_pro_1.Name = "back_pro_1";
@@ -1712,7 +1712,7 @@ namespace WOTBO
             this.back_dop_movetemp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_movetemp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_movetemp.BackgroundImage")));
+            this.back_dop_movetemp.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_movetemp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_movetemp.Location = new System.Drawing.Point(0, 225);
             this.back_dop_movetemp.Name = "back_dop_movetemp";
@@ -1727,7 +1727,7 @@ namespace WOTBO
             this.back_dop_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_4.BackgroundImage")));
+            this.back_dop_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_4.Location = new System.Drawing.Point(0, 205);
             this.back_dop_4.Name = "back_dop_4";
@@ -1742,7 +1742,7 @@ namespace WOTBO
             this.back_dop_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_3.BackgroundImage")));
+            this.back_dop_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_3.Location = new System.Drawing.Point(0, 185);
             this.back_dop_3.Name = "back_dop_3";
@@ -1757,7 +1757,7 @@ namespace WOTBO
             this.back_dop_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_2.BackgroundImage")));
+            this.back_dop_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_2.Location = new System.Drawing.Point(0, 165);
             this.back_dop_2.Name = "back_dop_2";
@@ -1772,7 +1772,7 @@ namespace WOTBO
             this.back_dop_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_1.BackgroundImage")));
+            this.back_dop_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_1.Location = new System.Drawing.Point(0, 145);
             this.back_dop_1.Name = "back_dop_1";
@@ -1962,7 +1962,7 @@ namespace WOTBO
             this.back_gpu_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_gpu_4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_gpu_4.BackgroundImage")));
+            this.back_gpu_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_4.Location = new System.Drawing.Point(0, 125);
             this.back_gpu_4.Name = "back_gpu_4";
@@ -1978,7 +1978,7 @@ namespace WOTBO
             this.back_gpu_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_gpu_3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_gpu_3.BackgroundImage")));
+            this.back_gpu_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_3.Location = new System.Drawing.Point(0, 105);
             this.back_gpu_3.Name = "back_gpu_3";
@@ -1993,7 +1993,7 @@ namespace WOTBO
             this.back_gpu_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_gpu_2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_gpu_2.BackgroundImage")));
+            this.back_gpu_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_2.Location = new System.Drawing.Point(0, 85);
             this.back_gpu_2.Name = "back_gpu_2";
@@ -2008,7 +2008,7 @@ namespace WOTBO
             this.back_gpu_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_gpu_1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_gpu_1.BackgroundImage")));
+            this.back_gpu_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_1.Location = new System.Drawing.Point(0, 65);
             this.back_gpu_1.Name = "back_gpu_1";
@@ -2037,7 +2037,7 @@ namespace WOTBO
             this.back_pro_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_12.BackgroundImage")));
+            this.back_pro_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_12.Location = new System.Drawing.Point(0, 85);
             this.back_pro_12.Name = "back_pro_12";
@@ -2052,7 +2052,7 @@ namespace WOTBO
             this.back_pro_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_pro_3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_pro_3.BackgroundImage")));
+            this.back_pro_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_3.Location = new System.Drawing.Point(0, 65);
             this.back_pro_3.Name = "back_pro_3";
@@ -2067,7 +2067,7 @@ namespace WOTBO
             this.back_dop_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_7.BackgroundImage")));
+            this.back_dop_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_7.Location = new System.Drawing.Point(0, 26);
             this.back_dop_7.Name = "back_dop_7";
@@ -2365,7 +2365,7 @@ namespace WOTBO
             this.back_dop_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_6.BackgroundImage")));
+            this.back_dop_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_6.Location = new System.Drawing.Point(0, 5);
             this.back_dop_6.Name = "back_dop_6";
@@ -2380,7 +2380,7 @@ namespace WOTBO
             this.back_dop_edge.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_dop_edge.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_dop_edge.BackgroundImage")));
+            this.back_dop_edge.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_edge.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_edge.Location = new System.Drawing.Point(0, 45);
             this.back_dop_edge.Name = "back_dop_edge";
@@ -2468,7 +2468,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_16.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_16.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_16.BackgroundImage")));
+            this.back_main_16.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_16.Location = new System.Drawing.Point(0, 45);
             this.back_main_16.Name = "back_main_16";
@@ -2484,7 +2484,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_14.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_14.BackgroundImage")));
+            this.back_main_14.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_14.Location = new System.Drawing.Point(0, 25);
             this.back_main_14.Name = "back_main_14";
@@ -2500,7 +2500,7 @@ namespace WOTBO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_13.BackColor = System.Drawing.Color.Transparent;
-            this.back_main_13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("back_main_13.BackgroundImage")));
+            this.back_main_13.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_main_13.Location = new System.Drawing.Point(0, 5);
             this.back_main_13.Name = "back_main_13";

@@ -13,6 +13,7 @@ namespace WOTBO.App
         public static void Run()
         {
             Log.Initialize(new AppLogger(AppPaths.LogFilePath));
+            Log.Debug("Startup", "процесс стартовал, лог инициализирован");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
