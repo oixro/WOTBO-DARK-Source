@@ -109,7 +109,7 @@ namespace WOTBO
             }
         }
 
-        async void MainForm_Load(object sender, EventArgs e)
+        void MainForm_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
             ApplyWindowSize();
@@ -179,26 +179,19 @@ namespace WOTBO
 
             AppServices.ResourceExtractor.Extract(workspace);
             #endregion
-            // Detect-ы и WMI не должны задерживать первый кадр.
-            BeginInvoke(new Action(DetectAllTweaks));
+            // Detect-ы выполняем до показа окна: иначе чекбоксы и стрелки
+            // появляются уже на глазах и окно «дёргается».
+            DetectAllTweaks();
 
             #region инет + обнова
             // Сеть и GitHub не должны задерживать показ окна.
             _ = CheckForUpdatesAsync();
             #endregion
-            #region позиция, размеры и плавный запуск
-            if (SystemInformation.UserInteractive)
-            {
-                for (Opacity = 0.6; Opacity < 1; Opacity += .2) await Task.Delay(10);
-            }
-            else
-            {
-                Opacity = 1;
-            }
-
+            #region позиция, размеры и показ
+            Opacity = 1;
             Log.Info("UI", $"окно показано");
             #endregion
-            BeginInvoke(new Action(DetectGpuTweaks));
+            DetectGpuTweaks();
         }
 
         /// <summary>
@@ -263,8 +256,7 @@ namespace WOTBO
             Binder("main.usb").Detect();
             AppServices.LegacyCleanup.Cleanup();
             Binder("main.mitigations").Detect();
-            // WMI-запрос PS_MMAgent (~60 мс) выполняем после первого кадра.
-            BeginInvoke(new Action(() => Binder("main.mmagent").Detect()));
+            Binder("main.mmagent").Detect();
             #region pagefile
             TweakState pagefileState = AppServices.TweakCatalog.Get("main.pagefile").Detect(AppServices.TweakContext);
             AppServices.Tweaks.Reconcile("main.pagefile", pagefileState == TweakState.Applied);
@@ -310,8 +302,7 @@ namespace WOTBO
                 Log.Info("App", "запущены из конткестного");
                 back_ui_8.Visible = false;
             }
-            // netsh внутри Detect занимает ~270 мс — переносим после первого кадра.
-            BeginInvoke(new Action(() => Binder("pro.bufferbloat").Detect()));
+            Binder("pro.bufferbloat").Detect();
             Binder("pro.unlocker").Detect();
             Binder("pro.alwaysontop").Detect();
             Binder("ui.ffmpeg").Detect();
@@ -440,6 +431,10 @@ namespace WOTBO
         /// </summary>
         private async Task CheckForUpdatesAsync()
         {
+            // Уступаем кадру: DNS-проверка внутри Internet.OK() синхронная
+            // и иначе задержит первый показ окна.
+            await Task.Yield();
+
             if (!Internet.OK())
             {
                 Log.Warn("Network", "инета нету");

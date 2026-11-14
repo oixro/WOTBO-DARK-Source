@@ -2255,7 +2255,7 @@ namespace WOTBO
             this.label_ver.Name = "label_ver";
             this.label_ver.Size = new System.Drawing.Size(67, 13);
             this.label_ver.TabIndex = 34;
-            this.label_ver.Text = "dbuild - 9.99";
+            this.label_ver.Text = "";
             this.label_ver.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label_ver.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 

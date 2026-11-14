@@ -78,6 +78,7 @@ namespace WOTBO
             var startupWatch = Stopwatch.StartNew();
 
             InitializeComponent();
+            label_ver.Text = version;
             Log.Debug("Startup", $"InitializeComponent: {startupWatch.ElapsedMilliseconds} мс");
 
             AppIcon.Apply(this);
