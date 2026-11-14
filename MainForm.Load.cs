@@ -18,6 +18,7 @@ using WOTBO;
 using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
+using WOTBO.Services.Defender;
 using WOTBO.Services.Hardware;
 using WOTBO.Services.Network;
 using WOTBO.Services.Registry;
@@ -174,7 +175,6 @@ namespace WOTBO
             path_services = workspace.Services;
             path_uizip = workspace.UiZip;
             path_ui = workspace.Ui;
-            path_dfkiller = workspace.DfKiller;
             path_scheme = workspace.Scheme;
             #endregion
             #region отключаем чеки
@@ -279,15 +279,16 @@ namespace WOTBO
             } //shapka11
             Binder("pro.homegallery").Detect();
             Binder("pro.win32priority").Detect();
-            Binder("main.defender").Detect();
+            bool defenderApplied = Binder("main.defender").Detect();
             Binder("ui.bluefolders").Detect();
             Binder("ui.wotbocontext").Detect();
-            if (!Directory.Exists(@"C:\ProgramData\Microsoft\Windows Defender"))
+            if (defenderApplied && DefenderSafeMode.IsArmed)
             {
-                Log.Info("Tweak:main.defender", "defender удалён");
-                //checkBox_disabledefender.Visible = false;
-                checkBox_disabledefender.Enabled = false;
-                back_main_12.Visible = false;
+                Log.Warn("Tweak:main.defender", "ожидает перезагрузки в безопасный режим");
+                ShowNotification(
+                    "Защитник",
+                    "Отключение Windows Defender продолжится после перезагрузки.",
+                    ToolTipIcon.Warning);
             }
             Binder("extra.onedrive").Detect();
             if (exepath == contexpath)
@@ -323,7 +324,6 @@ namespace WOTBO
                 label_activate.Enabled = false;
                 label_ddu.Enabled = false;
                 label_progs.Enabled = false;
-                label_delete_defender.Enabled = false;
                 checkBox_mmagent.Enabled = false;
                 checkBox_pro_13.Enabled = false;
                 checkBox_pro_14.Enabled = false;

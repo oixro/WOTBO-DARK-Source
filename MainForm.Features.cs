@@ -106,39 +106,6 @@ namespace WOTBO
             }
         }
         #endregion
-        #region defender killer
-        void label_delete_defender_Click(object sender, EventArgs e)
-        {
-            string zip = $"{tempfolder}\\DefenderKiller.zip";
-            string bat = $@"{path_dfkiller}\DefenderKiller.bat";
-
-            if (!File.Exists(bat))
-            {
-                if (!File.Exists(zip))
-                {
-                    AppServices.Network.DownloadFile(
-                        "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/DefenderKiller.zip",
-                        zip);
-                }
-
-                if (Directory.Exists(path_dfkiller))
-                {
-                    Directory.Delete(path_dfkiller, true);
-                }
-
-                ZipFile.ExtractToDirectory(zip, path_dfkiller);
-            }
-
-            if (File.Exists(bat))
-            {
-                Process.Start(bat).WaitForExit();
-            }
-            else
-            {
-                Log.Warn("DefenderKiller", "DefenderKiller.bat не найден");
-            }
-        }
-        #endregion
         #region site
         void label_site_Click(object sender, EventArgs e)
         {

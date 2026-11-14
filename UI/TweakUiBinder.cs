@@ -24,6 +24,8 @@ namespace WOTBO.UI
         private readonly Action _inRollback;
         private readonly Action _afterRollback;
         private readonly Func<bool> _confirmApply;
+        private readonly Func<bool> _confirmRollback;
+        private readonly Func<Action, bool> _wrap;
         private readonly bool _disableOnApply;
         private readonly bool _showRollbackOnApply;
         private readonly bool _showRollbackOnDetect;
@@ -41,6 +43,8 @@ namespace WOTBO.UI
             Action inRollback = null,
             Action afterRollback = null,
             Func<bool> confirmApply = null,
+            Func<bool> confirmRollback = null,
+            Func<Action, bool> wrap = null,
             bool disableOnApply = true,
             bool showRollbackOnApply = true,
             bool showRollbackOnDetect = true,
@@ -60,6 +64,8 @@ namespace WOTBO.UI
             _inRollback = inRollback;
             _afterRollback = afterRollback;
             _confirmApply = confirmApply;
+            _confirmRollback = confirmRollback;
+            _wrap = wrap;
             _disableOnApply = disableOnApply;
             _showRollbackOnApply = showRollbackOnApply;
             _showRollbackOnDetect = showRollbackOnDetect;
@@ -125,14 +131,17 @@ namespace WOTBO.UI
                 _beforeApply();
             }
 
-            using (TweakScope.Apply(_id))
+            RunWrapped(delegate
             {
-                Tweak().Apply(AppServices.TweakContext);
-                if (_inApply != null)
+                using (TweakScope.Apply(_id))
                 {
-                    _inApply();
+                    Tweak().Apply(AppServices.TweakContext);
+                    if (_inApply != null)
+                    {
+                        _inApply();
+                    }
                 }
-            }
+            });
 
             _checkBox.Checked = false;
             if (_disableOnApply)
@@ -154,14 +163,22 @@ namespace WOTBO.UI
         /// <summary>Штатный откат из обработчика стрелки.</summary>
         public void Rollback()
         {
-            using (TweakScope.Rollback(_id))
+            if (_confirmRollback != null && !_confirmRollback())
             {
-                Tweak().Rollback(AppServices.TweakContext);
-                if (_inRollback != null)
-                {
-                    _inRollback();
-                }
+                return;
             }
+
+            RunWrapped(delegate
+            {
+                using (TweakScope.Rollback(_id))
+                {
+                    Tweak().Rollback(AppServices.TweakContext);
+                    if (_inRollback != null)
+                    {
+                        _inRollback();
+                    }
+                }
+            });
 
             _checkBox.Checked = false;
             _checkBox.Enabled = true;
@@ -171,6 +188,21 @@ namespace WOTBO.UI
             {
                 _afterRollback();
             }
+        }
+
+        /// <summary>
+        /// Выполнить блок в обёртке (например, в окне прогресса). Ошибку
+        /// обёртки не глотаем: она уже записана в лог вызывающей стороны.
+        /// </summary>
+        private void RunWrapped(Action action)
+        {
+            if (_wrap == null)
+            {
+                action();
+                return;
+            }
+
+            _wrap(action);
         }
 
         private ITweak Tweak()

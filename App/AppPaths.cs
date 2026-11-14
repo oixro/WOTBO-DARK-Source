@@ -27,6 +27,9 @@ namespace WOTBO.App
 
         public static string Desktop { get; } = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
+        /// <summary>Общий рабочий стол (<c>%PUBLIC%\Desktop</c>).</summary>
+        public static string PublicDesktop { get; } = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
+
         public static string Windows { get; } = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
 
         /// <summary>

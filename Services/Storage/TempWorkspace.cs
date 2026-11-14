@@ -58,11 +58,6 @@ namespace WOTBO.Services.Storage
             get { return Path.Combine(Root, "ui"); }
         }
 
-        public string DfKiller
-        {
-            get { return Path.Combine(Root, "DFKiller"); }
-        }
-
         public string Scheme
         {
             get { return Path.Combine(Root, "scheme.pow"); }
@@ -109,7 +104,6 @@ namespace WOTBO.Services.Storage
                 _log.Info(Category, $"new path_services - {Services}");
                 _log.Info(Category, $"new path_uizip - {UiZip}");
                 _log.Info(Category, $"new path_ui - {Ui}");
-                _log.Info(Category, $"new path_dfkiller - {DfKiller}");
                 _log.Info(Category, $"new path_scheme - {Scheme}");
                 _log.Info(Category, $"new smartctl - {Smartctl}");
             }

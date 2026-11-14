@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.34-beta — 2026-11-14
+
+### Defender
+
+- `main.defender` переписан: полное отключение вместо `.reg`-пакетов.
+  Службы и драйверы (`WinDefend`, `WdNisSvc`, `WdFilter`, `WdBoot`, `WdNisDrv`,
+  `MDCoreSvc`, `Sense`, `Sgrm*`, `MsSec*`, `SecurityHealthService`,
+  `webthreatdef*`, `MpsSvc`) → `Start=4`; папки защитника переименовываются
+  в `*.wotbo_bak` (файлы не удаляются); отключаются задачи, политики,
+  брандмауэр, SmartScreen, Smart App Control и Windows Security.
+- Безопасный режим автоматизирован: одноразовая служба `WotboDefender`,
+  прописанная в `SafeBoot\Minimal`/`Network`, запускается SCM под SYSTEM
+  (планировщик задач в safe mode задачи не исполняет). Дубли — `Userinit`,
+  `RunOnce` и скрипты на рабочем столе; аварийный `C:\WOTBO-UNDO-SAFE-MODE.bat`.
+- Откат: восстановление из обычного режима, при нехватке прав — та же служба
+  с фазой `restore`. Реестр восстанавливается по схеме
+  «удалить ветку → импортировать экспорт», владельцы папок возвращаются
+  (TrustedInstaller). Одноразовая задача `\WOTBO\DefenderFinalize`
+  доигрывает `Set-MpPreference`, чтобы `RealTimeProtectionEnabled`
+  включался с первого ребута.
+- Журнал и бэкап: `%ProgramData%\oixro\wotbo\defender\journal.json`,
+  зеркало в `%LOCALAPPDATA%\oixro\wotbo\backups\main.defender`.
+- Логи: `C:\Windows\Temp\wotbo-defender.log`, `...-stage.log`,
+  `...-service.log`.
+- Удалены старые `.reg`-пакеты Defender из `regpack.zip`,
+  `restoreWINDEF10/11.reg` и пункт «Windows Defender Killer».
+
+### Иконки
+
+- `iconwotbo2.ico` оптимизирован (192 397 → 134 161 байт) без потери качества:
+  64/128/256 хранятся как PNG, 16/32/48 остаются BMP.
+- Иконка приложения, окна, шапки и пункта контекстного меню берутся из нового
+  файла; дубликаты иконки из `MainForm.resx`/`MsiModeForm.resx` удалены,
+  `gear.zip` ужат до 9 173 байт.
+
 ## 2.34-beta — 2026-11-12
 
 Бета-сборка после полного рефакторинга WOTBO. Приложение переведено с одного

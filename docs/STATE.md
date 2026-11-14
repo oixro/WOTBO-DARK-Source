@@ -86,6 +86,13 @@ HKCU\Software\oixro\wotbo\Backups\<tweak-id>
 - Бэкапы привязаны к пользователю (`HKCU`/`LOCALAPPDATA`). При смене
   пользователя состояние не переносится.
 
+### Defender
+
+`main.defender` делает бэкап сам (движок): журнал
+`%ProgramData%\oixro\wotbo\defender\journal.json` и экспорт реестра
+зеркалируются в `%LOCALAPPDATA%\oixro\wotbo\backups\main.defender`.
+Штатный `TweakBackup` дополнительно хранит верхнеуровневые ветки Defender.
+
 ### Твики без бэкапа
 
 Для твиков, где бэкап невозможен или бессмысленен, сохраняются только

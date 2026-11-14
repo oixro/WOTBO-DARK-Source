@@ -18,6 +18,7 @@ using WOTBO;
 using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Properties;
+using WOTBO.Services.Defender;
 using WOTBO.Services.Hardware;
 using WOTBO.Services.Network;
 using WOTBO.Services.Registry;
@@ -41,6 +42,8 @@ namespace WOTBO
             Action inRollback = null,
             Action afterRollback = null,
             Func<bool> confirmApply = null,
+            Func<bool> confirmRollback = null,
+            Func<Action, bool> wrap = null,
             bool disableOnApply = true,
             bool showRollbackOnApply = true,
             bool showRollbackOnDetect = true,
@@ -58,6 +61,8 @@ namespace WOTBO
                 inRollback,
                 afterRollback,
                 confirmApply,
+                confirmRollback,
+                wrap,
                 disableOnApply,
                 showRollbackOnApply,
                 showRollbackOnDetect,
@@ -79,26 +84,234 @@ namespace WOTBO
             return tweakBinders[id];
         }
 
+        private static bool DefenderProgress(Action action)
+        {
+            using (var form = new DefenderProgressForm("Отключение Windows Defender"))
+            {
+                form.Run(action);
+                form.ShowDialog();
+            }
+
+            return true;
+        }
+
+        private bool ConfirmDefenderApply()
+        {
+            DialogResult answer = MessageBox.Show(
+                "Windows Defender будет отключён полностью:\n" +
+                "• защита в реальном времени, облачная защита и проверка загрузки;\n" +
+                "• службы и драйверы защитника, его задачи и политики;\n" +
+                "• SmartScreen, Smart App Control и брандмауэр Windows;\n" +
+                "• раздел «Безопасность Windows».\n\n" +
+                "Что нужно знать:\n" +
+                "• античиты (Vanguard, EAC, BattlEye) могут отказаться запускаться;\n" +
+                "• Windows Update может пытаться вернуть компоненты защитника;\n" +
+                "• файлы защитника переименовываются, а не удаляются, поэтому\n" +
+                "  откат возможен стрелкой отката;\n" +
+                "• если включена защита от подделки, WOTBO перезагрузит ПК\n" +
+                "  в безопасный режим (две перезагрузки).\n\n" +
+                "Продолжить?",
+                "Отключение Windows Defender",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+
+            if (answer != DialogResult.Yes)
+            {
+                return false;
+            }
+
+            if (DefenderStatus.IsBitLockerOn())
+            {
+                DialogResult bitlocker = MessageBox.Show(
+                    "На системном диске включён BitLocker.\n" +
+                    "Перезагрузка в безопасный режим может запросить ключ восстановления.\n\n" +
+                    "Продолжить?",
+                    "BitLocker",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+
+                if (bitlocker != DialogResult.Yes)
+                {
+                    return false;
+                }
+            }
+
+            if (DefenderStatus.IsTamperProtected())
+            {
+                DialogResult tamper = MessageBox.Show(
+                    "Включена защита от подделки (Tamper Protection).\n" +
+                    "Обычным способом остановить Defender нельзя.\n\n" +
+                    "Да — перезагрузить в безопасный режим и отключить автоматически.\n" +
+                    "Нет — отменить и отключить защиту вручную в «Безопасности Windows».",
+                    "Tamper Protection",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+
+                if (tamper != DialogResult.Yes)
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo("windowsdefender://threatsettings/")
+                        {
+                            UseShellExecute = true,
+                        });
+                    }
+                    catch
+                    {
+                    }
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool ConfirmDefenderRollback()
+        {
+            return MessageBox.Show(
+                "Восстановить Windows Defender?\n\n" +
+                "Файлы защитника будут возвращены из *.wotbo_bak, службы, драйверы,\n" +
+                "задачи, брандмауэр и SmartScreen — в прежнее состояние.\n\n" +
+                "Продолжить?",
+                "Восстановление Windows Defender",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+        }
+
+        private void HandleDefenderApplied()
+        {
+            label_kalorant.Visible = true;
+
+            switch (DefenderTweak.LastOutcome)
+            {
+                case DefenderTweak.DefenderOutcome.Applied:
+                    ShowNotification(
+                        "Защитник",
+                        "Windows Defender отключён. Перезагрузите ПК, чтобы выгрузить драйверы.",
+                        ToolTipIcon.Info);
+                    break;
+
+                case DefenderTweak.DefenderOutcome.AppliedNeedsReboot:
+                    ShowNotification(
+                        "Защитник",
+                        "Windows Defender отключён. Нужна перезагрузка для выгрузки драйверов.",
+                        ToolTipIcon.Warning);
+                    break;
+
+                case DefenderTweak.DefenderOutcome.SafeModeApply:
+                    OfferDefenderReboot(
+                        "Нужна перезагрузка в безопасный режим.\n\n" +
+                        "WOTBO применит изменения автоматически и вернёт обычный режим.\n" +
+                        "Понадобятся две перезагрузки. Не выключайте ПК.",
+                        false);
+                    break;
+
+                default:
+                    ShowDefenderFailure("Defender не отключён");
+                    break;
+            }
+        }
+
+        private void HandleDefenderRollback()
+        {
+            switch (DefenderTweak.LastOutcome)
+            {
+                case DefenderTweak.DefenderOutcome.Restored:
+                    ShowNotification("Защитник", "Windows Defender восстановлен.", ToolTipIcon.Info);
+                    break;
+
+                case DefenderTweak.DefenderOutcome.SafeModeRestore:
+                    OfferDefenderReboot(
+                        "Откат нужно завершить в безопасном режиме.\n\n" +
+                        "WOTBO вернёт файлы и службы автоматически и перезагрузит ПК обратно.\n" +
+                        "Понадобятся две перезагрузки.",
+                        true);
+                    break;
+
+                default:
+                    ShowDefenderFailure("Откат Defender не завершён");
+                    break;
+            }
+        }
+
+        private void OfferDefenderReboot(string text, bool forRollback)
+        {
+            DialogResult answer = MessageBox.Show(
+                text + "\n\nПерезагрузить сейчас?",
+                "WOTBO",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+
+            if (answer != DialogResult.Yes)
+            {
+                DefenderTweak.AbortPrepared(AppServices.TweakContext);
+
+                if (forRollback)
+                {
+                    checkBox_disabledefender.Enabled = false;
+                    back_main_12.Visible = true;
+                }
+                else
+                {
+                    checkBox_disabledefender.Enabled = true;
+                    back_main_12.Visible = false;
+                }
+
+                ShowNotification("Защитник", "Изменения отменены.", ToolTipIcon.Info);
+                return;
+            }
+
+            DefenderTweak.Reboot(AppServices.TweakContext, 20);
+            ShowNotification(
+                "Защитник",
+                "Перезагрузка через 20 секунд. Сохраните работу.",
+                ToolTipIcon.Warning);
+        }
+
+        private void ShowDefenderFailure(string headline)
+        {
+            string details = DefenderTweak.LastDetails;
+            if (string.IsNullOrWhiteSpace(details))
+            {
+                details = DefenderEngine.ReadLastLog(10);
+            }
+
+            if (string.IsNullOrWhiteSpace(details))
+            {
+                details = "(подробностей нет)";
+            }
+
+            if (details.Length > 1200)
+            {
+                details = details.Substring(details.Length - 1200);
+            }
+
+            MessageBox.Show(
+                headline + "\n\n" +
+                details.Trim() + "\n\n" +
+                "Лог: " + DefenderPaths.LogDirectory + "\n" +
+                "Журнал: " + DefenderPaths.JournalFile,
+                "WOTBO",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+        }
+
         private void SetupTweakBinders()
         {
             Bind("main.defender", checkBox_disabledefender, back_main_12,
                 "defenderdisabled был применён",
-                onDetected: () =>
-                {
-                    label_delete_defender.Enabled = true;
-                    label_kalorant.Visible = true;
-                },
-                beforeApply: () => MessageBox.Show(
-                    "Защитник будет отключен!\nЗащита от эксполитов не будет работать.\n" +
-                    "Она нужна для работы некоторых античитов.\n" +
-                    "Но восстановить защитник можно через вкладку дополнительно.\n",
-                    "", MessageBoxButtons.OK, MessageBoxIcon.Warning),
-                afterApply: () =>
-                {
-                    label_kalorant.Visible = true;
-                    ShowNotification("Защитник", "Рекомендуется перезагрузить компьютер для полноценного отключения защитника!", ToolTipIcon.Warning);
-                },
-                afterRollback: () => ShowNotification("Защитник Windows", "Работа защитника будет восстановлена после перезагруки ПК", ToolTipIcon.Warning));
+                onDetected: () => label_kalorant.Visible = true,
+                confirmApply: ConfirmDefenderApply,
+                confirmRollback: ConfirmDefenderRollback,
+                wrap: DefenderProgress,
+                afterApply: HandleDefenderApplied,
+                afterRollback: HandleDefenderRollback);
 
             Bind("main.regpack", checkBox_reg, back_main_1, "regpack был применён",
                 afterApply: () => ShowNotification("Настройки Реестра", "Рекомендуется перезагрузить ПК после применения данного твика!", ToolTipIcon.Warning));

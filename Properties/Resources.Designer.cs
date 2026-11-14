@@ -294,56 +294,6 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
-        ///
-        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender]
-        ///&quot;DisableAntiSpyware&quot;=-
-        ///&quot;DisableAntiVirus&quot;=-
-        ///
-        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features]
-        ///&quot;TamperProtection&quot;=dword:5
-        ///
-        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen]
-        ///&quot;ConfigureAppInstallControl&quot;=-
-        ///&quot;ConfigureAppInstallControlEnabled&quot;=-
-        ///
-        ///[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SecurityHealthService]
-        ///&quot;Start&quot;=dword:00000003
-        ///
-        ///[HKEY_LOCAL_MACHINE\ [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string restoreWINDEF10 {
-            get {
-                return ResourceManager.GetString("restoreWINDEF10", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
-        ///
-        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender]
-        ///&quot;DisableAntiSpyware&quot;=-
-        ///&quot;DisableAntiVirus&quot;=-
-        ///
-        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features]
-        ///&quot;TamperProtection&quot;=dword:5
-        ///
-        ///[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\SmartScreen]
-        ///&quot;ConfigureAppInstallControl&quot;=-
-        ///&quot;ConfigureAppInstallControlEnabled&quot;=-
-        ///
-        ///[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SecurityHealthService]
-        ///&quot;Start&quot;=dword:00000003
-        ///
-        ///[HKEY_LOCAL_MACHINE\ [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string restoreWINDEF11 {
-            get {
-                return ResourceManager.GetString("restoreWINDEF11", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
         internal static byte[] scheme {

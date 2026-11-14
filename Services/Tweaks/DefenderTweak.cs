@@ -1,27 +1,46 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using Microsoft.Win32;
-using WOTBO.Services.Registry;
+using WOTBO.Services.Defender;
 
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// Отключение Defender.
+    /// Полное отключение Windows Defender.
     ///
-    /// Кроме прежних .reg-пакетов добавлены актуальные ветки политик и служб
-    /// для 24H2/25H2/26H2. Tamper Protection реестром не отключается — об
-    /// этом пишется предупреждение.
+    /// Логика вынесена в PowerShell-движок <c>Resources\defender-engine.ps1</c>:
+    /// он делает бэкап (экспорт реестра, пары переименований, XML задач),
+    /// отключает службы, драйверы, задачи и политики, а также брандмауэр,
+    /// SmartScreen, Smart App Control и Windows Security.
+    ///
+    /// Если Tamper Protection не даёт остановить <c>WinDefend</c>, WOTBO
+    /// готовит автоматический безопасный режим (задача SYSTEM + safeboot),
+    /// перезагружается, применяет изменения и возвращается в обычный режим.
+    ///
+    /// Файлы не удаляются, а переименовываются в <c>*.wotbo_bak</c>, поэтому
+    /// откат возвращает систему в исходное состояние.
     /// </summary>
     public sealed class DefenderTweak : TweakBase
     {
-        private static readonly string[] ModernServices =
+        private const string LogCategory = "Tweak:main.defender";
+        private const int PrepareTimeoutMs = 5 * 60 * 1000;
+        private const int ApplyTimeoutMs = 20 * 60 * 1000;
+        private const int VerifyTimeoutMs = 2 * 60 * 1000;
+
+        public enum DefenderOutcome
         {
-            "WinDefend",
-            "WdNisSvc",
-            "Sense",
-            "SecurityHealthService",
-        };
+            None,
+            Applied,
+            AppliedNeedsReboot,
+            SafeModeApply,
+            SafeModeRestore,
+            Restored,
+            Failed,
+        }
+
+        /// <summary>Результат последнего применения — для сообщений в UI.</summary>
+        public static DefenderOutcome LastOutcome { get; private set; }
+
+        public static string LastDetails { get; private set; }
 
         public override string Id
         {
@@ -35,167 +54,161 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            return context.Store.IsApplied(Id)
-                ? TweakState.Applied
-                : TweakState.NotApplied;
+            if (DefenderStatus.IsFullyDisabled())
+            {
+                return TweakState.Applied;
+            }
+
+            // Подготовленный безопасный режим считается применённым: твик уже
+            // нельзя прерывать, он завершится после перезагрузки.
+            if (DefenderEngine.IsPending())
+            {
+                return TweakState.Applied;
+            }
+
+            return TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)
         {
-            bool win10 = context.WindowsVersion.Detect().IsWindows10;
-            string root = context.Workspace.Regpack;
+            LastOutcome = DefenderOutcome.None;
+            LastDetails = null;
 
-            if (win10)
+            if (!DefenderEngine.EnsurePayload(context.Log))
             {
-                RunReg(context, Path.Combine(root, "w10", "win10defenderX.reg"), true);
-            }
-            else
-            {
-                RunReg(context, Path.Combine(root, "w11", "win11defenderX.reg"), true);
-                SetWebThreatServices(context, true);
+                Fail(context, "не удалось распаковать движок Defender");
+                return;
             }
 
-            ApplyModernPolicy(context);
-            RunReg(context, Path.Combine(root, "antimalwareserviceexecutable", "!AIO_OFF.reg"), true);
+            DefenderRunResult prepared = DefenderEngine.Run(
+                context.Processes,
+                context.Log,
+                DefenderEngine.PhasePrepare,
+                false,
+                PrepareTimeoutMs);
 
-            context.Log.Warn(
-                "Tweak:main.defender",
-                "Tamper Protection реестром не отключается; если она включена, часть ключей может игнорироваться");
+            if (prepared == null || !prepared.Ok)
+            {
+                Fail(context, "не удалось создать бэкап Defender");
+                return;
+            }
+
+            DefenderEngine.MirrorBackup(context.Log);
+            context.BackupRegistryKey(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows Defender");
+
+            if (DefenderStatus.IsTamperProtected())
+            {
+                context.Log.Warn(LogCategory, "Tamper Protection включена — нужен безопасный режим");
+                StartSafeMode(context, DefenderOutcome.SafeModeApply);
+                return;
+            }
+
+            DefenderRunResult applied = DefenderEngine.Run(
+                context.Processes,
+                context.Log,
+                DefenderEngine.PhaseApply,
+                false,
+                ApplyTimeoutMs);
+
+            DefenderVerification verification = DefenderStatus.Verify(
+                context.Processes, context.Log, VerifyTimeoutMs);
+
+            if (applied != null && applied.Blocked)
+            {
+                context.Log.Warn(LogCategory, "быстрое отключение заблокировано — безопасный режим");
+                StartSafeMode(context, DefenderOutcome.SafeModeApply);
+                return;
+            }
+
+            bool stillOn = verification == null
+                || !verification.DefenderOff
+                || string.Equals(verification.Antivirus, "1", StringComparison.OrdinalIgnoreCase);
+
+            if (stillOn)
+            {
+                context.Log.Warn(LogCategory, "Defender всё ещё активен — безопасный режим");
+                StartSafeMode(context, DefenderOutcome.SafeModeApply);
+                return;
+            }
+
+            LastOutcome = verification.NeedsReboot
+                ? DefenderOutcome.AppliedNeedsReboot
+                : DefenderOutcome.Applied;
+            LastDetails = verification.Details;
+            context.Log.Info(LogCategory, "Defender отключён: " + verification.Details);
         }
 
         public override void Rollback(TweakContext context)
         {
-            bool win10 = context.WindowsVersion.Detect().IsWindows10;
-            string root = context.Workspace.Regpack;
+            LastOutcome = DefenderOutcome.None;
+            LastDetails = null;
 
-            if (win10)
+            if (!DefenderEngine.EnsurePayload(context.Log))
             {
-                RunReg(context, Path.Combine(root, "w10", "win10defenderX_restore.reg"), true);
-            }
-            else
-            {
-                RunReg(context, Path.Combine(root, "w11", "win11defenderX_restore.reg"), true);
-                SetWebThreatServices(context, false);
-            }
-
-            RollbackModernPolicy(context);
-            RunReg(context, Path.Combine(root, "antimalwareserviceexecutable", "AIO_ON.reg"), true);
-        }
-
-        private static void ApplyModernPolicy(TweakContext context)
-        {
-            TryWrite(context, RegistryPaths.DefenderPolicy, "DisableAntiSpyware", 1);
-            TryWrite(context, RegistryPaths.DefenderPolicy, "DisableAntiVirus", 1);
-            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableRealtimeMonitoring", 1);
-            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableBehaviorMonitoring", 1);
-            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableOnAccessProtection", 1);
-            TryWrite(context, RegistryPaths.DefenderRealtime, "DisableScanOnRealtimeEnable", 1);
-            TryWrite(context, RegistryPaths.DefenderSpynet, "SpynetReporting", 0);
-            TryWrite(context, RegistryPaths.DefenderSpynet, "SubmitSamplesConsent", 2);
-
-            foreach (string service in ModernServices)
-            {
-                TryWrite(context, RegistryPaths.Services + "\\" + service, "Start", 4);
-            }
-        }
-
-        private static void RollbackModernPolicy(TweakContext context)
-        {
-            TryDelete(context, RegistryPaths.DefenderPolicy, "DisableAntiSpyware");
-            TryDelete(context, RegistryPaths.DefenderPolicy, "DisableAntiVirus");
-            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableRealtimeMonitoring");
-            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableBehaviorMonitoring");
-            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableOnAccessProtection");
-            TryDelete(context, RegistryPaths.DefenderRealtime, "DisableScanOnRealtimeEnable");
-            TryDelete(context, RegistryPaths.DefenderSpynet, "SpynetReporting");
-            TryDelete(context, RegistryPaths.DefenderSpynet, "SubmitSamplesConsent");
-
-            foreach (string service in ModernServices)
-            {
-                TryWrite(context, RegistryPaths.Services + "\\" + service, "Start", 2);
-            }
-        }
-
-        private static void SetWebThreatServices(TweakContext context, bool apply)
-        {
-            IReadOnlyList<string> services;
-            try
-            {
-                services = context.Registry.GetSubKeyNames(
-                    RegistryHive.LocalMachine,
-                    RegistryPaths.Services);
-            }
-            catch (Exception ex)
-            {
-                context.Log.Warn("Tweak:main.defender", "не удалось перечислить службы: " + ex.Message);
+                Fail(context, "не удалось распаковать движок Defender");
                 return;
             }
 
-            foreach (string service in services)
-            {
-                if (!service.StartsWith("webthreatdefusersvc_", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
+            DefenderEngine.Run(
+                context.Processes,
+                context.Log,
+                DefenderEngine.PhaseRestore,
+                false,
+                ApplyTimeoutMs);
 
-                string path = RegistryPaths.Services + "\\" + service;
-                if (apply)
-                {
-                    TryWrite(context, path, "LaunchProtected", 4);
-                    TryWrite(context, path, "Start", 4);
-                    TryWrite(context, path, "Start_old", 4);
-                }
-                else
-                {
-                    TryDelete(context, path, "LaunchProtected");
-                    TryWrite(context, path, "Start", 2);
-                    TryDelete(context, path, "Start_old");
-                }
-            }
-        }
+            DefenderVerification verification = DefenderStatus.Verify(
+                context.Processes, context.Log, VerifyTimeoutMs);
 
-        private static void TryWrite(TweakContext context, string path, string name, int value)
-        {
-            try
+            if (verification != null && verification.Restored)
             {
-                context.Registry.WriteValue(RegistryHive.LocalMachine, path, name, value, RegistryValueKind.DWord);
-            }
-            catch (Exception ex)
-            {
-                context.Log.Warn("Tweak:main.defender", "не удалось записать " + path + "\\" + name + ": " + ex.Message);
-            }
-        }
-
-        private static void TryDelete(TweakContext context, string path, string name)
-        {
-            try
-            {
-                context.Registry.DeleteValue(RegistryHive.LocalMachine, path, name);
-            }
-            catch (Exception ex)
-            {
-                context.Log.Warn("Tweak:main.defender", "не удалось удалить " + path + "\\" + name + ": " + ex.Message);
-            }
-        }
-
-        private static void RunReg(TweakContext context, string path, bool elevated)
-        {
-            if (!File.Exists(path))
-            {
-                context.Log.Warn("Tweak:main.defender", "файл не найден: " + path);
+                LastOutcome = DefenderOutcome.Restored;
+                LastDetails = verification.Details;
+                context.Log.Info(LogCategory, "Defender восстановлен: " + verification.Details);
                 return;
             }
 
-            context.BackupRegFile(path);
-            string command = "regedit.exe /s \"" + path + "\"";
-            if (elevated)
+            context.Log.Warn(LogCategory, "откат из обычного режима не удался — безопасный режим");
+            if (DefenderSafeMode.Prepare(context.Log, DefenderEngine.PhaseRestore))
             {
-                context.Processes.RunSuper(command, context.Workspace.SuExecutable);
+                LastOutcome = DefenderOutcome.SafeModeRestore;
+                LastDetails = "откат продолжится в безопасном режиме";
             }
             else
             {
-                context.Processes.StartCaptured(command);
+                Fail(context, "не удалось подготовить безопасный режим для отката");
             }
+        }
+
+        /// <summary>Отменить подготовленный безопасный режим (пользователь отказался от перезагрузки).</summary>
+        public static void AbortPrepared(TweakContext context)
+        {
+            DefenderSafeMode.Abort(context.Log);
+            LastOutcome = DefenderOutcome.None;
+        }
+
+        /// <summary>Перезагрузить ПК, чтобы применить или откатить изменения.</summary>
+        public static void Reboot(TweakContext context, int seconds)
+        {
+            DefenderSafeMode.RebootNow(context.Log, seconds);
+        }
+
+        private static void StartSafeMode(TweakContext context, DefenderOutcome outcome)
+        {
+            if (DefenderSafeMode.Prepare(context.Log))
+            {
+                LastOutcome = outcome;
+                LastDetails = "для завершения нужна перезагрузка в безопасный режим";
+                return;
+            }
+
+            Fail(context, "не удалось подготовить безопасный режим");
+        }
+
+        private static void Fail(TweakContext context, string message)
+        {
+            LastOutcome = DefenderOutcome.Failed;
+            LastDetails = message;
+            context.Log.Error(LogCategory, message);
         }
     }
 }

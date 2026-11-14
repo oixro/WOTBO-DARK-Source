@@ -37,7 +37,6 @@ namespace WOTBO
         static string path_services = tempfolder + @"\services";
         static string path_uizip = tempfolder + @"\ui.zip";
         static string path_ui = tempfolder + @"\ui";
-        static string path_dfkiller = tempfolder + @"\DFKiller";
         static string path_scheme = tempfolder + @"\scheme.pow";
         private CheckBox checkBox_tweak_tooltips;
         private PictureBox back_ui_tooltips;
@@ -77,6 +76,7 @@ namespace WOTBO
         public MainForm()
         {
             InitializeComponent();
+            AppIcon.Apply(this);
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
             Dpi.Configure(PanelMain, 395f);
 

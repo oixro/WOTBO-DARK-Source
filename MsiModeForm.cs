@@ -10,6 +10,7 @@ namespace WOTBO
         public MsiModeForm()
         {
             InitializeComponent();
+            AppIcon.Apply(this);
         }
         void hcmd(string line)
         {

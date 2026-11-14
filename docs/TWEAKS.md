@@ -41,7 +41,7 @@ public interface ITweak
 | `main.mousefix` | `HKCU\Control Panel\Mouse`, `HKU\.DEFAULT\Control Panel\Mouse` | кривые мыши, 1:1 и `RawMouseThrottleDuration=0x14` |
 | `main.powerscheme` | `powercfg -import/-setactive/-delete` | запоминает активную схему, проверяет импорт, откат возвращает её |
 | `main.regpack` | `.reg`-пакеты regpack | w10/w11 AIO + foldernetwork + REG_AIO через `su.exe`/`regedit` |
-| `main.defender` | `.reg`-пакеты + политики/службы 24H2+ | см. `docs/DEFENDER.md`; Tamper Protection не отключается реестром |
+| `main.defender` | службы/драйверы `Start=4`, папки `.wotbo_bak`, брандмауэр, SmartScreen, SAC | полное отключение; safe mode через службу, см. `docs/DEFENDER.md` |
 | `gpu.hdcp` | `HKLM\...\Class\{4d36e968-...}\0000` | `RMHdcpKeyglobZero=1` |
 | `gpu.nvidia` | NVIDIA/Miracast/GraphicsDrivers/FTS | `DisplayPowerSaving`, `PlatformSupportMiracast`, `EnableTiledDisplay`, `EnableRID61684` |
 | `extra.movetemp` | `HKCU\Environment` | `TEMP`/`TMP` → `%systemdrive%\Temp` |

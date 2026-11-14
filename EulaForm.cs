@@ -16,6 +16,7 @@ namespace WOTBO
         public EulaForm()
         {
             InitializeComponent();
+            AppIcon.Apply(this);
             Theme();
         }
 

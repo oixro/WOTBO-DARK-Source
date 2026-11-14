@@ -134,7 +134,6 @@ namespace WOTBO
             this.back_dop_3 = new System.Windows.Forms.PictureBox();
             this.back_dop_2 = new System.Windows.Forms.PictureBox();
             this.back_dop_1 = new System.Windows.Forms.PictureBox();
-            this.label_delete_defender = new System.Windows.Forms.Label();
             this.label_activate = new System.Windows.Forms.Label();
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
             this.panel_5 = new System.Windows.Forms.Panel();
@@ -1716,7 +1715,6 @@ namespace WOTBO
             this.panel_dop.Controls.Add(this.back_dop_2);
             this.panel_dop.Controls.Add(this.checkBox_compactos);
             this.panel_dop.Controls.Add(this.back_dop_1);
-            this.panel_dop.Controls.Add(this.label_delete_defender);
             this.panel_dop.Controls.Add(this.label_activate);
             this.panel_dop.Controls.Add(this.checkBox_mobile_traffic);
             this.panel_dop.Controls.Add(this.checkBox_WinSxS);
@@ -1805,18 +1803,7 @@ namespace WOTBO
             this.back_dop_1.Visible = false;
             this.back_dop_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
-            // label_delete_defender
             // 
-            this.label_delete_defender.AutoSize = true;
-            this.label_delete_defender.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_delete_defender.ForeColor = System.Drawing.Color.White;
-            this.label_delete_defender.Location = new System.Drawing.Point(20, 25);
-            this.label_delete_defender.Name = "label_delete_defender";
-            this.label_delete_defender.Size = new System.Drawing.Size(172, 13);
-            this.label_delete_defender.TabIndex = 23;
-            this.label_delete_defender.Text = "Открыть Windows Defender Killer\r\n";
-            this.label_delete_defender.Click += new System.EventHandler(this.label_delete_defender_Click);
-            this.label_delete_defender.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_activate
             // 
@@ -2567,7 +2554,6 @@ namespace WOTBO
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.Opacity = 0D;
@@ -2794,7 +2780,6 @@ namespace WOTBO
         private System.Windows.Forms.Label label_cursors;
         private System.Windows.Forms.Label label_activate;
         private System.Windows.Forms.Label label_msimode;
-        private System.Windows.Forms.Label label_delete_defender;
         private System.Windows.Forms.CheckBox checkBox_move_temp;
         private System.Windows.Forms.PictureBox back_dop_movetemp;
         private System.Windows.Forms.Label label_site;
