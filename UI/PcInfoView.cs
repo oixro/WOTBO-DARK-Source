@@ -99,7 +99,8 @@ namespace WOTBO.UI
                 ForeColor = color,
                 BackColor = Color.Transparent,
                 Font = font,
-                Location = Dpi.Scale(_host, Left, y),
+                // y уже в пикселях (label.Bottom), масштабировать его повторно нельзя.
+                Location = new Point(Dpi.Scale(_host, Left), y),
                 Text = text,
             };
 
@@ -118,7 +119,7 @@ namespace WOTBO.UI
                 ForeColor = LinkColor,
                 BackColor = Color.Transparent,
                 Font = new Font(_host.Font, FontStyle.Underline),
-                Location = Dpi.Scale(_host, Left, y),
+                Location = new Point(Dpi.Scale(_host, Left), y),
                 Text = "Скопировать в буфер",
             };
 
