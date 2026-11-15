@@ -34,7 +34,7 @@ namespace WOTBO.Services.Tweaks
                     url = "https://github.com/Maplespe/ExplorerBlurMica/releases/download/2.1.0/Release_x64.zip";
                 }
 
-                context.Network.DownloadFile(url, zip);
+                ResourceDownload.Ensure(context, url, zip, "ExplorerBlurMica.zip");
                 ZipFile.ExtractToDirectory(zip, root);
             }
 

@@ -24,9 +24,11 @@ namespace WOTBO.Services.Tweaks
 
             if (!File.Exists(Exe))
             {
-                context.Network.DownloadFile(
+                ResourceDownload.Ensure(
+                    context,
                     "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/AlwaysOnTop.exe",
-                    Exe);
+                    Exe,
+                    "AlwaysOnTop.exe");
             }
 
             context.Registry.WriteValue(RegistryHive.LocalMachine, RegistryPaths.RunKey, "AlwaysOnTop", Exe, RegistryValueKind.String);

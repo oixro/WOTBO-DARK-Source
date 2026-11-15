@@ -31,6 +31,7 @@ namespace WOTBO.App.Logging
         private readonly bool _apply;
         private TweakBackupSession _session;
         private bool _disposed;
+        private bool _aborted;
 
         private TweakScope(string id, string action, bool apply)
         {
@@ -97,6 +98,15 @@ namespace WOTBO.App.Logging
             get { return _category; }
         }
 
+        /// <summary>
+        /// Твик упал: не помечаем его применённым и не сохраняем бэкап.
+        /// Вызывается из <c>TweakUiBinder</c> перед повторным throw.
+        /// </summary>
+        public void Abort()
+        {
+            _aborted = true;
+        }
+
         public void Dispose()
         {
             if (_disposed)
@@ -110,9 +120,17 @@ namespace WOTBO.App.Logging
             {
                 if (_apply)
                 {
-                    TweakBackup backup = _session != null ? _session.ToBackup() : null;
-                    TweakBackupSession.End();
-                    AppServices.Tweaks.MarkApplied(_tweakId, backup);
+                    if (_aborted)
+                    {
+                        TweakBackupSession.End();
+                        Log.Warn(_category, "твик не применён: выполнение прервано ошибкой");
+                    }
+                    else
+                    {
+                        TweakBackup backup = _session != null ? _session.ToBackup() : null;
+                        TweakBackupSession.End();
+                        AppServices.Tweaks.MarkApplied(_tweakId, backup);
+                    }
                 }
                 else
                 {

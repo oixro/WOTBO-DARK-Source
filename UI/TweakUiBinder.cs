@@ -185,17 +185,44 @@ namespace WOTBO.UI
                 _beforeApply();
             }
 
-            RunWrapped(delegate
+            try
             {
-                using (TweakScope.Apply(_id))
+                RunWrapped(delegate
                 {
-                    Tweak().Apply(AppServices.TweakContext);
-                    if (_inApply != null)
+                    using (TweakScope scope = TweakScope.Apply(_id))
                     {
-                        _inApply();
+                        try
+                        {
+                            Tweak().Apply(AppServices.TweakContext);
+
+                            if (_inApply != null)
+                            {
+                                _inApply();
+                            }
+                        }
+                        catch
+                        {
+                            scope.Abort();
+                            throw;
+                        }
                     }
-                }
-            });
+                });
+            }
+            catch (Exception exception)
+            {
+                _checkBox.Checked = false;
+                _checkBox.Enabled = true;
+                _checkBox.Invalidate();
+
+                Log.Error("Tweak:" + _id, "применение не удалось", exception);
+
+                string message = exception is TweakApplyException
+                    ? exception.Message
+                    : "Не удалось применить твик.\n\n" + exception.Message;
+
+                MessageBox.Show(message, "WOTBO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             _checkBox.Checked = false;
             if (_disableOnApply)

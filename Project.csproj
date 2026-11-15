@@ -149,6 +149,8 @@
     <Compile Include="Services\Tweaks\CursorsTweak.cs" />
     <Compile Include="Services\Tweaks\UwpCleanupTweak.cs" />
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
+    <Compile Include="Services\Tweaks\TweakApplyException.cs" />
+    <Compile Include="Services\Tweaks\ResourceDownload.cs" />
     <Compile Include="Services\Tweaks\ServiceStartTweak.cs" />
     <Compile Include="Services\Tweaks\SearchIndexTweak.cs" />
     <Compile Include="Services\Tweaks\TelemetryServicesTweak.cs" />

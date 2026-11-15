@@ -59,9 +59,11 @@ namespace WOTBO.Services.Tweaks
 
             if (!File.Exists(context.Workspace.Smartctl))
             {
-                context.Network.DownloadFile(
+                ResourceDownload.Ensure(
+                    context,
                     "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/smartctl.exe",
-                    context.Workspace.Smartctl);
+                    context.Workspace.Smartctl,
+                    "smartctl.exe");
             }
 
             int ramGB = ReadRamGb(context);

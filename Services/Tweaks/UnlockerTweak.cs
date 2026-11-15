@@ -30,9 +30,11 @@ namespace WOTBO.Services.Tweaks
             string zip = Path.Combine(root, "unlocker.zip");
             if (!File.Exists(zip))
             {
-                context.Network.DownloadFile(
+                ResourceDownload.Ensure(
+                    context,
                     "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/unlocker.zip",
-                    zip);
+                    zip,
+                    "unlocker.zip");
                 ZipFile.ExtractToDirectory(zip, root);
             }
 

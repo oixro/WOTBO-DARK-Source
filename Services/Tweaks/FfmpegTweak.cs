@@ -43,8 +43,8 @@ namespace WOTBO.Services.Tweaks
                 url = FallbackUrl;
             }
 
-            context.Network.DownloadFile(url, zip);
-            context.Network.DownloadFile(RegUrl, reg);
+            ResourceDownload.Ensure(context, url, zip, "FFmpeg");
+            ResourceDownload.Ensure(context, RegUrl, reg, "ffmpeg.reg");
 
             if (Directory.Exists(extract))
             {

@@ -226,7 +226,7 @@ namespace WOTBO.Services.Tweaks
                     }
 
                     Directory.CreateDirectory(Path.GetDirectoryName(zip));
-                    context.Network.DownloadFile(ZipUrl, zip);
+                    ResourceDownload.Ensure(context, ZipUrl, zip, "cursors.zip (курсоры)");
                 }
 
                 Directory.CreateDirectory(target);
