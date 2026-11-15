@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
 using WOTBO.App.Logging;
@@ -30,6 +31,19 @@ namespace WOTBO.Services.Hardware
         private const string Category = "GPU";
         private const string HdcpPath = RegistryPaths.HdcpPath;
         private const string NvidiaTweaksPath = RegistryPaths.NvidiaTweaksPath;
+
+        /// <summary>Сколько ищем NvCameraEnable.exe в DriverStore.</summary>
+        private const int SearchBudgetMs = 3000;
+
+        /// <summary>Сколько ждём ответа самого NvCameraEnable.exe.</summary>
+        private const int ToolTimeoutMs = 5000;
+
+        private static readonly string[] DirectPaths =
+        {
+            @"C:\Program Files\NVIDIA Corporation\NVIDIA Ansel\NvCameraEnable.exe",
+            @"C:\Program Files\NVIDIA Corporation\Ansel\NvCameraEnable.exe",
+            @"C:\Program Files\NVIDIA Corporation\NvCamera\NvCameraEnable.exe",
+        };
 
         private readonly IWmiSystemInfoService _wmi;
         private readonly IRegistryService _registry;
@@ -77,7 +91,10 @@ namespace WOTBO.Services.Hardware
                 return null;
             }
 
-            string state = (await _process.ReadOutputAsync(tool, string.Empty)).Trim();
+            // ConfigureAwait(false) — чтобы не зависеть от UI-контекста:
+            // раньше Detect вызывал этот метод через GetResult() в UI-потоке
+            // и на этом самом await получался дедлок.
+            string state = (await _process.ReadOutputAsync(tool, string.Empty, ToolTimeoutMs).ConfigureAwait(false)).Trim();
             return state == "0";
         }
 
@@ -94,18 +111,70 @@ namespace WOTBO.Services.Hardware
             return true;
         }
 
+        /// <summary>
+        /// Ищет NvCameraEnable.exe. Раньше это был рекурсивный обход всего
+        /// C:\Windows\System32\DriverStore — на живой системе десятки тысяч
+        /// файлов, поиск занимал минуты и подвешивал окно. Теперь сначала
+        /// проверяются известные пути, а DriverStore обходится не глубже
+        /// каталога драйвера и с ограничением по времени.
+        /// </summary>
         private string FindAnselTool()
         {
+            foreach (string path in DirectPaths)
+            {
+                try
+                {
+                    if (File.Exists(path)) return path;
+                }
+                catch
+                {
+                    // нет доступа — просто идём дальше
+                }
+            }
+
             try
             {
-                string[] files = Directory.GetFiles(
-                    @"C:\Windows\System32\DriverStore\",
-                    "NvCameraEnable.exe",
-                    SearchOption.AllDirectories);
+                string repository = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Windows),
+                    "System32", "DriverStore", "FileRepository");
 
-                if (files.Length > 0)
+                if (!Directory.Exists(repository)) return null;
+
+                var watch = Stopwatch.StartNew();
+
+                foreach (string folder in Directory.EnumerateDirectories(repository, "nv*"))
                 {
-                    return files[0];
+                    if (watch.ElapsedMilliseconds > SearchBudgetMs)
+                    {
+                        _log.Debug(Category, "поиск NvCameraEnable.exe остановлен по таймауту");
+                        return null;
+                    }
+
+                    string candidate = Path.Combine(folder, "NvCameraEnable.exe");
+                    if (File.Exists(candidate)) return candidate;
+
+                    candidate = Path.Combine(folder, "NvCamera", "NvCameraEnable.exe");
+                    if (File.Exists(candidate)) return candidate;
+                }
+
+                // На всякий случай — неглубокий обход внутри папок драйвера.
+                foreach (string folder in Directory.EnumerateDirectories(repository, "nv*"))
+                {
+                    if (watch.ElapsedMilliseconds > SearchBudgetMs)
+                    {
+                        _log.Debug(Category, "поиск NvCameraEnable.exe остановлен по таймауту");
+                        return null;
+                    }
+
+                    try
+                    {
+                        string[] files = Directory.GetFiles(folder, "NvCameraEnable.exe", SearchOption.AllDirectories);
+                        if (files.Length > 0) return files[0];
+                    }
+                    catch
+                    {
+                        // папка может быть недоступна
+                    }
                 }
             }
             catch (Exception ex)

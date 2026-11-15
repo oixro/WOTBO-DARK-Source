@@ -498,21 +498,56 @@ namespace WOTBO
                     back_gpu_3.Visible = true;
                 }//tweaksnvidia
 
-                TweakState anselState = AppServices.TweakCatalog.Get("gpu.ansel").Detect(AppServices.TweakContext);
-                if (anselState != TweakState.Unavailable)
+                // Поиск NvCameraEnable.exe по DriverStore и его запуск — тяжёлые:
+                // раньше это выполнялось в UI-потоке через GetResult() и на
+                // машинах с NVIDIA окно могло зависнуть навсегда.
+                Task.Run(delegate
                 {
+                    TweakState anselState;
+                    var anselWatch = Stopwatch.StartNew();
+
+                    try
+                    {
+                        anselState = AppServices.TweakCatalog.Get("gpu.ansel").Detect(AppServices.TweakContext);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Tweak:gpu.ansel", "detect: " + ex.Message, ex);
+                        return;
+                    }
+
+                    if (anselState == TweakState.Unavailable)
+                    {
+                        Log.Debug("Tweak:gpu.ansel", "NvCameraEnable.exe не найден за " + anselWatch.ElapsedMilliseconds + " мс");
+                        return;
+                    }
+
+                    Log.Debug("Tweak:gpu.ansel", "detect " + anselWatch.ElapsedMilliseconds + " мс");
                     AppServices.Tweaks.Reconcile("gpu.ansel", anselState == TweakState.Applied);
-                }
-                if (anselState == TweakState.Applied)
-                {
-                    Log.Info("Tweak:gpu.ansel", $"anselstate == \"0\"");
-                    checkBox_ansel.Enabled = false;
-                    back_gpu_4.Visible = true;
-                }
-                else if (anselState == TweakState.NotApplied)
-                {
-                    checkBox_ansel.Enabled = true;
-                }
+
+                    if (!IsHandleCreated || IsDisposed) return;
+
+                    try
+                    {
+                        BeginInvoke(new Action(delegate
+                        {
+                            if (anselState == TweakState.Applied)
+                            {
+                                Log.Info("Tweak:gpu.ansel", "anselstate == \"0\"");
+                                checkBox_ansel.Enabled = false;
+                                back_gpu_4.Visible = true;
+                            }
+                            else
+                            {
+                                checkBox_ansel.Enabled = true;
+                            }
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug("Tweak:gpu.ansel", "не удалось обновить чекбокс: " + ex.Message);
+                    }
+                });
             }
             else
             {

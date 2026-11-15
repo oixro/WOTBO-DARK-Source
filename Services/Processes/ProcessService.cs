@@ -205,6 +205,16 @@ namespace WOTBO.Services.Processes
 
         public Task<string> ReadOutputAsync(string fileName, string arguments)
         {
+            return ReadOutputAsync(fileName, arguments, 0);
+        }
+
+        /// <summary>
+        /// То же самое, но с ограничением времени: чужой exe может зависнуть
+        /// (например, NvCameraEnable.exe ждёт ввода), и без таймаута вызов
+        /// висел бы вечно.
+        /// </summary>
+        public Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs)
+        {
             return Task.Run(() =>
             {
                 try
@@ -223,16 +233,41 @@ namespace WOTBO.Services.Processes
                     {
                         process.StartInfo = psi;
                         process.Start();
-                        string output = process.StandardOutput.ReadToEnd();
-                        string error = process.StandardError.ReadToEnd();
-                        process.WaitForExit();
 
-                        if (!string.IsNullOrEmpty(error))
+                        // Читаем асинхронно: ReadToEnd() заблокировался бы навсегда,
+                        // если процесс не закрывает stdout.
+                        Task<string> output = process.StandardOutput.ReadToEndAsync();
+                        Task<string> error = process.StandardError.ReadToEndAsync();
+
+                        if (timeoutMs > 0 && !process.WaitForExit(timeoutMs))
                         {
-                            _log.Debug(Category, "[OUTPUT] " + error.Trim());
+                            _log.Warn(Category, "не ответил за " + timeoutMs + " мс, завершаем: " + fileName);
+
+                            try
+                            {
+                                process.Kill();
+                            }
+                            catch
+                            {
+                                // процесс мог успеть выйти сам
+                            }
+
+                            process.WaitForExit(2000);
+                        }
+                        else
+                        {
+                            process.WaitForExit();
                         }
 
-                        return output + error;
+                        string text = Finish(output);
+                        string err = Finish(error);
+
+                        if (!string.IsNullOrEmpty(err))
+                        {
+                            _log.Debug(Category, "[OUTPUT] " + err.Trim());
+                        }
+
+                        return text + err;
                     }
                 }
                 catch (Exception ex)
@@ -241,6 +276,18 @@ namespace WOTBO.Services.Processes
                     return string.Empty;
                 }
             });
+        }
+
+        private static string Finish(Task<string> read)
+        {
+            try
+            {
+                return read.Wait(2000) ? read.Result : string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }

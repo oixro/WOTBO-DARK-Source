@@ -44,5 +44,12 @@ namespace WOTBO.Services.Processes
         /// Нужно для DISM и NvCameraEnable.exe.
         /// </summary>
         Task<string> ReadOutputAsync(string fileName, string arguments);
+
+        /// <summary>
+        /// То же, но с таймаутом: по истечении процесс завершается, а метод
+        /// возвращает то, что успел прочитать. <paramref name="timeoutMs"/> = 0 —
+        /// ждать бесконечно (как раньше).
+        /// </summary>
+        Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs);
     }
 }
