@@ -67,6 +67,10 @@
   закрытие окна без согласия не пускает в приложение.
 - `--export-screenshots <dir> [scale]` — выгрузка картинок разделов для сайта
   без тостов и проверки обновлений.
+- `--fix-explorer` — аварийное восстановление проводника: откатывает твики,
+  которые патчат оболочку (`ui.win11header`, `ui.mica`, `ui.bluefolders`,
+  `ui.explorerdetails`, `ui.cleancontext`, `ui.contextmenu`), возвращает
+  `InProcServer32` XAML-острова через `su.exe` и перезапускает `explorer.exe`.
 - Список программ: AnyDesk заменён на RustDesk, убраны Win 10 Tweaker,
   EpicGamesLauncher, .NET 6.0 Runtime и CrystalDiskInfo.
 

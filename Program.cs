@@ -36,6 +36,12 @@ namespace WOTBO
                 return;
             }
 
+            if (HasArgument("--fix-explorer"))
+            {
+                WOTBO.Services.Windows.ExplorerRecovery.Run();
+                return;
+            }
+
             string resultMode;
             if (TryGetResultMode(out resultMode))
             {
@@ -109,6 +115,20 @@ namespace WOTBO
 
                 mode = i + 1 < args.Length ? args[i + 1] : "apply";
                 return true;
+            }
+
+            return false;
+        }
+
+        private static bool HasArgument(string name)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (string.Equals(args[i], name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
             }
 
             return false;

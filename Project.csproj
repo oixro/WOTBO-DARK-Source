@@ -199,6 +199,7 @@
     <Compile Include="Services\Tweaks\Win32PriorityTweak.cs" />
     <Compile Include="Services\Tweaks\MmAgentTweak.cs" />
     <Compile Include="Services\Tweaks\ReservedStorageTweak.cs" />
+    <Compile Include="Services\Windows\ExplorerRecovery.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="UI\PanelNavigator.cs" />
