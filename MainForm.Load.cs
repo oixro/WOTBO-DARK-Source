@@ -256,11 +256,11 @@ namespace WOTBO
             if (win10)
             {
                 // Твики, которые на Windows 10 ничего не делают: классическое
-                // контекстное меню и Mica-эффект есть только в Windows 11.
+                // контекстное меню и «шапка» проводника есть только в Win11.
+                // Mica (ExplorerBlurMica) работает и на десятке, её не трогаем.
                 checkBox_contex.Enabled = false;
                 checkBox_pro_1.Enabled = false;
                 checkBox_shapka.Enabled = false;
-                checkBox_mica.Enabled = false;
                 Log.Info("Windows", $"чеки под win 11 для win10 отключены");
             }
             #endregion
