@@ -115,6 +115,7 @@ namespace WOTBO
             Binder("ui.explorerrestart").Apply();
             Binder("ui.ffmpeg").Apply();
             Binder("ui.mica").Apply();
+            Binder("ui.cursors").Apply();
             Binder("ui.animations").Apply();
             #endregion
             #region dop
