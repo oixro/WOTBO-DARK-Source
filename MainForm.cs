@@ -428,8 +428,13 @@ namespace WOTBO
             int footerGap = Dpi.Scale(this, 20);
 
             PanelHead.Width = ClientSize.Width;
-            PanelMain.Width = ClientSize.Width;
-            PanelMain.Height = Math.Max(Dpi.Scale(this, 120), ClientSize.Height - headHeight);
+
+            // PanelMain оставляем с зазором по краям: он перекрывал бы
+            // WM_NCHITTEST формы, и края окна нельзя было бы тянуть мышью.
+            int edge = Dpi.Scale(this, 6);
+            PanelMain.Location = new Point(edge, headHeight);
+            PanelMain.Width = Math.Max(Dpi.Scale(this, 120), ClientSize.Width - edge * 2);
+            PanelMain.Height = Math.Max(Dpi.Scale(this, 120), ClientSize.Height - headHeight - edge);
 
             int contentWidth = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
             int contentHeight = Math.Max(Dpi.Scale(this, 100), PanelMain.Height - footerGap);
