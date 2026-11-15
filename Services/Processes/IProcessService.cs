@@ -51,5 +51,8 @@ namespace WOTBO.Services.Processes
         /// ждать бесконечно (как раньше).
         /// </summary>
         Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs);
+
+        /// <summary>То же, но с явной кодировкой вывода процесса.</summary>
+        Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs, System.Text.Encoding encoding);
     }
 }

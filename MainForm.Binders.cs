@@ -406,7 +406,16 @@ namespace WOTBO
 
             Bind("main.defender", checkBox_disabledefender, back_main_12,
                 "defenderdisabled был применён",
-                onDetected: () => { },
+                onDetected: () =>
+                {
+                    // Защитник мог быть выключен другой программой — тогда
+                    // бэкапа WOTBO нет и откат показывать нельзя.
+                    if (!DefenderTweak.HasBackup())
+                    {
+                        back_main_12.Visible = false;
+                        Log.Warn("Tweak:main.defender", "нет бэкапа WOTBO — стрелка отката скрыта");
+                    }
+                },
                 confirmApply: ConfirmDefenderApply,
                 confirmRollback: ConfirmDefenderRollback,
                 wrap: DefenderProgress,
@@ -520,7 +529,7 @@ namespace WOTBO
             Bind("extra.uwpcleanup", checkBox_uwpcleanup, null, "лишние UWP-приложения удалены",
                 beforeApply: () => ShowNotification("UWP", "Удаляем приложения. Это может занять до минуты.", ToolTipIcon.Info),
                 confirmApply: () => MessageBox.Show(
-                    "Будут удалены лишние UWP-приложения (включая Microsoft Clipchamp).\n\n" +
+                    "Будут удалены лишние UWP-приложения.\n\n" +
                     "Удалённые приложения можно снова скачать в Microsoft Store — его мы не трогаем.\n\n" +
                     "Откатить это действие нельзя.\n\n" +
                     "Применить?",

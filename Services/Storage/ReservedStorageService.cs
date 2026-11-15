@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using WOTBO.App.Logging;
 using WOTBO.Services.Processes;
@@ -13,15 +14,23 @@ namespace WOTBO.Services.Storage
     }
 
     /// <summary>
-    /// DISM /Online /Get-ReservedStorageState.
+    /// Состояние зарезервированного хранилища Windows.
     ///
-    /// Раньше запускался в инициализаторе статического поля MainForm, из-за чего
-    /// DISM стартовал до Load и процесс не освобождался. Теперь — явный
-    /// асинхронный вызов в Load.
+    /// Раньше брали только DISM и искали английское «Reserved storage is
+    /// disabled.» или русское «отключено». На русской Windows DISM пишет в
+    /// кодировке консоли, поэтому строка приходила мусором, разбор не срабатывал
+    /// и твик всегда выглядел неприменённым. Теперь спрашиваем
+    /// <c>Get-WindowsReservedStorageState</c> с английской культурой и UTF-8,
+    /// а DISM остаётся запасным вариантом.
     /// </summary>
     public sealed class ReservedStorageService : IReservedStorageService
     {
         private const string Category = "ReservedStorage";
+
+        private const string StateCommand =
+            "-NoProfile -Command \"[Console]::OutputEncoding=[Text.Encoding]::UTF8; " +
+            "[Threading.Thread]::CurrentThread.CurrentUICulture='en-US'; " +
+            "(Get-WindowsReservedStorageState).ReservedStorageState\"";
 
         private readonly IProcessService _process;
         private readonly IAppLogger _log;
@@ -32,11 +41,28 @@ namespace WOTBO.Services.Storage
             _log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
-        public Task<string> GetStateAsync()
+        public async Task<string> GetStateAsync()
         {
-            return _process.ReadOutputAsync(
-                "cmd.exe",
-                "/c chcp 65001 && DISM /Online /Get-ReservedStorageState");
+            try
+            {
+                string state = await _process
+                    .ReadOutputAsync("powershell.exe", StateCommand, 15000, Encoding.UTF8)
+                    .ConfigureAwait(false);
+
+                if (!string.IsNullOrWhiteSpace(state))
+                {
+                    return state.Trim();
+                }
+            }
+            catch (Exception exception)
+            {
+                _log.Debug(Category, "Get-WindowsReservedStorageState: " + exception.Message);
+            }
+
+            // Запасной путь для систем без командлета (Win10 до 2004 и т.п.).
+            return await _process
+                .ReadOutputAsync("cmd.exe", "/c chcp 65001 && DISM /Online /Get-ReservedStorageState", 20000, Encoding.UTF8)
+                .ConfigureAwait(false);
         }
 
         public bool IsDisabled(string state)
@@ -46,12 +72,28 @@ namespace WOTBO.Services.Storage
                 return false;
             }
 
-            bool disabled = state.IndexOf("Reserved storage is disabled.", StringComparison.OrdinalIgnoreCase) >= 0
-                || state.IndexOf("отключено", StringComparison.OrdinalIgnoreCase) >= 0
-                || state.IndexOf("‡ аҐ§ҐаўЁа®ў ­­®Ґ еа ­Ё«ЁйҐ ®вЄ«озҐ­®.", StringComparison.Ordinal) >= 0;
+            string text = state.ToLowerInvariant();
 
-            _log.Debug(Category, disabled ? "reserved storage disabled" : "reserved storage enabled/unknown");
-            return disabled;
+            if (text.Contains("disabled") || text.Contains("отключ") || text.Contains("выключ"))
+            {
+                _log.Debug(Category, "reserved storage disabled");
+                return true;
+            }
+
+            if (text.Contains("enabled") || text.Contains("включ"))
+            {
+                _log.Debug(Category, "reserved storage enabled");
+                return false;
+            }
+
+            _log.Debug(Category, "reserved storage unknown: " + Short(state));
+            return false;
+        }
+
+        private static string Short(string text)
+        {
+            string line = (text ?? string.Empty).Replace("\r", " ").Replace("\n", " ").Trim();
+            return line.Length <= 120 ? line : line.Substring(0, 120) + "…";
         }
     }
 }

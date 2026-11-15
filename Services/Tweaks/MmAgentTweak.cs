@@ -16,37 +16,119 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
+            // Быстрый путь: WMI-провайдер отвечает за миллисекунды и обычно
+            // не врёт, когда твик уже применён.
+            TweakState wmi = DetectViaWmi(context);
+            if (wmi == TweakState.Applied)
+            {
+                return TweakState.Applied;
+            }
+
+            // Если WMI говорит «нет», проверяем через PowerShell: на части
+            // сборок Win10 провайдер отдаёт неполные значения, из-за чего
+            // применённый твик выглядел неприменённым.
+            bool? applicationPreLaunch;
+            bool? memoryCompression;
+            bool? pageCombining;
+
+            if (TryReadSettings(context, out applicationPreLaunch, out memoryCompression, out pageCombining))
+            {
+                context.Log.Debug(
+                    "Tweak:main.mmagent",
+                    "ApplicationPreLaunch=" + applicationPreLaunch
+                    + ", MemoryCompression=" + memoryCompression
+                    + ", PageCombining=" + pageCombining);
+
+                return applicationPreLaunch == true && pageCombining == false
+                    ? TweakState.Applied
+                    : TweakState.NotApplied;
+            }
+
+            return wmi;
+        }
+
+        private static TweakState DetectViaWmi(TweakContext context)
+        {
             try
             {
                 var scope = new ManagementScope(@"root\Microsoft\Windows\PS_MMAgent");
                 scope.Connect();
                 using (var cls = new ManagementClass(scope, new ManagementPath("PS_MMAgent"), null))
+                {
+                    ManagementBaseObject inParams = cls.GetMethodParameters("Get");
+                    using (ManagementBaseObject outParams = cls.InvokeMethod("Get", inParams, null))
                     {
-                        ManagementBaseObject inParams = cls.GetMethodParameters("Get");
-                        using (ManagementBaseObject outParams = cls.InvokeMethod("Get", inParams, null))
+                        var output = outParams["cmdletOutput"] as ManagementBaseObject;
+                        if (output != null)
                         {
-                            var output = outParams["cmdletOutput"] as ManagementBaseObject;
-                            if (output != null)
-                            {
-                                bool applicationPreLaunch = Convert.ToBoolean(output["ApplicationPreLaunch"]);
-                                bool memoryCompression = Convert.ToBoolean(output["MemoryCompression"]);
-                                bool pageCombining = Convert.ToBoolean(output["PageCombining"]);
-                                bool win10 = context.WindowsVersion.Detect().IsWindows10;
-                                bool expectedCompression = !win10;
+                            bool apl = Convert.ToBoolean(output["ApplicationPreLaunch"]);
+                            bool pc = Convert.ToBoolean(output["PageCombining"]);
 
-                                return applicationPreLaunch && memoryCompression == expectedCompression && !pageCombining
-                                    ? TweakState.Applied
-                                    : TweakState.NotApplied;
-                            }
+                            return apl && !pc ? TweakState.Applied : TweakState.NotApplied;
                         }
                     }
+                }
             }
             catch (Exception exception)
             {
                 context.Log.Debug("Tweak:main.mmagent", "detect: " + exception.Message);
             }
 
-            return context.Store.IsApplied(Id) ? TweakState.Applied : TweakState.NotApplied;
+            return context.Store.IsApplied("main.mmagent") ? TweakState.Applied : TweakState.NotApplied;
+        }
+
+        /// <summary>
+        /// Читает настройки mmagent через PowerShell в JSON: WMI-провайдер
+        /// PS_MMAgent на части систем отвечает неполно, а JSON одинаков
+        /// на всех языках (имена свойств не локализуются).
+        /// </summary>
+        private static bool TryReadSettings(
+            TweakContext context,
+            out bool? applicationPreLaunch,
+            out bool? memoryCompression,
+            out bool? pageCombining)
+        {
+            applicationPreLaunch = null;
+            memoryCompression = null;
+            pageCombining = null;
+
+            try
+            {
+                string json = context.Processes
+                    .ReadOutputAsync(
+                        "powershell.exe",
+                        "-NoProfile -Command \"Get-MMAgent | Select-Object ApplicationPreLaunch,MemoryCompression,PageCombining | ConvertTo-Json -Compress\"",
+                        15000,
+                        System.Text.Encoding.UTF8)
+                    .GetAwaiter()
+                    .GetResult();
+
+                applicationPreLaunch = ReadBool(json, "ApplicationPreLaunch");
+                memoryCompression = ReadBool(json, "MemoryCompression");
+                pageCombining = ReadBool(json, "PageCombining");
+
+                return applicationPreLaunch.HasValue;
+            }
+            catch (Exception exception)
+            {
+                context.Log.Debug("Tweak:main.mmagent", "Get-MMAgent: " + exception.Message);
+                return false;
+            }
+        }
+
+        private static bool? ReadBool(string json, string name)
+        {
+            if (string.IsNullOrEmpty(json)) return null;
+
+            string marker = "\"" + name + "\":";
+            int index = json.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+            if (index < 0) return null;
+
+            string tail = json.Substring(index + marker.Length).TrimStart();
+            if (tail.StartsWith("true", StringComparison.OrdinalIgnoreCase)) return true;
+            if (tail.StartsWith("false", StringComparison.OrdinalIgnoreCase)) return false;
+
+            return null;
         }
 
         public override void Apply(TweakContext context)
@@ -93,18 +175,32 @@ namespace WOTBO.Services.Tweaks
             context.Processes.StartCaptured("regedit.exe /s \"" + prefetcher + "\"");
 
             bool win10 = context.WindowsVersion.Detect().IsWindows10;
-            context.Processes.StartPowerShell("enable-mmagent -ApplicationPreLaunch");
-            if (win10)
-            {
-                context.Processes.StartPowerShell("disable-mmagent -MC");
-            }
-            else
-            {
-                context.Processes.StartPowerShell("enable-mmagent -MC");
-            }
 
-            context.Processes.StartPowerShell("disable-mmagent -PC");
-            context.Processes.StartPowerShell("set-mmagent -moaf " + mmMemory);
+            // Команды ждём, а не отправляем «в никуда»: иначе Detect сразу
+            // после применения видел старые значения и твик выглядел неприменённым.
+            RunPowerShell(context, "Enable-MMAgent -ApplicationPreLaunch");
+            RunPowerShell(context, win10
+                ? "Disable-MMAgent -MemoryCompression"
+                : "Enable-MMAgent -MemoryCompression");
+            RunPowerShell(context, "Disable-MMAgent -PageCombining");
+            RunPowerShell(context, "Set-MMAgent -MaxOperationAPIFiles " + mmMemory);
+        }
+
+        private static void RunPowerShell(TweakContext context, string command)
+        {
+            string output = context.Processes
+                .ReadOutputAsync(
+                    "powershell.exe",
+                    "-NoProfile -Command \"" + command + "\"",
+                    20000,
+                    System.Text.Encoding.UTF8)
+                .GetAwaiter()
+                .GetResult();
+
+            if (!string.IsNullOrWhiteSpace(output))
+            {
+                context.Log.Debug("Tweak:main.mmagent", command + ": " + output.Trim());
+            }
         }
 
         public override void Rollback(TweakContext context)

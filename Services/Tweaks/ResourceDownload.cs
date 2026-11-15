@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Windows.Forms;
+using WOTBO.UI;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -18,7 +20,7 @@ namespace WOTBO.Services.Tweaks
             {
                 if (!File.Exists(path))
                 {
-                    context.Network.DownloadFile(url, path);
+                    Download(context, url, path, title);
                 }
             }
             catch (Exception exception)
@@ -36,6 +38,29 @@ namespace WOTBO.Services.Tweaks
             if (!File.Exists(path))
             {
                 throw new TweakApplyException("Файл «" + title + "» не скачался. Попробуйте ещё раз.");
+            }
+        }
+
+        /// <summary>
+        /// Скачивание в фоне с модальным окном: раньше DownloadFile вызывался
+        /// в UI-потоке, и окно программы замирало на всё время загрузки.
+        /// </summary>
+        private static void Download(TweakContext context, string url, string path, string title)
+        {
+            if (!Application.MessageLoop)
+            {
+                context.Network.DownloadFile(url, path);
+                return;
+            }
+
+            using (var busy = new BusyForm("Загрузка", "Скачиваем «" + title + "»…"))
+            {
+                busy.Run(delegate { context.Network.DownloadFile(url, path); });
+
+                if (busy.Error != null)
+                {
+                    throw busy.Error;
+                }
             }
         }
 

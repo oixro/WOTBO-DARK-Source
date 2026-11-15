@@ -263,12 +263,21 @@ namespace WOTBO.Services.Tweaks
                 .GetAwaiter()
                 .GetResult();
 
+            // Вывод powercfg локализован: на русской Windows это
+            // «GUID схемы электропитания: ...», поэтому ищем просто GUID,
+            // а не английское «GUID:». Раньше строка не совпадала и твик
+            // всегда выглядел неприменённым.
             Match match = Regex.Match(
                 output ?? string.Empty,
-                @"GUID:\s*([0-9a-fA-F-]{36})",
-                RegexOptions.IgnoreCase);
+                @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
 
-            return match.Success ? match.Groups[1].Value : null;
+            if (!match.Success)
+            {
+                context.Log.Debug("Tweak:main.powerscheme", "getactivescheme без GUID: " + (output ?? string.Empty).Trim());
+                return null;
+            }
+
+            return match.Value;
         }
 
         private static void Run(TweakContext context, string arguments)

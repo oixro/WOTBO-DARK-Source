@@ -11,6 +11,10 @@ namespace WOTBO.Services.Tweaks
             new TweakValue(RegistryHive.CurrentUser, @"Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", 1),
             new TweakValue(RegistryHive.CurrentUser, @"Software\Policies\Microsoft\Windows\WindowsCopilot", "TurnOffWindowsCopilot", 1),
             new TweakValue(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Dsh", "AllowNewsAndInterests", 0),
+            // Классические значения Windows 10: без них поиск в меню «Пуск»
+            // продолжает тянуть подсказки и результаты из интернета.
+            new TweakValue(RegistryHive.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", 0),
+            new TweakValue(RegistryHive.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Search", "CortanaConsent", 0),
         };
 
         public override string Id

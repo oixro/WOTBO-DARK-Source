@@ -205,7 +205,7 @@ namespace WOTBO.Services.Processes
 
         public Task<string> ReadOutputAsync(string fileName, string arguments)
         {
-            return ReadOutputAsync(fileName, arguments, 0);
+            return ReadOutputAsync(fileName, arguments, 0, null);
         }
 
         /// <summary>
@@ -214,6 +214,15 @@ namespace WOTBO.Services.Processes
         /// висел бы вечно.
         /// </summary>
         public Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs)
+        {
+            return ReadOutputAsync(fileName, arguments, timeoutMs, null);
+        }
+
+        /// <param name="encoding">
+        /// Кодировка вывода, если процесс пишет не в системной ANSI
+        /// (например, PowerShell с <c>[Console]::OutputEncoding = UTF8</c>).
+        /// </param>
+        public Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs, System.Text.Encoding encoding)
         {
             return Task.Run(() =>
             {
@@ -228,6 +237,12 @@ namespace WOTBO.Services.Processes
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                     };
+
+                    if (encoding != null)
+                    {
+                        psi.StandardOutputEncoding = encoding;
+                        psi.StandardErrorEncoding = encoding;
+                    }
 
                     using (var process = new Process())
                     {

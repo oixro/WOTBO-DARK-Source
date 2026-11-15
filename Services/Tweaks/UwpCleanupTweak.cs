@@ -6,7 +6,7 @@ using System.Text;
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// Удаляет лишние UWP-приложения (включая Clipchamp).
+    /// Удаляет лишние UWP-приложения.
     ///
     /// Отката нет: приложения можно поставить обратно только из Microsoft Store,
     /// и сам Store твик не трогает. Detect считает твик применённым, когда ни

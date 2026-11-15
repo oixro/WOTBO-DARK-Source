@@ -669,7 +669,7 @@ namespace WOTBO
             this.label_download_21.AutoSize = true;
             this.label_download_21.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_21.ForeColor = System.Drawing.Color.White;
-            this.label_download_21.Location = new System.Drawing.Point(110, 125);
+            this.label_download_21.Location = new System.Drawing.Point(3, 345);
             this.label_download_21.Name = "label_download_21";
             this.label_download_21.Size = new System.Drawing.Size(143, 13);
             this.label_download_21.TabIndex = 0;
@@ -682,7 +682,7 @@ namespace WOTBO
             this.label_download_20.AutoSize = true;
             this.label_download_20.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_20.ForeColor = System.Drawing.Color.White;
-            this.label_download_20.Location = new System.Drawing.Point(110, 105);
+            this.label_download_20.Location = new System.Drawing.Point(3, 325);
             this.label_download_20.Name = "label_download_20";
             this.label_download_20.Size = new System.Drawing.Size(68, 13);
             this.label_download_20.TabIndex = 0;
@@ -695,7 +695,7 @@ namespace WOTBO
             this.label_download_18.AutoSize = true;
             this.label_download_18.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_18.ForeColor = System.Drawing.Color.White;
-            this.label_download_18.Location = new System.Drawing.Point(110, 85);
+            this.label_download_18.Location = new System.Drawing.Point(3, 305);
             this.label_download_18.Name = "label_download_18";
             this.label_download_18.Size = new System.Drawing.Size(65, 13);
             this.label_download_18.TabIndex = 0;
@@ -708,7 +708,7 @@ namespace WOTBO
             this.label_download_17.AutoSize = true;
             this.label_download_17.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_17.ForeColor = System.Drawing.Color.White;
-            this.label_download_17.Location = new System.Drawing.Point(110, 65);
+            this.label_download_17.Location = new System.Drawing.Point(3, 285);
             this.label_download_17.Name = "label_download_17";
             this.label_download_17.Size = new System.Drawing.Size(91, 13);
             this.label_download_17.TabIndex = 0;
@@ -721,7 +721,7 @@ namespace WOTBO
             this.label_download_15.AutoSize = true;
             this.label_download_15.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_15.ForeColor = System.Drawing.Color.White;
-            this.label_download_15.Location = new System.Drawing.Point(110, 25);
+            this.label_download_15.Location = new System.Drawing.Point(3, 245);
             this.label_download_15.Name = "label_download_15";
             this.label_download_15.Size = new System.Drawing.Size(80, 13);
             this.label_download_15.TabIndex = 0;
@@ -734,7 +734,7 @@ namespace WOTBO
             this.label_download_14.AutoSize = true;
             this.label_download_14.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_14.ForeColor = System.Drawing.Color.White;
-            this.label_download_14.Location = new System.Drawing.Point(110, 5);
+            this.label_download_14.Location = new System.Drawing.Point(3, 225);
             this.label_download_14.Name = "label_download_14";
             this.label_download_14.Size = new System.Drawing.Size(80, 13);
             this.label_download_14.TabIndex = 0;
@@ -1788,7 +1788,7 @@ namespace WOTBO
             this.label_download_24.AutoSize = true;
             this.label_download_24.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_24.ForeColor = System.Drawing.Color.White;
-            this.label_download_24.Location = new System.Drawing.Point(110, 145);
+            this.label_download_24.Location = new System.Drawing.Point(3, 365);
             this.label_download_24.Name = "label_download_24";
             this.label_download_24.Size = new System.Drawing.Size(147, 13);
             this.label_download_24.TabIndex = 0;
@@ -1802,7 +1802,7 @@ namespace WOTBO
             this.label_download_16.AutoSize = true;
             this.label_download_16.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_16.ForeColor = System.Drawing.Color.White;
-            this.label_download_16.Location = new System.Drawing.Point(110, 45);
+            this.label_download_16.Location = new System.Drawing.Point(3, 265);
             this.label_download_16.Name = "label_download_16";
             this.label_download_16.Size = new System.Drawing.Size(99, 13);
             this.label_download_16.TabIndex = 0;
@@ -2907,7 +2907,7 @@ namespace WOTBO
             this.checkBox_uwpcleanup.TabIndex = 61;
             this.checkBox_uwpcleanup.Tag = "";
             this.checkBox_uwpcleanup.Text = "Удалить лишние UWP приложения";
-            this.toolTip1.SetToolTip(this.checkBox_uwpcleanup, "Удаляет лишние UWP-приложения (включая Clipchamp). Microsoft Store не трогается — удалённое можно скачать обратно.");
+            this.toolTip1.SetToolTip(this.checkBox_uwpcleanup, "Удаляет лишние UWP-приложения. Microsoft Store не трогается — удалённое можно скачать обратно.");
             this.checkBox_uwpcleanup.UseVisualStyleBackColor = true;
             this.checkBox_uwpcleanup.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 

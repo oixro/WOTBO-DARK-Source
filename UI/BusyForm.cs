@@ -1,0 +1,149 @@
+using System;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WOTBO.UI
+{
+    /// <summary>
+    /// Модальное окно «идёт работа»: показывает бегущую полоску и текст,
+    /// а само действие выполняет в фоне. Нужно для загрузок: раньше
+    /// <c>WebClient.DownloadFile</c> вызывался прямо в UI-потоке и окно
+    /// замирало на всё время скачивания (или до таймаута).
+    /// </summary>
+    internal sealed class BusyForm : Form
+    {
+        private readonly Label _status;
+        private readonly Label _hint;
+        private bool _running;
+        private bool _done;
+
+        public BusyForm(string caption, string message)
+        {
+            Text = caption;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            StartPosition = FormStartPosition.CenterParent;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+            ClientSize = new Size(420, 118);
+            BackColor = Color.FromArgb(22, 22, 22);
+            ForeColor = Color.White;
+            Font = new Font("Tahoma", 8.25f, FontStyle.Regular);
+
+            var title = new Label
+            {
+                AutoSize = false,
+                Bounds = new Rectangle(14, 12, 392, 20),
+                Text = caption,
+                Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
+                ForeColor = Color.White,
+            };
+
+            _status = new Label
+            {
+                AutoSize = false,
+                Bounds = new Rectangle(14, 38, 392, 18),
+                Text = message,
+                ForeColor = Color.FromArgb(200, 200, 200),
+                AutoEllipsis = true,
+            };
+
+            var bar = new ProgressBar
+            {
+                Bounds = new Rectangle(14, 62, 392, 14),
+                Style = ProgressBarStyle.Marquee,
+                MarqueeAnimationSpeed = 28,
+            };
+
+            _hint = new Label
+            {
+                AutoSize = false,
+                Bounds = new Rectangle(14, 84, 392, 24),
+                Text = "Не закрывайте окно.",
+                ForeColor = Color.FromArgb(150, 150, 150),
+            };
+
+            Controls.Add(title);
+            Controls.Add(_status);
+            Controls.Add(bar);
+            Controls.Add(_hint);
+
+            FormClosing += OnFormClosing;
+        }
+
+        /// <summary>Ошибка фонового действия (если была).</summary>
+        public Exception Error { get; private set; }
+
+        /// <summary>Выполнить действие в фоне и закрыть окно по завершении.</summary>
+        public void Run(Action work)
+        {
+            Shown += delegate
+            {
+                _running = true;
+
+                Task.Run(delegate
+                {
+                    try
+                    {
+                        work();
+                    }
+                    catch (Exception exception)
+                    {
+                        Error = exception;
+                    }
+                    finally
+                    {
+                        CloseFromWorker();
+                    }
+                });
+            };
+
+            ShowDialog();
+        }
+
+        public void SetStatus(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+
+            if (InvokeRequired)
+            {
+                try
+                {
+                    BeginInvoke(new Action<string>(SetStatus), text);
+                }
+                catch
+                {
+                }
+
+                return;
+            }
+
+            _status.Text = text;
+        }
+
+        private void CloseFromWorker()
+        {
+            try
+            {
+                BeginInvoke(new Action(delegate
+                {
+                    _running = false;
+                    _done = true;
+                    Close();
+                }));
+            }
+            catch
+            {
+            }
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_running && !_done)
+            {
+                e.Cancel = true;
+            }
+        }
+    }
+}

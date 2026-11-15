@@ -42,9 +42,16 @@ namespace WOTBO
             {
                 try
                 {
-                    AppServices.Network.DownloadFile(
-                        "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe",
-                        exe);
+                    // Скачивание в фоне, иначе окно замирает до конца загрузки.
+                    using (var busy = new BusyForm("Режим MSI", "Скачиваем MSI_util_v3.exe…"))
+                    {
+                        busy.Run(delegate
+                        {
+                            AppServices.Network.DownloadFile(
+                                "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/MSI_util_v3.exe",
+                                exe);
+                        });
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -77,12 +84,23 @@ namespace WOTBO
             if (!Directory.Exists(path_NVidiaProfileInspectorDmW))
             {
                 File.WriteAllBytes(tempfolder + @"\Base_Profile.nip", Resources.Base_Profile);
-                    if (!File.Exists($"{tempfolder}\\NVidiaProfileInspectorDmW.zip"))
+
+                using (var busy = new BusyForm("NVIDIA Profile Inspector", "Скачиваем и распаковываем…"))
+                {
+                    busy.Run(delegate
                     {
-                        AppServices.Network.DownloadFile("https://raw.githubusercontent.com/oixro/WOTBO/main/resources/NVidiaProfileInspectorDmW.zip",
-                            $"{tempfolder}\\NVidiaProfileInspectorDmW.zip");
-                    }
-                ZipFile.ExtractToDirectory(tempfolder + @"\NVidiaProfileInspectorDmW.zip", tempfolder);
+                        string zip = $"{tempfolder}\\NVidiaProfileInspectorDmW.zip";
+                        if (!File.Exists(zip))
+                        {
+                            AppServices.Network.DownloadFile(
+                                "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/NVidiaProfileInspectorDmW.zip",
+                                zip);
+                        }
+
+                        ZipFile.ExtractToDirectory(zip, tempfolder);
+                    });
+                }
+
                 AppServices.Processes.StartCaptured($"{path_NVidiaProfileInspectorDmW}\\nvidiaProfileInspector.exe \"{tempfolder}\\Base_Profile.nip\"");
             }
         }

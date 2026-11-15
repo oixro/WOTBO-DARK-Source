@@ -53,6 +53,24 @@ namespace WOTBO.Services.Tweaks
             get { return "Main"; }
         }
 
+        /// <summary>
+        /// Есть ли бэкап, сделанный самим WOTBO. Если Defender выключили
+        /// другой программой, бэкапа нет — и «откат» вернул бы не исходное
+        /// состояние системы, а перезаписал бы чужую конфигурацию.
+        /// </summary>
+        public static bool HasBackup()
+        {
+            try
+            {
+                return System.IO.File.Exists(DefenderPaths.JournalFile)
+                    || System.IO.File.Exists(System.IO.Path.Combine(DefenderPaths.BackupMirror, "journal.json"));
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public override TweakState Detect(TweakContext context)
         {
             if (DefenderStatus.IsFullyDisabled())
@@ -163,6 +181,15 @@ namespace WOTBO.Services.Tweaks
         {
             LastOutcome = DefenderOutcome.None;
             LastDetails = null;
+
+            // Defender выключен не WOTBO — восстанавливать нечего, а «откат»
+            // чужой конфигурации с высокой вероятностью сломает систему.
+            if (!HasBackup())
+            {
+                context.Log.Warn(LogCategory, "нет бэкапа WOTBO — откат Defender недоступен");
+                Fail(context, "Защитник был отключён не WOTBO, поэтому отката нет.");
+                return;
+            }
 
             if (!DefenderEngine.EnsurePayload(context.Log))
             {

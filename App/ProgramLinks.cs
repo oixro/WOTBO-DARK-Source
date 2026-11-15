@@ -37,7 +37,6 @@ namespace WOTBO.App
             Direct("label_download_16", "https://www.google.com/chrome/"),
             Direct("label_download_17", "https://static.centbrowser.com/win_stable/5.1.1130.129/centbrowser_5.1.1130.129_x64.exe"),
             Latest("label_download_18", "wiztree", "https://diskanalyzer.com/files/wiztree_4_23_portable.zip"),
-            Direct("label_download_18", "https://diskanalyzer.com/files/wiztree_4_23_portable.zip"),
             Latest("label_download_20", "rustdesk", "https://github.com/rustdesk/rustdesk/releases/download/1.5.3/rustdesk-1.5.3-x86_64.exe"),
             Direct("label_download_21", "https://www.faststonesoft.net/DN/FSViewerSetup85.exe"),
             Direct("label_download_24", "https://www.amd.com/en/support/download/drivers.html"),

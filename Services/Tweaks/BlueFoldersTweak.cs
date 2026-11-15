@@ -4,7 +4,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Windows.Forms;
 using Microsoft.Win32;
+using WOTBO.UI;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -103,6 +105,10 @@ namespace WOTBO.Services.Tweaks
             string path = TargetPath(context);
             string source = PrepareSource(context, win10);
 
+            // Иконки папок качаем до остановки проводника, иначе рабочий стол
+            // и панель задач пропадают на всё время загрузки.
+            string icons = PrepareIcons(context);
+
             StopExplorer();
 
             try
@@ -123,12 +129,13 @@ namespace WOTBO.Services.Tweaks
                         "Изменения отменены, иконки остались прежними.");
                 }
 
-                if (!win10)
-                {
-                    ApplyShortcuts(context, Path.Combine(context.Workspace.Root, "BlueIcon Minimal"));
-                    ApplyFolderIcons(context, Path.Combine(context.Workspace.Root, "BlueIcon Minimal"));
-                    SetCompressedFolderIcon(context);
-                }
+                // На Win10 раньше менялась только imageres.dll, поэтому
+                // оставались жёлтыми иконки Program Files, Windows, Users и
+                // «Сжатой папки». Теперь ярлыки и desktop.ini применяются
+                // на обеих системах.
+                ApplyShortcuts(context, icons);
+                ApplyFolderIcons(context, icons);
+                SetCompressedFolderIcon(context);
 
                 ClearIconCaches(context);
                 SaveMarker(context, path);
@@ -212,12 +219,49 @@ namespace WOTBO.Services.Tweaks
             return mun;
         }
 
+        /// <summary>
+        /// Папка с ярлыком проводника и desktop.ini для Program Files,
+        /// Windows и Users. Нужна и на Win10 — оттуда берутся значки папок.
+        /// </summary>
+        private static string PrepareIcons(TweakContext context)
+        {
+            string root = context.Workspace.Root;
+            string folder = Path.Combine(root, "BlueIcon Minimal");
+
+            if (!File.Exists(Path.Combine(folder, "users", "users.ico")))
+            {
+                string zip = Path.Combine(root, "BlueIcon_Minimal.zip");
+                ResourceDownload.Ensure(context, Win11Url, zip, "BlueIcon_Minimal.zip (синие папки)");
+                Extract(zip, folder);
+            }
+
+            return folder;
+        }
+
         private static void Extract(string zip, string destination)
         {
             try
             {
                 Directory.CreateDirectory(destination);
-                ZipFile.ExtractToDirectory(zip, destination);
+
+                // 30 МБ иконок распаковываются пару секунд — в фоне, чтобы
+                // окно не подвисало.
+                if (Application.MessageLoop)
+                {
+                    using (var busy = new BusyForm("Синие папки", "Распаковываем иконки…"))
+                    {
+                        busy.Run(delegate { ZipFile.ExtractToDirectory(zip, destination); });
+
+                        if (busy.Error != null)
+                        {
+                            throw busy.Error;
+                        }
+                    }
+                }
+                else
+                {
+                    ZipFile.ExtractToDirectory(zip, destination);
+                }
             }
             catch (Exception exception)
             {
