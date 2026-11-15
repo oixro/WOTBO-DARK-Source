@@ -72,6 +72,7 @@ namespace WOTBO
             TweakHoverInfo.Register(checkBox.Name, id);
             if (rollback != null)
             {
+                rollback.Cursor = SystemCursors.Hand;
                 TweakHoverInfo.Register(rollback.Name, id);
                 rollback.Click += (sender, args) => binder.Rollback();
             }

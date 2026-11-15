@@ -41,6 +41,7 @@ namespace WOTBO
                 BackgroundImage = back_animations.BackgroundImage,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 TabStop = false,
+                Cursor = SystemCursors.Hand,
                 Visible = false,
             };
             back_ui_tooltips.Click += back_ui_tooltips_Click;
@@ -101,6 +102,7 @@ namespace WOTBO
                 BackgroundImage = back_animations.BackgroundImage,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 TabStop = false,
+                Cursor = SystemCursors.Hand,
                 Visible = false,
             };
             back_ui_tooltips_desc.Click += delegate { RollbackTooltipsDescription(); };
