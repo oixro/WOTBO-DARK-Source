@@ -110,6 +110,7 @@ namespace WOTBO
             #region плавное закрытие + окраска формы
             async void Exit() { for (Opacity = 1; Opacity > .0; Opacity -= .2) await Task.Delay(7); Close(); }
             ButtonClose.Click += (s, a) => Exit();
+            FormPainter.HeaderHeight = Dpi.Scale(this, 36);
             FormPainter.Apply(this, Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55)); //old
             Size = new System.Drawing.Size(390, 305);
 
@@ -514,6 +515,7 @@ namespace WOTBO
             if (!IsHandleCreated || PanelMain == null) return;
 
             Dpi.RefreshReference(PanelMain, 395f);
+            FormPainter.HeaderHeight = Dpi.Scale(this, 36);
             ApplyWindowSize();
             CenterHeader();
             CenterToScreen();

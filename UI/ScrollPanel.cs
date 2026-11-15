@@ -49,13 +49,19 @@ namespace WOTBO.UI
                 height = form.ClientSize.Height;
             }
 
+            // Граница «шапки» — фиксированная высота, как у формы, а не
+            // процент от высоты: иначе при вертикальном ресайзе она ползёт.
+            float split = FormPainter.HeaderHeight > 0 && height > 0
+                ? Math.Min(1f, FormPainter.HeaderHeight / height)
+                : 0.106f;
+
             using (var brush = new LinearGradientBrush(
                 new Rectangle(0, -offset, bounds.Width, height), Color.Empty, Color.Empty, 90))
             {
                 brush.InterpolationColors = new ColorBlend
                 {
                     Colors = new[] { TopColor, TopColor, BottomColor, BottomColor },
-                    Positions = new[] { 0, 0.106f, 0.106f, 1 },
+                    Positions = new[] { 0, split, split, 1 },
                 };
 
                 e.Graphics.FillRectangle(brush, bounds);
