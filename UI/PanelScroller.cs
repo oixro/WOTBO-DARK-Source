@@ -15,6 +15,7 @@ namespace WOTBO.UI
     public sealed class PanelScroller
     {
         private const int WheelMessage = 0x020A;
+        private const int SetRedrawMessage = 0x000B;
         private const int ThumbWidth = 6;
         private const int ThumbMargin = 3;
         private const int WheelStep = 48;
@@ -114,17 +115,22 @@ namespace WOTBO.UI
                 return;
             }
 
+            // Пока строки сдвигаются, окно не перерисовываем: иначе видно
+            // промежуточные кадры и полосы от прежних позиций.
             _panel.SuspendLayout();
+            NativeMethods.SendMessage(_panel.Handle, SetRedrawMessage, IntPtr.Zero, IntPtr.Zero);
             foreach (Control control in _panel.Controls)
             {
                 if (control == _thumb) continue;
                 control.Top += shift;
             }
+            NativeMethods.SendMessage(_panel.Handle, SetRedrawMessage, (IntPtr)1, IntPtr.Zero);
             _panel.ResumeLayout();
             _offset = value;
 
             UpdateThumb();
-            _panel.Invalidate();
+            _panel.Invalidate(true);
+            _panel.Update();
         }
 
         private void UpdateThumb()

@@ -89,7 +89,7 @@ namespace WOTBO
             this.checkBox_move_temp = new System.Windows.Forms.CheckBox();
             this.checkBox_animation = new System.Windows.Forms.CheckBox();
             this.checkBox_edge = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1 = new WOTBO.UI.ScrollPanel();
             this.back_main_12 = new System.Windows.Forms.PictureBox();
             this.back_main_11 = new System.Windows.Forms.PictureBox();
             this.back_main_10 = new System.Windows.Forms.PictureBox();
@@ -102,7 +102,7 @@ namespace WOTBO
             this.back_main_3 = new System.Windows.Forms.PictureBox();
             this.back_main_2 = new System.Windows.Forms.PictureBox();
             this.back_main_1 = new System.Windows.Forms.PictureBox();
-            this.panel_ui_1 = new System.Windows.Forms.Panel();
+            this.panel_ui_1 = new WOTBO.UI.ScrollPanel();
             this.checkBox_cursors = new System.Windows.Forms.CheckBox();
             this.back_ui_12 = new System.Windows.Forms.PictureBox();
             this.back_ui_10 = new System.Windows.Forms.PictureBox();
@@ -124,7 +124,7 @@ namespace WOTBO
             this.back_pro_14 = new System.Windows.Forms.PictureBox();
             this.back_pro_13 = new System.Windows.Forms.PictureBox();
             this.back_pro_1 = new System.Windows.Forms.PictureBox();
-            this.panel_dop = new System.Windows.Forms.Panel();
+            this.panel_dop = new WOTBO.UI.ScrollPanel();
             this.back_dop_movetemp = new System.Windows.Forms.PictureBox();
             this.back_dop_4 = new System.Windows.Forms.PictureBox();
             this.back_dop_3 = new System.Windows.Forms.PictureBox();
@@ -132,15 +132,15 @@ namespace WOTBO
             this.back_dop_1 = new System.Windows.Forms.PictureBox();
             this.label_activate = new System.Windows.Forms.Label();
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
-            this.panel_5 = new System.Windows.Forms.Panel();
+            this.panel_5 = new WOTBO.UI.ScrollPanel();
             this.label7 = new System.Windows.Forms.Label();
-            this.panel_sorry = new System.Windows.Forms.Panel();
+            this.panel_sorry = new WOTBO.UI.ScrollPanel();
             this.label_download_24 = new System.Windows.Forms.Label();
             this.label_download_16 = new System.Windows.Forms.Label();
             this.label_download_10 = new System.Windows.Forms.Label();
             this.label_download_9 = new System.Windows.Forms.Label();
             this.label_download_7 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel2 = new WOTBO.UI.ScrollPanel();
             this.label_inspector = new System.Windows.Forms.Label();
             this.back_gpu_4 = new System.Windows.Forms.PictureBox();
             this.back_gpu_3 = new System.Windows.Forms.PictureBox();
@@ -2325,7 +2325,7 @@ namespace WOTBO
         private System.Windows.Forms.Label label_dop;
         private System.Windows.Forms.Label label_gpu;
         private System.Windows.Forms.Label label_main;
-        private System.Windows.Forms.Panel panel1;
+        private WOTBO.UI.ScrollPanel panel1;
         private System.Windows.Forms.PictureBox back_main_12;
         private System.Windows.Forms.PictureBox back_main_11;
         private System.Windows.Forms.PictureBox back_main_10;
@@ -2352,7 +2352,7 @@ namespace WOTBO
         private System.Windows.Forms.PictureBox back_ui_11;
         private System.Windows.Forms.PictureBox back_pro_14;
         private System.Windows.Forms.CheckBox checkBox_pro_14;
-        private System.Windows.Forms.Panel panel_dop;
+        private WOTBO.UI.ScrollPanel panel_dop;
         private System.Windows.Forms.PictureBox back_dop_4;
         private System.Windows.Forms.CheckBox checkBox_zalipanie;
         private System.Windows.Forms.CheckBox checkBox_updclean;
@@ -2366,9 +2366,9 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_WinSxS;
         private System.Windows.Forms.CheckBox checkBox_onedrive;
         private System.Windows.Forms.CheckBox checkBox_picture_cache;
-        private System.Windows.Forms.Panel panel_5;
+        private WOTBO.UI.ScrollPanel panel_5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Panel panel_sorry;
+        private WOTBO.UI.ScrollPanel panel_sorry;
         private System.Windows.Forms.Label label_download_21;
         private System.Windows.Forms.Label label_download_20;
         private System.Windows.Forms.Label label_download_18;
@@ -2387,7 +2387,7 @@ namespace WOTBO
         private System.Windows.Forms.Label label_download_4;
         private System.Windows.Forms.Label label_download_3;
         private System.Windows.Forms.Label label_download_2;
-        private System.Windows.Forms.Panel panel2;
+        private WOTBO.UI.ScrollPanel panel2;
         private System.Windows.Forms.PictureBox back_gpu_4;
         private System.Windows.Forms.PictureBox back_gpu_3;
         private System.Windows.Forms.PictureBox back_gpu_2;
@@ -2409,7 +2409,7 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_pro_3;
         private System.Windows.Forms.CheckBox checkBox_pro_1;
         private System.Windows.Forms.Label label_ver;
-        private System.Windows.Forms.Panel panel_ui_1;
+        private WOTBO.UI.ScrollPanel panel_ui_1;
         private System.Windows.Forms.PictureBox back_ui_10;
         private System.Windows.Forms.PictureBox back_ui_9;
         private System.Windows.Forms.PictureBox back_ui_8;
