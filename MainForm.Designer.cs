@@ -251,6 +251,20 @@ namespace WOTBO
             this.back_dop_14 = new System.Windows.Forms.PictureBox();
             this.back_dop_15 = new System.Windows.Forms.PictureBox();
             this.back_gpu_5 = new System.Windows.Forms.PictureBox();
+            this.checkBox_nvecc = new System.Windows.Forms.CheckBox();
+            this.checkBox_nvpower = new System.Windows.Forms.CheckBox();
+            this.checkBox_nvhard = new System.Windows.Forms.CheckBox();
+            this.checkBox_nvtelemetry = new System.Windows.Forms.CheckBox();
+            this.checkBox_ipilatency = new System.Windows.Forms.CheckBox();
+            this.checkBox_ndis = new System.Windows.Forms.CheckBox();
+            this.checkBox_sleepstudy = new System.Windows.Forms.CheckBox();
+            this.back_gpu_6 = new System.Windows.Forms.PictureBox();
+            this.back_gpu_7 = new System.Windows.Forms.PictureBox();
+            this.back_gpu_8 = new System.Windows.Forms.PictureBox();
+            this.back_gpu_9 = new System.Windows.Forms.PictureBox();
+            this.back_main_20 = new System.Windows.Forms.PictureBox();
+            this.back_dop_16 = new System.Windows.Forms.PictureBox();
+            this.back_dop_17 = new System.Windows.Forms.PictureBox();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -1124,6 +1138,8 @@ namespace WOTBO
             this.panel1.Controls.Add(this.back_main_17);
             this.panel1.Controls.Add(this.back_main_18);
             this.panel1.Controls.Add(this.back_main_19);
+            this.panel1.Controls.Add(this.checkBox_ipilatency);
+            this.panel1.Controls.Add(this.back_main_20);
             this.panel1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel1.ForeColor = System.Drawing.Color.Transparent;
             this.panel1.Location = new System.Drawing.Point(105, 36);
@@ -1688,7 +1704,7 @@ namespace WOTBO
             this.label_activate.AutoSize = true;
             this.label_activate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_activate.ForeColor = System.Drawing.Color.White;
-            this.label_activate.Location = new System.Drawing.Point(20, 465);
+            this.label_activate.Location = new System.Drawing.Point(20, 505);
             this.label_activate.Name = "label_activate";
             this.label_activate.Size = new System.Drawing.Size(126, 13);
             this.label_activate.TabIndex = 23;
@@ -1827,6 +1843,14 @@ namespace WOTBO
             this.panel2.Controls.Add(this.checkBox_ansel);
             this.panel2.Controls.Add(this.checkBox_gamebar);
             this.panel2.Controls.Add(this.back_gpu_5);
+            this.panel2.Controls.Add(this.checkBox_nvecc);
+            this.panel2.Controls.Add(this.checkBox_nvpower);
+            this.panel2.Controls.Add(this.checkBox_nvhard);
+            this.panel2.Controls.Add(this.checkBox_nvtelemetry);
+            this.panel2.Controls.Add(this.back_gpu_6);
+            this.panel2.Controls.Add(this.back_gpu_7);
+            this.panel2.Controls.Add(this.back_gpu_8);
+            this.panel2.Controls.Add(this.back_gpu_9);
             this.panel2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel2.Location = new System.Drawing.Point(698, 36);
             this.panel2.Name = "panel2";
@@ -2178,13 +2202,17 @@ namespace WOTBO
             this.panel_dop.Controls.Add(this.back_dop_13);
             this.panel_dop.Controls.Add(this.back_dop_14);
             this.panel_dop.Controls.Add(this.back_dop_15);
+            this.panel_dop.Controls.Add(this.checkBox_ndis);
+            this.panel_dop.Controls.Add(this.checkBox_sleepstudy);
+            this.panel_dop.Controls.Add(this.back_dop_16);
+            this.panel_dop.Controls.Add(this.back_dop_17);
             // 
             // label_clean
             // 
             this.label_clean.AutoSize = true;
             this.label_clean.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_clean.ForeColor = System.Drawing.Color.White;
-            this.label_clean.Location = new System.Drawing.Point(20, 485);
+            this.label_clean.Location = new System.Drawing.Point(20, 525);
             this.label_clean.Name = "label_clean";
             this.label_clean.Size = new System.Drawing.Size(164, 13);
             this.label_clean.TabIndex = 13;
@@ -2221,7 +2249,7 @@ namespace WOTBO
             this.label_msimode.AutoSize = true;
             this.label_msimode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_msimode.ForeColor = System.Drawing.Color.White;
-            this.label_msimode.Location = new System.Drawing.Point(20, 365);
+            this.label_msimode.Location = new System.Drawing.Point(20, 385);
             this.label_msimode.Name = "label_msimode";
             this.label_msimode.Size = new System.Drawing.Size(54, 13);
             this.label_msimode.TabIndex = 0;
@@ -2651,6 +2679,195 @@ namespace WOTBO
             this.back_gpu_5.TabStop = false;
             this.back_gpu_5.Visible = false;
             this.back_gpu_5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_nvecc
+            // 
+            this.checkBox_nvecc.AutoSize = true;
+            this.checkBox_nvecc.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_nvecc.ForeColor = System.Drawing.Color.White;
+            this.checkBox_nvecc.Location = new System.Drawing.Point(20, 165);
+            this.checkBox_nvecc.Name = "checkBox_nvecc";
+            this.checkBox_nvecc.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_nvecc.TabIndex = 54;
+            this.checkBox_nvecc.Tag = "";
+            this.checkBox_nvecc.Text = "ECC и скрабберы NVIDIA";
+            this.toolTip1.SetToolTip(this.checkBox_nvecc, "Отключает ECC, коррекцию ошибок и фоновые скрабберы памяти. Имеет смысл для карт с ECC (Quadro / RTX Pro); на GeForce почти без эффекта.");
+            this.checkBox_nvecc.UseVisualStyleBackColor = true;
+            this.checkBox_nvecc.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_gpu_6
+            // 
+            this.back_gpu_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_gpu_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_gpu_6.Location = new System.Drawing.Point(0, 165);
+            this.back_gpu_6.Name = "back_gpu_6";
+            this.back_gpu_6.Size = new System.Drawing.Size(15, 15);
+            this.back_gpu_6.TabIndex = 37;
+            this.back_gpu_6.TabStop = false;
+            this.back_gpu_6.Visible = false;
+            this.back_gpu_6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_nvpower
+            // 
+            this.checkBox_nvpower.AutoSize = true;
+            this.checkBox_nvpower.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_nvpower.ForeColor = System.Drawing.Color.White;
+            this.checkBox_nvpower.Location = new System.Drawing.Point(20, 185);
+            this.checkBox_nvpower.Name = "checkBox_nvpower";
+            this.checkBox_nvpower.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_nvpower.TabIndex = 55;
+            this.checkBox_nvpower.Tag = "";
+            this.checkBox_nvpower.Text = "Энергосбережение NVIDIA: максимум";
+            this.toolTip1.SetToolTip(this.checkBox_nvpower, "PowerMizer на максимум, динамические p-state отключены: частоты не сбрасываются в простое. Вырастут температура и потребление.");
+            this.checkBox_nvpower.UseVisualStyleBackColor = true;
+            this.checkBox_nvpower.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_gpu_7
+            // 
+            this.back_gpu_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_gpu_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_gpu_7.Location = new System.Drawing.Point(0, 185);
+            this.back_gpu_7.Name = "back_gpu_7";
+            this.back_gpu_7.Size = new System.Drawing.Size(15, 15);
+            this.back_gpu_7.TabIndex = 38;
+            this.back_gpu_7.TabStop = false;
+            this.back_gpu_7.Visible = false;
+            this.back_gpu_7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_nvhard
+            // 
+            this.checkBox_nvhard.AutoSize = true;
+            this.checkBox_nvhard.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_nvhard.ForeColor = System.Drawing.Color.White;
+            this.checkBox_nvhard.Location = new System.Drawing.Point(20, 205);
+            this.checkBox_nvhard.Name = "checkBox_nvhard";
+            this.checkBox_nvhard.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_nvhard.TabIndex = 56;
+            this.checkBox_nvhard.Tag = "";
+            this.checkBox_nvhard.Text = "Непроверенные параметры NVIDIA";
+            this.toolTip1.SetToolTip(this.checkBox_nvhard, "ASPM, GC6, RTD3, ELPG, PLL — на части карт и версий драйвера дают чёрный экран или BSOD. Применять осознанно.");
+            this.checkBox_nvhard.UseVisualStyleBackColor = true;
+            this.checkBox_nvhard.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_gpu_8
+            // 
+            this.back_gpu_8.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_gpu_8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_gpu_8.Location = new System.Drawing.Point(0, 205);
+            this.back_gpu_8.Name = "back_gpu_8";
+            this.back_gpu_8.Size = new System.Drawing.Size(15, 15);
+            this.back_gpu_8.TabIndex = 39;
+            this.back_gpu_8.TabStop = false;
+            this.back_gpu_8.Visible = false;
+            this.back_gpu_8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_nvtelemetry
+            // 
+            this.checkBox_nvtelemetry.AutoSize = true;
+            this.checkBox_nvtelemetry.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_nvtelemetry.ForeColor = System.Drawing.Color.White;
+            this.checkBox_nvtelemetry.Location = new System.Drawing.Point(20, 225);
+            this.checkBox_nvtelemetry.Name = "checkBox_nvtelemetry";
+            this.checkBox_nvtelemetry.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_nvtelemetry.TabIndex = 57;
+            this.checkBox_nvtelemetry.Tag = "";
+            this.checkBox_nvtelemetry.Text = "Телеметрия драйвера NVIDIA";
+            this.toolTip1.SetToolTip(this.checkBox_nvtelemetry, "Отключает телеметрию и подробные логи драйвера NVIDIA.");
+            this.checkBox_nvtelemetry.UseVisualStyleBackColor = true;
+            this.checkBox_nvtelemetry.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_gpu_9
+            // 
+            this.back_gpu_9.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_gpu_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_gpu_9.Location = new System.Drawing.Point(0, 225);
+            this.back_gpu_9.Name = "back_gpu_9";
+            this.back_gpu_9.Size = new System.Drawing.Size(15, 15);
+            this.back_gpu_9.TabIndex = 40;
+            this.back_gpu_9.TabStop = false;
+            this.back_gpu_9.Visible = false;
+            this.back_gpu_9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_ipilatency
+            // 
+            this.checkBox_ipilatency.AutoSize = true;
+            this.checkBox_ipilatency.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_ipilatency.ForeColor = System.Drawing.Color.White;
+            this.checkBox_ipilatency.Location = new System.Drawing.Point(20, 365);
+            this.checkBox_ipilatency.Name = "checkBox_ipilatency";
+            this.checkBox_ipilatency.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_ipilatency.TabIndex = 58;
+            this.checkBox_ipilatency.Tag = "";
+            this.checkBox_ipilatency.Text = "Отключить задержку IPI";
+            this.toolTip1.SetToolTip(this.checkBox_ipilatency, "IpiLastClockOwnerDisable — убирает лишнюю задержку при обработке прерываний таймера.");
+            this.checkBox_ipilatency.UseVisualStyleBackColor = true;
+            this.checkBox_ipilatency.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_main_20
+            // 
+            this.back_main_20.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_main_20.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_main_20.Location = new System.Drawing.Point(0, 365);
+            this.back_main_20.Name = "back_main_20";
+            this.back_main_20.Size = new System.Drawing.Size(15, 15);
+            this.back_main_20.TabIndex = 41;
+            this.back_main_20.TabStop = false;
+            this.back_main_20.Visible = false;
+            this.back_main_20.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_ndis
+            // 
+            this.checkBox_ndis.AutoSize = true;
+            this.checkBox_ndis.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_ndis.ForeColor = System.Drawing.Color.White;
+            this.checkBox_ndis.Location = new System.Drawing.Point(20, 465);
+            this.checkBox_ndis.Name = "checkBox_ndis";
+            this.checkBox_ndis.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_ndis.TabIndex = 59;
+            this.checkBox_ndis.Tag = "";
+            this.checkBox_ndis.Text = "Отключить watchdog'и NDIS";
+            this.toolTip1.SetToolTip(this.checkBox_ndis, "Отключает сторожевые таймеры и отладочные замеры сетевого стека NDIS.");
+            this.checkBox_ndis.UseVisualStyleBackColor = true;
+            this.checkBox_ndis.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_dop_16
+            // 
+            this.back_dop_16.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_dop_16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_16.Location = new System.Drawing.Point(0, 465);
+            this.back_dop_16.Name = "back_dop_16";
+            this.back_dop_16.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_16.TabIndex = 42;
+            this.back_dop_16.TabStop = false;
+            this.back_dop_16.Visible = false;
+            this.back_dop_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_sleepstudy
+            // 
+            this.checkBox_sleepstudy.AutoSize = true;
+            this.checkBox_sleepstudy.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_sleepstudy.ForeColor = System.Drawing.Color.White;
+            this.checkBox_sleepstudy.Location = new System.Drawing.Point(20, 485);
+            this.checkBox_sleepstudy.Name = "checkBox_sleepstudy";
+            this.checkBox_sleepstudy.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_sleepstudy.TabIndex = 60;
+            this.checkBox_sleepstudy.Tag = "";
+            this.checkBox_sleepstudy.Text = "Отключить SleepStudy";
+            this.toolTip1.SetToolTip(this.checkBox_sleepstudy, "Отключает сбор статистики сна (SleepStudy) и фоновое сканирование простоя.");
+            this.checkBox_sleepstudy.UseVisualStyleBackColor = true;
+            this.checkBox_sleepstudy.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            // 
+            // back_dop_17
+            // 
+            this.back_dop_17.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_dop_17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_17.Location = new System.Drawing.Point(0, 485);
+            this.back_dop_17.Name = "back_dop_17";
+            this.back_dop_17.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_17.TabIndex = 43;
+            this.back_dop_17.TabStop = false;
+            this.back_dop_17.Visible = false;
+            this.back_dop_17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_ui_1);
             this.Controls.Add(this.panel_dop);
@@ -2864,6 +3081,20 @@ namespace WOTBO
         private System.Windows.Forms.PictureBox back_main_16;
         private System.Windows.Forms.PictureBox back_dop_edge;
         private System.Windows.Forms.CheckBox checkBox_cursors;
+        private System.Windows.Forms.CheckBox checkBox_nvecc;
+        private System.Windows.Forms.CheckBox checkBox_nvpower;
+        private System.Windows.Forms.CheckBox checkBox_nvhard;
+        private System.Windows.Forms.CheckBox checkBox_nvtelemetry;
+        private System.Windows.Forms.CheckBox checkBox_ipilatency;
+        private System.Windows.Forms.CheckBox checkBox_ndis;
+        private System.Windows.Forms.CheckBox checkBox_sleepstudy;
+        private System.Windows.Forms.PictureBox back_gpu_6;
+        private System.Windows.Forms.PictureBox back_gpu_7;
+        private System.Windows.Forms.PictureBox back_gpu_8;
+        private System.Windows.Forms.PictureBox back_gpu_9;
+        private System.Windows.Forms.PictureBox back_main_20;
+        private System.Windows.Forms.PictureBox back_dop_16;
+        private System.Windows.Forms.PictureBox back_dop_17;
         private System.Windows.Forms.CheckBox checkBox_startupdelay;
         private System.Windows.Forms.CheckBox checkBox_mmcss;
         private System.Windows.Forms.CheckBox checkBox_kbqueue;

@@ -71,6 +71,7 @@ namespace WOTBO
             Binder("main.startupdelay").Apply();
             Binder("main.mmcss").Apply();
             Binder("main.kbqueue").Apply();
+            Binder("main.ipilatency").Apply();
             Binder("pro.win32priority").Apply(); //Win32Priority
             #endregion
             #region gpu
@@ -93,6 +94,10 @@ namespace WOTBO
             Binder("gpu.nvidia").Apply();
             Binder("gpu.directplay").Apply();
             Binder("gpu.gamebar").Apply();
+            Binder("gpu.nvecc").Apply();
+            Binder("gpu.nvpower").Apply();
+            Binder("gpu.nvpowerhard").Apply();
+            Binder("gpu.nvtelemetry").Apply();
             #endregion
             #region ui
             Binder("ui.buttons").Apply();
@@ -145,6 +150,8 @@ namespace WOTBO
             Binder("extra.nagle").Apply();
             Binder("extra.appcompat").Apply();
             Binder("extra.kernellatency").Apply();
+            Binder("extra.ndis").Apply();
+            Binder("extra.sleepstudy").Apply();
             #endregion
             #region pro
             Binder("pro.homegallery").Apply(); //disable main & gallery folder in explorer.exe

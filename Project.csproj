@@ -148,6 +148,13 @@
     <Compile Include="Services\Defender\DefenderStatus.cs" />
     <Compile Include="Services\Tweaks\CursorsTweak.cs" />
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
+    <Compile Include="Services\Tweaks\NvidiaEccTweak.cs" />
+    <Compile Include="Services\Tweaks\NvidiaTelemetryTweak.cs" />
+    <Compile Include="Services\Tweaks\NvidiaPowerTweak.cs" />
+    <Compile Include="Services\Tweaks\NvidiaPowerHardTweak.cs" />
+    <Compile Include="Services\Tweaks\IpiLatencyTweak.cs" />
+    <Compile Include="Services\Tweaks\NdisWatchdogTweak.cs" />
+    <Compile Include="Services\Tweaks\SleepStudyTweak.cs" />
     <Compile Include="Services\Tweaks\StartupDelayTweak.cs" />
     <Compile Include="Services\Tweaks\MmcssTweak.cs" />
     <Compile Include="Services\Tweaks\KeyboardQueueTweak.cs" />

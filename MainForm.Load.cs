@@ -62,6 +62,8 @@ namespace WOTBO
             panel_ui_1.Controls.Add(back_ui_tooltips);
             panel_ui_1.Controls.Add(checkBox_tweak_tooltips);
 
+            SetupTooltipsToggle();
+
             bool enabled = AppSettings.TweakTooltipsEnabled;
             bool applied = AppServices.Tweaks.IsApplied("ui.tweakTooltips");
 
@@ -82,6 +84,38 @@ namespace WOTBO
             back_ui_tooltips.Visible = applied;
             checkBox_tweak_tooltips.Enabled = !applied;
             checkBox_tweak_tooltips.Checked = false;
+        }
+
+        /// <summary>
+        /// Подсказки-описания при наведении на сами твики (toolTip1).
+        /// Это настройка интерфейса, поэтому применяется сразу и запоминается.
+        /// </summary>
+        private void SetupTooltipsToggle()
+        {
+            checkBox_tooltips = new CheckBox
+            {
+                Name = "checkBox_tooltips",
+                Text = "Показывать описание твика при наведении",
+                AutoSize = true,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Location = Dpi.Scale(this, 20, 365),
+                Font = panel_ui_1.Font,
+                TabIndex = 101,
+                UseVisualStyleBackColor = true,
+            };
+
+            checkBox_tooltips.CheckedChanged += delegate
+            {
+                toolTip1.Active = checkBox_tooltips.Checked;
+                AppSettings.TooltipsEnabled = checkBox_tooltips.Checked;
+            };
+
+            panel_ui_1.Controls.Add(checkBox_tooltips);
+
+            bool enabled = AppSettings.TooltipsEnabled;
+            checkBox_tooltips.Checked = enabled;
+            toolTip1.Active = enabled;
         }
 
         private void ApplyTweakTooltips()
@@ -337,6 +371,10 @@ namespace WOTBO
             Binder("ui.cleancontext").Detect();
             Binder("ui.shortcutsuffix").Detect();
             Binder("gpu.gamebar").Detect();
+            Binder("gpu.nvecc").Detect();
+            Binder("gpu.nvpower").Detect();
+            Binder("gpu.nvpowerhard").Detect();
+            Binder("gpu.nvtelemetry").Detect();
             Binder("extra.driversearch").Detect();
             Binder("extra.backgroundapps").Detect();
             Binder("extra.searchweb").Detect();
@@ -345,6 +383,9 @@ namespace WOTBO
             Binder("extra.nagle").Detect();
             Binder("extra.appcompat").Detect();
             Binder("extra.kernellatency").Detect();
+            Binder("main.ipilatency").Detect();
+            Binder("extra.ndis").Detect();
+            Binder("extra.sleepstudy").Detect();
             #endregion
             detectWatch.Stop();
             Log.Debug("UI", $"detect loop: {detectWatch.ElapsedMilliseconds} мс");
@@ -412,6 +453,10 @@ namespace WOTBO
                 checkBox_ansel.Visible = false;
                 checkBox_dopNVIDIA_tweaks.Visible = false;
                 checkBox_hdcp.Visible = false;
+                checkBox_nvecc.Visible = false;
+                checkBox_nvpower.Visible = false;
+                checkBox_nvhard.Visible = false;
+                checkBox_nvtelemetry.Visible = false;
                 label_inspector.Visible = false;
                 checkBox_directplay.Location = Dpi.Scale(this, 20, 45);
                 back_gpu_1.Location = Dpi.Scale(this, 0, 45);

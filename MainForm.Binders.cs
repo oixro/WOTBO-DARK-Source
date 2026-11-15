@@ -429,6 +429,7 @@ namespace WOTBO
             Bind("main.startupdelay", checkBox_startupdelay, back_main_17, "задержка автозапуска убрана");
             Bind("main.mmcss", checkBox_mmcss, back_main_18, "приоритет мультимедиа включён");
             Bind("main.kbqueue", checkBox_kbqueue, back_main_19, "буфер ввода уменьшен");
+            Bind("main.ipilatency", checkBox_ipilatency, back_main_20, "задержка IPI отключена");
             Bind("pro.win32priority", checkBox_pro_11, back_pro_11, "Win32PrioritySeparation был применён",
                 inApply: () => new Win32PriorityForm().ShowDialog());
 
@@ -436,6 +437,24 @@ namespace WOTBO
             Bind("gpu.nvidia", checkBox_dopNVIDIA_tweaks, back_gpu_3);
             Bind("gpu.directplay", checkBox_directplay, back_gpu_1);
             Bind("gpu.gamebar", checkBox_gamebar, back_gpu_5, "окно Game Bar отключено");
+            Bind("gpu.nvecc", checkBox_nvecc, back_gpu_6, "ECC и скрабберы отключены");
+            Bind("gpu.nvpower", checkBox_nvpower, back_gpu_7, "энергосбережение NVIDIA отключено",
+                confirmApply: () => MessageBox.Show(
+                    "Частоты видеокарты перестанут сбрасываться в простое.\n\n" +
+                    "В простое вырастут температура и потребление, на ноутбуках — заметно сильнее.\n" +
+                    "Твик работает до перезагрузки драйвера или системы.\n\n" +
+                    "Применить?",
+                    "Энергосбережение NVIDIA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes);
+            Bind("gpu.nvpowerhard", checkBox_nvhard, back_gpu_8, "непроверенные параметры NVIDIA включены",
+                confirmApply: () => MessageBox.Show(
+                    "НЕПРОВЕРЕНО.\n\n" +
+                    "ASPM, GC6, RTD3, ELPG и PLL отключаются напрямую в драйвере NVIDIA. " +
+                    "На части видеокарт и версий драйвера это даёт чёрный экран или BSOD.\n\n" +
+                    "Сначала создайте точку восстановления. Если отключали её твиком " +
+                    "«Отключить точки восстановления» — включите обратно.\n\n" +
+                    "Всё равно применить?",
+                    "Непроверенные параметры NVIDIA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes);
+            Bind("gpu.nvtelemetry", checkBox_nvtelemetry, back_gpu_9, "телеметрия NVIDIA отключена");
 
             Bind("ui.buttons", checkBoxUI_Buttons_1, back_ui_1, "buttons был применён");
             Bind("ui.explorerdetails", checkBoxUI_Buttons_2, back_ui_2, "litle_explorer_things был применён");
@@ -482,6 +501,8 @@ namespace WOTBO
             Bind("extra.nagle", checkBox_nagle, back_dop_13, "Nagle отключён");
             Bind("extra.appcompat", checkBox_appcompat, back_dop_14, "помощник совместимости отключён");
             Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена");
+            Bind("extra.ndis", checkBox_ndis, back_dop_16, "watchdog'и NDIS отключены");
+            Bind("extra.sleepstudy", checkBox_sleepstudy, back_dop_17, "SleepStudy отключён");
 
             Bind("pro.homegallery", checkBox_pro_1, back_pro_1, "pro_1 был применён",
                 showRollbackOnApply: false, showRollbackOnDetect: false);

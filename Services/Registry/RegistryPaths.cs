@@ -67,6 +67,7 @@ namespace WOTBO.Services.Registry
             @"SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak";
 
         public const string TweakTooltips = "tweakTooltips";
+        public const string Tooltips = "tooltips";
         public const string JpegImportQuality = "JPEGImportQuality";
         public const string MaxCachedIcons = "Max Cached Icons";
         public const string StickyKeysFlags = "Flags";

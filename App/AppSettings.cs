@@ -12,6 +12,31 @@ namespace WOTBO.App
         private const string RootPath = WOTBO.Services.Registry.RegistryPaths.AppRoot;
 
         /// <summary>
+        /// Показывать подсказки при наведении на твики (описания).
+        /// По умолчанию включено — так было всегда.
+        /// </summary>
+        public static bool TooltipsEnabled
+        {
+            get
+            {
+                object value = AppServices.Registry.GetValue(
+                    RegistryHive.CurrentUser,
+                    RootPath,
+                    WOTBO.Services.Registry.RegistryPaths.Tooltips);
+
+                return value == null || Convert.ToInt32(value) == 1;
+            }
+            set
+            {
+                AppServices.Registry.WriteValue(
+                    RegistryHive.CurrentUser,
+                    RootPath,
+                    WOTBO.Services.Registry.RegistryPaths.Tooltips,
+                    value ? 1 : 0);
+            }
+        }
+
+        /// <summary>
         /// Показывать подсказки о применённых твиках. По умолчанию выключено.
         /// </summary>
         public static bool TweakTooltipsEnabled
