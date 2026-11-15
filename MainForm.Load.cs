@@ -35,7 +35,7 @@ namespace WOTBO
             back_ui_tooltips = new PictureBox
             {
                 Name = "back_ui_tooltips",
-                Location = Dpi.Scale(this, 0, 65),
+                Location = Dpi.Scale(this, 0, 305),
                 Size = Dpi.ScaleSize(this, 15, 15),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
@@ -52,15 +52,15 @@ namespace WOTBO
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = Dpi.Scale(this, 20, 65),
-                Font = panel_ui_2.Font,
+                Location = Dpi.Scale(this, 20, 305),
+                Font = panel_ui_1.Font,
                 TabIndex = 100,
                 UseVisualStyleBackColor = true,
             };
             checkBox_tweak_tooltips.CheckedChanged += CheckBox_CheckedChanged;
 
-            panel_ui_2.Controls.Add(back_ui_tooltips);
-            panel_ui_2.Controls.Add(checkBox_tweak_tooltips);
+            panel_ui_1.Controls.Add(back_ui_tooltips);
+            panel_ui_1.Controls.Add(checkBox_tweak_tooltips);
 
             bool enabled = AppSettings.TweakTooltipsEnabled;
             bool applied = AppServices.Tweaks.IsApplied("ui.tweakTooltips");

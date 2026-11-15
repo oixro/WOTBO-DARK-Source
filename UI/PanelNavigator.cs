@@ -57,6 +57,7 @@ namespace WOTBO.UI
             target.Visible = true;
             target.BringToFront();
 
+
             int delayPerStep = DurationMs / Steps;
             bool animate = AnimationEnabled();
 

@@ -33,17 +33,9 @@ namespace WOTBO
         {
             var navigation = new NavigationController(this, ChangePanel);
 
-            navigation.Bind(label_main, panel1, panel_main_navigate, button_main_1, button_main_2);
-            navigation.Bind(button_main_1, panel1, panel_main_navigate, button_main_1, button_main_2);
-            navigation.Bind(button_main_2, panel_main_2, panel_main_navigate, button_main_1, button_main_2);
-
-            navigation.Bind(label_interface, panel_ui_1, panel_ui_navigate, button_ui_new_1, button_ui_new_2);
-            navigation.Bind(button_ui_new_1, panel_ui_1, panel_ui_navigate);
-            navigation.Bind(button_ui_new_2, panel_ui_2, panel_ui_navigate);
-
-            navigation.Bind(label_dop, panel_dop, panel_dop_navigate, button_dop_new_1, button_dop_new_2);
-            navigation.Bind(button_dop_new_1, panel_dop, panel_dop_navigate);
-            navigation.Bind(button_dop_new_2, panel_dop_2, panel_dop_navigate);
+            navigation.Bind(label_main, panel1);
+            navigation.Bind(label_interface, panel_ui_1);
+            navigation.Bind(label_dop, panel_dop);
 
             navigation.Bind(label_progs, panel_sorry);
             navigation.Bind(label_pc, panel_5);
@@ -51,6 +43,21 @@ namespace WOTBO
             label_gpu.Click += (sender, args) => ShowGpuPanel();
 
             SetupNavHighlight();
+            SetupScrolling();
+        }
+
+        /// <summary>
+        /// Вкладки листаются: вместо страниц «1/2» у панели своя тонкая
+        /// полоса прокрутки, поэтому новые твики просто добавляются в список.
+        /// </summary>
+        private void SetupScrolling()
+        {
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5 };
+
+            foreach (Panel panel in panels)
+            {
+                new PanelScroller(panel);
+            }
         }
 
         private readonly Dictionary<Label, Font> _navFonts = new Dictionary<Label, Font>();
@@ -85,10 +92,10 @@ namespace WOTBO
 
             Label active = null;
 
-            if (panel == panel1 || panel == panel_main_2) active = label_main;
-            else if (panel == panel_ui_1 || panel == panel_ui_2) active = label_interface;
+            if (panel == panel1) active = label_main;
+            else if (panel == panel_ui_1) active = label_interface;
             else if (panel == panel2) active = label_gpu;
-            else if (panel == panel_dop || panel == panel_dop_2) active = label_dop;
+            else if (panel == panel_dop) active = label_dop;
             else if (panel == panel_sorry) active = label_progs;
             else if (panel == panel_5) active = label_pc;
 

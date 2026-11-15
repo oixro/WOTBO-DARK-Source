@@ -89,9 +89,6 @@ namespace WOTBO
             this.checkBox_move_temp = new System.Windows.Forms.CheckBox();
             this.checkBox_animation = new System.Windows.Forms.CheckBox();
             this.checkBox_edge = new System.Windows.Forms.CheckBox();
-            this.panel_ui_navigate = new System.Windows.Forms.Panel();
-            this.button_ui_new_2 = new System.Windows.Forms.Button();
-            this.button_ui_new_1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.back_main_12 = new System.Windows.Forms.PictureBox();
             this.back_main_11 = new System.Windows.Forms.PictureBox();
@@ -123,7 +120,6 @@ namespace WOTBO
             this.checkBox_wotboincontex = new System.Windows.Forms.CheckBox();
             this.checkBoxUI_Buttons_4 = new System.Windows.Forms.CheckBox();
             this.checkBoxUI_Buttons_1 = new System.Windows.Forms.CheckBox();
-            this.panel_ui_2 = new System.Windows.Forms.Panel();
             this.back_animations = new System.Windows.Forms.PictureBox();
             this.back_pro_14 = new System.Windows.Forms.PictureBox();
             this.back_pro_13 = new System.Windows.Forms.PictureBox();
@@ -169,22 +165,13 @@ namespace WOTBO
             this.label_ver = new System.Windows.Forms.Label();
             this.label_interface = new System.Windows.Forms.Label();
             this.label_pc = new System.Windows.Forms.Label();
-            this.panel_dop_navigate = new System.Windows.Forms.Panel();
-            this.button_dop_new_2 = new System.Windows.Forms.Button();
-            this.button_dop_new_1 = new System.Windows.Forms.Button();
-            this.panel_dop_2 = new System.Windows.Forms.Panel();
             this.label_clean = new System.Windows.Forms.Label();
             this.back_dop_6 = new System.Windows.Forms.PictureBox();
             this.back_dop_edge = new System.Windows.Forms.PictureBox();
-            this.panel_main_navigate = new System.Windows.Forms.Panel();
-            this.button_main_2 = new System.Windows.Forms.Button();
-            this.button_main_1 = new System.Windows.Forms.Button();
-            this.panel_main_2 = new System.Windows.Forms.Panel();
             this.label_msimode = new System.Windows.Forms.Label();
             this.back_main_16 = new System.Windows.Forms.PictureBox();
             this.back_main_14 = new System.Windows.Forms.PictureBox();
             this.back_main_13 = new System.Windows.Forms.PictureBox();
-            this.panel_ui_navigate.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_11)).BeginInit();
@@ -209,7 +196,6 @@ namespace WOTBO
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).BeginInit();
-            this.panel_ui_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_animations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_13)).BeginInit();
@@ -233,12 +219,8 @@ namespace WOTBO
             this.PanelHead.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.PanelMain.SuspendLayout();
-            this.panel_dop_navigate.SuspendLayout();
-            this.panel_dop_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).BeginInit();
-            this.panel_main_navigate.SuspendLayout();
-            this.panel_main_2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).BeginInit();
@@ -418,7 +400,7 @@ namespace WOTBO
             // 
             this.checkBox_ffmpeg.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_ffmpeg.ForeColor = System.Drawing.Color.White;
-            this.checkBox_ffmpeg.Location = new System.Drawing.Point(20, 157);
+            this.checkBox_ffmpeg.Location = new System.Drawing.Point(20, 165);
             this.checkBox_ffmpeg.Name = "checkBox_ffmpeg";
             this.checkBox_ffmpeg.Size = new System.Drawing.Size(227, 17);
             this.checkBox_ffmpeg.TabIndex = 22;
@@ -434,7 +416,7 @@ namespace WOTBO
             this.checkBox_shapka.AutoSize = true;
             this.checkBox_shapka.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_shapka.ForeColor = System.Drawing.Color.White;
-            this.checkBox_shapka.Location = new System.Drawing.Point(20, 100);
+            this.checkBox_shapka.Location = new System.Drawing.Point(20, 105);
             this.checkBox_shapka.Name = "checkBox_shapka";
             this.checkBox_shapka.Size = new System.Drawing.Size(208, 17);
             this.checkBox_shapka.TabIndex = 22;
@@ -449,7 +431,7 @@ namespace WOTBO
             this.checkBox_bluefolders.AutoSize = true;
             this.checkBox_bluefolders.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_bluefolders.ForeColor = System.Drawing.Color.White;
-            this.checkBox_bluefolders.Location = new System.Drawing.Point(20, 62);
+            this.checkBox_bluefolders.Location = new System.Drawing.Point(20, 65);
             this.checkBox_bluefolders.Name = "checkBox_bluefolders";
             this.checkBox_bluefolders.Size = new System.Drawing.Size(151, 17);
             this.checkBox_bluefolders.TabIndex = 21;
@@ -464,7 +446,7 @@ namespace WOTBO
             this.checkBoxUI_Buttons_2.AutoSize = true;
             this.checkBoxUI_Buttons_2.BackColor = System.Drawing.Color.Transparent;
             this.checkBoxUI_Buttons_2.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUI_Buttons_2.Location = new System.Drawing.Point(20, 24);
+            this.checkBoxUI_Buttons_2.Location = new System.Drawing.Point(20, 25);
             this.checkBoxUI_Buttons_2.Name = "checkBoxUI_Buttons_2";
             this.checkBoxUI_Buttons_2.Size = new System.Drawing.Size(184, 17);
             this.checkBoxUI_Buttons_2.TabIndex = 3;
@@ -480,7 +462,7 @@ namespace WOTBO
             this.checkBox_contex.AutoSize = true;
             this.checkBox_contex.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_contex.ForeColor = System.Drawing.Color.White;
-            this.checkBox_contex.Location = new System.Drawing.Point(20, 81);
+            this.checkBox_contex.Location = new System.Drawing.Point(20, 85);
             this.checkBox_contex.Name = "checkBox_contex";
             this.checkBox_contex.Size = new System.Drawing.Size(204, 17);
             this.checkBox_contex.TabIndex = 7;
@@ -494,7 +476,7 @@ namespace WOTBO
             // 
             this.checkBox_pro_14.AutoSize = true;
             this.checkBox_pro_14.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_14.Location = new System.Drawing.Point(20, 45);
+            this.checkBox_pro_14.Location = new System.Drawing.Point(20, 285);
             this.checkBox_pro_14.Name = "checkBox_pro_14";
             this.checkBox_pro_14.Size = new System.Drawing.Size(171, 17);
             this.checkBox_pro_14.TabIndex = 21;
@@ -888,7 +870,7 @@ namespace WOTBO
             // 
             this.checkBox_pro_13.AutoSize = true;
             this.checkBox_pro_13.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_13.Location = new System.Drawing.Point(20, 25);
+            this.checkBox_pro_13.Location = new System.Drawing.Point(20, 265);
             this.checkBox_pro_13.Name = "checkBox_pro_13";
             this.checkBox_pro_13.Size = new System.Drawing.Size(205, 17);
             this.checkBox_pro_13.TabIndex = 21;
@@ -903,7 +885,7 @@ namespace WOTBO
             // 
             this.checkBox_pro_12.AutoSize = true;
             this.checkBox_pro_12.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_12.Location = new System.Drawing.Point(20, 65);
+            this.checkBox_pro_12.Location = new System.Drawing.Point(20, 285);
             this.checkBox_pro_12.Name = "checkBox_pro_12";
             this.checkBox_pro_12.Size = new System.Drawing.Size(80, 17);
             this.checkBox_pro_12.TabIndex = 12;
@@ -932,7 +914,7 @@ namespace WOTBO
             // 
             this.checkBox_CSRSS.AutoSize = true;
             this.checkBox_CSRSS.ForeColor = System.Drawing.Color.White;
-            this.checkBox_CSRSS.Location = new System.Drawing.Point(20, 5);
+            this.checkBox_CSRSS.Location = new System.Drawing.Point(20, 225);
             this.checkBox_CSRSS.Name = "checkBox_CSRSS";
             this.checkBox_CSRSS.Size = new System.Drawing.Size(190, 17);
             this.checkBox_CSRSS.TabIndex = 19;
@@ -947,7 +929,7 @@ namespace WOTBO
             // 
             this.checkBox_pro_3.AutoSize = true;
             this.checkBox_pro_3.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_3.Location = new System.Drawing.Point(20, 45);
+            this.checkBox_pro_3.Location = new System.Drawing.Point(20, 265);
             this.checkBox_pro_3.Name = "checkBox_pro_3";
             this.checkBox_pro_3.Size = new System.Drawing.Size(218, 17);
             this.checkBox_pro_3.TabIndex = 14;
@@ -962,7 +944,7 @@ namespace WOTBO
             // 
             this.checkBox_pro_1.AutoSize = true;
             this.checkBox_pro_1.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_1.Location = new System.Drawing.Point(20, 5);
+            this.checkBox_pro_1.Location = new System.Drawing.Point(20, 245);
             this.checkBox_pro_1.Name = "checkBox_pro_1";
             this.checkBox_pro_1.Size = new System.Drawing.Size(235, 17);
             this.checkBox_pro_1.TabIndex = 12;
@@ -975,7 +957,7 @@ namespace WOTBO
             // checkBox_dwm
             // 
             this.checkBox_dwm.AutoSize = true;
-            this.checkBox_dwm.Location = new System.Drawing.Point(20, 225);
+            this.checkBox_dwm.Location = new System.Drawing.Point(20, 325);
             this.checkBox_dwm.Name = "checkBox_dwm";
             this.checkBox_dwm.Size = new System.Drawing.Size(172, 17);
             this.checkBox_dwm.TabIndex = 3;
@@ -990,7 +972,7 @@ namespace WOTBO
             this.checkBox_tolerate.AutoSize = true;
             this.checkBox_tolerate.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_tolerate.ForeColor = System.Drawing.Color.White;
-            this.checkBox_tolerate.Location = new System.Drawing.Point(20, 45);
+            this.checkBox_tolerate.Location = new System.Drawing.Point(20, 285);
             this.checkBox_tolerate.Name = "checkBox_tolerate";
             this.checkBox_tolerate.Size = new System.Drawing.Size(221, 17);
             this.checkBox_tolerate.TabIndex = 11;
@@ -1007,7 +989,7 @@ namespace WOTBO
             this.checkBox_dwninput.AutoSize = true;
             this.checkBox_dwninput.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_dwninput.ForeColor = System.Drawing.Color.White;
-            this.checkBox_dwninput.Location = new System.Drawing.Point(20, 25);
+            this.checkBox_dwninput.Location = new System.Drawing.Point(20, 265);
             this.checkBox_dwninput.Name = "checkBox_dwninput";
             this.checkBox_dwninput.Size = new System.Drawing.Size(142, 17);
             this.checkBox_dwninput.TabIndex = 11;
@@ -1023,7 +1005,7 @@ namespace WOTBO
             this.checkBox_audio.AutoSize = true;
             this.checkBox_audio.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_audio.ForeColor = System.Drawing.Color.White;
-            this.checkBox_audio.Location = new System.Drawing.Point(20, 5);
+            this.checkBox_audio.Location = new System.Drawing.Point(20, 245);
             this.checkBox_audio.Name = "checkBox_audio";
             this.checkBox_audio.Size = new System.Drawing.Size(168, 17);
             this.checkBox_audio.TabIndex = 11;
@@ -1052,7 +1034,7 @@ namespace WOTBO
             // 
             this.checkBox_animation.AutoSize = true;
             this.checkBox_animation.ForeColor = System.Drawing.Color.White;
-            this.checkBox_animation.Location = new System.Drawing.Point(20, 214);
+            this.checkBox_animation.Location = new System.Drawing.Point(20, 225);
             this.checkBox_animation.Name = "checkBox_animation";
             this.checkBox_animation.Size = new System.Drawing.Size(263, 17);
             this.checkBox_animation.TabIndex = 21;
@@ -1066,7 +1048,7 @@ namespace WOTBO
             // 
             this.checkBox_edge.AutoSize = true;
             this.checkBox_edge.ForeColor = System.Drawing.Color.White;
-            this.checkBox_edge.Location = new System.Drawing.Point(20, 25);
+            this.checkBox_edge.Location = new System.Drawing.Point(20, 245);
             this.checkBox_edge.Name = "checkBox_edge";
             this.checkBox_edge.Size = new System.Drawing.Size(202, 17);
             this.checkBox_edge.TabIndex = 20;
@@ -1074,48 +1056,6 @@ namespace WOTBO
             this.checkBox_edge.Text = "Ограничить активность Edge";
             this.checkBox_edge.UseVisualStyleBackColor = true;
             this.checkBox_edge.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // panel_ui_navigate
-            // 
-            this.panel_ui_navigate.Controls.Add(this.button_ui_new_2);
-            this.panel_ui_navigate.Controls.Add(this.button_ui_new_1);
-            this.panel_ui_navigate.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_ui_navigate.Location = new System.Drawing.Point(523, 523);
-            this.panel_ui_navigate.Name = "panel_ui_navigate";
-            this.panel_ui_navigate.Size = new System.Drawing.Size(50, 20);
-            this.panel_ui_navigate.TabIndex = 38;
-            // 
-            // button_ui_new_2
-            // 
-            this.button_ui_new_2.FlatAppearance.BorderSize = 0;
-            this.button_ui_new_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_ui_new_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_ui_new_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_ui_new_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_ui_new_2.Location = new System.Drawing.Point(26, 0);
-            this.button_ui_new_2.Name = "button_ui_new_2";
-            this.button_ui_new_2.Size = new System.Drawing.Size(20, 20);
-            this.button_ui_new_2.TabIndex = 2;
-            this.button_ui_new_2.TabStop = false;
-            this.button_ui_new_2.Text = "2";
-            this.button_ui_new_2.UseVisualStyleBackColor = true;
-            this.button_ui_new_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
-            // 
-            // button_ui_new_1
-            // 
-            this.button_ui_new_1.FlatAppearance.BorderSize = 0;
-            this.button_ui_new_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_ui_new_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_ui_new_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_ui_new_1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_ui_new_1.Location = new System.Drawing.Point(0, 0);
-            this.button_ui_new_1.Name = "button_ui_new_1";
-            this.button_ui_new_1.Size = new System.Drawing.Size(20, 20);
-            this.button_ui_new_1.TabIndex = 2;
-            this.button_ui_new_1.TabStop = false;
-            this.button_ui_new_1.Text = "1";
-            this.button_ui_new_1.UseVisualStyleBackColor = true;
-            this.button_ui_new_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
             // 
             // panel1
             // 
@@ -1144,18 +1084,22 @@ namespace WOTBO
             this.panel1.Controls.Add(this.checkBox_gibernate);
             this.panel1.Controls.Add(this.checkBox_dism);
             this.panel1.Controls.Add(this.checkBox_reg);
+            this.panel1.Controls.Add(this.label_msimode);
+            this.panel1.Controls.Add(this.back_main_16);
+            this.panel1.Controls.Add(this.back_main_14);
+            this.panel1.Controls.Add(this.back_main_13);
+            this.panel1.Controls.Add(this.checkBox_tolerate);
+            this.panel1.Controls.Add(this.checkBox_dwninput);
+            this.panel1.Controls.Add(this.checkBox_audio);
             this.panel1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel1.ForeColor = System.Drawing.Color.Transparent;
             this.panel1.Location = new System.Drawing.Point(105, 36);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(287, 240);
+            this.panel1.Size = new System.Drawing.Size(287, 250);
             this.panel1.TabIndex = 33;
             // 
             // back_main_12
             // 
-            this.back_main_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_12.BackColor = System.Drawing.Color.Transparent;
             this.back_main_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1169,9 +1113,6 @@ namespace WOTBO
             // 
             // back_main_11
             // 
-            this.back_main_11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_11.BackColor = System.Drawing.Color.Transparent;
             this.back_main_11.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1185,9 +1126,6 @@ namespace WOTBO
             // 
             // back_main_10
             // 
-            this.back_main_10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_10.BackColor = System.Drawing.Color.Transparent;
             this.back_main_10.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1201,9 +1139,6 @@ namespace WOTBO
             // 
             // back_main_9
             // 
-            this.back_main_9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_9.BackColor = System.Drawing.Color.Transparent;
             this.back_main_9.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1217,9 +1152,6 @@ namespace WOTBO
             // 
             // back_pro_11
             // 
-            this.back_pro_11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_11.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_pro_11.Location = new System.Drawing.Point(0, 225);
@@ -1232,9 +1164,6 @@ namespace WOTBO
             // 
             // back_main_7
             // 
-            this.back_main_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_7.BackColor = System.Drawing.Color.Transparent;
             this.back_main_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1248,13 +1177,10 @@ namespace WOTBO
             // 
             // back_main_6
             // 
-            this.back_main_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_6.BackColor = System.Drawing.Color.Transparent;
             this.back_main_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_main_6.Location = new System.Drawing.Point(0, 107);
+            this.back_main_6.Location = new System.Drawing.Point(0, 105);
             this.back_main_6.Name = "back_main_6";
             this.back_main_6.Size = new System.Drawing.Size(15, 15);
             this.back_main_6.TabIndex = 10;
@@ -1264,9 +1190,6 @@ namespace WOTBO
             // 
             // back_main_5
             // 
-            this.back_main_5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_5.BackColor = System.Drawing.Color.Transparent;
             this.back_main_5.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1280,13 +1203,10 @@ namespace WOTBO
             // 
             // back_main_4
             // 
-            this.back_main_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_4.BackColor = System.Drawing.Color.Transparent;
             this.back_main_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_main_4.Location = new System.Drawing.Point(0, 66);
+            this.back_main_4.Location = new System.Drawing.Point(0, 65);
             this.back_main_4.Name = "back_main_4";
             this.back_main_4.Size = new System.Drawing.Size(15, 15);
             this.back_main_4.TabIndex = 10;
@@ -1296,9 +1216,6 @@ namespace WOTBO
             // 
             // back_main_3
             // 
-            this.back_main_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_3.BackColor = System.Drawing.Color.Transparent;
             this.back_main_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1312,9 +1229,6 @@ namespace WOTBO
             // 
             // back_main_2
             // 
-            this.back_main_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_2.BackColor = System.Drawing.Color.Transparent;
             this.back_main_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1328,9 +1242,6 @@ namespace WOTBO
             // 
             // back_main_1
             // 
-            this.back_main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_1.BackColor = System.Drawing.Color.Transparent;
             this.back_main_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1369,10 +1280,16 @@ namespace WOTBO
             this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_2);
             this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_1);
             this.panel_ui_1.Controls.Add(this.checkBox_contex);
+            this.panel_ui_1.Controls.Add(this.back_pro_14);
+            this.panel_ui_1.Controls.Add(this.checkBox_pro_14);
+            this.panel_ui_1.Controls.Add(this.back_pro_13);
+            this.panel_ui_1.Controls.Add(this.checkBox_pro_13);
+            this.panel_ui_1.Controls.Add(this.checkBox_pro_1);
+            this.panel_ui_1.Controls.Add(this.back_pro_1);
             this.panel_ui_1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel_ui_1.Location = new System.Drawing.Point(405, 36);
             this.panel_ui_1.Name = "panel_ui_1";
-            this.panel_ui_1.Size = new System.Drawing.Size(287, 240);
+            this.panel_ui_1.Size = new System.Drawing.Size(287, 250);
             this.panel_ui_1.TabIndex = 37;
             this.panel_ui_1.Visible = false;
             // 
@@ -1380,7 +1297,7 @@ namespace WOTBO
             // 
             this.checkBox_cursors.AutoSize = true;
             this.checkBox_cursors.ForeColor = System.Drawing.Color.White;
-            this.checkBox_cursors.Location = new System.Drawing.Point(20, 195);
+            this.checkBox_cursors.Location = new System.Drawing.Point(20, 205);
             this.checkBox_cursors.Name = "checkBox_cursors";
             this.checkBox_cursors.Size = new System.Drawing.Size(190, 17);
             this.checkBox_cursors.TabIndex = 22;
@@ -1391,12 +1308,9 @@ namespace WOTBO
             // 
             // back_ui_12
             // 
-            this.back_ui_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_12.Location = new System.Drawing.Point(0, 195);
+            this.back_ui_12.Location = new System.Drawing.Point(0, 205);
             this.back_ui_12.Name = "back_ui_12";
             this.back_ui_12.Size = new System.Drawing.Size(15, 15);
             this.back_ui_12.TabIndex = 23;
@@ -1406,12 +1320,9 @@ namespace WOTBO
             // 
             // back_ui_10
             // 
-            this.back_ui_10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_10.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_10.Location = new System.Drawing.Point(1, 157);
+            this.back_ui_10.Location = new System.Drawing.Point(0, 165);
             this.back_ui_10.Name = "back_ui_10";
             this.back_ui_10.Size = new System.Drawing.Size(15, 15);
             this.back_ui_10.TabIndex = 23;
@@ -1421,12 +1332,9 @@ namespace WOTBO
             // 
             // back_ui_9
             // 
-            this.back_ui_9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_9.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_9.Location = new System.Drawing.Point(0, 138);
+            this.back_ui_9.Location = new System.Drawing.Point(0, 145);
             this.back_ui_9.Name = "back_ui_9";
             this.back_ui_9.Size = new System.Drawing.Size(15, 15);
             this.back_ui_9.TabIndex = 11;
@@ -1436,12 +1344,9 @@ namespace WOTBO
             // 
             // back_ui_8
             // 
-            this.back_ui_8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_8.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_8.Location = new System.Drawing.Point(0, 119);
+            this.back_ui_8.Location = new System.Drawing.Point(0, 125);
             this.back_ui_8.Name = "back_ui_8";
             this.back_ui_8.Size = new System.Drawing.Size(15, 15);
             this.back_ui_8.TabIndex = 11;
@@ -1453,7 +1358,7 @@ namespace WOTBO
             // 
             this.checkBox_mica.AutoSize = true;
             this.checkBox_mica.ForeColor = System.Drawing.Color.White;
-            this.checkBox_mica.Location = new System.Drawing.Point(20, 176);
+            this.checkBox_mica.Location = new System.Drawing.Point(20, 185);
             this.checkBox_mica.Name = "checkBox_mica";
             this.checkBox_mica.Size = new System.Drawing.Size(216, 17);
             this.checkBox_mica.TabIndex = 3;
@@ -1464,12 +1369,9 @@ namespace WOTBO
             // 
             // back_ui_7
             // 
-            this.back_ui_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_7.Location = new System.Drawing.Point(0, 100);
+            this.back_ui_7.Location = new System.Drawing.Point(0, 105);
             this.back_ui_7.Name = "back_ui_7";
             this.back_ui_7.Size = new System.Drawing.Size(15, 15);
             this.back_ui_7.TabIndex = 11;
@@ -1479,12 +1381,9 @@ namespace WOTBO
             // 
             // back_ui_6
             // 
-            this.back_ui_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_6.Location = new System.Drawing.Point(0, 81);
+            this.back_ui_6.Location = new System.Drawing.Point(0, 85);
             this.back_ui_6.Name = "back_ui_6";
             this.back_ui_6.Size = new System.Drawing.Size(15, 15);
             this.back_ui_6.TabIndex = 11;
@@ -1494,12 +1393,9 @@ namespace WOTBO
             // 
             // back_ui_11
             // 
-            this.back_ui_11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_11.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_11.Location = new System.Drawing.Point(0, 176);
+            this.back_ui_11.Location = new System.Drawing.Point(0, 185);
             this.back_ui_11.Name = "back_ui_11";
             this.back_ui_11.Size = new System.Drawing.Size(15, 15);
             this.back_ui_11.TabIndex = 11;
@@ -1509,12 +1405,9 @@ namespace WOTBO
             // 
             // back_ui_5
             // 
-            this.back_ui_5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_5.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_5.Location = new System.Drawing.Point(0, 62);
+            this.back_ui_5.Location = new System.Drawing.Point(0, 65);
             this.back_ui_5.Name = "back_ui_5";
             this.back_ui_5.Size = new System.Drawing.Size(15, 15);
             this.back_ui_5.TabIndex = 11;
@@ -1524,12 +1417,9 @@ namespace WOTBO
             // 
             // back_ui_4
             // 
-            this.back_ui_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_4.Location = new System.Drawing.Point(0, 43);
+            this.back_ui_4.Location = new System.Drawing.Point(0, 45);
             this.back_ui_4.Name = "back_ui_4";
             this.back_ui_4.Size = new System.Drawing.Size(15, 15);
             this.back_ui_4.TabIndex = 11;
@@ -1539,12 +1429,9 @@ namespace WOTBO
             // 
             // back_ui_2
             // 
-            this.back_ui_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_ui_2.Location = new System.Drawing.Point(0, 24);
+            this.back_ui_2.Location = new System.Drawing.Point(0, 25);
             this.back_ui_2.Name = "back_ui_2";
             this.back_ui_2.Size = new System.Drawing.Size(15, 15);
             this.back_ui_2.TabIndex = 11;
@@ -1554,9 +1441,6 @@ namespace WOTBO
             // 
             // back_ui_1
             // 
-            this.back_ui_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_ui_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_ui_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_ui_1.Location = new System.Drawing.Point(0, 5);
@@ -1571,7 +1455,7 @@ namespace WOTBO
             // 
             this.checkBox_explorer.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_explorer.ForeColor = System.Drawing.Color.White;
-            this.checkBox_explorer.Location = new System.Drawing.Point(20, 138);
+            this.checkBox_explorer.Location = new System.Drawing.Point(20, 145);
             this.checkBox_explorer.Name = "checkBox_explorer";
             this.checkBox_explorer.AutoSize = true;
             this.checkBox_explorer.Size = new System.Drawing.Size(244, 17);
@@ -1585,7 +1469,7 @@ namespace WOTBO
             // 
             this.checkBox_wotboincontex.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_wotboincontex.ForeColor = System.Drawing.Color.White;
-            this.checkBox_wotboincontex.Location = new System.Drawing.Point(20, 119);
+            this.checkBox_wotboincontex.Location = new System.Drawing.Point(20, 125);
             this.checkBox_wotboincontex.Name = "checkBox_wotboincontex";
             this.checkBox_wotboincontex.AutoSize = true;
             this.checkBox_wotboincontex.Size = new System.Drawing.Size(244, 17);
@@ -1600,7 +1484,7 @@ namespace WOTBO
             this.checkBoxUI_Buttons_4.AutoSize = true;
             this.checkBoxUI_Buttons_4.BackColor = System.Drawing.Color.Transparent;
             this.checkBoxUI_Buttons_4.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUI_Buttons_4.Location = new System.Drawing.Point(20, 43);
+            this.checkBoxUI_Buttons_4.Location = new System.Drawing.Point(20, 45);
             this.checkBoxUI_Buttons_4.Name = "checkBoxUI_Buttons_4";
             this.checkBoxUI_Buttons_4.Size = new System.Drawing.Size(240, 17);
             this.checkBoxUI_Buttons_4.TabIndex = 13;
@@ -1622,33 +1506,14 @@ namespace WOTBO
             this.checkBoxUI_Buttons_1.Text = "Уменьшить кнопки окна";
             this.checkBoxUI_Buttons_1.UseVisualStyleBackColor = false;
             this.checkBoxUI_Buttons_1.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // panel_ui_2
-            // 
-            this.panel_ui_2.BackColor = System.Drawing.Color.Transparent;
 
-            this.panel_ui_2.Controls.Add(this.back_pro_14);
 
-            this.panel_ui_2.Controls.Add(this.checkBox_pro_14);
-            this.panel_ui_2.Controls.Add(this.back_pro_13);
-            this.panel_ui_2.Controls.Add(this.checkBox_pro_13);
-            this.panel_ui_2.Controls.Add(this.checkBox_pro_1);
-            this.panel_ui_2.Controls.Add(this.back_pro_1);
-            this.panel_ui_2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_ui_2.Location = new System.Drawing.Point(406, 282);
-            this.panel_ui_2.Name = "panel_ui_2";
-            this.panel_ui_2.Size = new System.Drawing.Size(287, 235);
-            this.panel_ui_2.TabIndex = 36;
-            this.panel_ui_2.Visible = false;
             // 
             // back_animations
             // 
-            this.back_animations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_animations.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_animations.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_animations.Location = new System.Drawing.Point(0, 214);
+            this.back_animations.Location = new System.Drawing.Point(0, 225);
             this.back_animations.Name = "back_animations";
             this.back_animations.Size = new System.Drawing.Size(15, 15);
             this.back_animations.TabIndex = 12;
@@ -1658,12 +1523,9 @@ namespace WOTBO
             // 
             // back_pro_14
             // 
-            this.back_pro_14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_14.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_14.Location = new System.Drawing.Point(0, 45);
+            this.back_pro_14.Location = new System.Drawing.Point(0, 285);
             this.back_pro_14.Name = "back_pro_14";
             this.back_pro_14.Size = new System.Drawing.Size(15, 15);
             this.back_pro_14.TabIndex = 12;
@@ -1673,12 +1535,9 @@ namespace WOTBO
             // 
             // back_pro_13
             // 
-            this.back_pro_13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_13.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_13.Location = new System.Drawing.Point(0, 25);
+            this.back_pro_13.Location = new System.Drawing.Point(0, 265);
             this.back_pro_13.Name = "back_pro_13";
             this.back_pro_13.Size = new System.Drawing.Size(15, 15);
             this.back_pro_13.TabIndex = 12;
@@ -1688,12 +1547,9 @@ namespace WOTBO
             // 
             // back_pro_1
             // 
-            this.back_pro_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_1.Location = new System.Drawing.Point(0, 5);
+            this.back_pro_1.Location = new System.Drawing.Point(0, 245);
             this.back_pro_1.Name = "back_pro_1";
             this.back_pro_1.Size = new System.Drawing.Size(15, 15);
             this.back_pro_1.TabIndex = 12;
@@ -1724,15 +1580,12 @@ namespace WOTBO
             this.panel_dop.ForeColor = System.Drawing.Color.White;
             this.panel_dop.Location = new System.Drawing.Point(991, 33);
             this.panel_dop.Name = "panel_dop";
-            this.panel_dop.Size = new System.Drawing.Size(287, 245);
+            this.panel_dop.Size = new System.Drawing.Size(287, 250);
             this.panel_dop.TabIndex = 31;
             this.panel_dop.Visible = false;
             // 
             // back_dop_movetemp
             // 
-            this.back_dop_movetemp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_movetemp.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_movetemp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_movetemp.Location = new System.Drawing.Point(0, 205);
@@ -1745,9 +1598,6 @@ namespace WOTBO
             // 
             // back_dop_4
             // 
-            this.back_dop_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_4.Location = new System.Drawing.Point(0, 185);
@@ -1760,9 +1610,6 @@ namespace WOTBO
             // 
             // back_dop_3
             // 
-            this.back_dop_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_3.Location = new System.Drawing.Point(0, 165);
@@ -1775,9 +1622,6 @@ namespace WOTBO
             // 
             // back_dop_2
             // 
-            this.back_dop_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_2.Location = new System.Drawing.Point(0, 145);
@@ -1790,9 +1634,6 @@ namespace WOTBO
             // 
             // back_dop_1
             // 
-            this.back_dop_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_dop_1.Location = new System.Drawing.Point(0, 125);
@@ -1980,9 +1821,6 @@ namespace WOTBO
             // 
             // back_gpu_4
             // 
-            this.back_gpu_4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_gpu_4.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_4.Location = new System.Drawing.Point(0, 125);
@@ -1996,9 +1834,6 @@ namespace WOTBO
             // 
             // back_gpu_3
             // 
-            this.back_gpu_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_gpu_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_3.Location = new System.Drawing.Point(0, 105);
@@ -2011,9 +1846,6 @@ namespace WOTBO
             // 
             // back_gpu_2
             // 
-            this.back_gpu_2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_gpu_2.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_2.Location = new System.Drawing.Point(0, 85);
@@ -2026,9 +1858,6 @@ namespace WOTBO
             // 
             // back_gpu_1
             // 
-            this.back_gpu_1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_gpu_1.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_gpu_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.back_gpu_1.Location = new System.Drawing.Point(0, 65);
@@ -2055,12 +1884,9 @@ namespace WOTBO
             // 
             // back_pro_12
             // 
-            this.back_pro_12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_12.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_12.Location = new System.Drawing.Point(0, 65);
+            this.back_pro_12.Location = new System.Drawing.Point(0, 285);
             this.back_pro_12.Name = "back_pro_12";
             this.back_pro_12.Size = new System.Drawing.Size(15, 15);
             this.back_pro_12.TabIndex = 22;
@@ -2070,12 +1896,9 @@ namespace WOTBO
             // 
             // back_pro_3
             // 
-            this.back_pro_3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_pro_3.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_pro_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_3.Location = new System.Drawing.Point(0, 45);
+            this.back_pro_3.Location = new System.Drawing.Point(0, 265);
             this.back_pro_3.Name = "back_pro_3";
             this.back_pro_3.Size = new System.Drawing.Size(15, 15);
             this.back_pro_3.TabIndex = 12;
@@ -2085,12 +1908,9 @@ namespace WOTBO
             // 
             // back_dop_7
             // 
-            this.back_dop_7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_7.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_7.Location = new System.Drawing.Point(0, 6);
+            this.back_dop_7.Location = new System.Drawing.Point(0, 225);
             this.back_dop_7.Name = "back_dop_7";
             this.back_dop_7.Size = new System.Drawing.Size(15, 15);
             this.back_dop_7.TabIndex = 12;
@@ -2303,77 +2123,24 @@ namespace WOTBO
             this.label_pc.TabIndex = 29;
             this.label_pc.Text = "6. Инфо о ПК";
             this.label_pc.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
-            // 
-            // panel_dop_navigate
-            // 
-            this.panel_dop_navigate.Controls.Add(this.button_dop_new_2);
-            this.panel_dop_navigate.Controls.Add(this.button_dop_new_1);
-            this.panel_dop_navigate.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_dop_navigate.Location = new System.Drawing.Point(1117, 525);
-            this.panel_dop_navigate.Name = "panel_dop_navigate";
-            this.panel_dop_navigate.Size = new System.Drawing.Size(50, 20);
-            this.panel_dop_navigate.TabIndex = 38;
-            // 
-            // button_dop_new_2
-            // 
-            this.button_dop_new_2.FlatAppearance.BorderSize = 0;
-            this.button_dop_new_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_dop_new_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_dop_new_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dop_new_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_dop_new_2.Location = new System.Drawing.Point(26, 0);
-            this.button_dop_new_2.Name = "button_dop_new_2";
-            this.button_dop_new_2.Size = new System.Drawing.Size(20, 20);
-            this.button_dop_new_2.TabIndex = 2;
-            this.button_dop_new_2.TabStop = false;
-            this.button_dop_new_2.Text = "2";
-            this.button_dop_new_2.UseVisualStyleBackColor = true;
-            this.button_dop_new_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
-            // 
-            // button_dop_new_1
-            // 
-            this.button_dop_new_1.FlatAppearance.BorderSize = 0;
-            this.button_dop_new_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_dop_new_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_dop_new_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dop_new_1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_dop_new_1.Location = new System.Drawing.Point(0, 0);
-            this.button_dop_new_1.Name = "button_dop_new_1";
-            this.button_dop_new_1.Size = new System.Drawing.Size(20, 20);
-            this.button_dop_new_1.TabIndex = 2;
-            this.button_dop_new_1.TabStop = false;
-            this.button_dop_new_1.Text = "1";
-            this.button_dop_new_1.UseVisualStyleBackColor = true;
-            this.button_dop_new_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
-            // 
-            // panel_dop_2
-            // 
-            this.panel_dop_2.BackColor = System.Drawing.Color.Transparent;
-            this.panel_dop_2.Controls.Add(this.label_clean);
-            this.panel_dop_2.Controls.Add(this.checkBox_edge);
             this.panel_dop.Controls.Add(this.back_dop_6);
             this.panel_dop.Controls.Add(this.checkBox_dwm);
-            this.panel_dop_2.Controls.Add(this.back_dop_edge);
-            this.panel_dop_2.Controls.Add(this.back_dop_7);
-            this.panel_dop_2.Controls.Add(this.back_pro_12);
-            this.panel_dop_2.Controls.Add(this.checkBox_pro_12);
-            this.panel_dop_2.Controls.Add(this.checkBox_CSRSS);
-            this.panel_dop_2.Controls.Add(this.back_pro_3);
-            this.panel_dop_2.Controls.Add(this.checkBox_pro_3);
-            this.panel_dop_2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_dop_2.ForeColor = System.Drawing.Color.White;
-            this.panel_dop_2.Location = new System.Drawing.Point(991, 284);
-            this.panel_dop_2.Name = "panel_dop_2";
-            this.panel_dop_2.Size = new System.Drawing.Size(287, 235);
-            this.panel_dop_2.TabIndex = 32;
-            this.panel_dop_2.Visible = false;
+            this.panel_dop.Controls.Add(this.label_clean);
+            this.panel_dop.Controls.Add(this.checkBox_edge);
+            this.panel_dop.Controls.Add(this.back_dop_edge);
+            this.panel_dop.Controls.Add(this.back_dop_7);
+            this.panel_dop.Controls.Add(this.back_pro_12);
+            this.panel_dop.Controls.Add(this.checkBox_pro_12);
+            this.panel_dop.Controls.Add(this.checkBox_CSRSS);
+            this.panel_dop.Controls.Add(this.back_pro_3);
+            this.panel_dop.Controls.Add(this.checkBox_pro_3);
             // 
             // label_clean
             // 
             this.label_clean.AutoSize = true;
             this.label_clean.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_clean.ForeColor = System.Drawing.Color.White;
-            this.label_clean.Location = new System.Drawing.Point(20, 85);
+            this.label_clean.Location = new System.Drawing.Point(20, 305);
             this.label_clean.Name = "label_clean";
             this.label_clean.Size = new System.Drawing.Size(164, 13);
             this.label_clean.TabIndex = 13;
@@ -2383,12 +2150,9 @@ namespace WOTBO
             // 
             // back_dop_6
             // 
-            this.back_dop_6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_6.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_6.Location = new System.Drawing.Point(0, 225);
+            this.back_dop_6.Location = new System.Drawing.Point(0, 325);
             this.back_dop_6.Name = "back_dop_6";
             this.back_dop_6.Size = new System.Drawing.Size(15, 15);
             this.back_dop_6.TabIndex = 13;
@@ -2398,12 +2162,9 @@ namespace WOTBO
             // 
             // back_dop_edge
             // 
-            this.back_dop_edge.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_dop_edge.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_edge.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_edge.Location = new System.Drawing.Point(0, 25);
+            this.back_dop_edge.Location = new System.Drawing.Point(0, 245);
             this.back_dop_edge.Name = "back_dop_edge";
             this.back_dop_edge.Size = new System.Drawing.Size(15, 15);
             this.back_dop_edge.TabIndex = 12;
@@ -2411,71 +2172,12 @@ namespace WOTBO
             this.back_dop_edge.Visible = false;
             this.back_dop_edge.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
-            // panel_main_navigate
-            // 
-            this.panel_main_navigate.Controls.Add(this.button_main_2);
-            this.panel_main_navigate.Controls.Add(this.button_main_1);
-            this.panel_main_navigate.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_main_navigate.Location = new System.Drawing.Point(195, 284);
-            this.panel_main_navigate.Name = "panel_main_navigate";
-            this.panel_main_navigate.Size = new System.Drawing.Size(50, 20);
-            this.panel_main_navigate.TabIndex = 39;
-            // 
-            // button_main_2
-            // 
-            this.button_main_2.FlatAppearance.BorderSize = 0;
-            this.button_main_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_main_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_main_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_main_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_main_2.Location = new System.Drawing.Point(26, 0);
-            this.button_main_2.Name = "button_main_2";
-            this.button_main_2.Size = new System.Drawing.Size(20, 20);
-            this.button_main_2.TabIndex = 2;
-            this.button_main_2.TabStop = false;
-            this.button_main_2.Text = "2";
-            this.button_main_2.UseVisualStyleBackColor = true;
-            this.button_main_2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
-            // 
-            // button_main_1
-            // 
-            this.button_main_1.FlatAppearance.BorderSize = 0;
-            this.button_main_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(46)))), ((int)(((byte)(52)))));
-            this.button_main_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(52)))), ((int)(((byte)(59)))));
-            this.button_main_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_main_1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(173)))), ((int)(((byte)(185)))));
-            this.button_main_1.Location = new System.Drawing.Point(0, 0);
-            this.button_main_1.Name = "button_main_1";
-            this.button_main_1.Size = new System.Drawing.Size(20, 20);
-            this.button_main_1.TabIndex = 2;
-            this.button_main_1.TabStop = false;
-            this.button_main_1.Text = "1";
-            this.button_main_1.UseVisualStyleBackColor = true;
-            this.button_main_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Button_MouseUp);
-            // 
-            // panel_main_2
-            // 
-            this.panel_main_2.BackColor = System.Drawing.Color.Transparent;
-            this.panel_main_2.Controls.Add(this.label_msimode);
-            this.panel_main_2.Controls.Add(this.back_main_16);
-            this.panel_main_2.Controls.Add(this.back_main_14);
-            this.panel_main_2.Controls.Add(this.back_main_13);
-            this.panel_main_2.Controls.Add(this.checkBox_tolerate);
-            this.panel_main_2.Controls.Add(this.checkBox_dwninput);
-            this.panel_main_2.Controls.Add(this.checkBox_audio);
-            this.panel_main_2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_main_2.Location = new System.Drawing.Point(105, 312);
-            this.panel_main_2.Name = "panel_main_2";
-            this.panel_main_2.Size = new System.Drawing.Size(287, 245);
-            this.panel_main_2.TabIndex = 34;
-            this.panel_main_2.Visible = false;
-            // 
             // label_msimode
             // 
             this.label_msimode.AutoSize = true;
             this.label_msimode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_msimode.ForeColor = System.Drawing.Color.White;
-            this.label_msimode.Location = new System.Drawing.Point(20, 65);
+            this.label_msimode.Location = new System.Drawing.Point(20, 305);
             this.label_msimode.Name = "label_msimode";
             this.label_msimode.Size = new System.Drawing.Size(54, 13);
             this.label_msimode.TabIndex = 0;
@@ -2485,13 +2187,10 @@ namespace WOTBO
             // 
             // back_main_16
             // 
-            this.back_main_16.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_16.BackColor = System.Drawing.Color.Transparent;
             this.back_main_16.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_main_16.Location = new System.Drawing.Point(0, 45);
+            this.back_main_16.Location = new System.Drawing.Point(0, 285);
             this.back_main_16.Name = "back_main_16";
             this.back_main_16.Size = new System.Drawing.Size(15, 15);
             this.back_main_16.TabIndex = 12;
@@ -2501,13 +2200,10 @@ namespace WOTBO
             // 
             // back_main_14
             // 
-            this.back_main_14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_14.BackColor = System.Drawing.Color.Transparent;
             this.back_main_14.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_main_14.Location = new System.Drawing.Point(0, 25);
+            this.back_main_14.Location = new System.Drawing.Point(0, 265);
             this.back_main_14.Name = "back_main_14";
             this.back_main_14.Size = new System.Drawing.Size(15, 15);
             this.back_main_14.TabIndex = 12;
@@ -2517,13 +2213,10 @@ namespace WOTBO
             // 
             // back_main_13
             // 
-            this.back_main_13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.back_main_13.BackColor = System.Drawing.Color.Transparent;
             this.back_main_13.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_main_13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_main_13.Location = new System.Drawing.Point(0, 5);
+            this.back_main_13.Location = new System.Drawing.Point(0, 245);
             this.back_main_13.Name = "back_main_13";
             this.back_main_13.Size = new System.Drawing.Size(15, 15);
             this.back_main_13.TabIndex = 12;
@@ -2537,14 +2230,8 @@ namespace WOTBO
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(44)))), ((int)(((byte)(55)))));
             this.ClientSize = new System.Drawing.Size(390, 305);
-            this.Controls.Add(this.panel_main_2);
-            this.Controls.Add(this.panel_main_navigate);
-            this.Controls.Add(this.panel_dop_2);
-            this.Controls.Add(this.panel_dop_navigate);
-            this.Controls.Add(this.panel_ui_navigate);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_ui_1);
-            this.Controls.Add(this.panel_ui_2);
             this.Controls.Add(this.panel_dop);
             this.Controls.Add(this.panel_5);
             this.Controls.Add(this.panel_sorry);
@@ -2561,7 +2248,6 @@ namespace WOTBO
             this.Text = "WOTBO";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.panel_ui_navigate.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_12)).EndInit();
@@ -2588,8 +2274,6 @@ namespace WOTBO
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).EndInit();
-            this.panel_ui_2.ResumeLayout(false);
-            this.panel_ui_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_animations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_13)).EndInit();
@@ -2619,14 +2303,8 @@ namespace WOTBO
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
-            this.panel_dop_navigate.ResumeLayout(false);
-            this.panel_dop_2.ResumeLayout(false);
-            this.panel_dop_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_dop_edge)).EndInit();
-            this.panel_main_navigate.ResumeLayout(false);
-            this.panel_main_2.ResumeLayout(false);
-            this.panel_main_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_main_13)).EndInit();
@@ -2670,7 +2348,6 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_gibernate;
         private System.Windows.Forms.CheckBox checkBox_dism;
         private System.Windows.Forms.CheckBox checkBox_reg;
-        private System.Windows.Forms.Panel panel_ui_2;
         private System.Windows.Forms.CheckBox checkBox_mica;
         private System.Windows.Forms.PictureBox back_ui_11;
         private System.Windows.Forms.PictureBox back_pro_14;
@@ -2751,25 +2428,14 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBoxUI_Buttons_2;
         private System.Windows.Forms.CheckBox checkBoxUI_Buttons_1;
         private System.Windows.Forms.CheckBox checkBox_contex;
-        private System.Windows.Forms.Panel panel_ui_navigate;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label_nvcleaninstall;
         private System.Windows.Forms.Label label_ddu;
         private System.Windows.Forms.Button button_new;
-        private System.Windows.Forms.Button button_ui_new_1;
-        private System.Windows.Forms.Button button_ui_new_2;
         private System.Windows.Forms.PictureBox logo;
-        private System.Windows.Forms.Panel panel_dop_navigate;
-        private System.Windows.Forms.Button button_dop_new_2;
-        private System.Windows.Forms.Button button_dop_new_1;
-        private System.Windows.Forms.Panel panel_dop_2;
         private System.Windows.Forms.PictureBox back_dop_6;
         private System.Windows.Forms.CheckBox checkBox_dwm;
         private System.Windows.Forms.CheckBox checkBox_edge;
-        private System.Windows.Forms.Panel panel_main_navigate;
-        private System.Windows.Forms.Button button_main_2;
-        private System.Windows.Forms.Button button_main_1;
-        private System.Windows.Forms.Panel panel_main_2;
         private System.Windows.Forms.PictureBox back_main_13;
         private System.Windows.Forms.CheckBox checkBox_audio;
         private System.Windows.Forms.CheckBox checkBox_tolerate;

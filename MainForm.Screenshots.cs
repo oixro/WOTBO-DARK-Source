@@ -44,12 +44,9 @@ namespace WOTBO
 
             var sections = new List<KeyValuePair<string, Panel>>();
             sections.Add(new KeyValuePair<string, Panel>("01-main", panel1));
-            sections.Add(new KeyValuePair<string, Panel>("02-main-2", panel_main_2));
             sections.Add(new KeyValuePair<string, Panel>("03-interface", panel_ui_1));
-            sections.Add(new KeyValuePair<string, Panel>("04-interface-2", panel_ui_2));
             sections.Add(new KeyValuePair<string, Panel>("05-gpu", panel2));
             sections.Add(new KeyValuePair<string, Panel>("06-extra", panel_dop));
-            sections.Add(new KeyValuePair<string, Panel>("07-extra-2", panel_dop_2));
             sections.Add(new KeyValuePair<string, Panel>("08-downloads", panel_sorry));
             sections.Add(new KeyValuePair<string, Panel>("09-pc-info", panel_5));
 

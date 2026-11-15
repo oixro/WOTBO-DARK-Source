@@ -177,6 +177,7 @@
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="UI\PanelNavigator.cs" />
+    <Compile Include="UI\PanelScroller.cs" />
     <Compile Include="UI\FormPainter.cs" />
     <Compile Include="UI\WindowDragBehavior.cs" />
     <Compile Include="UI\NativeMethods.cs" />
