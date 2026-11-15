@@ -45,6 +45,7 @@ namespace WOTBO.Services.Tweaks
             "Microsoft.SkypeApp",
             "Microsoft.Teams",
             "Microsoft.TeamsApp",
+            "MSTeams",
             "Microsoft.Todos",
             "Microsoft.Wallet",
             "Microsoft.Windows.DevHome",
