@@ -23,6 +23,7 @@ namespace WOTBO.UI
 
         private static readonly List<PanelScroller> Active = new List<PanelScroller>();
         private static readonly Dictionary<Panel, PanelScroller> ByPanel = new Dictionary<Panel, PanelScroller>();
+        private static readonly HashSet<Panel> Locked = new HashSet<Panel>();
         private static bool _filterInstalled;
 
         private readonly Panel _panel;
@@ -105,6 +106,25 @@ namespace WOTBO.UI
             }
         }
 
+        /// <summary>
+        /// Запретить прокрутку на время анимации появления: строки в этот
+        /// момент рисуются из снимка панели, и сдвиг сбил бы их с кадра.
+        /// </summary>
+        public static void Lock(Panel panel)
+        {
+            if (panel != null) Locked.Add(panel);
+        }
+
+        public static void Unlock(Panel panel)
+        {
+            if (panel != null) Locked.Remove(panel);
+        }
+
+        public bool IsLocked
+        {
+            get { return Locked.Contains(_panel); }
+        }
+
         public void ScrollToTop()
         {
             SetOffset(0);
@@ -117,6 +137,8 @@ namespace WOTBO.UI
 
         private void SetOffset(int value)
         {
+            if (IsLocked) return;
+
             int maximum = Math.Max(0, ContentHeight - _panel.ClientSize.Height);
             value = Math.Max(0, Math.Min(maximum, value));
 
@@ -211,7 +233,7 @@ namespace WOTBO.UI
 
                 foreach (PanelScroller scroller in Active)
                 {
-                    if (!scroller._panel.Visible) continue;
+                    if (!scroller._panel.Visible || scroller.IsLocked) continue;
 
                     Rectangle bounds = scroller._panel.RectangleToScreen(scroller._panel.ClientRectangle);
                     if (!bounds.Contains(point)) continue;

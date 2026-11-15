@@ -42,8 +42,69 @@ namespace WOTBO
 
             label_gpu.Click += (sender, args) => ShowGpuPanel();
 
+            SetupWelcome();
             SetupNavHighlight();
             SetupScrolling();
+        }
+
+        /// <summary>
+        /// Стартовая панель вместо вкладки «Основное»: короткая подсказка по
+        /// центру. Живёт до первого переключения раздела.
+        /// </summary>
+        private void SetupWelcome()
+        {
+            welcomePanel = new ScrollPanel
+            {
+                Name = "panel_welcome",
+                Location = panel1.Location,
+                Size = panel1.Size,
+            };
+
+            var text = new Label
+            {
+                Name = "label_welcome",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.Silver,
+                BackColor = Color.Transparent,
+                Font = new Font(Font.FontFamily, 9.25f, FontStyle.Regular),
+                Padding = new Padding(Dpi.Scale(this, 14), 0, Dpi.Scale(this, 14), 0),
+                UseMnemonic = false,
+                Text = "WOTBO - утилита для настройки Windows. "
+                    + "Выберите необходимую вкладку, отметьте твики на ней "
+                    + "и нажмите применить",
+            };
+
+            welcomePanel.Controls.Add(text);
+            Controls.Add(welcomePanel);
+            welcomePanel.BringToFront();
+
+            ShowWelcome();
+        }
+
+        /// <summary>Стартовый экран: вкладки скрыты, подсветки в меню нет.</summary>
+        private void ShowWelcome()
+        {
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5 };
+
+            foreach (Panel panel in panels)
+            {
+                if (panel != null) panel.Visible = false;
+            }
+
+            if (welcomePanel != null)
+            {
+                welcomePanel.Visible = true;
+                welcomePanel.BringToFront();
+            }
+        }
+
+        private void HideWelcome()
+        {
+            if (welcomePanel != null)
+            {
+                welcomePanel.Visible = false;
+            }
         }
 
         /// <summary>
@@ -83,7 +144,17 @@ namespace WOTBO
                 _navActiveFonts[label] = new Font(label.Font, FontStyle.Underline);
             }
 
-            HighlightNav(panel1);
+            ClearNavHighlight();
+        }
+
+        /// <summary>Стартовый экран: ни один раздел не подсвечен.</summary>
+        private void ClearNavHighlight()
+        {
+            foreach (Label label in _navFonts.Keys)
+            {
+                label.ForeColor = NavInactiveColor;
+                label.Font = _navFonts[label];
+            }
         }
 
         private void HighlightNav(Panel panel)

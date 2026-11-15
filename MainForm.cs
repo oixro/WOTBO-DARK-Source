@@ -51,7 +51,8 @@ namespace WOTBO
         public static long capacity;
         static string path_NVidiaProfileInspectorDmW = tempfolder + @"\NVidiaProfileInspectorDmW";
         private readonly BalloonNotifier notifier;
-        private readonly PanelNavigator panelNavigator;
+        private readonly PanelReveal panelReveal;
+        private Panel welcomePanel;
         private readonly Dictionary<string, TweakUiBinder> tweakBinders =
             new Dictionary<string, TweakUiBinder>(StringComparer.OrdinalIgnoreCase);
         private PcInfoView pcInfo;
@@ -93,10 +94,8 @@ namespace WOTBO
             Log.Debug("Startup", $"Dpi.Configure: {startupWatch.ElapsedMilliseconds} мс");
 
             notifier = new BalloonNotifier();
-            panelNavigator = new PanelNavigator(this, PanelMain, PanelHead)
-            {
-                AnimationEnabled = () => animation,
-            };
+            panelReveal = new PanelReveal { Enabled = () => animation };
+            FormClosed += delegate { panelReveal.Dispose(); };
             SetupTweakBinders();
             Log.Debug("Startup", $"SetupTweakBinders: {startupWatch.ElapsedMilliseconds} мс");
 
@@ -264,10 +263,40 @@ namespace WOTBO
         #endregion
         #region my void's
         #region анимка
-        async public void ChangePanel(Panel NewPanel)
+        /// <summary>
+        /// Открыть вкладку: сразу поставить её на место (без сдвига) и
+        /// показать строки «лесенкой» — каждая следующая чуть позже.
+        /// </summary>
+        public void ChangePanel(Panel NewPanel)
         {
+            if (NewPanel == null || NewPanel.IsDisposed) return;
+
             HighlightNav(NewPanel);
-            await panelNavigator.NavigateAsync(NewPanel);
+            HideWelcome();
+
+            foreach (Control control in Controls)
+            {
+                Panel panel = control as Panel;
+                if (panel == null) continue;
+                if (panel == PanelMain || panel == PanelHead || panel == welcomePanel) continue;
+
+                if (panel != NewPanel)
+                {
+                    panel.Visible = false;
+                }
+            }
+
+            NewPanel.Location = new Point(Dpi.Scale(this, 105), Dpi.Scale(this, 36));
+            NewPanel.Visible = true;
+            NewPanel.BringToFront();
+
+            PanelScroller.Refresh(NewPanel);
+
+            // В режиме съёмки скриншотов анимация только мешает.
+            if (!ScreenshotMode)
+            {
+                panelReveal.Play(NewPanel);
+            }
         }
         #endregion
         public void OpenUrl(string url)
