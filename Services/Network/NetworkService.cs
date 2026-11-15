@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using WOTBO.App.Logging;
 
@@ -56,7 +57,16 @@ namespace WOTBO.Services.Network
                 using (var client = new WebClient())
                 {
                     client.Headers[HttpRequestHeader.UserAgent] = "WOTBO";
-                    return client.DownloadString(url);
+
+                    // lastchange.json — UTF-8 с кириллицей. По умолчанию
+                    // WebClient декодирует ответ системной ANSI-кодировкой,
+                    // из-за чего в окне обновления был «Âûøå...».
+                    client.Encoding = Encoding.UTF8;
+
+                    string text = client.DownloadString(url);
+
+                    // Иногда файл приходит с BOM — Version.TryParse на нём падает.
+                    return text.TrimStart('\uFEFF');
                 }
             }
             catch (Exception ex)

@@ -620,6 +620,8 @@ namespace WOTBO
             try
             {
                 UpdateInfo update = await AppServices.UpdateCoordinator.CheckAsync(curver);
+                Log.Info("Update", $"локальная {curver}, у GitHub {update.RemoteVersion}: {update.Status}");
+
                 switch (update.Status)
                 {
                     case UpdateStatus.Actual:
@@ -628,12 +630,43 @@ namespace WOTBO
                         break;
 
                     case UpdateStatus.Newer:
+                        string changes = Shorten(update.ChangeLog, 1200);
+
+                        // Версия пришла с зеркала — значит raw.githubusercontent.com
+                        // недоступен, и скачать exe автоматически не выйдет.
+                        if (update.FromMirror)
+                        {
+                            MessageBox.Show(
+                                $"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\n\n"
+                                + "Автоматическое обновление недоступно: основной источник заблокирован.\n"
+                                + "Скачайте новую версию вручную: " + UpdateCoordinator.ManualDownloadUrl
+                                + (changes.Length > 0 ? "\n\nСписок изменений:\n" + changes : string.Empty),
+                                "Обновление WOTBO",
+                                MessageBoxButtons.OK);
+                            break;
+                        }
+
                         MessageBox.Show(
-                            $"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\nБудет выполнено обновление\n\n" +
-                            $"Список изменений:\n {update.ChangeLog}",
-                            "",
+                            $"Текущая версия - {curver}\nДоступна новая - {update.RemoteVersion}\nБудет выполнено обновление"
+                            + (changes.Length > 0 ? "\n\nСписок изменений:\n" + changes : string.Empty),
+                            "Обновление WOTBO",
                             MessageBoxButtons.OK);
-                        AppServices.UpdateCoordinator.Install(update, exename, exepath, contexpath);
+
+                        try
+                        {
+                            AppServices.UpdateCoordinator.Install(update, exename, exepath, contexpath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error("Update", "не удалось установить обновление", ex);
+                            MessageBox.Show(
+                                "Не удалось скачать обновление.\nПроверьте подключение к интернету и попробуйте позже.\n\n"
+                                + "Скачать вручную: " + UpdateCoordinator.ManualDownloadUrl
+                                + "\n\n" + ex.Message,
+                                "Обновление WOTBO",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                        }
                         break;
 
                     case UpdateStatus.Dev:
@@ -654,6 +687,16 @@ namespace WOTBO
             {
                 Log.Error("Update", "проверка обновления не удалась", ex);
             }
+        }
+        /// <summary>Длинный список изменений не должен раздувать окно на весь экран.</summary>
+        private static string Shorten(string text, int limit)
+        {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+
+            string trimmed = text.Trim();
+            if (trimmed.Length <= limit) return trimmed;
+
+            return trimmed.Substring(0, limit).TrimEnd() + "\n…";
         }
         #endregion
     }

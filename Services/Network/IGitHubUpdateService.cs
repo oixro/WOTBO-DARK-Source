@@ -24,6 +24,12 @@ namespace WOTBO.Services.Network
         public string ChangeLog { get; set; }
 
         public string Error { get; set; }
+
+        /// <summary>
+        /// Версия пришла с запасного зеркала: значит основной источник
+        /// недоступен, и автоматически скачать exe не получится.
+        /// </summary>
+        public bool FromMirror { get; set; }
     }
 
     public interface IGitHubUpdateService
