@@ -45,7 +45,7 @@ namespace WOTBO
                 }
             }
 
-            ButtonClose.Click += (sender, args) => Close();
+            ButtonClose.Click += (sender, args) => ExitApplication();
             WindowDragBehavior.Attach(new List<Control> { PanelHead, LabelHead, logo });
 
             StyleButton(button1);
@@ -115,6 +115,12 @@ $"6. Если кнопка «{button1.Text}» не срабатывает — п
         }
 
         private void button2_Click(object sender, EventArgs e)
+        {
+            ExitApplication();
+        }
+
+        /// <summary>«Выйти» и крестик делают одно и то же — закрывают программу.</summary>
+        private void ExitApplication()
         {
             hcmd($"taskkill /f /im \"{exename}\"");
         }

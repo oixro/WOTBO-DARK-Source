@@ -208,6 +208,15 @@ namespace WOTBO
                 Log.Info("App", "eula null");
                 EulaForm eula = new EulaForm();
                 eula.ShowDialog();
+
+                // Закрыли окно, не приняв условия (Alt+F4) — выходим,
+                // иначе главное окно откроется без согласия.
+                if (!AppServices.Startup.IsEulaAccepted())
+                {
+                    Log.Info("App", "EULA не принята — выход");
+                    Close();
+                    return;
+                }
             }
             AppServices.Startup.MigrateState();
             #endregion
