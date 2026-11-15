@@ -1740,6 +1740,7 @@ namespace WOTBO
             this.checkBox_onedrive.TabIndex = 6;
             this.checkBox_onedrive.Tag = "";
             this.checkBox_onedrive.Text = "Удалить OneDrive";
+            this.toolTip1.SetToolTip(this.checkBox_onedrive, "Останавливает OneDrive, запускает штатный OneDriveSetup.exe /uninstall и вычищает остатки: папки программы, автозапуск, пункт в проводнике и задачи. Папка с файлами (%USERPROFILE%\\OneDrive) не трогается.");
             this.checkBox_onedrive.UseVisualStyleBackColor = false;
             this.checkBox_onedrive.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 

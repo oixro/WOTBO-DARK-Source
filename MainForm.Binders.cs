@@ -484,6 +484,7 @@ namespace WOTBO
                 afterRollback: () => animation = true);
 
             Bind("extra.onedrive", checkBox_onedrive, null, "OneDrive был удалён",
+                beforeApply: () => ShowNotification("OneDrive", "Удаляем OneDrive. Это займёт до минуты — окно может не отвечать.", ToolTipIcon.Info),
                 showRollbackOnApply: false, showRollbackOnDetect: false);
             Bind("extra.compactos", checkBox_compactos, null,
                 disableOnApply: false, showRollbackOnApply: false);
