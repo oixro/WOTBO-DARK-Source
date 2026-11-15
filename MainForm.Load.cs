@@ -35,7 +35,7 @@ namespace WOTBO
             back_ui_tooltips = new PictureBox
             {
                 Name = "back_ui_tooltips",
-                Location = Dpi.Scale(this, 0, 305),
+                Location = Dpi.Scale(this, 0, 345),
                 Size = Dpi.ScaleSize(this, 15, 15),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
@@ -52,7 +52,7 @@ namespace WOTBO
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = Dpi.Scale(this, 20, 305),
+                Location = Dpi.Scale(this, 20, 345),
                 Font = panel_ui_1.Font,
                 TabIndex = 100,
                 UseVisualStyleBackColor = true,
@@ -331,6 +331,20 @@ namespace WOTBO
             Binder("extra.edge").Detect();
             Binder("pro.windowsupdate").Detect();
             Binder("extra.movetemp").Detect();
+            Binder("main.startupdelay").Detect();
+            Binder("main.mmcss").Detect();
+            Binder("main.kbqueue").Detect();
+            Binder("ui.cleancontext").Detect();
+            Binder("ui.shortcutsuffix").Detect();
+            Binder("gpu.gamebar").Detect();
+            Binder("extra.driversearch").Detect();
+            Binder("extra.backgroundapps").Detect();
+            Binder("extra.searchweb").Detect();
+            Binder("extra.maintenance").Detect();
+            Binder("extra.sysrestore").Detect();
+            Binder("extra.nagle").Detect();
+            Binder("extra.appcompat").Detect();
+            Binder("extra.kernellatency").Detect();
             #endregion
             detectWatch.Stop();
             Log.Debug("UI", $"detect loop: {detectWatch.ElapsedMilliseconds} мс");

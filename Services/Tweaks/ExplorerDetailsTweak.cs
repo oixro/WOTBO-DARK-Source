@@ -46,6 +46,10 @@ namespace WOTBO.Services.Tweaks
                 }
             }
 
+            // Задержки меню и подсказок — из «тонких настроек проводника».
+            context.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.Desktop, "MenuShowDelay", "0", RegistryValueKind.String);
+            context.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.Desktop, "MouseHoverTime", "50", RegistryValueKind.String);
+
             context.Processes.StartCaptured("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
         }
 
@@ -73,6 +77,9 @@ namespace WOTBO.Services.Tweaks
                     context.Processes.StartCaptured("regedit.exe /s \"" + taskmgr + "\"");
                 }
             }
+
+            context.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.Desktop, "MenuShowDelay", "400", RegistryValueKind.String);
+            context.Registry.WriteValue(RegistryHive.CurrentUser, RegistryPaths.Desktop, "MouseHoverTime", "400", RegistryValueKind.String);
 
             context.Processes.StartCaptured("taskkill /f /im explorer.exe & timeout /t 1 && explorer.exe");
         }

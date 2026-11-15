@@ -68,6 +68,9 @@ namespace WOTBO
             Binder("main.audio").Apply();
             Binder("main.dwminput").Apply();
             Binder("main.powerlatency").Apply();
+            Binder("main.startupdelay").Apply();
+            Binder("main.mmcss").Apply();
+            Binder("main.kbqueue").Apply();
             Binder("pro.win32priority").Apply(); //Win32Priority
             #endregion
             #region gpu
@@ -89,6 +92,7 @@ namespace WOTBO
             Binder("gpu.hdcp").Apply();
             Binder("gpu.nvidia").Apply();
             Binder("gpu.directplay").Apply();
+            Binder("gpu.gamebar").Apply();
             #endregion
             #region ui
             Binder("ui.buttons").Apply();
@@ -114,6 +118,8 @@ namespace WOTBO
             Binder("ui.wotbocontext").Apply();
             Binder("ui.explorerrestart").Apply();
             Binder("ui.ffmpeg").Apply();
+            Binder("ui.cleancontext").Apply();
+            Binder("ui.shortcutsuffix").Apply();
             Binder("ui.mica").Apply();
             Binder("ui.cursors").Apply();
             Binder("ui.animations").Apply();
@@ -131,6 +137,14 @@ namespace WOTBO
             Binder("extra.dwmpriority").Apply();
             Binder("extra.edge").Apply();
             Binder("extra.movetemp").Apply();
+            Binder("extra.driversearch").Apply();
+            Binder("extra.backgroundapps").Apply();
+            Binder("extra.searchweb").Apply();
+            Binder("extra.maintenance").Apply();
+            Binder("extra.sysrestore").Apply();
+            Binder("extra.nagle").Apply();
+            Binder("extra.appcompat").Apply();
+            Binder("extra.kernellatency").Apply();
             #endregion
             #region pro
             Binder("pro.homegallery").Apply(); //disable main & gallery folder in explorer.exe

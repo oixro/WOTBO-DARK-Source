@@ -426,18 +426,24 @@ namespace WOTBO
             Bind("main.audio", checkBox_audio, back_main_13, "AllowHeadlessExecution BackgroundAudioPolicy был применён");
             Bind("main.dwminput", checkBox_dwninput, back_main_14, "DwmInputUsesIoCompletionPort был применён");
             Bind("main.powerlatency", checkBox_tolerate, back_main_16, "Power\\ExitLatency был применён");
+            Bind("main.startupdelay", checkBox_startupdelay, back_main_17, "задержка автозапуска убрана");
+            Bind("main.mmcss", checkBox_mmcss, back_main_18, "приоритет мультимедиа включён");
+            Bind("main.kbqueue", checkBox_kbqueue, back_main_19, "буфер ввода уменьшен");
             Bind("pro.win32priority", checkBox_pro_11, back_pro_11, "Win32PrioritySeparation был применён",
                 inApply: () => new Win32PriorityForm().ShowDialog());
 
             Bind("gpu.hdcp", checkBox_hdcp, back_gpu_2);
             Bind("gpu.nvidia", checkBox_dopNVIDIA_tweaks, back_gpu_3);
             Bind("gpu.directplay", checkBox_directplay, back_gpu_1);
+            Bind("gpu.gamebar", checkBox_gamebar, back_gpu_5, "окно Game Bar отключено");
 
             Bind("ui.buttons", checkBoxUI_Buttons_1, back_ui_1, "buttons был применён");
             Bind("ui.explorerdetails", checkBoxUI_Buttons_2, back_ui_2, "litle_explorer_things был применён");
             Bind("ui.jpegquality", checkBoxUI_Buttons_4, back_ui_4, "JPEGImportQuality был применён");
             Bind("ui.bluefolders", checkBox_bluefolders, back_ui_5, "синие папки были применены");
             Bind("ui.contextmenu", checkBox_contex, back_ui_6, "contex11 был применён");
+            Bind("ui.cleancontext", checkBox_cleancontext, back_ui_13, "контекстное меню очищено");
+            Bind("ui.shortcutsuffix", checkBox_shortcut, back_ui_14, "приписка у ярлыков убрана");
             Bind("ui.win11header", checkBox_shapka, back_ui_7, "shapka11 был применён");
             Bind("ui.wotbocontext", checkBox_wotboincontex, back_ui_8, "wotbo in contex был применён");
             Bind("ui.explorerrestart", checkBox_explorer, back_ui_9, "restart explorer был применён");
@@ -468,6 +474,14 @@ namespace WOTBO
             Bind("extra.edge", checkBox_edge, back_dop_edge, "Edge был применён",
                 uncheckOnDetect: true);
             Bind("extra.movetemp", checkBox_move_temp, back_dop_movetemp);
+            Bind("extra.driversearch", checkBox_drivers, back_dop_8, "драйверы из Центра обновления отключены");
+            Bind("extra.backgroundapps", checkBox_background, back_dop_9, "фоновые приложения отключены");
+            Bind("extra.searchweb", checkBox_searchweb, back_dop_10, "поиск без интернета и Copilot");
+            Bind("extra.maintenance", checkBox_maintenance, back_dop_11, "обслуживание отключено");
+            Bind("extra.sysrestore", checkBox_sysrestore, back_dop_12, "точки восстановления отключены");
+            Bind("extra.nagle", checkBox_nagle, back_dop_13, "Nagle отключён");
+            Bind("extra.appcompat", checkBox_appcompat, back_dop_14, "помощник совместимости отключён");
+            Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена");
 
             Bind("pro.homegallery", checkBox_pro_1, back_pro_1, "pro_1 был применён",
                 showRollbackOnApply: false, showRollbackOnDetect: false);
