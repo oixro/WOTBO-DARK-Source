@@ -87,15 +87,28 @@ namespace WOTBO
         }
 
         /// <summary>
-        /// Подсказки-описания при наведении на сами твики (toolTip1).
-        /// Это настройка интерфейса, поэтому применяется сразу и запоминается.
+        /// Твик «Отключить описание твика при наведении»: гасит toolTip1.
+        /// Работает как остальные твики — через «Применить», со стрелкой отката.
         /// </summary>
         private void SetupTooltipsToggle()
         {
+            back_ui_tooltips_desc = new PictureBox
+            {
+                Name = "back_ui_tooltips_desc",
+                Location = Dpi.Scale(this, 0, 365),
+                Size = Dpi.ScaleSize(this, 15, 15),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                BackgroundImage = back_animations.BackgroundImage,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                TabStop = false,
+                Visible = false,
+            };
+            back_ui_tooltips_desc.Click += delegate { RollbackTooltipsDescription(); };
+
             checkBox_tooltips = new CheckBox
             {
                 Name = "checkBox_tooltips",
-                Text = "Показывать описание твика при наведении",
+                Text = "Отключить описание твика при наведении",
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
@@ -104,18 +117,55 @@ namespace WOTBO
                 TabIndex = 101,
                 UseVisualStyleBackColor = true,
             };
+            checkBox_tooltips.CheckedChanged += CheckBox_CheckedChanged;
 
-            checkBox_tooltips.CheckedChanged += delegate
-            {
-                toolTip1.Active = checkBox_tooltips.Checked;
-                AppSettings.TooltipsEnabled = checkBox_tooltips.Checked;
-            };
-
+            panel_ui_1.Controls.Add(back_ui_tooltips_desc);
             panel_ui_1.Controls.Add(checkBox_tooltips);
 
-            bool enabled = AppSettings.TooltipsEnabled;
-            checkBox_tooltips.Checked = enabled;
-            toolTip1.Active = enabled;
+            bool hidden = !AppSettings.TooltipsEnabled;
+            bool applied = AppServices.Tweaks.IsApplied("ui.tooltips");
+
+            // Настройка и состояние могут разойтись (старая версия, ручная
+            // правка реестра) — приводим к состоянию твика.
+            if (hidden && !applied)
+            {
+                AppServices.Tweaks.MarkApplied("ui.tooltips", null);
+                applied = true;
+            }
+            else if (applied && !hidden)
+            {
+                AppSettings.TooltipsEnabled = false;
+            }
+
+            toolTip1.Active = !applied;
+            back_ui_tooltips_desc.Visible = applied;
+            checkBox_tooltips.Enabled = !applied;
+            checkBox_tooltips.Checked = false;
+        }
+
+        private void ApplyTooltipsDescription()
+        {
+            using (TweakScope.Apply("ui.tooltips"))
+            {
+                AppSettings.TooltipsEnabled = false;
+                toolTip1.Active = false;
+            }
+
+            checkBox_tooltips.Checked = false;
+            checkBox_tooltips.Enabled = false;
+            back_ui_tooltips_desc.Visible = true;
+        }
+
+        private void RollbackTooltipsDescription()
+        {
+            using (TweakScope.Rollback("ui.tooltips"))
+            {
+                AppSettings.TooltipsEnabled = true;
+                toolTip1.Active = true;
+                checkBox_tooltips.Checked = false;
+                checkBox_tooltips.Enabled = true;
+                back_ui_tooltips_desc.Visible = false;
+            }
         }
 
         private void ApplyTweakTooltips()

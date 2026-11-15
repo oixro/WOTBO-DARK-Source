@@ -77,6 +77,7 @@ namespace WOTBO.Services.State
                 "extra.updateclean",
                 "pro.bufferbloat",
                 "ui.tweakTooltips",
+                "ui.tooltips",
             };
 
         /// <summary>Может ли твик иметь бэкап значений/файлов.</summary>

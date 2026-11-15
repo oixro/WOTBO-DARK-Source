@@ -181,6 +181,11 @@ namespace WOTBO
             {
                 ApplyTweakTooltips();
             }
+
+            if (checkBox_tooltips.Checked)
+            {
+                ApplyTooltipsDescription();
+            }
         }
         #endregion
     }

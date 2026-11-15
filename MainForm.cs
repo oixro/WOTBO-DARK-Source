@@ -56,6 +56,7 @@ namespace WOTBO
             new Dictionary<string, TweakUiBinder>(StringComparer.OrdinalIgnoreCase);
         private PcInfoView pcInfo;
         private CheckBox checkBox_tooltips;
+        private PictureBox back_ui_tooltips_desc;
 
         public static class SysFolder
         {
