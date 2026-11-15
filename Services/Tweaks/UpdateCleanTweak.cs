@@ -14,10 +14,11 @@ namespace WOTBO.Services.Tweaks
         public override void Apply(TweakContext context)
         {
             context.Processes.StartCaptured("net stop wuauserv >nul");
-            context.Processes.StartCaptured(@"del /q /f /s %windir%\SoftwareDistribution\Download\*.* >nul");
-            context.Processes.StartCaptured(@"rd /q /s %windir%\SoftwareDistribution\Download\ >nul");
-            context.Processes.StartCaptured(@"del /q /f /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
-            context.Processes.StartCaptured(@"rd /q /s %windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\ >nul");
+            // rd /s /q — без «del /s», который пишет ошибку на каждый каталог.
+            context.Processes.StartCaptured(@"rd /q /s ""%windir%\SoftwareDistribution\Download"" >nul 2>&1");
+            context.Processes.StartCaptured(@"md ""%windir%\SoftwareDistribution\Download"" >nul 2>&1");
+            context.Processes.StartCaptured(@"rd /q /s ""%windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"" >nul 2>&1");
+            context.Processes.StartCaptured(@"md ""%windir%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache"" >nul 2>&1");
         }
 
         public override void Rollback(TweakContext context)

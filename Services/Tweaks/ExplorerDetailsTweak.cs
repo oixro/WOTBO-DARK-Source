@@ -29,7 +29,7 @@ namespace WOTBO.Services.Tweaks
                 context.Processes.StartCaptured("regedit.exe /s \"" + reg + "\"");
             }
 
-            context.Processes.StartCaptured(@"rd /s /q ""%userprofile%\3D Objects\""");
+            context.Processes.StartCaptured(@"rd /s /q ""%userprofile%\3D Objects\"" >nul 2>&1");
 
             if (!win10)
             {

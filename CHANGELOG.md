@@ -67,6 +67,10 @@
   закрытие окна без согласия не пускает в приложение.
 - `--export-screenshots <dir> [scale]` — выгрузка картинок разделов для сайта
   без тостов и проверки обновлений.
+- Очистка кэша обновлений больше не спамит в лог: `del /s` заменён на
+  `rd /s /q` + `md` с `>nul 2>&1`, а `ProcessService` пишет не больше 20 строк
+  stdout/stderr на процесс (раньше `del /s` давал десятки тысяч одинаковых
+  `[CMD] Error: The system cannot find the file specified.`).
 - Тяжёлые `Detect` (WMI, `netsh`, PowerShell, `powercfg`) выполняются в фоне
   (`TweakUiBinder.DetectInBackground`), состояние применяется через
   `BeginInvoke` — окно больше не замирает после появления.
