@@ -8,7 +8,11 @@ namespace WOTBO.UI
     /// <summary>Градиентная окраска формы WOTBO.</summary>
     public static class FormPainter
     {
-        public static void Apply(Form form, Color color1, Color color2)
+        /// <param name="split">
+        /// Доля высоты, которую занимает верхняя полоса (шапка). По умолчанию
+        /// 10.6 % — так окрашено главное окно.
+        /// </param>
+        public static void Apply(Form form, Color color1, Color color2, float split = 0.106f)
         {
             if (form == null) throw new ArgumentNullException(nameof(form));
 
@@ -24,7 +28,7 @@ namespace WOTBO.UI
                     brush.InterpolationColors = new ColorBlend
                     {
                         Colors = new[] { color1, color1, color2, color2 },
-                        Positions = new[] { 0, 0.106f, 0.106f, 1 },
+                        Positions = new[] { 0, split, split, 1 },
                     };
                     e.Graphics.FillRectangle(brush, form.ClientRectangle);
                 }

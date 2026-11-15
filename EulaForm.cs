@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
@@ -23,12 +24,29 @@ namespace WOTBO
         private void Theme()
         {
             BackColor = Color.FromArgb(35, 44, 55);
-            FormPainter.Apply(this, Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55));
+
+            // Шапка занимает ровно 36 px — как у главного окна.
+            float split = ClientSize.Height > 0 ? 36f / ClientSize.Height : 0.106f;
+            FormPainter.Apply(this, Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55), split);
 
             Font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
             label1.Font = Font;
             label1.BackColor = Color.Transparent;
             label1.ForeColor = Color.White;
+
+            LabelHead.Font = Font;
+            LabelHead.BackColor = Color.Transparent;
+
+            if (Icon != null)
+            {
+                using (var small = new Icon(Icon, new Size(20, 20)))
+                {
+                    logo.Image = small.ToBitmap();
+                }
+            }
+
+            ButtonClose.Click += (sender, args) => Close();
+            WindowDragBehavior.Attach(new List<Control> { PanelHead, LabelHead, logo });
 
             StyleButton(button1);
             StyleButton(button2);
