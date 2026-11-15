@@ -42,6 +42,12 @@ namespace WOTBO
                 return;
             }
 
+            if (HasArgument("--reset-all"))
+            {
+                WOTBO.Services.Windows.TweakReset.Run();
+                return;
+            }
+
             string resultMode;
             if (TryGetResultMode(out resultMode))
             {

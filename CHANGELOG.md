@@ -71,6 +71,9 @@
   которые патчат оболочку (`ui.win11header`, `ui.mica`, `ui.bluefolders`,
   `ui.explorerdetails`, `ui.cleancontext`, `ui.contextmenu`), возвращает
   `InProcServer32` XAML-острова через `su.exe` и перезапускает `explorer.exe`.
+- `--reset-all` — аварийный сброс: откатывает **все** применённые твики по
+  бэкапам, восстанавливает оригинальный `imageres.dll.mun` (если его подменили
+  «Синие папки») и перезапускает проводник.
 - Список программ: AnyDesk заменён на RustDesk, убраны Win 10 Tweaker,
   EpicGamesLauncher, .NET 6.0 Runtime и CrystalDiskInfo.
 
