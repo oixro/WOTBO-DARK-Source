@@ -47,6 +47,12 @@ namespace WOTBO.UI
             BackColor = Color.FromArgb(22, 22, 22);
             ForeColor = Color.White;
             Font = new Font("Tahoma", 8.25f, FontStyle.Regular);
+            // Формы создаются в коде, без дизайнера: без этих строк при
+            // масштабе Windows 125–200 % они не растягивались, а шрифт рос —
+            // текст лез друг на друга.
+            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+
 
             var title = new Label
             {
