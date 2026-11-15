@@ -16,8 +16,6 @@ namespace WOTBO.Services.Processes
     {
         private const string Category = "Process";
 
-        private const int MaxLoggedLines = 20;
-
         private readonly IAppLogger _log;
 
         /// <summary>
@@ -55,48 +53,20 @@ namespace WOTBO.Services.Processes
                     EnableRaisingEvents = true,
                 };
 
-                // Некоторые команды (del /s, rd /s) пишут ошибку на каждый
-                // каталог — без ограничения лог раздувается на десятки тысяч
-                // одинаковых строк.
-                var outputCount = new int[1];
-                var errorCount = new int[1];
-
                 process.OutputDataReceived += (sender, e) =>
                 {
-                    if (string.IsNullOrEmpty(e.Data))
-                    {
-                        return;
-                    }
-
-                    if (outputCount[0] < MaxLoggedLines)
+                    if (!string.IsNullOrEmpty(e.Data))
                     {
                         _log.Debug(Category, "[CMD] Output: " + e.Data);
                     }
-                    else if (outputCount[0] == MaxLoggedLines)
-                    {
-                        _log.Debug(Category, "[CMD] вывод обрезан (слишком много строк)");
-                    }
-
-                    outputCount[0]++;
                 };
 
                 process.ErrorDataReceived += (sender, e) =>
                 {
-                    if (string.IsNullOrEmpty(e.Data))
-                    {
-                        return;
-                    }
-
-                    if (errorCount[0] < MaxLoggedLines)
+                    if (!string.IsNullOrEmpty(e.Data))
                     {
                         _log.Warn(Category, "[CMD] Error: " + e.Data);
                     }
-                    else if (errorCount[0] == MaxLoggedLines)
-                    {
-                        _log.Warn(Category, "[CMD] ошибки обрезаны (слишком много строк)");
-                    }
-
-                    errorCount[0]++;
                 };
 
                 process.Exited += (sender, e) =>
