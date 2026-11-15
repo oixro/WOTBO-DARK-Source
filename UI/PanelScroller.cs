@@ -27,7 +27,7 @@ namespace WOTBO.UI
         private static bool _filterInstalled;
 
         private readonly Panel _panel;
-        private readonly Panel _thumb;
+        private readonly ScrollThumb _thumb;
         private int _offset;
         private bool _dragging;
         private int _dragCursorY;
@@ -40,13 +40,10 @@ namespace WOTBO.UI
             _panel = panel;
             _panel.AutoScroll = false;
 
-            _thumb = new Panel
+            _thumb = new ScrollThumb
             {
                 Name = panel.Name + "_thumb",
                 Width = ThumbWidth,
-                Visible = false,
-                Cursor = WOTBO.UI.SystemCursors.Hand,
-                BackColor = Color.FromArgb(80, 255, 255, 255),
             };
             _thumb.MouseDown += ThumbMouseDown;
             _thumb.MouseMove += ThumbMouseMove;
@@ -63,7 +60,7 @@ namespace WOTBO.UI
                 }
                 else
                 {
-                    _thumb.Visible = false;
+                    _thumb.HideNow();
                 }
             };
             _panel.Resize += delegate { UpdateThumb(); };
@@ -165,6 +162,7 @@ namespace WOTBO.UI
             UpdateThumb();
             _panel.Invalidate(true);
             _panel.Update();
+            _thumb.Flash();
         }
 
         private void UpdateThumb()
@@ -174,7 +172,7 @@ namespace WOTBO.UI
 
             if (content <= height + 1)
             {
-                _thumb.Visible = false;
+                _thumb.FadeOut();
                 _offset = 0;
                 return;
             }
@@ -185,7 +183,7 @@ namespace WOTBO.UI
             int position = travel <= 0 ? 0 : (int)((long)travel * _offset / (content - height));
 
             _thumb.SetBounds(_panel.ClientSize.Width - ThumbWidth - ThumbMargin, ThumbMargin + position, ThumbWidth, thumbHeight);
-            _thumb.Visible = true;
+            _thumb.Reveal();
             _thumb.BringToFront();
         }
 

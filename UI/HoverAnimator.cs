@@ -12,7 +12,12 @@ namespace WOTBO.UI
         private const int DurationMs = 50;
         private const int StepDelayMs = 15;
 
-        public static void Attach(IEnumerable<Control> controls, Color normal, Color hover)
+        /// <param name="resting">
+        /// Цвет, к которому возвращаться после курсора. Нужен пунктам меню:
+        /// активный раздел остаётся белым, а не становится серым, как только
+        /// с него убрали курсор.
+        /// </param>
+        public static void Attach(IEnumerable<Control> controls, Color normal, Color hover, Func<Control, Color> resting = null)
         {
             if (controls == null) return;
 
@@ -20,8 +25,14 @@ namespace WOTBO.UI
             {
                 if (control == null) continue;
 
-                control.MouseHover += async (sender, args) => await FadeAsync(control, normal, hover);
-                control.MouseLeave += async (sender, args) => await FadeAsync(control, hover, normal);
+                Control target = control;
+
+                target.MouseHover += async (sender, args) => await FadeAsync(target, target.ForeColor, hover);
+                target.MouseLeave += async (sender, args) =>
+                {
+                    Color back = resting != null ? resting(target) : normal;
+                    await FadeAsync(target, target.ForeColor, back);
+                };
             }
         }
 

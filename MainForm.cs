@@ -257,7 +257,8 @@ namespace WOTBO
             HoverAnimator.Attach(
                 new List<Control> { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver },
                 Color.FromArgb(192, 192, 192),
-                Color.FromArgb(255, 255, 255));
+                Color.FromArgb(255, 255, 255),
+                NavRestingColor);
             #endregion
         }
         #endregion

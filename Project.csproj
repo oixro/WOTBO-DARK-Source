@@ -213,6 +213,8 @@
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="UI\PanelReveal.cs" />
+    <Compile Include="UI\ScrollThumb.cs" />
+    <Compile Include="UI\NavIndicator.cs" />
     <Compile Include="UI\PanelScroller.cs" />
     <Compile Include="UI\PcInfoView.cs" />
     <Compile Include="UI\ScrollPanel.cs" />

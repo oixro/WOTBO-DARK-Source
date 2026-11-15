@@ -121,28 +121,31 @@ namespace WOTBO
             }
         }
 
-        private readonly Dictionary<Label, Font> _navFonts = new Dictionary<Label, Font>();
-        private readonly Dictionary<Label, Font> _navActiveFonts = new Dictionary<Label, Font>();
+        private List<Label> _navLabels;
+        private NavIndicator navIndicator;
+        private Label _activeNavLabel;
 
         private static readonly Color NavActiveColor = Color.White;
         private static readonly Color NavInactiveColor = Color.Silver;
 
         /// <summary>
-        /// Подсветка текущего раздела: активный пункт белый и жирный,
-        /// остальные — серые. Раньше все пункты выглядели одинаково.
+        /// Подсветка текущего раздела: активный пункт белый, под ним
+        /// анимированное подчёркивание (<see cref="NavIndicator"/>),
+        /// остальные пункты серые.
         /// </summary>
         private void SetupNavHighlight()
         {
             Label[] labels = { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc };
+            _navLabels = new List<Label>();
 
             foreach (Label label in labels)
             {
-                if (label == null) continue;
-                _navFonts[label] = label.Font;
-                // Подчёркивание не меняет ширину текста (в отличие от Bold):
-                // «4. Дополнительно» в bold заезжало под панель контента.
-                _navActiveFonts[label] = new Font(label.Font, FontStyle.Underline);
+                if (label != null) _navLabels.Add(label);
             }
+
+            navIndicator = new NavIndicator { Name = "nav_indicator" };
+            PanelMain.Controls.Add(navIndicator);
+            navIndicator.BringToFront();
 
             ClearNavHighlight();
         }
@@ -150,11 +153,24 @@ namespace WOTBO
         /// <summary>Стартовый экран: ни один раздел не подсвечен.</summary>
         private void ClearNavHighlight()
         {
-            foreach (Label label in _navFonts.Keys)
+            foreach (Label label in _navLabels)
             {
                 label.ForeColor = NavInactiveColor;
-                label.Font = _navFonts[label];
             }
+
+            _activeNavLabel = null;
+
+            if (navIndicator != null) navIndicator.Clear();
+        }
+
+        /// <summary>
+        /// Цвет пункта, когда курсор с него ушёл: активный раздел остаётся
+        /// белым, остальные — серыми. Без этого активный пункт серел после
+        /// любого наведения.
+        /// </summary>
+        private Color NavRestingColor(Control control)
+        {
+            return control == _activeNavLabel ? NavActiveColor : NavInactiveColor;
         }
 
         private void HighlightNav(Panel panel)
@@ -172,12 +188,13 @@ namespace WOTBO
 
             if (active == null) return;
 
-            foreach (Label label in _navFonts.Keys)
+            foreach (Label label in _navLabels)
             {
-                bool on = label == active;
-                label.ForeColor = on ? NavActiveColor : NavInactiveColor;
-                label.Font = on ? _navActiveFonts[label] : _navFonts[label];
+                label.ForeColor = label == active ? NavActiveColor : NavInactiveColor;
             }
+
+            _activeNavLabel = active;
+            navIndicator.PointTo(active, !ScreenshotMode);
         }
 
         private void ShowGpuPanel()

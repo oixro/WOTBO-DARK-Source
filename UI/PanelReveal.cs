@@ -27,6 +27,7 @@ namespace WOTBO.UI
         private const int MaxStaggerMs = 18;
         private const int StaggerBudgetMs = 280;
         private const int RowTolerance = 4;
+        private const int SlidePixels = 10;
 
         private readonly Timer _timer;
         private readonly Stopwatch _clock = new Stopwatch();
@@ -38,6 +39,7 @@ namespace WOTBO.UI
         private Row[] _rows;
         private PaintEventHandler _paint;
         private int _totalMs;
+        private int _slide;
 
         public PanelReveal()
         {
@@ -94,6 +96,7 @@ namespace WOTBO.UI
             }
 
             _totalMs = (_rows.Length - 1) * stagger + FadeMs;
+            _slide = Dpi.Scale(panel, SlidePixels);
             _panel = panel;
 
             // Обработчик ставим до скрытия: панель перерисуется уже пустой,
@@ -210,12 +213,18 @@ namespace WOTBO.UI
 
         private static void HideThumb(Panel panel)
         {
-            Control thumb;
-            if (panel.Controls.ContainsKey(panel.Name + "_thumb"))
+            if (!panel.Controls.ContainsKey(panel.Name + "_thumb")) return;
+
+            Control thumb = panel.Controls[panel.Name + "_thumb"];
+
+            var slide = thumb as ScrollThumb;
+            if (slide != null)
             {
-                thumb = panel.Controls[panel.Name + "_thumb"];
-                thumb.Visible = false;
+                slide.HideNow();
+                return;
             }
+
+            thumb.Visible = false;
         }
 
         private static int CompareControls(Control left, Control right)
@@ -266,7 +275,9 @@ namespace WOTBO.UI
                 if (elapsed < row.Delay) continue;
 
                 Rectangle bounds = row.Bounds(panel);
-                dirty = dirty.IsEmpty ? bounds : Rectangle.Union(dirty, bounds);
+                Rectangle shifted = row.Shifted(bounds, elapsed, _slide);
+                Rectangle area = Rectangle.Union(bounds, shifted);
+                dirty = dirty.IsEmpty ? area : Rectangle.Union(dirty, area);
             }
 
             if (!dirty.IsEmpty)
@@ -292,6 +303,7 @@ namespace WOTBO.UI
             Graphics graphics = e.Graphics;
             graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             graphics.PixelOffsetMode = PixelOffsetMode.Half;
+            graphics.SetClip(panel.ClientRectangle);
 
             long elapsed = _clock.ElapsedMilliseconds;
 
@@ -303,12 +315,15 @@ namespace WOTBO.UI
                 Rectangle bounds = row.Bounds(panel);
                 if (bounds.Width <= 0 || bounds.Height <= 0) continue;
 
+                Rectangle destination = row.Shifted(bounds, elapsed, _slide);
+                if (destination.Width <= 0 || destination.Height <= 0) continue;
+
                 _matrix.Matrix33 = alpha;
                 _attributes.SetColorMatrix(_matrix);
 
                 graphics.DrawImage(
                     snapshot,
-                    bounds,
+                    destination,
                     bounds.X,
                     bounds.Y,
                     bounds.Width,
@@ -347,12 +362,34 @@ namespace WOTBO.UI
 
             public float Alpha(long elapsed)
             {
-                float progress = (elapsed - Delay) / (float)FadeMs;
-                if (progress <= 0f) return 0f;
-                if (progress >= 1f) return 1f;
-
+                float progress = Progress(elapsed);
                 float inverse = 1f - progress;
                 return 1f - inverse * inverse;
+            }
+
+            /// <summary>
+            /// Строка выезжает слева: снимок панели сдвигается вправо на
+            /// несколько пикселей и встаёт на место. Градиент у панели
+            /// вертикальный, поэтому сдвиг по горизонтали не даёт шва.
+            /// </summary>
+            public Rectangle Shifted(Rectangle bounds, long elapsed, int slide)
+            {
+                float progress = Progress(elapsed);
+                float eased = 1f - (1f - progress) * (1f - progress);
+                int shift = (int)Math.Round((1f - eased) * slide);
+
+                if (shift == 0) return bounds;
+
+                Rectangle shifted = bounds;
+                shifted.Offset(shift, 0);
+                return shifted;
+            }
+
+            private float Progress(long elapsed)
+            {
+                float progress = (elapsed - Delay) / (float)FadeMs;
+                if (progress <= 0f) return 0f;
+                return progress >= 1f ? 1f : progress;
             }
         }
     }
