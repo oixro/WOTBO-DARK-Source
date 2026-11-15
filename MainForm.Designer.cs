@@ -133,7 +133,6 @@ namespace WOTBO
             this.label_activate = new System.Windows.Forms.Label();
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
             this.panel_5 = new WOTBO.UI.ScrollPanel();
-            this.label7 = new System.Windows.Forms.Label();
             this.panel_sorry = new WOTBO.UI.ScrollPanel();
             this.label_download_24 = new System.Windows.Forms.Label();
             this.label_download_16 = new System.Windows.Forms.Label();
@@ -1676,23 +1675,12 @@ namespace WOTBO
             // panel_5
             // 
             this.panel_5.BackColor = System.Drawing.Color.Transparent;
-            this.panel_5.Controls.Add(this.label7);
             this.panel_5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel_5.Location = new System.Drawing.Point(1577, 30);
             this.panel_5.Name = "panel_5";
             this.panel_5.Size = new System.Drawing.Size(287, 245);
             this.panel_5.TabIndex = 30;
             this.panel_5.Visible = false;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Silver;
-            this.label7.Location = new System.Drawing.Point(3, 4);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(83, 78);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "CPU: \r\nCPU base clock:\r\nGPU: \r\nОЗУ: \r\nDisplay: \r\nOS: ";
             // 
             // panel_sorry
             // 
@@ -2367,7 +2355,6 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_onedrive;
         private System.Windows.Forms.CheckBox checkBox_picture_cache;
         private WOTBO.UI.ScrollPanel panel_5;
-        private System.Windows.Forms.Label label7;
         private WOTBO.UI.ScrollPanel panel_sorry;
         private System.Windows.Forms.Label label_download_21;
         private System.Windows.Forms.Label label_download_20;

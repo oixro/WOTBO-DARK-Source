@@ -54,6 +54,7 @@ namespace WOTBO
         private readonly PanelNavigator panelNavigator;
         private readonly Dictionary<string, TweakUiBinder> tweakBinders =
             new Dictionary<string, TweakUiBinder>(StringComparer.OrdinalIgnoreCase);
+        private PcInfoView pcInfo;
 
         public static class SysFolder
         {
@@ -114,38 +115,30 @@ namespace WOTBO
             Log.Debug("Startup", $"painting+size: {startupWatch.ElapsedMilliseconds} мс");
 
             #endregion
-            #region LoadSystemInfoAsync
+            #region инфо о ПК
+            pcInfo = new PcInfoView(panel_5, CopyPcReport);
+            pcInfo.ShowLoading("Получаем информацию о ПК…");
             LoadSystemInfoAsync();
             async void LoadSystemInfoAsync()
             {
                 try
                 {
-                    Task<SystemInfoSnapshot> snapshotTask = AppServices.Wmi.GetSnapshotAsync();
-                    string screenInfo = AppServices.Display.GetScreenInfo();
-                    DateTime? installDate = AppServices.WindowsVersion.Detect().InstallDate;
-                    string installDateText = installDate.HasValue
-                        ? installDate.Value.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)
-                        : "—";
-
-                    SystemInfoSnapshot info = await snapshotTask;
+                    PcReport report = await AppServices.PcReport.BuildAsync();
 
                     this.Invoke((MethodInvoker)delegate
                     {
-                        label7.Text = $"CPU: {info.CpuModel.Trim()}\n" +
-                                      $"CPU base clock: {info.CpuFrequencyGhz} GHz\n" +
-                                      $"MB: {info.Motherboard.Trim()}\n" +
-                                      $"GPU: {info.Gpu.Trim()}\n" +
-                                      $"ОЗУ: {info.RamSize.Trim()} {info.RamFrequency.Trim()}\n" +
-                                      $"Display: {screenInfo.Trim()}\n" +
-                                      $"OS: {label_winver.Text}\n" +
-                                      $"Установлена: {installDateText}";
-                        Log.Info("System", label7.Text);
+                        pcInfo.Render(report);
+                        Log.Info("System", report.ToText());
                     });
                 }
                 catch (Exception ex)
                 {
                     Log.Error("System", "не удалось получить информацию о ПК", ex);
-                    label7.Text = "Произошла ошибка при получении информации о пк";
+
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        pcInfo.ShowError("Не удалось получить информацию о ПК");
+                    });
                 }
             }
             #endregion
@@ -261,7 +254,7 @@ namespace WOTBO
             #endregion
             #region label animations
             HoverAnimator.Attach(
-                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver, label7 },
+                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver },
                 Color.FromArgb(192, 192, 192),
                 Color.FromArgb(255, 255, 255));
             #endregion
@@ -331,6 +324,21 @@ namespace WOTBO
             }
 
             notifier.Show(title, message, icon);
+        }
+
+        /// <summary>Отчёт о ПК в буфер обмена (кнопка на вкладке «Инфо о ПК»).</summary>
+        private void CopyPcReport(string text)
+        {
+            try
+            {
+                Clipboard.SetText(text);
+                ShowNotification("Информация о ПК", "Отчёт скопирован в буфер обмена", ToolTipIcon.Info);
+            }
+            catch (Exception exception)
+            {
+                Log.Error("System", "не удалось скопировать отчёт о ПК", exception);
+                ShowNotification("Информация о ПК", "Не удалось скопировать отчёт", ToolTipIcon.Warning);
+            }
         }
 
         /// <summary>

@@ -53,6 +53,10 @@ namespace WOTBO.App
         private static readonly Lazy<IDisplayService> DisplayLazy =
             new Lazy<IDisplayService>(() => new DisplayService(Log.Instance));
 
+        private static readonly Lazy<IPcReportService> PcReportLazy =
+            new Lazy<IPcReportService>(() => new PcReportService(
+                Registry, Processes, Display, WindowsVersion, Log.Instance));
+
         private static readonly Lazy<IGpuService> GpuLazy =
             new Lazy<IGpuService>(() => new GpuService(Wmi, Registry, Processes, Log.Instance));
 
@@ -140,6 +144,12 @@ namespace WOTBO.App
         public static IDisplayService Display
         {
             get { return DisplayLazy.Value; }
+        }
+
+        /// <summary>Отчёт для вкладки «Инфо о ПК».</summary>
+        public static IPcReportService PcReport
+        {
+            get { return PcReportLazy.Value; }
         }
 
         /// <summary>NVIDIA/Ansel/HDCP.</summary>

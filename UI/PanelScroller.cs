@@ -22,6 +22,7 @@ namespace WOTBO.UI
         private const int MinThumbHeight = 28;
 
         private static readonly List<PanelScroller> Active = new List<PanelScroller>();
+        private static readonly Dictionary<Panel, PanelScroller> ByPanel = new Dictionary<Panel, PanelScroller>();
         private static bool _filterInstalled;
 
         private readonly Panel _panel;
@@ -67,6 +68,7 @@ namespace WOTBO.UI
             _panel.Resize += delegate { UpdateThumb(); };
 
             Active.Add(this);
+            ByPanel[panel] = this;
 
             if (!_filterInstalled)
             {
@@ -90,6 +92,16 @@ namespace WOTBO.UI
                 // Позиции строк уже сдвинуты прокруткой — возвращаем исходные,
                 // иначе предел прокрутки «съезжает» с каждым шагом.
                 return bottom + _offset + 8;
+            }
+        }
+
+        /// <summary>Пересчитать полосу после того, как содержимое панели заменили.</summary>
+        public static void Refresh(Panel panel)
+        {
+            PanelScroller scroller;
+            if (panel != null && ByPanel.TryGetValue(panel, out scroller))
+            {
+                scroller.ScrollToTop();
             }
         }
 

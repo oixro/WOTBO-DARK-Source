@@ -15,8 +15,8 @@ namespace WOTBO.UI
     /// </summary>
     public sealed class ScrollPanel : Panel
     {
-        private static readonly Color Top = Color.FromArgb(44, 57, 67);
-        private static readonly Color Bottom = Color.FromArgb(35, 44, 55);
+        private static readonly Color TopColor = Color.FromArgb(44, 57, 67);
+        private static readonly Color BottomColor = Color.FromArgb(35, 44, 55);
 
         public ScrollPanel()
         {
@@ -26,7 +26,7 @@ namespace WOTBO.UI
                 true);
 
             DoubleBuffered = true;
-            BackColor = Bottom;
+            BackColor = BottomColor;
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -54,7 +54,7 @@ namespace WOTBO.UI
             {
                 brush.InterpolationColors = new ColorBlend
                 {
-                    Colors = new[] { Top, Top, Bottom, Bottom },
+                    Colors = new[] { TopColor, TopColor, BottomColor, BottomColor },
                     Positions = new[] { 0, 0.106f, 0.106f, 1 },
                 };
 

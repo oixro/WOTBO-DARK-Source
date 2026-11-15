@@ -95,6 +95,8 @@
     <Compile Include="App\Logging\TweakScope.cs" />
     <Compile Include="Services\Hardware\DisplayService.cs" />
     <Compile Include="Services\Hardware\GpuService.cs" />
+    <Compile Include="Services\Hardware\PcReport.cs" />
+    <Compile Include="Services\Hardware\PcReportService.cs" />
     <Compile Include="Services\Hardware\WmiSystemInfoService.cs" />
     <Compile Include="Services\Network\INetworkService.cs" />
     <Compile Include="Services\Network\IGitHubUpdateService.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="UI\PanelNavigator.cs" />
     <Compile Include="UI\PanelScroller.cs" />
+    <Compile Include="UI\PcInfoView.cs" />
     <Compile Include="UI\ScrollPanel.cs" />
     <Compile Include="UI\FormPainter.cs" />
     <Compile Include="UI\WindowDragBehavior.cs" />
