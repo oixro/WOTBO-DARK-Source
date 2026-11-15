@@ -503,6 +503,16 @@ namespace WOTBO
             Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена");
             Bind("extra.ndis", checkBox_ndis, back_dop_16, "watchdog'и NDIS отключены");
             Bind("extra.sleepstudy", checkBox_sleepstudy, back_dop_17, "SleepStudy отключён");
+            Bind("extra.uwpcleanup", checkBox_uwpcleanup, null, "лишние UWP-приложения удалены",
+                beforeApply: () => ShowNotification("UWP", "Удаляем приложения. Это может занять до минуты.", ToolTipIcon.Info),
+                confirmApply: () => MessageBox.Show(
+                    "Будут удалены лишние UWP-приложения (включая Microsoft Clipchamp).\n\n" +
+                    "Удалённые приложения можно снова скачать в Microsoft Store — его мы не трогаем.\n\n" +
+                    "Откатить это действие нельзя.\n\n" +
+                    "Применить?",
+                    "Удалить лишние UWP приложения", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes,
+                showRollbackOnApply: false,
+                showRollbackOnDetect: false);
 
             Bind("pro.homegallery", checkBox_pro_1, back_pro_1, "pro_1 был применён",
                 showRollbackOnApply: false, showRollbackOnDetect: false);

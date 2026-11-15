@@ -99,6 +99,7 @@ namespace WOTBO.Services.Tweaks
                 new IpiLatencyTweak(),
                 new NdisWatchdogTweak(),
                 new SleepStudyTweak(),
+                new UwpCleanupTweak(),
                 new WotboContextTweak(),
                 new BlueFoldersTweak(),
                 new ExplorerDetailsTweak(),

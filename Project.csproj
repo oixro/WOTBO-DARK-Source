@@ -147,6 +147,7 @@
     <Compile Include="Services\Defender\DefenderServiceHost.cs" />
     <Compile Include="Services\Defender\DefenderStatus.cs" />
     <Compile Include="Services\Tweaks\CursorsTweak.cs" />
+    <Compile Include="Services\Tweaks\UwpCleanupTweak.cs" />
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaEccTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaTelemetryTweak.cs" />

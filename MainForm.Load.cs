@@ -458,6 +458,7 @@ namespace WOTBO
         {
             Binder("main.mmagent").Detect();
             Binder("pro.bufferbloat").Detect();
+            Binder("extra.uwpcleanup").Detect();
         }
 
         /// <summary>GPU-детекты и WMI-запрос имени GPU — тоже после первого кадра.</summary>

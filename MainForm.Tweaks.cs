@@ -152,6 +152,7 @@ namespace WOTBO
             Binder("extra.kernellatency").Apply();
             Binder("extra.ndis").Apply();
             Binder("extra.sleepstudy").Apply();
+            Binder("extra.uwpcleanup").Apply();
             #endregion
             #region pro
             Binder("pro.homegallery").Apply(); //disable main & gallery folder in explorer.exe

@@ -258,6 +258,7 @@ namespace WOTBO
             this.checkBox_ipilatency = new System.Windows.Forms.CheckBox();
             this.checkBox_ndis = new System.Windows.Forms.CheckBox();
             this.checkBox_sleepstudy = new System.Windows.Forms.CheckBox();
+            this.checkBox_uwpcleanup = new System.Windows.Forms.CheckBox();
             this.back_gpu_6 = new System.Windows.Forms.PictureBox();
             this.back_gpu_7 = new System.Windows.Forms.PictureBox();
             this.back_gpu_8 = new System.Windows.Forms.PictureBox();
@@ -1704,7 +1705,7 @@ namespace WOTBO
             this.label_activate.AutoSize = true;
             this.label_activate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_activate.ForeColor = System.Drawing.Color.White;
-            this.label_activate.Location = new System.Drawing.Point(20, 505);
+            this.label_activate.Location = new System.Drawing.Point(20, 525);
             this.label_activate.Name = "label_activate";
             this.label_activate.Size = new System.Drawing.Size(126, 13);
             this.label_activate.TabIndex = 23;
@@ -2206,13 +2207,14 @@ namespace WOTBO
             this.panel_dop.Controls.Add(this.checkBox_sleepstudy);
             this.panel_dop.Controls.Add(this.back_dop_16);
             this.panel_dop.Controls.Add(this.back_dop_17);
+            this.panel_dop.Controls.Add(this.checkBox_uwpcleanup);
             // 
             // label_clean
             // 
             this.label_clean.AutoSize = true;
             this.label_clean.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_clean.ForeColor = System.Drawing.Color.White;
-            this.label_clean.Location = new System.Drawing.Point(20, 525);
+            this.label_clean.Location = new System.Drawing.Point(20, 545);
             this.label_clean.Name = "label_clean";
             this.label_clean.Size = new System.Drawing.Size(164, 13);
             this.label_clean.TabIndex = 13;
@@ -2868,6 +2870,21 @@ namespace WOTBO
             this.back_dop_17.TabStop = false;
             this.back_dop_17.Visible = false;
             this.back_dop_17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
+            // checkBox_uwpcleanup
+            // 
+            this.checkBox_uwpcleanup.AutoSize = true;
+            this.checkBox_uwpcleanup.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_uwpcleanup.ForeColor = System.Drawing.Color.White;
+            this.checkBox_uwpcleanup.Location = new System.Drawing.Point(20, 505);
+            this.checkBox_uwpcleanup.Name = "checkBox_uwpcleanup";
+            this.checkBox_uwpcleanup.Size = new System.Drawing.Size(220, 17);
+            this.checkBox_uwpcleanup.TabIndex = 61;
+            this.checkBox_uwpcleanup.Tag = "";
+            this.checkBox_uwpcleanup.Text = "Удалить лишние UWP приложения";
+            this.toolTip1.SetToolTip(this.checkBox_uwpcleanup, "Удаляет лишние UWP-приложения (включая Clipchamp). Microsoft Store не трогается — удалённое можно скачать обратно.");
+            this.checkBox_uwpcleanup.UseVisualStyleBackColor = true;
+            this.checkBox_uwpcleanup.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_ui_1);
             this.Controls.Add(this.panel_dop);
@@ -3088,6 +3105,7 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_ipilatency;
         private System.Windows.Forms.CheckBox checkBox_ndis;
         private System.Windows.Forms.CheckBox checkBox_sleepstudy;
+        private System.Windows.Forms.CheckBox checkBox_uwpcleanup;
         private System.Windows.Forms.PictureBox back_gpu_6;
         private System.Windows.Forms.PictureBox back_gpu_7;
         private System.Windows.Forms.PictureBox back_gpu_8;
