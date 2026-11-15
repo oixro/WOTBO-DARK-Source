@@ -116,19 +116,13 @@ namespace WOTBO
 
             int border = Dpi.Px(ResizeBorder);
 
-            bool left = point.X <= border;
-            bool right = point.X >= ClientSize.Width - border;
+            // Тянем только по вертикали: горизонтальный размер окна
+            // фиксирован, поэтому бока и углы не отдают коды ресайза.
             bool top = point.Y <= border;
             bool bottom = point.Y >= ClientSize.Height - border;
 
-            if (top && left) return HitTopLeft;
-            if (top && right) return HitTopRight;
-            if (bottom && left) return HitBottomLeft;
-            if (bottom && right) return HitBottomRight;
             if (top) return HitTop;
             if (bottom) return HitBottom;
-            if (left) return HitLeft;
-            if (right) return HitRight;
 
             // Пустая область окна — как раньше: тянем окно целиком.
             return HitCaption;

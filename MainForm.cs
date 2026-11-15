@@ -401,12 +401,13 @@ namespace WOTBO
             int minWidth = Dpi.Scale(this, 390);
             int minHeight = Dpi.Scale(this, 305);
 
-            MinimumSize = new Size(minWidth, minHeight);
-            MaximumSize = Screen.FromControl(this).WorkingArea.Size;
+            // Ширина фиксирована: окно тянется только по вертикали.
+            int width = Math.Max(minWidth, PanelMain.Right);
 
-            ClientSize = new Size(
-                Math.Max(minWidth, PanelMain.Right),
-                Math.Max(minHeight, PanelMain.Bottom));
+            MinimumSize = new Size(width, minHeight);
+            MaximumSize = new Size(width, Screen.FromControl(this).WorkingArea.Height);
+
+            ClientSize = new Size(width, Math.Max(minHeight, PanelMain.Bottom));
 
             LayoutForSize();
             CenterHeader();
@@ -450,8 +451,9 @@ namespace WOTBO
             PanelHead.Width = ClientSize.Width;
             PanelHead.Height = Math.Max(Dpi.Scale(this, 24), headHeight - edge);
 
-            PanelMain.Location = new Point(edge, headHeight);
-            PanelMain.Width = Math.Max(Dpi.Scale(this, 120), ClientSize.Width - edge * 2);
+            // По бокам отступ больше не нужен: горизонтального ресайза нет.
+            PanelMain.Location = new Point(0, headHeight);
+            PanelMain.Width = ClientSize.Width;
             PanelMain.Height = Math.Max(Dpi.Scale(this, 120), ClientSize.Height - headHeight - edge);
 
             int contentWidth = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
