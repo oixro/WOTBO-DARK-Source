@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO.App;
 using WOTBO.App.Logging;
@@ -97,6 +98,52 @@ namespace WOTBO.UI
                 return false;
             }
 
+            ShowApplied();
+            return true;
+        }
+
+        /// <summary>
+        /// Тяжёлый Detect (WMI, netsh, PowerShell) в фоне: окно не замирает,
+        /// а состояние применяется уже в UI-потоке.
+        /// </summary>
+        public void DetectInBackground()
+        {
+            Task.Run(delegate
+            {
+                TweakState state;
+                var watch = Stopwatch.StartNew();
+
+                try
+                {
+                    state = Tweak().Detect(AppServices.TweakContext);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error("Tweak:" + _id, "detect: " + exception.Message, exception);
+                    return;
+                }
+
+                watch.Stop();
+
+                if (watch.ElapsedMilliseconds >= 8)
+                {
+                    Log.Debug("Tweak:" + _id, $"detect {watch.ElapsedMilliseconds} мс");
+                }
+
+                AppServices.Tweaks.Reconcile(_id, state == TweakState.Applied);
+
+                if (state != TweakState.Applied || !_checkBox.IsHandleCreated)
+                {
+                    return;
+                }
+
+                _checkBox.BeginInvoke(new Action(ShowApplied));
+            });
+        }
+
+        /// <summary>Пометки «применён» в интерфейсе (всегда в UI-потоке).</summary>
+        private void ShowApplied()
+        {
             if (!string.IsNullOrEmpty(_detectMessage))
             {
                 Log.Info("Tweak:" + _id, _detectMessage);
@@ -117,8 +164,6 @@ namespace WOTBO.UI
             {
                 _onDetected();
             }
-
-            return true;
         }
 
         /// <summary>Применить, если чекбокс отмечен.</summary>

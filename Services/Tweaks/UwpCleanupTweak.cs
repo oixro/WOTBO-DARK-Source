@@ -99,17 +99,13 @@ namespace WOTBO.Services.Tweaks
                 return;
             }
 
-            string output = context.Processes
-                .ReadOutputAsync(
-                    "powershell.exe",
-                    "-NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"" + path + "\"")
-                .GetAwaiter()
-                .GetResult();
+            // Удаление пакетов идёт минутами — отпускаем отдельным процессом,
+            // иначе окно WOTBO висит всё это время.
+            context.Processes.StartDetached(
+                "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"" + path + "\"",
+                true);
 
-            if (!string.IsNullOrWhiteSpace(output))
-            {
-                context.Log.Info(LogName, output.Trim());
-            }
+            context.Log.Info(LogName, "удаление пакетов запущено в фоне");
         }
 
         public override void Rollback(TweakContext context)

@@ -67,6 +67,12 @@
   закрытие окна без согласия не пускает в приложение.
 - `--export-screenshots <dir> [scale]` — выгрузка картинок разделов для сайта
   без тостов и проверки обновлений.
+- Тяжёлые `Detect` (WMI, `netsh`, PowerShell, `powercfg`) выполняются в фоне
+  (`TweakUiBinder.DetectInBackground`), состояние применяется через
+  `BeginInvoke` — окно больше не замирает после появления.
+- Удаление OneDrive и лишних UWP-приложений запускается отдельным скрытым
+  процессом PowerShell: «Применить» возвращается за ~0.2 с, а работа идёт в
+  фоне (`%TEMP%\wotbo-onedrive.log`).
 - `--fix-explorer` — аварийное восстановление проводника: откатывает твики,
   которые патчат оболочку (`ui.win11header`, `ui.mica`, `ui.bluefolders`,
   `ui.explorerdetails`, `ui.cleancontext`, `ui.contextmenu`), возвращает

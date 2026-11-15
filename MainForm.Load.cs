@@ -309,7 +309,6 @@ namespace WOTBO
             Binder("main.regpack").Detect();//regpack
             UpdateReservedStorageState();
             Binder("main.hibernate").Detect();
-            Binder("main.powerscheme").Detect();
             Binder("ui.animations").Detect();//анимации
             #region mousefix
             void UpdateMouseFixCheckBox()
@@ -462,9 +461,10 @@ namespace WOTBO
         /// </summary>
         private void DetectHeavyTweaks()
         {
-            Binder("main.mmagent").Detect();
-            Binder("pro.bufferbloat").Detect();
-            Binder("extra.uwpcleanup").Detect();
+            Binder("main.powerscheme").DetectInBackground();
+            Binder("main.mmagent").DetectInBackground();
+            Binder("pro.bufferbloat").DetectInBackground();
+            Binder("extra.uwpcleanup").DetectInBackground();
         }
 
         /// <summary>GPU-детекты и WMI-запрос имени GPU — тоже после первого кадра.</summary>

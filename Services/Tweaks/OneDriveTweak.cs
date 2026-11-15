@@ -2,32 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using Microsoft.Win32;
 
 namespace WOTBO.Services.Tweaks
 {
     /// <summary>
-    /// Удаление OneDrive. Актуально для Windows 11 (включая 24H2–26H2),
-    /// где OneDrive ставится в профиль пользователя.
+    /// Удаление OneDrive (актуально для Windows 11, включая 24H2–26H2).
     ///
-    /// Порядок: остановить процесс, вызвать штатный <c>OneDriveSetup.exe
-    /// /uninstall</c> (и пользовательский, и системный), затем вычистить
-    /// остатки — папки программы, автозапуск, закрепление в проводнике,
-    /// задачи обновления и Store-версию. Папка с файлами пользователя
-    /// (<c>%USERPROFILE%\OneDrive</c>) не трогается.
+    /// Само удаление идёт отдельным процессом PowerShell: установщик OneDrive
+    /// работает десятки секунд, и держать на это окно WOTBO нельзя. Detect
+    /// при этом остаётся быстрым — проверяет процесс, файлы и автозапуск.
     /// </summary>
     public sealed class OneDriveTweak : TweakBase
     {
         private const string LogName = "Tweak:extra.onedrive";
         private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-
-        private const string NavPaneClsid =
-            @"Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}";
-
-        private const string NavPaneMachineClsid =
-            @"SOFTWARE\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}";
 
         public override string Id
         {
@@ -54,9 +44,12 @@ namespace WOTBO.Services.Tweaks
                 }
             }
 
-            if (SystemSetups().Any(File.Exists))
+            foreach (string setup in SystemSetups())
             {
-                return TweakState.NotApplied;
+                if (File.Exists(setup))
+                {
+                    return TweakState.NotApplied;
+                }
             }
 
             if (context.Registry.ValueExists(RegistryHive.CurrentUser, RunKey, "OneDrive"))
@@ -69,54 +62,30 @@ namespace WOTBO.Services.Tweaks
 
         public override void Apply(TweakContext context)
         {
-            Stop();
+            string path = Path.Combine(context.Workspace.Root, "onedrive-remove.ps1");
 
-            List<string> setups = SystemSetups().Where(File.Exists)
-                .Concat(UserSetups())
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
-
-            if (setups.Count == 0)
+            try
             {
-                context.Log.Info(LogName, "OneDriveSetup.exe не найден — чистим остатки напрямую");
+                Directory.CreateDirectory(context.Workspace.Root);
+                File.WriteAllText(path, Script, new UTF8Encoding(false));
+            }
+            catch (Exception exception)
+            {
+                context.Log.Error(LogName, "не удалось записать скрипт удаления", exception);
+                return;
             }
 
-            foreach (string setup in setups)
-            {
-                context.Log.Info(LogName, "удаление через " + setup);
+            // Отдельный скрытый процесс: окно WOTBO не ждёт установщик.
+            context.Processes.StartDetached(
+                "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"" + path + "\"",
+                true);
 
-                try
-                {
-                    Task<string> run = context.Processes.ReadOutputAsync(setup, "/uninstall");
-                    if (!run.Wait(TimeSpan.FromSeconds(90)))
-                    {
-                        context.Log.Warn(LogName, "OneDriveSetup не завершился за 90 с: " + setup);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    context.Log.Warn(LogName, "ошибка запуска " + setup + ": " + exception.Message);
-                }
-            }
-
-            RemoveStoreVersion(context);
-            RemoveDirectories(context);
-            RemoveSetups(context);
-            RemoveRegistry(context);
-            RemoveTasks(context);
-
-            Stop();
-
-            if (IsRunning() || ProgramDirectories().Any(dir => File.Exists(Path.Combine(dir, "OneDrive.exe"))))
-            {
-                context.Log.Warn(LogName, "OneDrive всё ещё на месте — возможно, нужна перезагрузка");
-            }
+            context.Log.Info(LogName, "удаление OneDrive запущено в фоне");
         }
 
         public override void Rollback(TweakContext context)
         {
-            // OneDrive удаляется без автоматического восстановления:
-            // вернуть его можно установщиком с сайта Microsoft.
+            // OneDrive удаляется без автоматического восстановления.
         }
 
         private static bool IsRunning()
@@ -131,190 +100,60 @@ namespace WOTBO.Services.Tweaks
             }
         }
 
-        private static void Stop()
-        {
-            try
-            {
-                foreach (Process process in Process.GetProcessesByName("OneDrive"))
-                {
-                    process.Kill();
-                    process.WaitForExit(3000);
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        private static string LocalAppData
-        {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); }
-        }
-
-        private static string ProgramFiles
-        {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles); }
-        }
-
-        private static string ProgramFilesX86
-        {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86); }
-        }
-
-        private static string Windows
-        {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.Windows); }
-        }
-
-        /// <summary>Куда OneDrive ставит свои файлы (без папки с данными пользователя).</summary>
         private static IEnumerable<string> ProgramDirectories()
         {
-            yield return Path.Combine(LocalAppData, @"Microsoft\OneDrive");
-            yield return Path.Combine(ProgramFiles, "Microsoft OneDrive");
-            yield return Path.Combine(ProgramFilesX86, "Microsoft OneDrive");
+            yield return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\OneDrive");
+            yield return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive");
+            yield return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Microsoft OneDrive");
         }
 
         private static IEnumerable<string> SystemSetups()
         {
-            yield return Path.Combine(Windows, @"System32\OneDriveSetup.exe");
-            yield return Path.Combine(Windows, @"SysWOW64\OneDriveSetup.exe");
+            string windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+            yield return Path.Combine(windows, @"System32\OneDriveSetup.exe");
+            yield return Path.Combine(windows, @"SysWOW64\OneDriveSetup.exe");
         }
 
-        /// <summary>Пользовательский установщик: он лежит внутри папки версии.</summary>
-        private static List<string> UserSetups()
-        {
-            var result = new List<string>();
-
-            try
-            {
-                string root = Path.Combine(LocalAppData, @"Microsoft\OneDrive");
-                if (Directory.Exists(root))
-                {
-                    result.AddRange(Directory.GetFiles(
-                        root, "OneDriveSetup.exe", SearchOption.AllDirectories));
-                }
-            }
-            catch
-            {
-            }
-
-            return result;
-        }
-
-        private static void RemoveStoreVersion(TweakContext context)
-        {
-            try
-            {
-                Task<string> run = context.Processes.ReadOutputAsync(
-                    "powershell.exe",
-                    "-NoProfile -NonInteractive -Command \"Get-AppxPackage -AllUsers *OneDrive* | " +
-                    "Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue\"");
-
-                run.Wait(TimeSpan.FromSeconds(60));
-            }
-            catch (Exception exception)
-            {
-                context.Log.Debug(LogName, "Store-версия: " + exception.Message);
-            }
-        }
-
-        private static void RemoveDirectories(TweakContext context)
-        {
-            foreach (string directory in ProgramDirectories().Concat(new[]
-            {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Microsoft OneDrive"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Microsoft\OneDrive"),
-            }))
-            {
-                try
-                {
-                    if (!Directory.Exists(directory))
-                    {
-                        continue;
-                    }
-
-                    Directory.Delete(directory, true);
-                    context.Log.Info(LogName, "удалена папка " + directory);
-                }
-                catch (Exception exception)
-                {
-                    context.Log.Debug(LogName, "не удалось удалить " + directory + ": " + exception.Message);
-                }
-            }
-        }
-
-        private static void RemoveSetups(TweakContext context)
-        {
-            foreach (string setup in SystemSetups())
-            {
-                try
-                {
-                    if (!File.Exists(setup))
-                    {
-                        continue;
-                    }
-
-                    File.Delete(setup);
-                    context.Log.Info(LogName, "удалён " + setup);
-                }
-                catch (Exception exception)
-                {
-                    context.Log.Debug(LogName, "не удалось удалить " + setup + ": " + exception.Message);
-                }
-            }
-        }
-
-        private static void RemoveRegistry(TweakContext context)
-        {
-            try
-            {
-                context.Registry.DeleteValue(RegistryHive.CurrentUser, RunKey, "OneDrive");
-            }
-            catch (Exception exception)
-            {
-                context.Log.Debug(LogName, "автозапуск: " + exception.Message);
-            }
-
-            // Убираем пункт OneDrive из проводника (обе ветки — 64 и 32 бита).
-            foreach (string path in new[] { NavPaneClsid, NavPaneMachineClsid })
-            {
-                try
-                {
-                    RegistryHive hive = path.StartsWith("SOFTWARE", StringComparison.OrdinalIgnoreCase)
-                        ? RegistryHive.LocalMachine
-                        : RegistryHive.CurrentUser;
-
-                    if (!context.Registry.KeyExists(hive, path))
-                    {
-                        continue;
-                    }
-
-                    context.BackupRegistryKey(hive, path);
-                    context.Registry.WriteValue(hive, path, "System.IsPinnedToNameSpaceTree", 0, RegistryValueKind.DWord);
-                    context.Registry.WriteValue(hive, path, "Attributes", 0, RegistryValueKind.DWord);
-                }
-                catch (Exception exception)
-                {
-                    context.Log.Debug(LogName, "проводник: " + exception.Message);
-                }
-            }
-        }
-
-        private static void RemoveTasks(TweakContext context)
-        {
-            try
-            {
-                context.Processes.ReadOutputAsync(
-                    "powershell.exe",
-                    "-NoProfile -NonInteractive -Command \"Get-ScheduledTask -TaskPath '\\Microsoft\\OneDrive\\*' " +
-                    "-ErrorAction SilentlyContinue | Unregister-ScheduledTask -Confirm:$false -ErrorAction SilentlyContinue\"")
-                    .GetAwaiter()
-                    .GetResult();
-            }
-            catch (Exception exception)
-            {
-                context.Log.Debug(LogName, "задачи: " + exception.Message);
-            }
-        }
+        private const string Script =
+            "$ErrorActionPreference = 'SilentlyContinue'\r\n" +
+            "$log = Join-Path $env:TEMP 'wotbo-onedrive.log'\r\n" +
+            "function Log($m) { Add-Content -Path $log -Value ((Get-Date -Format 'HH:mm:ss') + ' ' + $m) }\r\n" +
+            "Log 'start'\r\n" +
+            "Get-Process OneDrive | Stop-Process -Force\r\n" +
+            "$setups = @()\r\n" +
+            "$setups += (Join-Path $env:windir 'System32\\OneDriveSetup.exe')\r\n" +
+            "$setups += (Join-Path $env:windir 'SysWOW64\\OneDriveSetup.exe')\r\n" +
+            "$setups += (Get-ChildItem (Join-Path $env:LOCALAPPDATA 'Microsoft\\OneDrive') -Filter OneDriveSetup.exe -Recurse | ForEach-Object { $_.FullName })\r\n" +
+            "foreach ($s in ($setups | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -Unique)) {\r\n" +
+            "  Log ('uninstall ' + $s)\r\n" +
+            "  Start-Process -FilePath $s -ArgumentList '/uninstall' -Wait -ErrorAction SilentlyContinue\r\n" +
+            "}\r\n" +
+            "Get-AppxPackage -AllUsers *OneDrive* | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue\r\n" +
+            "$dirs = @(\r\n" +
+            "  (Join-Path $env:LOCALAPPDATA 'Microsoft\\OneDrive'),\r\n" +
+            "  (Join-Path $env:ProgramFiles 'Microsoft OneDrive'),\r\n" +
+            "  (Join-Path ${env:ProgramFiles(x86)} 'Microsoft OneDrive'),\r\n" +
+            "  (Join-Path $env:ProgramData 'Microsoft OneDrive'),\r\n" +
+            "  (Join-Path $env:APPDATA 'Microsoft\\OneDrive')\r\n" +
+            ")\r\n" +
+            "foreach ($d in $dirs) { if ($d -and (Test-Path -LiteralPath $d)) { Remove-Item -LiteralPath $d -Recurse -Force; Log ('rm ' + $d) } }\r\n" +
+            "foreach ($f in @((Join-Path $env:windir 'System32\\OneDriveSetup.exe'), (Join-Path $env:windir 'SysWOW64\\OneDriveSetup.exe'))) {\r\n" +
+            "  if (Test-Path -LiteralPath $f) { Remove-Item -LiteralPath $f -Force; Log ('rm ' + $f) }\r\n" +
+            "}\r\n" +
+            "Remove-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' -Name OneDrive\r\n" +
+            "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\OneDrive' -Force | Out-Null\r\n" +
+            "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\OneDrive' -Name DisableFileSyncNGSC -Value 1 -Type DWord\r\n" +
+            "foreach ($k in @('HKCU:\\Software\\Classes\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}', 'HKLM:\\SOFTWARE\\Classes\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}')) {\r\n" +
+            "  if (Test-Path $k) {\r\n" +
+            "    Set-ItemProperty -Path $k -Name 'System.IsPinnedToNameSpaceTree' -Value 0 -Type DWord\r\n" +
+            "    Set-ItemProperty -Path $k -Name 'Attributes' -Value 0 -Type DWord\r\n" +
+            "  }\r\n" +
+            "}\r\n" +
+            "Get-ScheduledTask -TaskPath '\\Microsoft\\OneDrive\\*' | Unregister-ScheduledTask -Confirm:$false\r\n" +
+            "Get-Process OneDrive | Stop-Process -Force\r\n" +
+            "Log 'done'\r\n";
     }
 }
