@@ -72,6 +72,8 @@ namespace WOTBO
             Binder("main.mmcss").Apply();
             Binder("main.kbqueue").Apply();
             Binder("main.ipilatency").Apply();
+            Binder("main.vbs").Apply();
+            Binder("main.searchindex").Apply();
             Binder("pro.win32priority").Apply(); //Win32Priority
             #endregion
             #region gpu
@@ -153,6 +155,10 @@ namespace WOTBO
             Binder("extra.ndis").Apply();
             Binder("extra.sleepstudy").Apply();
             Binder("extra.uwpcleanup").Apply();
+            Binder("extra.svchostmerge").Apply();
+            Binder("extra.telemetry").Apply();
+            Binder("extra.widgets").Apply();
+            Binder("extra.autostart").Apply();
             #endregion
             #region pro
             Binder("pro.homegallery").Apply(); //disable main & gallery folder in explorer.exe

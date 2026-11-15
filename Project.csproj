@@ -149,6 +149,13 @@
     <Compile Include="Services\Tweaks\CursorsTweak.cs" />
     <Compile Include="Services\Tweaks\UwpCleanupTweak.cs" />
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
+    <Compile Include="Services\Tweaks\ServiceStartTweak.cs" />
+    <Compile Include="Services\Tweaks\SearchIndexTweak.cs" />
+    <Compile Include="Services\Tweaks\TelemetryServicesTweak.cs" />
+    <Compile Include="Services\Tweaks\SvcHostMergeTweak.cs" />
+    <Compile Include="Services\Tweaks\WidgetsTweak.cs" />
+    <Compile Include="Services\Tweaks\VbsTweak.cs" />
+    <Compile Include="Services\Tweaks\AutostartTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaEccTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaTelemetryTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaPowerTweak.cs" />

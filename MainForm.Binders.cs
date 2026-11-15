@@ -430,6 +430,14 @@ namespace WOTBO
             Bind("main.mmcss", checkBox_mmcss, back_main_18, "приоритет мультимедиа включён");
             Bind("main.kbqueue", checkBox_kbqueue, back_main_19, "буфер ввода уменьшен");
             Bind("main.ipilatency", checkBox_ipilatency, back_main_20, "задержка IPI отключена");
+            Bind("main.vbs", checkBox_vbs, back_main_21, "VBS/HVCI отключены",
+                confirmApply: () => MessageBox.Show(
+                    "Отключается виртуализация безопасности (VBS/HVCI) и гипервизор.\n\n" +
+                    "Это освободит 200–500 МБ и заметно снизит накладные расходы, но ослабит защиту ядра от эксплойтов.\n" +
+                    "Полный эффект — после перезагрузки.\n\n" +
+                    "Применить?",
+                    "Виртуализация безопасности", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes);
+            Bind("main.searchindex", checkBox_searchindex, back_main_22, "индексация поиска отключена");
             Bind("pro.win32priority", checkBox_pro_11, back_pro_11, "Win32PrioritySeparation был применён",
                 inApply: () => new Win32PriorityForm().ShowDialog());
 
@@ -503,6 +511,10 @@ namespace WOTBO
             Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена");
             Bind("extra.ndis", checkBox_ndis, back_dop_16, "watchdog'и NDIS отключены");
             Bind("extra.sleepstudy", checkBox_sleepstudy, back_dop_17, "SleepStudy отключён");
+            Bind("extra.svchostmerge", checkBox_svchost, back_dop_18, "службы объединены в один процесс");
+            Bind("extra.telemetry", checkBox_telemetry, back_dop_19, "службы телеметрии отключены");
+            Bind("extra.widgets", checkBox_widgets, back_dop_20, "виджеты отключены");
+            Bind("extra.autostart", checkBox_autostart, back_dop_21, "автозапуск тяжёлых программ отключён");
             Bind("extra.uwpcleanup", checkBox_uwpcleanup, null, "лишние UWP-приложения удалены",
                 beforeApply: () => ShowNotification("UWP", "Удаляем приложения. Это может занять до минуты.", ToolTipIcon.Info),
                 confirmApply: () => MessageBox.Show(

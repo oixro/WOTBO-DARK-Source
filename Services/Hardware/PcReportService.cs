@@ -210,7 +210,7 @@ namespace WOTBO.Services.Hardware
 
             parts.Add(Modules(capacities));
 
-            return new PcReportSection("ПАМЯТЬ", string.Join(" · ", parts));
+            return new PcReportSection("ПАМЯТЬ", string.Join(" · ", parts), MemoryUsage());
         }
 
         /// <summary>«2×16 GB» вместо списка планок.</summary>
@@ -229,6 +229,51 @@ namespace WOTBO.Services.Hardware
 
             return string.Join(" + ", groups);
         }
+
+        /// <summary>Текущее потребление ОЗУ: занято/всего и процент.</summary>
+        private static string MemoryUsage()
+        {
+            try
+            {
+                var status = new MemoryStatusEx
+                {
+                    Length = (uint)Marshal.SizeOf(typeof(MemoryStatusEx)),
+                };
+
+                if (!GlobalMemoryStatusEx(status))
+                {
+                    return null;
+                }
+
+                double total = status.TotalPhys / 1024.0 / 1024.0 / 1024.0;
+                double used = (status.TotalPhys - status.AvailPhys) / 1024.0 / 1024.0 / 1024.0;
+
+                return "Занято: " + used.ToString("0.0", CultureInfo.InvariantCulture)
+                    + " GB из " + total.ToString("0.0", CultureInfo.InvariantCulture)
+                    + " GB (" + status.MemoryLoad + " %)";
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private sealed class MemoryStatusEx
+        {
+            public uint Length;
+            public uint MemoryLoad;
+            public ulong TotalPhys;
+            public ulong AvailPhys;
+            public ulong TotalPageFile;
+            public ulong AvailPageFile;
+            public ulong TotalVirtual;
+            public ulong AvailVirtual;
+            public ulong AvailExtendedVirtual;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GlobalMemoryStatusEx([In, Out] MemoryStatusEx buffer);
 
         private static string MemoryTypeName(int code)
         {

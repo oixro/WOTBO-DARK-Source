@@ -445,6 +445,12 @@ namespace WOTBO
             Binder("main.ipilatency").Detect();
             Binder("extra.ndis").Detect();
             Binder("extra.sleepstudy").Detect();
+            Binder("main.vbs").Detect();
+            Binder("main.searchindex").Detect();
+            Binder("extra.svchostmerge").Detect();
+            Binder("extra.telemetry").Detect();
+            Binder("extra.widgets").Detect();
+            Binder("extra.autostart").Detect();
             #endregion
             detectWatch.Stop();
             Log.Debug("UI", $"detect loop: {detectWatch.ElapsedMilliseconds} мс");
