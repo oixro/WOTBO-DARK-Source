@@ -44,7 +44,7 @@ namespace WOTBO.UI
                 Name = panel.Name + "_thumb",
                 Width = ThumbWidth,
                 Visible = false,
-                Cursor = Cursors.Hand,
+                Cursor = WOTBO.UI.SystemCursors.Hand,
                 BackColor = Color.FromArgb(80, 255, 255, 255),
             };
             _thumb.MouseDown += ThumbMouseDown;

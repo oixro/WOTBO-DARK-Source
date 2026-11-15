@@ -667,7 +667,7 @@ namespace WOTBO
             // label_download_21
             // 
             this.label_download_21.AutoSize = true;
-            this.label_download_21.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_21.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_21.ForeColor = System.Drawing.Color.White;
             this.label_download_21.Location = new System.Drawing.Point(110, 125);
             this.label_download_21.Name = "label_download_21";
@@ -680,7 +680,7 @@ namespace WOTBO
             // label_download_20
             // 
             this.label_download_20.AutoSize = true;
-            this.label_download_20.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_20.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_20.ForeColor = System.Drawing.Color.White;
             this.label_download_20.Location = new System.Drawing.Point(110, 105);
             this.label_download_20.Name = "label_download_20";
@@ -693,7 +693,7 @@ namespace WOTBO
             // label_download_18
             // 
             this.label_download_18.AutoSize = true;
-            this.label_download_18.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_18.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_18.ForeColor = System.Drawing.Color.White;
             this.label_download_18.Location = new System.Drawing.Point(110, 85);
             this.label_download_18.Name = "label_download_18";
@@ -706,7 +706,7 @@ namespace WOTBO
             // label_download_17
             // 
             this.label_download_17.AutoSize = true;
-            this.label_download_17.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_17.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_17.ForeColor = System.Drawing.Color.White;
             this.label_download_17.Location = new System.Drawing.Point(110, 65);
             this.label_download_17.Name = "label_download_17";
@@ -719,7 +719,7 @@ namespace WOTBO
             // label_download_15
             // 
             this.label_download_15.AutoSize = true;
-            this.label_download_15.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_15.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_15.ForeColor = System.Drawing.Color.White;
             this.label_download_15.Location = new System.Drawing.Point(110, 25);
             this.label_download_15.Name = "label_download_15";
@@ -732,7 +732,7 @@ namespace WOTBO
             // label_download_14
             // 
             this.label_download_14.AutoSize = true;
-            this.label_download_14.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_14.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_14.ForeColor = System.Drawing.Color.White;
             this.label_download_14.Location = new System.Drawing.Point(110, 5);
             this.label_download_14.Name = "label_download_14";
@@ -745,7 +745,7 @@ namespace WOTBO
             // label_download_13
             // 
             this.label_download_13.AutoSize = true;
-            this.label_download_13.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_13.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_13.ForeColor = System.Drawing.Color.White;
             this.label_download_13.Location = new System.Drawing.Point(3, 205);
             this.label_download_13.Name = "label_download_13";
@@ -758,7 +758,7 @@ namespace WOTBO
             // label_download_11
             // 
             this.label_download_11.AutoSize = true;
-            this.label_download_11.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_11.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_11.ForeColor = System.Drawing.Color.White;
             this.label_download_11.Location = new System.Drawing.Point(3, 185);
             this.label_download_11.Name = "label_download_11";
@@ -771,7 +771,7 @@ namespace WOTBO
             // label_download_8
             // 
             this.label_download_8.AutoSize = true;
-            this.label_download_8.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_8.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_8.ForeColor = System.Drawing.Color.White;
             this.label_download_8.Location = new System.Drawing.Point(3, 125);
             this.label_download_8.Name = "label_download_8";
@@ -784,7 +784,7 @@ namespace WOTBO
             // label_download_6
             // 
             this.label_download_6.AutoSize = true;
-            this.label_download_6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_6.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_6.ForeColor = System.Drawing.Color.White;
             this.label_download_6.Location = new System.Drawing.Point(3, 85);
             this.label_download_6.Name = "label_download_6";
@@ -797,7 +797,7 @@ namespace WOTBO
             // label_download_5
             // 
             this.label_download_5.AutoSize = true;
-            this.label_download_5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_5.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_5.ForeColor = System.Drawing.Color.White;
             this.label_download_5.Location = new System.Drawing.Point(3, 65);
             this.label_download_5.Name = "label_download_5";
@@ -810,7 +810,7 @@ namespace WOTBO
             // label_download_4
             // 
             this.label_download_4.AutoSize = true;
-            this.label_download_4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_4.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_4.ForeColor = System.Drawing.Color.White;
             this.label_download_4.Location = new System.Drawing.Point(3, 45);
             this.label_download_4.Name = "label_download_4";
@@ -823,7 +823,7 @@ namespace WOTBO
             // label_download_3
             // 
             this.label_download_3.AutoSize = true;
-            this.label_download_3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_3.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_3.ForeColor = System.Drawing.Color.White;
             this.label_download_3.Location = new System.Drawing.Point(3, 25);
             this.label_download_3.Name = "label_download_3";
@@ -836,7 +836,7 @@ namespace WOTBO
             // label_download_2
             // 
             this.label_download_2.AutoSize = true;
-            this.label_download_2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_2.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_2.ForeColor = System.Drawing.Color.White;
             this.label_download_2.Location = new System.Drawing.Point(3, 5);
             this.label_download_2.Name = "label_download_2";
@@ -850,7 +850,7 @@ namespace WOTBO
             // label_ddu
             // 
             this.label_ddu.AutoSize = true;
-            this.label_ddu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_ddu.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_ddu.ForeColor = System.Drawing.Color.White;
             this.label_ddu.Location = new System.Drawing.Point(20, 25);
             this.label_ddu.Name = "label_ddu";
@@ -863,7 +863,7 @@ namespace WOTBO
             // label_nvcleaninstall
             // 
             this.label_nvcleaninstall.AutoSize = true;
-            this.label_nvcleaninstall.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_nvcleaninstall.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_nvcleaninstall.ForeColor = System.Drawing.Color.White;
             this.label_nvcleaninstall.Location = new System.Drawing.Point(20, 5);
             this.label_nvcleaninstall.Name = "label_nvcleaninstall";
@@ -1719,7 +1719,7 @@ namespace WOTBO
             // label_activate
             // 
             this.label_activate.AutoSize = true;
-            this.label_activate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_activate.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_activate.ForeColor = System.Drawing.Color.White;
             this.label_activate.Location = new System.Drawing.Point(20, 605);
             this.label_activate.Name = "label_activate";
@@ -1786,7 +1786,7 @@ namespace WOTBO
             // label_download_24
             // 
             this.label_download_24.AutoSize = true;
-            this.label_download_24.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_24.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_24.ForeColor = System.Drawing.Color.White;
             this.label_download_24.Location = new System.Drawing.Point(110, 145);
             this.label_download_24.Name = "label_download_24";
@@ -1800,7 +1800,7 @@ namespace WOTBO
             // label_download_16
             // 
             this.label_download_16.AutoSize = true;
-            this.label_download_16.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_16.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_16.ForeColor = System.Drawing.Color.White;
             this.label_download_16.Location = new System.Drawing.Point(110, 45);
             this.label_download_16.Name = "label_download_16";
@@ -1812,7 +1812,7 @@ namespace WOTBO
             // label_download_10
             // 
             this.label_download_10.AutoSize = true;
-            this.label_download_10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_10.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_10.ForeColor = System.Drawing.Color.White;
             this.label_download_10.Location = new System.Drawing.Point(3, 165);
             this.label_download_10.Name = "label_download_10";
@@ -1824,7 +1824,7 @@ namespace WOTBO
             // label_download_9
             // 
             this.label_download_9.AutoSize = true;
-            this.label_download_9.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_9.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_9.ForeColor = System.Drawing.Color.White;
             this.label_download_9.Location = new System.Drawing.Point(3, 145);
             this.label_download_9.Name = "label_download_9";
@@ -1836,7 +1836,7 @@ namespace WOTBO
             // label_download_7
             // 
             this.label_download_7.AutoSize = true;
-            this.label_download_7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_download_7.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_download_7.ForeColor = System.Drawing.Color.White;
             this.label_download_7.Location = new System.Drawing.Point(3, 105);
             this.label_download_7.Name = "label_download_7";
@@ -1879,7 +1879,7 @@ namespace WOTBO
             // label_inspector
             // 
             this.label_inspector.AutoSize = true;
-            this.label_inspector.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_inspector.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_inspector.ForeColor = System.Drawing.Color.White;
             this.label_inspector.Location = new System.Drawing.Point(20, 45);
             this.label_inspector.Name = "label_inspector";
@@ -2064,7 +2064,7 @@ namespace WOTBO
             // label_main
             // 
             this.label_main.AutoSize = true;
-            this.label_main.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_main.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_main.ForeColor = System.Drawing.Color.Silver;
             this.label_main.Location = new System.Drawing.Point(3, 3);
             this.label_main.Name = "label_main";
@@ -2076,7 +2076,7 @@ namespace WOTBO
             // label_site
             // 
             this.label_site.AutoSize = true;
-            this.label_site.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_site.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_site.ForeColor = System.Drawing.Color.Silver;
             this.label_site.Location = new System.Drawing.Point(3, 123);
             this.label_site.Name = "label_site";
@@ -2089,7 +2089,7 @@ namespace WOTBO
             // label_gpu
             // 
             this.label_gpu.AutoSize = true;
-            this.label_gpu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_gpu.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_gpu.ForeColor = System.Drawing.Color.Silver;
             this.label_gpu.Location = new System.Drawing.Point(3, 43);
             this.label_gpu.Name = "label_gpu";
@@ -2119,7 +2119,7 @@ namespace WOTBO
             // label_dop
             // 
             this.label_dop.AutoSize = true;
-            this.label_dop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_dop.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_dop.ForeColor = System.Drawing.Color.Silver;
             this.label_dop.Location = new System.Drawing.Point(3, 63);
             this.label_dop.Name = "label_dop";
@@ -2146,7 +2146,7 @@ namespace WOTBO
             // label_progs
             // 
             this.label_progs.AutoSize = true;
-            this.label_progs.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_progs.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_progs.ForeColor = System.Drawing.Color.Silver;
             this.label_progs.Location = new System.Drawing.Point(3, 83);
             this.label_progs.Name = "label_progs";
@@ -2173,7 +2173,7 @@ namespace WOTBO
             // label_interface
             // 
             this.label_interface.AutoSize = true;
-            this.label_interface.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_interface.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_interface.ForeColor = System.Drawing.Color.Silver;
             this.label_interface.Location = new System.Drawing.Point(3, 23);
             this.label_interface.Name = "label_interface";
@@ -2185,7 +2185,7 @@ namespace WOTBO
             // label_pc
             // 
             this.label_pc.AutoSize = true;
-            this.label_pc.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_pc.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_pc.ForeColor = System.Drawing.Color.Silver;
             this.label_pc.Location = new System.Drawing.Point(3, 103);
             this.label_pc.Name = "label_pc";
@@ -2237,7 +2237,7 @@ namespace WOTBO
             // label_clean
             // 
             this.label_clean.AutoSize = true;
-            this.label_clean.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_clean.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_clean.ForeColor = System.Drawing.Color.White;
             this.label_clean.Location = new System.Drawing.Point(20, 625);
             this.label_clean.Name = "label_clean";
@@ -2274,7 +2274,7 @@ namespace WOTBO
             // label_msimode
             // 
             this.label_msimode.AutoSize = true;
-            this.label_msimode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_msimode.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_msimode.ForeColor = System.Drawing.Color.White;
             this.label_msimode.Location = new System.Drawing.Point(20, 425);
             this.label_msimode.Name = "label_msimode";

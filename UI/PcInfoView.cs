@@ -114,7 +114,7 @@ namespace WOTBO.UI
             var link = new Label
             {
                 AutoSize = true,
-                Cursor = Cursors.Hand,
+                Cursor = WOTBO.UI.SystemCursors.Hand,
                 ForeColor = LinkColor,
                 BackColor = Color.Transparent,
                 Font = new Font(_host.Font, FontStyle.Underline),
