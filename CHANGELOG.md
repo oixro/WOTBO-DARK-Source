@@ -1,230 +1,192 @@
 # Changelog
 
+Сравнение с последним релизом перед бетой — **2.33** (коммит `fbc0395`, 2025-02-01).
+Тогда это был один `Form1.cs` на 3452 строки и 49 чекбоксов; сейчас — 68 твиков
+в `Services/Tweaks`, 70 чекбоксов в форме и ещё два переключателя подсказок,
+которые создаются в коде.
+
 ## 2.34-beta — 2026-11-15
 
-### Сайт
+### Архитектура
 
-- Кнопка «Сайт» и README ведут на `https://wotbo.pro/` (вместо GitHub Pages).
+- `Form1` разбит на `MainForm` + partial-файлы: `Load`, `Tweaks`, `Binders`,
+  `Navigation`, `Rollbacks`, `Features`, `Screenshots`.
+- Появились слои:
+  - `App/` — `AppBootstrap`, `AppServices`, `AppPaths`, `AppSettings`,
+    `AppIcon`, `InstanceGuard`, `StartupWorkflow`, `ProgramLinks`,
+    `Logging/*` (уровни, категории, `TweakScope`).
+  - `Services/` — `Tweaks` (68 классов `ITweak`), `Defender`, `State`,
+    `Registry`, `Processes`, `Network`, `Storage`, `Hardware`, `Windows`.
+  - `UI/` — `TweakUiBinder`, `PanelNavigator`, `PanelScroller`, `ScrollPanel`,
+    `NavigationController`, `TweakHoverInfo`, `PcInfoView`, `FormPainter`,
+    `HoverAnimator`, `WindowDragBehavior`, `BalloonNotifier`, `Dpi`,
+    `NativeMethods`.
+- Бэкапы и состояние: `TweakStateStore` + `TweakBackupSession` пишут
+  «было → стало» по каждому значению в
+  `HKCU\Software\oixro\wotbo\Backups\<id>` и
+  `%LOCALAPPDATA%\oixro\wotbo\backups\<id>`; поддерживаются значения реестра,
+  ветки, файлы и каталоги.
+- `RegistryService` работает через `RegistryView.Registry64` — x64-приложение
+  больше не читает `WOW6432Node`.
+- `ProcessService` (`StartCaptured`, `StartDetached`, `StartPowerShell`,
+  `RunSuper`, `ReadOutputAsync`) заменил разрозненные запуски.
+- Логи: `%TEMP%\wotbo.log`, уровни `DEBUG/INFO/WARN/ERROR`, категория
+  `Tweak:<id>`, замер `detect N мс` для медленных твиков.
+- DPI: `dpiAware` в `app.manifest`, координаты из кода считаются через
+  `UI.Dpi`; окно корректно ведёт себя на 125–300 %.
+- Сборка и документация: `.github/workflows/build.yml` (Release|x64,
+  проверка PE `0x8664`, артефакт), `.editorconfig`, `README.md`, `docs/`,
+  `REFACTORING_PLAN.md`, этот changelog.
 
-### Скорость запуска
+### Интерфейс
 
-- В `TweakUiBinder.Detect` добавлен замер: твики дольше 8 мс пишут время
-  в DEBUG-лог (`[Tweak:...] detect N мс`), плюс общий `detect loop`.
-- Проверка обновлений и сети и `DISM /Get-ReservedStorageState` выполняются
-  после первого кадра — окно больше не ждёт сеть и DISM.
-- Основные `Detect`-ы (включая GPU) остаются до показа окна, чтобы интерфейс
-  появлялся собранным; `main.mmagent` (WMI) и `pro.bufferbloat` (netsh)
-  выполняются после fade и обновляют только свои чекбоксы.
-- Плавное появление окна возвращено (fade 0→1 по 0.1 с шагом 7 мс);
-  в неинтерактивной сессии `Opacity` выставляется сразу.
-- Версия в шапке больше не «dbuild - 9.99»: до проверки обновления сразу
-  пишется реальная (`build - 2.34`), и при отсутствии интернета она остаётся.
-- 42 одинаковые картинки стрелок отката вынесены из `MainForm.resx`
-  в общий ресурс `Resources.back` (форма грузится легче).
-- Замеры на тестовой VM (Win11 26H2 ARM64, x64-код под эмуляцией):
-  окно появляется примерно через 0.7 с после старта `Load` (было ~1.7 с),
-  fade сохранён; сеть, DISM и два тяжёлых детекта идут после показа.
+- **Вкладки листаются.** Страницы «1/2» убраны: один список на вкладку,
+  тонкая полупрозрачная полоса прокрутки (6 px) поверх контента — не отнимает
+  ширину у строк, как системная (17 px). Колесо работает над любой строкой,
+  ползунок перетаскивается, при переключении вкладки список открывается сверху.
+- Панели списков сами рисуют фон тем же градиентом, что и форма, — прокрутка
+  без полос и артефактов; сдвиг строк идёт с отключённой перерисовкой.
+- Действия-ссылки («Активировать Windows», «Расширенная очистка Windows»,
+  «Режим MSI») всегда стоят в конце списков.
+- Активный раздел подсвечивается белым с подчёркиванием (bold не используется —
+  «4. Дополнительно» заезжало под панель контента).
+- Разделы переименованы: «5. Программы», «6. Инфо о ПК», «Режим MSI».
+- 39 твиков переименованы: бренды убраны из названий, риски перенесены
+  в тултипы («Схема питания: максимум», «Исправить ускорение мыши»,
+  «Скрыть раздачу интернета (TTL)» и т.д.).
+- Вкладка «Интерфейс»: 12-й пункт («Отключить анимацию вкладок») перенесён со
+  второй страницы, шаг строк ровный, панель выросла до 287×250.
+- **Курсоры** стали обычным твиком вместо ссылки с UAC-диалогом: вариант
+  (светлый/тёмный) выбирается по теме Windows, файлы копируются в
+  `%SystemRoot%\Cursors\WOTBO_*`, реестр пишется напрямую, откат штатный.
+- В конце «Интерфейса» два переключателя: «Показывать подсказки о применённых
+  твиках» (как раньше) и новый твик «Отключить описание твика при наведении»
+  (`ui.tooltips`) — с «Применить», стрелкой отката и сохранением состояния.
+- **EULA**: новый текст, тёмная тема, шапка как у главного окна (иконка,
+  заголовок, «✖», перетаскивание); крестик выходит из программы, как «Выйти»;
+  закрытие окна без согласия не пускает в приложение.
+- `--export-screenshots <dir> [scale]` — выгрузка картинок разделов для сайта
+  без тостов и проверки обновлений.
+- Список программ: AnyDesk заменён на RustDesk, убраны Win 10 Tweaker,
+  EpicGamesLauncher, .NET 6.0 Runtime и CrystalDiskInfo.
 
+### Твики
 
-### Defender: правила применения
+Новые (22) — помимо перевода курсоров в твик:
 
-- Обязательное условие: перед отключением пользователь сам выключает
-  **Tamper Protection** и **Real-time protection**. Если они включены, твик не
-  применяется и открывает настройки «Безопасности Windows».
-- **Windows 11** — всегда через безопасный режим; **Windows 10** — обычным
-  применением, без перезагрузки.
-- Пока выбран твик отключения Defender, остальные твики блокируются и
-  снимаются (если были отмечены), стрелки отката скрываются, «Применить»
-  выполняет только Defender. При снятии галочек показывается уведомление,
-  почему они сняты.
-- Убрана задержка 20 секунд перед перезагрузкой.
-- После финальной перезагрузки автоматически открывается окно результата
-  (`--defender-result apply|restore`): заголовок зелёный только при успехе всех
-  обязательных проверок, есть счётчик «пройдено N из M», необязательные пункты
-  помечаются точкой, окно отката обновляется до включения Real-time,
-  кнопка «Закрыть» и Esc работают.
-- Удалён пункт «вернуть защиту от эксплойтов» (`label_kalorant`) и
-  `exploitscfg.reg` из regpack.
-- Отключение служб идёт через SCM и повторяется после паузы: на 24H2+
-  `SecurityHealthService` возвращал `WinDefend/WdFilter/WdBoot/MDCoreSvc`
-  в demand start, теперь он гасится первым.
-- Восстановление реестра больше не удаляет защищённые ветки: сначала импорт,
-  затем удаление лишних значений и подветок (иначе `Services\WinDefend`
-  мог остаться без данных). Владелец папок возвращается всегда.
-- Убраны дубли Userinit/RunOnce для стадии: они перехватывали мьютекс раньше
-  службы SYSTEM, и работа шла без прав. Остались служба и скрипты на рабочем
-  столе.
+| Твик | id | Вкладка |
+|---|---|---|
+| Убрать задержку автозапуска | `main.startupdelay` | Основное |
+| Приоритет мультимедиа (MMCSS) | `main.mmcss` | Основное |
+| Уменьшить буфер клавиатуры и мыши | `main.kbqueue` | Основное |
+| Отключить задержку IPI | `main.ipilatency` | Основное |
+| Чистое контекстное меню | `ui.cleancontext` | Интерфейс |
+| Убрать « - Ярлык» у ярлыков | `ui.shortcutsuffix` | Интерфейс |
+| Отключить описание твика при наведении | `ui.tooltips` | Интерфейс |
+| Не искать драйверы в Windows Update | `extra.driversearch` | Дополнительно |
+| Отключить фоновые приложения | `extra.backgroundapps` | Дополнительно |
+| Поиск без интернета и Copilot | `extra.searchweb` | Дополнительно |
+| Отключить обслуживание Windows | `extra.maintenance` | Дополнительно |
+| Отключить точки восстановления | `extra.sysrestore` | Дополнительно |
+| Отключить алгоритм Nagle | `extra.nagle` | Дополнительно |
+| Отключить помощник совместимости | `extra.appcompat` | Дополнительно |
+| Низкая задержка ядра (не проверено) | `extra.kernellatency` | Дополнительно |
+| Отключить watchdog'и NDIS | `extra.ndis` | Дополнительно |
+| Отключить SleepStudy | `extra.sleepstudy` | Дополнительно |
+| Убрать окно Xbox Game Bar | `gpu.gamebar` | GPU |
+| ECC и скрабберы NVIDIA | `gpu.nvecc` | GPU |
+| Энергосбережение NVIDIA: максимум | `gpu.nvpower` | GPU |
+| Непроверенные параметры NVIDIA | `gpu.nvpowerhard` | GPU |
+| Телеметрия драйвера NVIDIA | `gpu.nvtelemetry` | GPU |
 
-## 2.34-beta — 2026-11-14
+- «Чистое контекстное меню» убирает «Поделиться», «Передать на устройство»,
+  «Предоставить доступ» и «Отправить», а «Создать ярлык на рабочем столе»
+  выносит в главное меню отдельным пунктом (скрипт в
+  `%ProgramData%\oixro\wotbo\desktop-shortcut.ps1`).
+- «Отключить алгоритм Nagle» применяется ко всем активным интерфейсам
+  (`TcpAckFrequency`, `TCPNoDelay`) — GUID вручную подставлять не нужно,
+  список применённых запоминается для точного отката.
+- NVIDIA: энергосбережение (PowerMizer/`DisableDynamicPstate`) и непроверенный
+  набор (ASPM, GC6, RTD3, ELPG, PLL) спрашивают подтверждение с предупреждением;
+  ECC/скрабберы и телеметрия — без окна. На не-NVIDIA машинах строки скрыты,
+  Game Bar поднимается вплотную к DirectPlay.
+- Убрано: мёртвый чекбокс «Отключить снижение громкости микрофона» (лежал вне
+  панели и не был подключён), ссылка «Windows Defender Killer» и её reg-пакеты.
+
+Изменено в существующих твиках:
+
+- `main.powerscheme` — новая схема из пака «(U)_Shingeki_no_Windows_8.0»:
+  встроенный `.reg` импортируется одноразовой задачей от SYSTEM (ветка
+  `PowerSchemes` закрыта даже для администратора), затем `powercfg -setactive`;
+  откат возвращает прежнюю схему и удаляет импортированную.
+- `ui.explorerdetails` — дополнительно `MenuShowDelay=0` и `MouseHoverTime=50`.
+- `main.mousefix` — добавлен `RawMouseThrottleDuration`.
+- `ui.mica` — берётся последний релиз ExplorerBlurMica.
+- Детекты приоритетов и DirectPlay сверяются с фактическим состоянием системы,
+  «Применить» и стрелки не расходятся с реальностью.
 
 ### Defender
 
-- `main.defender` переписан: полное отключение вместо `.reg`-пакетов.
+- Твик переписан полностью: вместо `.reg`-пакетов — свой движок.
   Службы и драйверы (`WinDefend`, `WdNisSvc`, `WdFilter`, `WdBoot`, `WdNisDrv`,
   `MDCoreSvc`, `Sense`, `Sgrm*`, `MsSec*`, `SecurityHealthService`,
   `webthreatdef*`, `MpsSvc`) → `Start=4`; папки защитника переименовываются
   в `*.wotbo_bak` (файлы не удаляются); отключаются задачи, политики,
   брандмауэр, SmartScreen, Smart App Control и Windows Security.
-- Безопасный режим автоматизирован: одноразовая служба `WotboDefender`,
-  прописанная в `SafeBoot\Minimal`/`Network`, запускается SCM под SYSTEM
-  (планировщик задач в safe mode задачи не исполняет). Дубли — `Userinit`,
-  `RunOnce` и скрипты на рабочем столе; аварийный `C:\WOTBO-UNDO-SAFE-MODE.bat`.
-- Откат: восстановление из обычного режима, при нехватке прав — та же служба
-  с фазой `restore`. Реестр восстанавливается по схеме
-  «удалить ветку → импортировать экспорт», владельцы папок возвращаются
-  (TrustedInstaller). Одноразовая задача `\WOTBO\DefenderFinalize`
-  доигрывает `Set-MpPreference`, чтобы `RealTimeProtectionEnabled`
-  включался с первого ребута.
-- Журнал и бэкап: `%ProgramData%\oixro\wotbo\defender\journal.json`,
-  зеркало в `%LOCALAPPDATA%\oixro\wotbo\backups\main.defender`.
-- Логи: `C:\Windows\Temp\wotbo-defender.log`, `...-stage.log`,
-  `...-service.log`.
-- Удалены старые `.reg`-пакеты Defender из `regpack.zip`,
-  `restoreWINDEF10/11.reg` и пункт «Windows Defender Killer».
+- Обязательное условие: пользователь сам выключает **Tamper Protection** и
+  **Real-time protection**, иначе твик не применяется и открывает настройки
+  «Безопасности Windows».
+- **Windows 11** — всегда через безопасный режим (одноразовая служба
+  `WotboDefender` в `SafeBoot\Minimal`/`Network`, запуск от SYSTEM);
+  **Windows 10** — обычным применением, без перезагрузки.
+- Пока выбран Defender, остальные твики блокируются и снимаются, стрелки отката
+  скрыты, «Применить» выполняет только Defender.
+- После финальной перезагрузки открывается окно результата
+  (`--defender-result apply|restore`): зелёный заголовок только при успехе всех
+  обязательных проверок, счётчик «пройдено N из M», Esc и «Закрыть» работают.
+- Журнал: `%ProgramData%\oixro\wotbo\defender\journal.json`, логи
+  `C:\Windows\Temp\wotbo-defender*.log`; аварийный
+  `C:\WOTBO-UNDO-SAFE-MODE.bat`.
 
-### Иконки
+### Инфо о ПК
 
-- `iconwotbo2.ico` оптимизирован (192 397 → 134 161 байт) без потери качества:
-  64/128/256 хранятся как PNG, 16/32/48 остаются BMP.
-- Иконка приложения, окна, шапки и пункта контекстного меню берутся из нового
-  файла; дубликаты иконки из `MainForm.resx`/`MsiModeForm.resx` удалены,
-  `gear.zip` ужат до 9 173 байт.
+- Вместо одной строки — блоки: процессор (ядра/потоки, кэш, виртуализация),
+  память (`32 GB DDR4 · 3200 MHz · 2×16 GB`), плата и BIOS (UEFI/Legacy,
+  Secure Boot, TPM), видео (VRAM, драйвер, разрешение и герцовка), накопители
+  (NVMe/SSD/HDD, свободное место), система (редакция, сборка, дата установки
+  с часами и минутами, схема питания, файл подкачки, аптайм, HVCI/VBS, Hyper-V).
+- Сборка идёт параллельно в фоне (`PcReportService`), недостающие значения
+  показываются как «—».
+- Внизу ссылка «Скопировать в буфер» — весь отчёт текстом, с тостом.
 
-## 2.34-beta — 2026-11-12
+### Скорость запуска
 
-Бета-сборка после полного рефакторинга WOTBO. Приложение переведено с одного
-`Form1` на сервисы и 48 независимых твиков `ITweak`.
+- Проверка обновлений, сети и `DISM /Get-ReservedStorageState` выполняются после
+  первого кадра; тяжёлые `main.mmagent` (WMI) и `pro.bufferbloat` (netsh) —
+  после fade, обновляют только свои чекбоксы.
+- Плавное появление окна возвращено (fade 0→1 по 0.1 с шагом 7 мс); в
+  неинтерактивной сессии `Opacity` ставится сразу.
+- Версия в шапке больше не «dbuild - 9.99»: до проверки обновления пишется
+  реальная (`build - 2.34`).
+- 42 одинаковые картинки стрелок отката вынесены из `MainForm.resx` в общий
+  ресурс `Resources.back`.
+- На тестовой VM окно появляется примерно через 0.7 с после старта `Load`
+  (было ~1.7 с).
 
-### Итог
+### Сборка, релиз, сайт
 
-- 48 твиков в `TweakCatalog`;
-- `Form1.cs` 3452 строки → `MainForm.cs` 331 строка + partial-файлы;
-- 52 коммита, 164 файла, +13 680 / −3 792 строки с начала P0;
-- `Release|x64`: 0 warnings, 0 errors;
-- registry-smoke: 17/17 твиков прошли `apply → detect → rollback`;
-- интерактивный запуск проверен при 175 % и 200 % DPI.
+- Версия проекта — **2.34**, `Release|x64`: 0 warnings, 0 errors.
+- GitHub Actions собирает `WOTBO-x64` на каждый пуш.
+- Кнопка «Сайт» и README ведут на `https://wotbo.pro/`.
+- `iconwotbo2.ico` оптимизирован (192 397 → 134 161 байт), дубликаты иконки
+  убраны из `.resx`, `gear.zip` ужат.
+- Pre-release `v2.34-beta` с `WOTBO.exe`; по ходу работы ассет обновлялся.
 
-### Добавлено
+### Хронология
 
-- **Инфраструктура:** `AppPaths`, `AppServices`, `AppBootstrap`,
-  `StartupWorkflow`, `InstanceGuard`, `ProgramLinks`.
-- **Логирование:** уровни `DEBUG/INFO/WARN/ERROR`, категории `Tweak:<id>`,
-  `TweakScope`, запись `DEBUG` всегда.
-- **Состояние и бэкапы:** `TweakStateStore`, `TweakBackup`,
-  `TweakBackupSession`; постоянные бэкапы в
-  `HKCU\Software\oixro\wotbo\Backups\<id>` и
-  `%LOCALAPPDATA%\oixro\wotbo\backups\<id>`; миграция старых флагов.
-- **Реестр:** `RegistryService`, `RegistryPaths`, снимки ключей/значений,
-  `RegistryOperationException`.
-- **Процессы:** `ProcessService` с `StartCaptured`, `StartDetached`,
-  `StartPowerShell`, `RunSuper`, `ReadOutputAsync`.
-- **Сеть:** `NetworkService`, `GitHubUpdateService`, `UpdateCoordinator`,
-  `LatestVersionService`, таймаут DNS, TLS 1.2.
-- **Система:** `WindowsVersionService`, `WmiSystemInfoService`,
-  `DisplayService`, `GpuService`, `ReservedStorageService`,
-  `LegacyCleanupService`, `ResourceExtractor`, `TempWorkspace`.
-- **UI:** `TweakUiBinder`, `PanelNavigator`, `NavigationController`,
-  `TweakHoverInfo`, `FormPainter`, `HoverAnimator`, `WindowDragBehavior`,
-  `BalloonNotifier`, `NativeMethods`, `Dpi`.
-- **Твики:** 48 классов `ITweak`, включая `main.mmagent`,
-  `main.reservedstorage`, `main.defender`, `ui.mica`, `ui.bluefolders`,
-  `pro.unlocker`, `pro.alwaysontop`.
-- **Настройка:** чекбокс подсказок на вкладке «Интерфейс»; подсказки
-  показывают путь, старое/новое значение и время применения.
-- **CI:** GitHub Actions `Release|x64`, проверка PE `0x8664`, артефакт
-  `WOTBO-x64`.
-- **Релиз:** GitHub pre-release `v2.34-beta` с `WOTBO.exe`.
-
-### Изменено
-
-- Версия проекта — **2.34**.
-- `Form1/Form2/Form4/FormShadow/Win32Priority` переименованы в
-  `MainForm/EulaForm/MsiModeForm/ShadowForm/Win32PriorityForm`.
-- Namespace `test1/Project → WOTBO`.
-- `Form1` разложен на `MainForm.Binders/Load/Tweaks/Features/Navigation/
-  Rollbacks`.
-- Detect/Apply/Rollback твиков вынесены из формы в `Services/Tweaks`.
-- 42 обработчика `back_*_Click` и 25 обработчиков download-кнопок удалены;
-  клики подключает `TweakUiBinder`/`ProgramLinks`.
-- Навигация по панелям вынесена в `NavigationController`.
-- Карта подсказок строится из `TweakUiBinder.Register`, без второго
-  словаря в `TweakHoverInfo`.
-- Включён DPI awareness; размер окна задаётся после автоскейла
-  (`390×305` × DPI), координаты в коде масштабируются через `Dpi`.
-- Обновлены статические ссылки: FastStone `FSViewerSetup85.exe`,
-  HWiNFO `hwi64_860.exe`.
-- AnyDesk заменён на RustDesk с парсером последней версии.
-- `ui.mica` обновляется из последнего релиза `Maplespe/ExplorerBlurMica`
-  с fallback на `2.1.0`.
-- EULA переписана, получила тёмную тему и компактный размер; пункт про
-  правый клик вынесен отдельно.
-- Со страницы загрузок убраны Win10 Tweaker, Epic Games Launcher,
-  CrystalDiskInfo и .NET 6 Runtime.
-- Сайт: `https://wotbo.pro/`.
-- README сокращён до личных заметок; добавлен `CHANGELOG.md`.
-
-### Исправлено
-
-- пропадающие вкладки «1 / 2» после `ChangePanel`;
-- маленькие стрелки отката на страницах, кроме «Основного», при DPI 175 %;
-- обрезанный интерфейс при масштабировании 125–200 %: окно теперь
-  использует фактические границы `PanelMain`, а не `390×305`;
-- изменение масштаба на лету обрабатывается `OnDpiChanged`;
-- состояние `main.reservedstorage` синхронизируется с фактическим DISM:
-  выключен → твик применён и заблокирован, включён → твик снова доступен;
-- переключение категорий и страниц: панель поднимается наверх
-  (`BringToFront`), а устаревшие анимации отменяются по generation-токену;
-- координаты навигации считаются по фактической ширине `PanelMain`, потому
-  что `DeviceDpi` мог вернуть 96 при масштабе 125–200 %;
-- `TweakUiBinder.Detect` синхронизирует store с фактическим `Detect`
-  при старте, без полного прохода по всем твикам;
-- `main.mmagent` проверяется через WMI `PS_MMAgent`, без запуска PowerShell
-  на каждом старте;
-- `bufferbloat`, `ui.buttons`, `main.mmagent`, `main.mousefix` и
-  `pro.homegallery` теперь проверяют реальное состояние, а не только
-  историю применения;
-- в `main.mousefix` добавлен `RawMouseThrottleDuration=0x14`; пользователи
-  старой версии снова увидят твик доступным;
-- `MSI_util_v3.exe`: больше не распаковывается `cursors.zip`;
-- `DefenderKiller`: убран двойной запуск и удаление архива;
-- обновление: `rd` по exe заменена на `del new.exe`, ошибки запуска
-  логируются;
-- версии сравниваются через `System.Version` (`2.9 < 2.10`);
-- удалён мёртвый `checkBox1`;
-- освобождение `NotifyIcon` и `Timer` при закрытии;
-- DNS-проверка получила таймаут;
-- пустые `catch` заменены логированием;
-- `powercfg /import` в `PowerSchemeTweak` проверяется, есть fallback на
-  High performance/Balanced;
-- `pro.unlocker`: проверка `File.Exists` для архива;
-- null-safe чтение ключей реестра в оставшихся местах.
-
-### Проверки
-
-- `Release|x64` — 0 warnings, 0 errors, PE `0x8664`.
-- Registry-smoke на VM — 17/17:
-  `ui.jpegquality`, `extra.iconcache`, `extra.stickykeys`, `main.mpo`,
-  `extra.scoobe`, `extra.dwmpriority`, `pro.csrss`, `main.dwminput`,
-  `main.mitigations`, `gpu.hdcp`, `ui.buttons`, `ui.animations`,
-  `extra.movetemp`, `extra.edge`, `pro.windowsupdate`, `main.mousefix`,
-  `main.powerlatency`.
-- Интерактивно: запуск, окно `682×534` при 175 %, окно `780×610` при 200 %,
-  переход «Основное → Интерфейс», видимость вкладок и стрелок отката.
-
-### Не проверено вживую
-
-Требуют снапшота VM и ручного прогона:
-
-- `main.defender`, `main.regpack`, `main.reservedstorage`;
-- `gpu.nvidia`, `gpu.directplay`, `gpu.ansel`;
-- `ui.ffmpeg`, `ui.mica`, `ui.bluefolders`, `ui.win11header`;
-- `pro.unlocker`, `pro.alwaysontop`;
-- DISM/compact/cleanup-твики.
-
-### Известные ограничения
-
-- Изменение масштаба Windows во время работы применяется после перезапуска.
-- `pro.win32priority` выбор значения оставляет за диалогом.
-- `ui.animations` управляет только анимацией панелей WOTBO.
-- Часть fallback-ссылок вкладки «Скачать программы» может быть старше
-  актуальной версии; основные программы используют latest-парсеры.
+| Дата | Что сделано |
+|---|---|
+| 2025-02-01 | 2.33 — точка отсчёта (монолитный `Form1`, 49 чекбоксов) |
+| 2026-11-11…12 | Рефакторинг на сервисы и `ITweak` (48 твиков), DPI, CI, EULA, бэкапы и состояние, первый релиз беты |
+| 2026-11-13…14 | Defender: эксперименты (pgkt04, defendnot) → собственный движок, безопасный режим, окно результата |
+| 2026-11-15 | Переименования, вкладки со прокруткой, «Инфо о ПК», QoL-пак (14 твиков), NVIDIA-пак, курсоры, шапка и крестик EULA, подсказки-описания |
