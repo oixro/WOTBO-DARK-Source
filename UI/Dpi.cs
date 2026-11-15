@@ -13,6 +13,7 @@ namespace WOTBO.UI
     {
         private static Control _reference;
         private static float _designWidth;
+        private static float _referenceWidth;
 
         /// <summary>
         /// Задаёт контроль, по ширине которого вычисляется масштаб.
@@ -23,6 +24,16 @@ namespace WOTBO.UI
         {
             _reference = reference;
             _designWidth = designWidth;
+
+            // Ширину фиксируем на старте: панель теперь тянется вместе с
+            // окном, и живое значение ломало бы коэффициент масштаба.
+            _referenceWidth = reference == null ? 0f : reference.Width;
+        }
+
+        /// <summary>Пересчитать опорную ширину (после смены DPI).</summary>
+        public static void RefreshReference(Control reference, float designWidth)
+        {
+            Configure(reference, designWidth);
         }
 
         public static float Factor(Control control)
@@ -30,14 +41,14 @@ namespace WOTBO.UI
             if (control == null) return 1f;
 
             if (_reference != null && !_reference.IsDisposed &&
-                _reference.Width > 0 && _designWidth > 0)
+                _referenceWidth > 0 && _designWidth > 0)
             {
                 Form referenceForm = _reference.FindForm();
                 Form form = control as Form;
                 if (form == null) form = control.FindForm();
                 if (referenceForm == null || form == null || referenceForm == form)
                 {
-                    return _reference.Width / _designWidth;
+                    return _referenceWidth / _designWidth;
                 }
             }
 

@@ -16,7 +16,8 @@ namespace WOTBO.UI
         private const int Top = 4;
         private const int SectionGap = 10;
         private const int HeaderGap = 2;
-        private const int Width = 272;
+        /// <summary>Отступ от краёв панели (в пикселях 96 DPI).</summary>
+        private const int SidePadding = 12;
 
         private static readonly Color HeaderColor = Color.White;
         private static readonly Color BodyColor = Color.FromArgb(192, 192, 192);
@@ -27,6 +28,8 @@ namespace WOTBO.UI
         private readonly Font _headerFont;
         private readonly List<Control> _items = new List<Control>();
         private string _text = string.Empty;
+        private PcReport _report;
+        private string _loading;
 
         public PcInfoView(Panel host, Action<string> copy)
         {
@@ -46,6 +49,8 @@ namespace WOTBO.UI
         public void ShowLoading(string message)
         {
             Clear();
+            _loading = message;
+            _report = null;
             _text = string.Empty;
             AddLabel(message, BodyColor, _host.Font, Dpi.Scale(_host, Top));
             PanelScroller.Refresh(_host);
@@ -63,6 +68,8 @@ namespace WOTBO.UI
                 return;
             }
 
+            _report = report;
+            _loading = null;
             _text = report.ToText();
             Clear();
 
@@ -95,7 +102,7 @@ namespace WOTBO.UI
             var label = new Label
             {
                 AutoSize = true,
-                MaximumSize = new Size(Dpi.Scale(_host, Width), 0),
+                MaximumSize = new Size(ContentWidth(), 0),
                 ForeColor = color,
                 BackColor = Color.Transparent,
                 Font = font,
@@ -135,6 +142,32 @@ namespace WOTBO.UI
 
             _host.Controls.Add(link);
             _items.Add(link);
+        }
+
+        /// <summary>Ширина текста под текущий размер панели.</summary>
+        private int ContentWidth()
+        {
+            int width = _host.ClientSize.Width - Dpi.Scale(_host, SidePadding);
+
+            return Math.Max(Dpi.Scale(_host, 120), width);
+        }
+
+        /// <summary>
+        /// После изменения размера окна перестроить отчёт под новую ширину:
+        /// подписи переносятся по словам, поэтому их надо пересоздать.
+        /// </summary>
+        public void Relayout()
+        {
+            if (_report != null)
+            {
+                Render(_report);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(_loading))
+            {
+                ShowLoading(_loading);
+            }
         }
 
         private void Clear()

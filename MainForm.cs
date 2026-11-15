@@ -56,6 +56,7 @@ namespace WOTBO
         private readonly Dictionary<string, TweakUiBinder> tweakBinders =
             new Dictionary<string, TweakUiBinder>(StringComparer.OrdinalIgnoreCase);
         private PcInfoView pcInfo;
+        private bool _layoutReady;
         private CheckBox checkBox_tooltips;
         private PictureBox back_ui_tooltips_desc;
 
@@ -111,6 +112,13 @@ namespace WOTBO
             ButtonClose.Click += (s, a) => Exit();
             FormPainter.Apply(this, Color.FromArgb(44, 57, 67), Color.FromArgb(35, 44, 55)); //old
             Size = new System.Drawing.Size(390, 305);
+
+            // Ресайз: рамки у окна нет, края ловит ShadowForm, а раскладку
+            // пересчитываем здесь.
+            Resizable = true;
+            Resize += delegate { if (_layoutReady) LayoutForSize(); };
+            ResizeEnd += delegate { if (pcInfo != null) pcInfo.Relayout(); };
+
             CenterToScreen();
             Controls.OfType<Panel>().ToList().ForEach(x => x.GetType().GetProperty("DoubleBuffered")?.SetValue(x, true));
             Log.Debug("Startup", $"painting+size: {startupWatch.ElapsedMilliseconds} мс");
@@ -293,6 +301,13 @@ namespace WOTBO
 
             PanelScroller.Refresh(NewPanel);
 
+            // «Инфо о ПК» пересобираем под текущую ширину панели: подписи
+            // переносятся по словам и иначе остаются от прежнего размера окна.
+            if (NewPanel == panel_5 && pcInfo != null)
+            {
+                pcInfo.Relayout();
+            }
+
             // В режиме съёмки скриншотов анимация только мешает.
             if (!ScreenshotMode)
             {
@@ -382,11 +397,71 @@ namespace WOTBO
         {
             if (PanelMain == null) return;
 
-            int width = Math.Max(390, PanelMain.Right);
-            int height = Math.Max(305, PanelMain.Bottom);
-            ClientSize = new Size(width, height);
+            int minWidth = Dpi.Scale(this, 390);
+            int minHeight = Dpi.Scale(this, 305);
+
+            MinimumSize = new Size(minWidth, minHeight);
+            MaximumSize = Screen.FromControl(this).WorkingArea.Size;
+
+            ClientSize = new Size(
+                Math.Max(minWidth, PanelMain.Right),
+                Math.Max(minHeight, PanelMain.Bottom));
+
+            LayoutForSize();
+            CenterHeader();
+
+            _layoutReady = true;
+        }
+
+        /// <summary>
+        /// Пересчёт раскладки под текущий размер окна: шапка на всю ширину,
+        /// панели тянутся, футер прибит к низу, версия — к правому краю.
+        /// Вызывается при старте, при ресайзе мышью и при смене DPI.
+        /// </summary>
+        private void LayoutForSize()
+        {
+            if (PanelMain == null || PanelHead == null) return;
+
+            int headHeight = Dpi.Scale(this, 36);
+            int left = Dpi.Scale(this, 105);
+            int rightGap = Dpi.Scale(this, 8);
+            int footerGap = Dpi.Scale(this, 20);
+
+            PanelHead.Width = ClientSize.Width;
+            PanelMain.Width = ClientSize.Width;
+            PanelMain.Height = Math.Max(Dpi.Scale(this, 120), ClientSize.Height - headHeight);
+
+            int contentWidth = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
+            int contentHeight = Math.Max(Dpi.Scale(this, 100), PanelMain.Height - footerGap);
+
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5 };
+            foreach (Panel panel in panels)
+            {
+                if (panel == null) continue;
+
+                panel.Location = new Point(left, headHeight);
+                panel.Size = new Size(contentWidth, contentHeight);
+            }
+
+            if (welcomePanel != null)
+            {
+                welcomePanel.Location = new Point(left, headHeight);
+                welcomePanel.Size = new Size(contentWidth, contentHeight);
+            }
+
+            // Футер: кнопка и подписи привязаны к низу панели.
+            button_new.Top = PanelMain.Height - Dpi.Scale(this, 52);
+            label_winver.Top = PanelMain.Height - Dpi.Scale(this, 19);
+            label_ver.Top = PanelMain.Height - Dpi.Scale(this, 17);
+            label_ver.Left = Math.Max(0, ClientSize.Width - label_ver.Width - Dpi.Scale(this, 8));
+
+            ButtonClose.Left = Math.Max(0, PanelHead.Width - ButtonClose.Width - Dpi.Scale(this, 5));
 
             CenterHeader();
+
+            // После изменения размеров перерисовываем всё: иначе остаются
+            // куски старого градиента на месте прежней панели.
+            Invalidate(true);
         }
 
         /// <summary>
@@ -416,6 +491,7 @@ namespace WOTBO
 
             if (!IsHandleCreated || PanelMain == null) return;
 
+            Dpi.RefreshReference(PanelMain, 395f);
             ApplyWindowSize();
             CenterHeader();
             CenterToScreen();
