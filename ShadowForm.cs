@@ -21,7 +21,10 @@ namespace WOTBO
         private const int HitCaption = 0x0002;
         private const int HitLeft = 0x000A;
         private const int HitRight = 0x000B;
+        private const int HitTop = 0x000C;
         private const int HitBottom = 0x000F;
+        private const int HitTopLeft = 0x000D;
+        private const int HitTopRight = 0x000E;
         private const int HitBottomLeft = 0x0010;
         private const int HitBottomRight = 0x0011;
 
@@ -115,10 +118,14 @@ namespace WOTBO
 
             bool left = point.X <= border;
             bool right = point.X >= ClientSize.Width - border;
+            bool top = point.Y <= border;
             bool bottom = point.Y >= ClientSize.Height - border;
 
+            if (top && left) return HitTopLeft;
+            if (top && right) return HitTopRight;
             if (bottom && left) return HitBottomLeft;
             if (bottom && right) return HitBottomRight;
+            if (top) return HitTop;
             if (bottom) return HitBottom;
             if (left) return HitLeft;
             if (right) return HitRight;

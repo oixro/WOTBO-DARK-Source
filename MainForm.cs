@@ -295,7 +295,7 @@ namespace WOTBO
                 }
             }
 
-            NewPanel.Location = new Point(Dpi.Scale(this, 105), Dpi.Scale(this, 36));
+            NewPanel.Bounds = ContentBounds();
             NewPanel.Visible = true;
             NewPanel.BringToFront();
 
@@ -413,6 +413,20 @@ namespace WOTBO
             _layoutReady = true;
         }
 
+        /// <summary>Границы панели вкладки для текущего размера окна.</summary>
+        private Rectangle ContentBounds()
+        {
+            int headHeight = Dpi.Scale(this, 36);
+            int left = Dpi.Scale(this, 105);
+            int rightGap = Dpi.Scale(this, 8);
+            int footerGap = Dpi.Scale(this, 20);
+
+            int height = Math.Max(Dpi.Scale(this, 100), ClientSize.Height - headHeight - footerGap);
+            int width = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
+
+            return new Rectangle(left, headHeight, width, height);
+        }
+
         /// <summary>
         /// Пересчёт раскладки под текущий размер окна: шапка на всю ширину,
         /// панели тянутся, футер прибит к низу, версия — к правому краю.
@@ -427,11 +441,14 @@ namespace WOTBO
             int rightGap = Dpi.Scale(this, 8);
             int footerGap = Dpi.Scale(this, 20);
 
-            PanelHead.Width = ClientSize.Width;
-
-            // PanelMain оставляем с зазором по краям: он перекрывал бы
-            // WM_NCHITTEST формы, и края окна нельзя было бы тянуть мышью.
+            // Края окна должны оставаться «голой» формой: шапка и панель
+            // перекрывают WM_NCHITTEST, и тогда мышью их не ухватить.
             int edge = Dpi.Scale(this, 6);
+
+            PanelHead.Location = new Point(0, edge);
+            PanelHead.Width = ClientSize.Width;
+            PanelHead.Height = Math.Max(Dpi.Scale(this, 24), headHeight - edge);
+
             PanelMain.Location = new Point(edge, headHeight);
             PanelMain.Width = Math.Max(Dpi.Scale(this, 120), ClientSize.Width - edge * 2);
             PanelMain.Height = Math.Max(Dpi.Scale(this, 120), ClientSize.Height - headHeight - edge);
@@ -458,7 +475,7 @@ namespace WOTBO
             button_new.Top = PanelMain.Height - Dpi.Scale(this, 52);
             label_winver.Top = PanelMain.Height - Dpi.Scale(this, 19);
             label_ver.Top = PanelMain.Height - Dpi.Scale(this, 17);
-            label_ver.Left = Math.Max(0, ClientSize.Width - label_ver.Width - Dpi.Scale(this, 8));
+            label_ver.Left = Math.Max(0, PanelMain.Width - label_ver.Width - Dpi.Scale(this, 8));
 
             ButtonClose.Left = Math.Max(0, PanelHead.Width - ButtonClose.Width - Dpi.Scale(this, 5));
 

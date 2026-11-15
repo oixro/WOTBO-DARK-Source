@@ -2153,7 +2153,7 @@ namespace WOTBO
             // 
             // label_ver
             // 
-            this.label_ver.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left);
+            this.label_ver.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
             this.label_ver.AutoSize = true;
             this.label_ver.ForeColor = System.Drawing.Color.Silver;
             this.label_ver.Location = new System.Drawing.Point(320, 253);
