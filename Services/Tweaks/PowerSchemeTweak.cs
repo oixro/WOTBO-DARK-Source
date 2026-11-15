@@ -42,29 +42,81 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
+            // Сначала реестр: Windows сама хранит GUID активной схемы.
+            // Это мгновенно и не зависит от языка/поведения powercfg.
+            string active = ActiveSchemeFromRegistry(context);
+
+            if (!string.IsNullOrEmpty(active))
+            {
+                context.Log.Debug("Tweak:main.powerscheme", "active(reg)=" + active);
+
+                if (string.Equals(active, SchemeGuid, StringComparison.OrdinalIgnoreCase))
+                {
+                    return TweakState.Applied;
+                }
+
+                string name = SchemeNameOf(context, active);
+                if (name != null && name.IndexOf(SchemeName, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    context.Log.Debug("Tweak:main.powerscheme", "схема найдена по имени: " + name);
+                    return TweakState.Applied;
+                }
+            }
+
+            // Запасной путь — powercfg, как раньше.
             string output = GetActiveSchemeOutput(context);
-            string active = GuidOf(output);
+            string fromPowerCfg = GuidOf(output);
 
             context.Log.Debug(
                 "Tweak:main.powerscheme",
-                "active=" + (active ?? "?") + ", expected=" + SchemeGuid);
+                "active(powercfg)=" + (fromPowerCfg ?? "?") + ", expected=" + SchemeGuid);
 
-            if (string.Equals(active, SchemeGuid, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(fromPowerCfg, SchemeGuid, StringComparison.OrdinalIgnoreCase))
             {
                 return TweakState.Applied;
             }
 
-            // Запасной путь, как на вкладке «Инфо о ПК»: сверяем имя схемы.
-            // На части сборок Windows импортированная схема получает другой
-            // GUID, но имя остаётся прежним.
             if (!string.IsNullOrEmpty(output)
                 && output.IndexOf(SchemeName, StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                context.Log.Debug("Tweak:main.powerscheme", "схема найдена по имени");
                 return TweakState.Applied;
             }
 
             return TweakState.NotApplied;
+        }
+
+        private static string ActiveSchemeFromRegistry(TweakContext context)
+        {
+            try
+            {
+                object value = context.Registry.GetValue(
+                    RegistryHive.LocalMachine,
+                    PowerSchemes,
+                    "ActivePowerScheme");
+
+                return value == null ? null : Convert.ToString(value).Trim();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string SchemeNameOf(TweakContext context, string guid)
+        {
+            try
+            {
+                object value = context.Registry.GetValue(
+                    RegistryHive.LocalMachine,
+                    SchemeKeyOf(guid),
+                    "FriendlyName");
+
+                return value == null ? null : Convert.ToString(value);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public override void Apply(TweakContext context)

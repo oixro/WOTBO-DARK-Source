@@ -143,15 +143,6 @@ namespace WOTBO.Services.Tweaks
             File.WriteAllText(hdd, Resources.prefetcher_hdd);
             File.WriteAllText(ssd, Resources.prefetcher_ssd);
 
-            if (!File.Exists(context.Workspace.Smartctl))
-            {
-                ResourceDownload.Ensure(
-                    context,
-                    "https://raw.githubusercontent.com/oixro/WOTBO/main/resources/smartctl.exe",
-                    context.Workspace.Smartctl,
-                    "smartctl.exe");
-            }
-
             int ramGB = ReadRamGb(context);
             int mmMemory = ramGB * 32;
             if (mmMemory <= 128)
@@ -163,16 +154,7 @@ namespace WOTBO.Services.Tweaks
                 mmMemory = 1024;
             }
 
-            string systemDisk = Environment.GetEnvironmentVariable("windir").Replace(@"\Windows", string.Empty);
-            string diskInfo = context.Processes
-                .ReadOutputAsync(context.Workspace.Smartctl, "-i " + systemDisk)
-                .GetAwaiter()
-                .GetResult()
-                .ToLowerInvariant();
-
-            bool isSsd = diskInfo.Contains("solid state device")
-                || diskInfo.Contains("ssd")
-                || diskInfo.Contains("nvme");
+            bool isSsd = IsSystemDiskSsd(context);
 
             string prefetcher = isSsd ? ssd : hdd;
             context.BackupRegFile(prefetcher);
@@ -188,6 +170,50 @@ namespace WOTBO.Services.Tweaks
                 : "Enable-MMAgent -MemoryCompression");
             RunPowerShell(context, "Disable-MMAgent -PageCombining");
             RunPowerShell(context, "Set-MMAgent -MaxOperationAPIFiles " + mmMemory);
+        }
+
+        /// <summary>
+        /// Тип системного диска через WMI хранилища: без smartctl и без
+        /// скачивания чего-либо. MediaType: 3 — HDD, 4 — SSD, 5 — SCM.
+        /// </summary>
+        private static bool IsSystemDiskSsd(TweakContext context)
+        {
+            try
+            {
+                var searcher = new ManagementObjectSearcher(
+                    @"root\\Microsoft\\Windows\\Storage",
+                    "SELECT DeviceId, MediaType FROM MSFT_PhysicalDisk");
+
+                int best = 0;
+
+                using (ManagementObjectCollection disks = searcher.Get())
+                {
+                    foreach (ManagementBaseObject disk in disks)
+                    {
+                        using (disk)
+                        {
+                            int media = Convert.ToInt32(disk["MediaType"]);
+
+                            if (media == 4 || media == 5)
+                            {
+                                return true;
+                            }
+
+                            if (media > best) best = media;
+                        }
+                    }
+                }
+
+                context.Log.Debug("Tweak:main.mmagent", "MediaType диска: " + best);
+            }
+            catch (Exception exception)
+            {
+                context.Log.Debug("Tweak:main.mmagent", "не удалось определить тип диска: " + exception.Message);
+            }
+
+            // Не смогли определить — считаем SSD: для SSD-набора префетчера
+            // это безопаснее, чем HDD-настройки на твердотельнике.
+            return true;
         }
 
         private static void RunPowerShell(TweakContext context, string command)
