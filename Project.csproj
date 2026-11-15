@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\AppIcon.cs" />
+    <Compile Include="App\EmbeddedPayload.cs" />
     <Compile Include="App\AppPaths.cs" />
     <Compile Include="App\AppServices.cs" />
     <Compile Include="App\AppBootstrap.cs" />
@@ -328,8 +329,7 @@
     <None Include="Resources\prefetcher hdd.reg" />
     <None Include="Resources\prefetcher ssd.reg" />
     <None Include="Resources\regpack.zip" />
-    <EmbeddedResource Include="Resources\defender-engine.ps1" />
-    <EmbeddedResource Include="Resources\scheme_shingeki.reg" />
+    <EmbeddedResource Include="Resources\payload.zip" />
     <None Include="Resources\scheme.pow" />
     <None Include="Resources\ui.zip" />
     <None Include="Resources\unmousefix.reg" />

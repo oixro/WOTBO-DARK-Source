@@ -351,27 +351,9 @@ namespace WOTBO.Services.Defender
 
         private static string LoadScript()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            string name = assembly.GetManifestResourceNames()
-                .FirstOrDefault(n => n.EndsWith(ResourceSuffix, StringComparison.OrdinalIgnoreCase));
-
-            if (string.IsNullOrEmpty(name))
-            {
-                return null;
-            }
-
-            using (Stream stream = assembly.GetManifestResourceStream(name))
-            {
-                if (stream == null)
-                {
-                    return null;
-                }
-
-                using (var reader = new StreamReader(stream, Encoding.UTF8, true))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
+            // Скрипт лежит в Resources\payload.zip: в исходном виде он
+            // занимал 36 КБ внутри exe, в архиве — втрое меньше.
+            return WOTBO.App.EmbeddedPayload.ReadText("defender-engine.ps1");
         }
 
         private static Dictionary<string, string> ReadKeyValue(string path)

@@ -261,31 +261,14 @@ namespace WOTBO.Services.Tweaks
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                string name = assembly.GetManifestResourceNames()
-                    .FirstOrDefault(n => n.EndsWith(ResourceSuffix, StringComparison.OrdinalIgnoreCase));
-
-                if (string.IsNullOrEmpty(name))
+                // .reg хранится в Resources\payload.zip (13 КБ текста).
+                if (WOTBO.App.EmbeddedPayload.Extract("scheme_shingeki.reg", path))
                 {
-                    context.Log.Warn("Tweak:main.powerscheme", "встроенный .reg схемы не найден");
-                    return false;
+                    return true;
                 }
 
-                using (Stream stream = assembly.GetManifestResourceStream(name))
-                {
-                    if (stream == null)
-                    {
-                        context.Log.Warn("Tweak:main.powerscheme", "не удалось открыть ресурс схемы");
-                        return false;
-                    }
-
-                    using (var file = new FileStream(path, FileMode.Create, FileAccess.Write))
-                    {
-                        stream.CopyTo(file);
-                    }
-                }
-
-                return true;
+                context.Log.Warn("Tweak:main.powerscheme", "встроенный .reg схемы не найден");
+                return false;
             }
             catch (Exception exception)
             {

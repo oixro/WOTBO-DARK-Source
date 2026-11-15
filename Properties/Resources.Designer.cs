@@ -111,99 +111,6 @@ namespace WOTBO.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
-        ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
-        ///
-        ///del &quot;%APPDATA%\Microsoft\Windows\Start Menu\Programs\System Tools\File Explorer.lnk&quot; &gt;nul 2&gt;&amp;1
-        ///del &quot;%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer.lnk&quot; &gt;nul 2&gt;&amp;1
-        ///
-        ///%TI% ren &quot;%windir%\SystemResources\imageres.dll.mun&quot; imageres.dll.mun_bak
-        ///
-        ///timeout /t 1 /nobreak &gt;nul
-        ///
-        ///%TI% copy &quot;%windir%\oixro\BlueIcon Minimal\imageres.dll.mun&quot; &quot;%windir%\SystemResources&quot;
-        ///
-        ///reg add &quot;HKCR\CompressedFolder\ [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string blueicons {
-            get {
-                return ResourceManager.GetString("blueicons", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
-        ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
-        ///
-        ///%TI% ren &quot;%windir%\System32\imageres.dll&quot; &quot;imageres.dll_bak&quot;
-        ///timeout /t 1 /nobreak &gt;nul
-        ///%TI% copy &quot;%windir%\oixro\imageres.dll&quot; &quot;%windir%\System32&quot;
-        ///
-        ///pushd &quot;%userprofile%\AppData\Local\Microsoft\Windows\Explorer&quot;
-        ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1
-        ///del /f /a:s thumbcache* &gt;nul 2&gt;&amp;1
-        ///del /f IconCache* &gt;nul 2&gt;&amp;1
-        ///del /f thumbcache* &gt;nul 2&gt;&amp;1
-        ///popd
-        ///pushd &quot;%userprofile%\AppData\Local&quot;
-        ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1
-        ///del /f /a:s th [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string blueiconsw10 {
-            get {
-                return ResourceManager.GetString("blueiconsw10", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
-        ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
-        ///
-        ///%TI% del /q &quot;%windir%\SystemResources\imageres.dll.mun&quot;
-        ///
-        ///timeout /t 2 /nobreak &gt;nul
-        ///
-        ///%TI% ren &quot;%windir%\SystemResources\imageres.dll.mun_bak&quot; imageres.dll.mun
-        ///
-        ///del /q /f /a:h &quot;%windir%\windows.ico&quot; &gt;nul
-        ///del /q /f /a:h &quot;%windir%\desktop.ini&quot; &gt;nul
-        ///del /q /f /a:h &quot;%ProgramFiles%\x64.ico&quot; &gt;nul
-        ///del /q /f /a:h &quot;%ProgramFiles%\desktop.ini&quot; &gt;nul
-        ///del /q /f /a:h &quot;%ProgramFiles(x86)%\x86.ico&quot; &gt;nul
-        ///del /q /f /a:h &quot;%ProgramFiles(x86) [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string defblueicons {
-            get {
-                return ResourceManager.GetString("defblueicons", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на set &quot;TI=%windir%\oixro\su.exe /wrs cmd.exe /c &quot;
-        ///taskkill /f /im explorer.exe &gt;nul 2&gt;&amp;1
-        ///
-        ///%TI% del /q &quot;%windir%\System32\imageres.dll&quot;
-        ///timeout /t 1 /nobreak &gt;nul
-        ///%TI% ren &quot;%windir%\System32\imageres.dll_bak&quot; imageres.dll
-        ///
-        ///pushd &quot;%userprofile%\AppData\Local\Microsoft\Windows\Explorer&quot;
-        ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1
-        ///del /f /a:s thumbcache* &gt;nul 2&gt;&amp;1
-        ///del /f IconCache* &gt;nul 2&gt;&amp;1
-        ///del /f thumbcache* &gt;nul 2&gt;&amp;1
-        ///popd
-        ///timeout /t 1 /nobreak &gt;nul
-        ///pushd &quot;%userprofile%\AppData\Local&quot;
-        ///del /f /a:s IconCache* &gt;nul 2&gt;&amp;1
-        ///del  [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string deficonsw10 {
-            get {
-                return ResourceManager.GetString("deficonsw10", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на taskkill /f /IM explorer.exe
         ///start explorer.exe
         ///exit.
@@ -221,35 +128,6 @@ namespace WOTBO.Properties {
             get {
                 object obj = ResourceManager.GetObject("gear", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
-        ///; Windows_10+8.x_MouseFix_ItemsSize=100%_Scale=1-to-1_@6-of-11
-        ///
-        ///[HKEY_CURRENT_USER\Control Panel\Mouse]
-        ///
-        ///&quot;MouseSensitivity&quot;=&quot;10&quot;
-        ///&quot;MouseSpeed&quot;=&quot;0&quot;
-        ///&quot;SmoothMouseXCurve&quot;=hex:\
-        ///	00,00,00,00,00,00,00,00,\
-        ///	C0,CC,0C,00,00,00,00,00,\
-        ///	80,99,19,00,00,00,00,00,\
-        ///	40,66,26,00,00,00,00,00,\
-        ///	00,33,33,00,00,00,00,00
-        ///&quot;SmoothMouseYCurve&quot;=hex:\
-        ///	00,00,00,00,00,00,00,00,\
-        ///	00,00,38,00,00,00,00,00,\
-        ///	00,00,70,00,00,00,00,00,\
-        ///	00,00,A8,00,00,00,00,00,\
-        ///	00,00,E0,00,00,00,00,00
-        ///
-        ///[HKEY_USER [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string mousefix {
-            get {
-                return ResourceManager.GetString("mousefix", resourceCulture);
             }
         }
         
@@ -296,16 +174,6 @@ namespace WOTBO.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] scheme {
-            get {
-                object obj = ResourceManager.GetObject("scheme", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
         internal static byte[] su {
             get {
                 object obj = ResourceManager.GetObject("su", resourceCulture);
@@ -320,43 +188,6 @@ namespace WOTBO.Properties {
             get {
                 object obj = ResourceManager.GetObject("ui", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Windows Registry Editor Version 5.00
-        ///
-        ///[HKEY_CURRENT_USER\Control Panel\Mouse]
-        ///&quot;SmoothMouseXCurve&quot;=hex:\
-        ///	00,00,00,00,00,00,00,00,\
-        ///	15,6e,00,00,00,00,00,00,\
-        ///	00,40,01,00,00,00,00,00,\
-        ///	29,dc,03,00,00,00,00,00,\
-        ///	00,00,28,00,00,00,00,00
-        ///&quot;SmoothMouseYCurve&quot;=hex:\
-        ///	00,00,00,00,00,00,00,00,\
-        ///	fd,11,01,00,00,00,00,00,\
-        ///	00,24,04,00,00,00,00,00,\
-        ///	00,fc,12,00,00,00,00,00,\
-        ///	00,c0,bb,01,00,00,00,00
-        ///.
-        /// </summary>
-        internal static string unmousefix {
-            get {
-                return ResourceManager.GetString("unmousefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на 	for /f &quot;tokens=*&quot; %%i in (&apos;reg query &quot;HKLM\SYSTEM\CurrentControlSet\Enum&quot; /s /f &quot;StorPort&quot; ^| findstr &quot;StorPort&quot;&apos;) do reg delete &quot;%%i&quot; /v &quot;EnableIdlePowerManagement&quot; /f
-        ///	for /f &quot;tokens=*&quot; %%i in (&apos;wmic PATH Win32_PnPEntity GET DeviceID ^| findstr &quot;USB\VID_&quot;&apos;) do (
-        ///	reg delete &quot;HKLM\System\CurrentControlSet\Enum\%%i\Device Parameters&quot; /v &quot;EnhancedPowerManagementEnabled&quot; /f
-        ///	reg delete &quot;HKLM\System\CurrentControlSet\Enum\%%i\Device Parameters&quot; /v &quot;AllowIdleIrpInD3&quot; /f
-        ///	reg delete &quot;HKLM\System\CurrentControlS [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string unusbpowersaving {
-            get {
-                return ResourceManager.GetString("unusbpowersaving", resourceCulture);
             }
         }
         
