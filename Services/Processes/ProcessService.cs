@@ -293,6 +293,83 @@ namespace WOTBO.Services.Processes
             });
         }
 
+        public Task<ProcessOutput> RunAsync(string fileName, string arguments, int timeoutMs, System.Text.Encoding encoding)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = fileName,
+                        Arguments = arguments ?? string.Empty,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                    };
+
+                    if (encoding != null)
+                    {
+                        psi.StandardOutputEncoding = encoding;
+                        psi.StandardErrorEncoding = encoding;
+                    }
+
+                    using (var process = new Process())
+                    {
+                        process.StartInfo = psi;
+                        process.Start();
+
+                        Task<string> output = process.StandardOutput.ReadToEndAsync();
+                        Task<string> error = process.StandardError.ReadToEndAsync();
+
+                        if (timeoutMs > 0 && !process.WaitForExit(timeoutMs))
+                        {
+                            _log.Warn(Category, "не ответил за " + timeoutMs + " мс, завершаем: " + fileName);
+
+                            try
+                            {
+                                process.Kill();
+                            }
+                            catch
+                            {
+                            }
+
+                            process.WaitForExit(2000);
+                        }
+                        else
+                        {
+                            process.WaitForExit();
+                        }
+
+                        string text = Finish(output);
+                        string err = Finish(error);
+
+                        if (!string.IsNullOrEmpty(err))
+                        {
+                            _log.Debug(Category, "[OUTPUT] " + err.Trim());
+                        }
+
+                        int code = -1;
+                        try
+                        {
+                            code = process.ExitCode;
+                        }
+                        catch
+                        {
+                        }
+
+                        return new ProcessOutput(text + err, code);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.Error(Category, "не удалось выполнить: " + fileName + " " + arguments, ex);
+                    return new ProcessOutput(string.Empty, -1);
+                }
+            });
+        }
+
         private static string Finish(Task<string> read)
         {
             try

@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text;
 
 namespace WOTBO.Services.Tweaks
 {
@@ -19,10 +21,16 @@ namespace WOTBO.Services.Tweaks
         {
             try
             {
+                // compact пишет в кодировке консоли (OEM), а не в ANSI —
+                // без этого русский текст приходил мусором и разбор не срабатывал.
+                Encoding oem = Encoding.GetEncoding(CultureInfo.CurrentCulture.TextInfo.OEMCodePage);
+
                 string output = context.Processes
-                    .ReadOutputAsync("cmd.exe", "/c compact /CompactOS:query", 20000)
+                    .ReadOutputAsync("cmd.exe", "/c compact /CompactOS:query", 20000, oem)
                     .GetAwaiter()
                     .GetResult();
+
+                context.Log.Debug("Tweak:extra.compactos", "query: " + (output ?? string.Empty).Trim());
 
                 bool? compressed = ParseState(output);
                 if (compressed.HasValue)

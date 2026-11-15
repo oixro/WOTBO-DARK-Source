@@ -54,5 +54,11 @@ namespace WOTBO.Services.Processes
 
         /// <summary>То же, но с явной кодировкой вывода процесса.</summary>
         Task<string> ReadOutputAsync(string fileName, string arguments, int timeoutMs, System.Text.Encoding encoding);
+
+        /// <summary>
+        /// То же, но возвращает и код возврата: нужен, чтобы отличить
+        /// «команда отработала» от «команда молча отказалась».
+        /// </summary>
+        Task<ProcessOutput> RunAsync(string fileName, string arguments, int timeoutMs, System.Text.Encoding encoding);
     }
 }

@@ -470,6 +470,7 @@ namespace WOTBO
             Binder("main.mmagent").DetectInBackground();
             Binder("pro.bufferbloat").DetectInBackground();
             Binder("extra.uwpcleanup").DetectInBackground();
+            Binder("extra.compactos").DetectInBackground();
         }
 
         /// <summary>GPU-детекты и WMI-запрос имени GPU — тоже после первого кадра.</summary>

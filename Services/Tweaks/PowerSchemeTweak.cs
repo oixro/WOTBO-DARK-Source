@@ -25,6 +25,9 @@ namespace WOTBO.Services.Tweaks
         private const string SchemeKey = PowerSchemes + @"\" + SchemeGuid;
         private const string ResourceSuffix = "scheme_shingeki.reg";
         private const string RestoreSchemeGuid = "381b4222-f694-41f0-9685-ff5bb260df2e";
+
+        /// <summary>Имя схемы из .reg — используется, если GUID не совпал.</summary>
+        private const string SchemeName = "Shingeki_no_Windows";
         private const string HighPerformanceGuid = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
 
         public override string Id
@@ -39,10 +42,29 @@ namespace WOTBO.Services.Tweaks
 
         public override TweakState Detect(TweakContext context)
         {
-            string active = GetActiveScheme(context);
-            return string.Equals(active, SchemeGuid, StringComparison.OrdinalIgnoreCase)
-                ? TweakState.Applied
-                : TweakState.NotApplied;
+            string output = GetActiveSchemeOutput(context);
+            string active = GuidOf(output);
+
+            context.Log.Debug(
+                "Tweak:main.powerscheme",
+                "active=" + (active ?? "?") + ", expected=" + SchemeGuid);
+
+            if (string.Equals(active, SchemeGuid, StringComparison.OrdinalIgnoreCase))
+            {
+                return TweakState.Applied;
+            }
+
+            // Запасной путь, как на вкладке «Инфо о ПК»: сверяем имя схемы.
+            // На части сборок Windows импортированная схема получает другой
+            // GUID, но имя остаётся прежним.
+            if (!string.IsNullOrEmpty(output)
+                && output.IndexOf(SchemeName, StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                context.Log.Debug("Tweak:main.powerscheme", "схема найдена по имени");
+                return TweakState.Applied;
+            }
+
+            return TweakState.NotApplied;
         }
 
         public override void Apply(TweakContext context)
@@ -256,28 +278,31 @@ namespace WOTBO.Services.Tweaks
             }
         }
 
-        private static string GetActiveScheme(TweakContext context)
+        private static string GetActiveSchemeOutput(TweakContext context)
         {
-            string output = context.Processes
+            return context.Processes
                 .ReadOutputAsync("powercfg.exe", "-getactivescheme")
                 .GetAwaiter()
                 .GetResult();
+        }
 
-            // Вывод powercfg локализован: на русской Windows это
-            // «GUID схемы электропитания: ...», поэтому ищем просто GUID,
-            // а не английское «GUID:». Раньше строка не совпадала и твик
-            // всегда выглядел неприменённым.
+        private static string GetActiveScheme(TweakContext context)
+        {
+            return GuidOf(GetActiveSchemeOutput(context));
+        }
+
+        /// <summary>
+        /// Вывод powercfg локализован: на русской Windows это
+        /// «GUID схемы электропитания: ...», поэтому ищем просто GUID,
+        /// а не английское «GUID:».
+        /// </summary>
+        private static string GuidOf(string output)
+        {
             Match match = Regex.Match(
                 output ?? string.Empty,
                 @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
 
-            if (!match.Success)
-            {
-                context.Log.Debug("Tweak:main.powerscheme", "getactivescheme без GUID: " + (output ?? string.Empty).Trim());
-                return null;
-            }
-
-            return match.Value;
+            return match.Success ? match.Value : null;
         }
 
         private static void Run(TweakContext context, string arguments)

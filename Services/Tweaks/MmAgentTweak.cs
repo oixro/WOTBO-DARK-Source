@@ -64,6 +64,10 @@ namespace WOTBO.Services.Tweaks
                             bool apl = Convert.ToBoolean(output["ApplicationPreLaunch"]);
                             bool pc = Convert.ToBoolean(output["PageCombining"]);
 
+                            context.Log.Debug(
+                                "Tweak:main.mmagent",
+                                "WMI: ApplicationPreLaunch=" + apl + ", PageCombining=" + pc);
+
                             return apl && !pc ? TweakState.Applied : TweakState.NotApplied;
                         }
                     }

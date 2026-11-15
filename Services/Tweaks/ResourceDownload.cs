@@ -23,6 +23,10 @@ namespace WOTBO.Services.Tweaks
                     Download(context, url, path, title);
                 }
             }
+            catch (TweakApplyException)
+            {
+                throw;
+            }
             catch (Exception exception)
             {
                 context.Log.Error("Resource", "не удалось скачать " + url, exception);
@@ -53,13 +57,18 @@ namespace WOTBO.Services.Tweaks
                 return;
             }
 
-            using (var busy = new BusyForm("Загрузка", "Скачиваем «" + title + "»…"))
+            using (var form = new DownloadForm("Загрузка — " + title, url, path))
             {
-                busy.Run(delegate { context.Network.DownloadFile(url, path); });
+                form.Run();
 
-                if (busy.Error != null)
+                if (form.Canceled)
                 {
-                    throw busy.Error;
+                    throw new TweakApplyException("Загрузка «" + title + "» отменена.");
+                }
+
+                if (form.Error != null)
+                {
+                    throw form.Error;
                 }
             }
         }
