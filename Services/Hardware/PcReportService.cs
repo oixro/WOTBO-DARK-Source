@@ -577,7 +577,7 @@ namespace WOTBO.Services.Hardware
 
             if (version.InstallDate.HasValue)
             {
-                line += " · установлена " + version.InstallDate.Value.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
+                line += " · установлена " + version.InstallDate.Value.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             }
 
             var lines = new List<string> { line };
