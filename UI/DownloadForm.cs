@@ -57,12 +57,12 @@ namespace WOTBO.UI
             // обрезается.
             AutoScaleMode = AutoScaleMode.None;
 
-            ClientSize = new Size(Scale(460), Scale(184));
+            ClientSize = new Size(Dpi.Px(460), Dpi.Px(184));
 
             var title = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(14), Scale(12), Scale(432), Scale(20)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(12), Dpi.Px(432), Dpi.Px(20)),
                 Text = caption,
                 Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
                 ForeColor = Color.White,
@@ -71,7 +71,7 @@ namespace WOTBO.UI
 
             _bar = new ProgressBar
             {
-                Bounds = new Rectangle(Scale(14), Scale(40), Scale(432), Scale(16)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(40), Dpi.Px(432), Dpi.Px(16)),
                 Minimum = 0,
                 Maximum = 100,
             };
@@ -79,7 +79,7 @@ namespace WOTBO.UI
             _percent = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(14), Scale(64), Scale(120), Scale(18)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(64), Dpi.Px(120), Dpi.Px(18)),
                 Text = "0 %",
                 ForeColor = Color.White,
             };
@@ -87,7 +87,7 @@ namespace WOTBO.UI
             _speed = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(320), Scale(64), Scale(126), Scale(18)),
+                Bounds = new Rectangle(Dpi.Px(320), Dpi.Px(64), Dpi.Px(126), Dpi.Px(18)),
                 Text = "0,0 Мбит/с",
                 ForeColor = Color.FromArgb(200, 200, 200),
                 TextAlign = ContentAlignment.TopRight,
@@ -96,7 +96,7 @@ namespace WOTBO.UI
             _size = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(14), Scale(88), Scale(432), Scale(18)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(88), Dpi.Px(432), Dpi.Px(18)),
                 Text = "0,0 / 0,0 МБ",
                 ForeColor = Color.FromArgb(200, 200, 200),
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -104,7 +104,7 @@ namespace WOTBO.UI
 
             _cancel = new Button
             {
-                Bounds = new Rectangle(Scale(346), Scale(124), Scale(100), Scale(28)),
+                Bounds = new Rectangle(Dpi.Px(346), Dpi.Px(124), Dpi.Px(100), Dpi.Px(28)),
                 Text = "Отмена",
                 DialogResult = DialogResult.Cancel,
             };
@@ -124,27 +124,6 @@ namespace WOTBO.UI
             FormClosing += OnFormClosing;
         }
 
-        private static readonly float DpiFactor = ReadDpiFactor();
-
-        private static float ReadDpiFactor()
-        {
-            try
-            {
-                using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
-                {
-                    return graphics.DpiX / 96f;
-                }
-            }
-            catch
-            {
-                return 1f;
-            }
-        }
-
-        private static int Scale(int value)
-        {
-            return (int)Math.Round(value * DpiFactor);
-        }
         /// <summary>Ошибка загрузки, если была.</summary>
         public Exception Error { get; private set; }
 

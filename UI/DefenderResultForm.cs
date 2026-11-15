@@ -16,7 +16,7 @@ namespace WOTBO.UI
     /// окно само обновляется, пока Defender не поднимется (Real-time protection
     /// включается финализацией через минуту после загрузки).
     /// </summary>
-    internal sealed class DefenderResultForm : Form
+    public sealed class DefenderResultForm : Form
     {
         private const int RowHeight = 22;
         private const int MaxRefreshTicks = 36;
@@ -38,21 +38,19 @@ namespace WOTBO.UI
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = true;
-            ClientSize = new Size(480, 348);
+            ClientSize = new Size(Dpi.Px(480), Dpi.Px(348));
             BackColor = Color.FromArgb(22, 22, 22);
             ForeColor = Color.White;
             Font = new Font("Tahoma", 8.25f, FontStyle.Regular);
-            // Формы создаются в коде, без дизайнера: без этих строк при
-            // масштабе Windows 125–200 % они не растягивались, а шрифт рос —
-            // текст лез друг на друга.
-            AutoScaleMode = AutoScaleMode.Dpi;
-            AutoScaleDimensions = new SizeF(96F, 96F);
+            // Размеры считаем сами: WinForms-автомасштаб в рантайм-формах
+            // даёт неверный коэффициент.
+            AutoScaleMode = AutoScaleMode.None;
 
 
             _title = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(16, 14, 448, 26),
+                Bounds = new Rectangle(Dpi.Px(16), Dpi.Px(14), Dpi.Px(448), Dpi.Px(26)),
                 Text = "Проверка состояния…",
                 Font = new Font("Tahoma", 11.25f, FontStyle.Bold),
                 ForeColor = Color.White,
@@ -61,7 +59,7 @@ namespace WOTBO.UI
             _summary = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(16, 42, 448, 18),
+                Bounds = new Rectangle(Dpi.Px(16), Dpi.Px(42), Dpi.Px(448), Dpi.Px(18)),
                 Text = "Проверка по фактическому состоянию системы:",
                 ForeColor = Color.FromArgb(165, 165, 165),
             };
@@ -70,20 +68,21 @@ namespace WOTBO.UI
             Controls.Add(_summary);
 
             List<CheckRow> rows = BuildRows();
-            int top = 68;
+            int rowHeight = Dpi.Px(RowHeight);
+            int top = Dpi.Px(68);
             foreach (CheckRow row in rows)
             {
                 var mark = new Label
                 {
                     AutoSize = false,
-                    Bounds = new Rectangle(16, top, 18, RowHeight),
+                    Bounds = new Rectangle(Dpi.Px(16), top, Dpi.Px(18), rowHeight),
                     Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
                 };
 
                 var text = new Label
                 {
                     AutoSize = false,
-                    Bounds = new Rectangle(38, top, 426, RowHeight),
+                    Bounds = new Rectangle(Dpi.Px(38), top, Dpi.Px(426), rowHeight),
                     Text = row.Text,
                     AutoEllipsis = true,
                 };
@@ -91,13 +90,13 @@ namespace WOTBO.UI
                 Controls.Add(mark);
                 Controls.Add(text);
                 _views.Add(new RowView { Mark = mark, Text = text, Source = row });
-                top += RowHeight;
+                top += rowHeight;
             }
 
             var close = new Button
             {
                 Text = "Закрыть",
-                Bounds = new Rectangle(364, 304, 100, 28),
+                Bounds = new Rectangle(Dpi.Px(364), Dpi.Px(304), Dpi.Px(100), Dpi.Px(28)),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(48, 58, 70),
                 ForeColor = Color.White,

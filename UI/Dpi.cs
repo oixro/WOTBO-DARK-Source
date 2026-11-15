@@ -53,6 +53,41 @@ namespace WOTBO.UI
             return dpi <= 0 ? 1f : dpi / 96f;
         }
 
+        private static float? _screenFactor;
+
+        /// <summary>
+        /// Масштаб основного экрана. Нужен формам, которые создаются в коде:
+        /// у них ещё нет хендла, и <see cref="Control.DeviceDpi"/> врёт.
+        /// </summary>
+        public static float ScreenFactor
+        {
+            get
+            {
+                if (_screenFactor == null)
+                {
+                    try
+                    {
+                        using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+                        {
+                            _screenFactor = graphics.DpiX / 96f;
+                        }
+                    }
+                    catch
+                    {
+                        _screenFactor = 1f;
+                    }
+                }
+
+                return _screenFactor.Value;
+            }
+        }
+
+        /// <summary>Пиксели дизайнера (96 DPI) → пиксели экрана.</summary>
+        public static int Px(int value)
+        {
+            return (int)Math.Round(value * ScreenFactor);
+        }
+
         public static int Scale(Control control, int value)
         {
             return (int)Math.Round(value * Factor(control));

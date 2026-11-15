@@ -11,7 +11,7 @@ namespace WOTBO.UI
     /// (переименование платформы, задачи, экспорт реестра).
     /// Показывает последнюю строку лога движка.
     /// </summary>
-    internal sealed class DefenderProgressForm : Form
+    public sealed class DefenderProgressForm : Form
     {
         private readonly Label _status;
         private readonly Label _hint;
@@ -27,21 +27,19 @@ namespace WOTBO.UI
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
-            ClientSize = new Size(430, 126);
+            ClientSize = new Size(Dpi.Px(430), Dpi.Px(126));
             BackColor = Color.FromArgb(22, 22, 22);
             ForeColor = Color.White;
             Font = new Font("Tahoma", 8.25f, FontStyle.Regular);
-            // Формы создаются в коде, без дизайнера: без этих строк при
-            // масштабе Windows 125–200 % они не растягивались, а шрифт рос —
-            // текст лез друг на друга.
-            AutoScaleMode = AutoScaleMode.Dpi;
-            AutoScaleDimensions = new SizeF(96F, 96F);
+            // Размеры считаем сами: WinForms-автомасштаб в рантайм-формах
+            // даёт неверный коэффициент, и текст наезжает друг на друга.
+            AutoScaleMode = AutoScaleMode.None;
 
 
             var title = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 12, 402, 20),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(12), Dpi.Px(402), Dpi.Px(20)),
                 Text = "Windows Defender",
                 Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
                 ForeColor = Color.White,
@@ -50,7 +48,7 @@ namespace WOTBO.UI
             _status = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 38, 402, 18),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(38), Dpi.Px(402), Dpi.Px(18)),
                 Text = "Подготовка…",
                 ForeColor = Color.FromArgb(200, 200, 200),
                 AutoEllipsis = true,
@@ -58,7 +56,7 @@ namespace WOTBO.UI
 
             _bar = new ProgressBar
             {
-                Bounds = new Rectangle(14, 62, 402, 14),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(62), Dpi.Px(402), Dpi.Px(14)),
                 Style = ProgressBarStyle.Marquee,
                 MarqueeAnimationSpeed = 28,
             };
@@ -66,7 +64,7 @@ namespace WOTBO.UI
             _hint = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 86, 402, 26),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(86), Dpi.Px(402), Dpi.Px(26)),
                 Text = "Не выключайте компьютер и не закрывайте окно.",
                 ForeColor = Color.FromArgb(150, 150, 150),
             };

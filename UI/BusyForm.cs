@@ -37,12 +37,12 @@ namespace WOTBO.UI
             // в рантайм-формах даёт неверный коэффициент при 125-200 %.
             AutoScaleMode = AutoScaleMode.None;
 
-            ClientSize = new Size(Scale(420), Scale(126));
+            ClientSize = new Size(Dpi.Px(420), Dpi.Px(126));
 
             var title = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(14), Scale(12), Scale(392), Scale(20)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(12), Dpi.Px(392), Dpi.Px(20)),
                 Text = caption,
                 Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
                 ForeColor = Color.White,
@@ -52,7 +52,7 @@ namespace WOTBO.UI
             _status = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(14), Scale(38), Scale(392), Scale(18)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(38), Dpi.Px(392), Dpi.Px(18)),
                 Text = message,
                 ForeColor = Color.FromArgb(200, 200, 200),
                 AutoEllipsis = true,
@@ -60,7 +60,7 @@ namespace WOTBO.UI
 
             var bar = new ProgressBar
             {
-                Bounds = new Rectangle(Scale(14), Scale(62), Scale(392), Scale(14)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(62), Dpi.Px(392), Dpi.Px(14)),
                 Style = ProgressBarStyle.Marquee,
                 MarqueeAnimationSpeed = 28,
             };
@@ -68,7 +68,7 @@ namespace WOTBO.UI
             _hint = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(Scale(14), Scale(84), Scale(392), Scale(24)),
+                Bounds = new Rectangle(Dpi.Px(14), Dpi.Px(84), Dpi.Px(392), Dpi.Px(24)),
                 Text = "Не закрывайте окно.",
                 ForeColor = Color.FromArgb(150, 150, 150),
             };
@@ -81,27 +81,6 @@ namespace WOTBO.UI
             FormClosing += OnFormClosing;
         }
 
-        private static readonly float DpiFactor = ReadDpiFactor();
-
-        private static float ReadDpiFactor()
-        {
-            try
-            {
-                using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
-                {
-                    return graphics.DpiX / 96f;
-                }
-            }
-            catch
-            {
-                return 1f;
-            }
-        }
-
-        private static int Scale(int value)
-        {
-            return (int)Math.Round(value * DpiFactor);
-        }
         /// <summary>Ошибка фонового действия (если была).</summary>
         public Exception Error { get; private set; }
 
