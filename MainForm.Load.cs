@@ -415,6 +415,10 @@ namespace WOTBO
                 label_inspector.Visible = false;
                 checkBox_directplay.Location = Dpi.Scale(this, 20, 45);
                 back_gpu_1.Location = Dpi.Scale(this, 0, 45);
+                // Без NVIDIA строки Ansel/HDCP/NVIDIA скрыты — Game Bar
+                // поднимается вплотную к DirectPlay, без дыры.
+                checkBox_gamebar.Location = Dpi.Scale(this, 20, 65);
+                back_gpu_5.Location = Dpi.Scale(this, 0, 65);
             }//не nvidia
             #endregion
         }
