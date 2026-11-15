@@ -592,7 +592,9 @@ namespace WOTBO
             // и иначе задержит первый показ окна.
             await Task.Yield();
 
-            if (!Internet.OK())
+            bool online = await Task.Run(() => Internet.OK());
+
+            if (!online)
             {
                 Log.Warn("Network", "инета нету");
                 checkBox_bluefolders.Enabled = false;
@@ -654,7 +656,7 @@ namespace WOTBO
 
                         try
                         {
-                            AppServices.UpdateCoordinator.Install(update, exename, exepath, contexpath);
+                            await AppServices.UpdateCoordinator.InstallAsync(update, exename, exepath, contexpath);
                         }
                         catch (Exception ex)
                         {

@@ -42,11 +42,15 @@ namespace WOTBO.Services.Network
             return _updates.CheckAsync(localVersion);
         }
 
-        public void Install(UpdateInfo update, string exename, string exepath, string contexpath)
+        /// <summary>
+        /// Скачать и запустить установку. Загрузка идёт в фоне: раньше она
+        /// выполнялась в UI-потоке и окно замирало на всё время скачивания.
+        /// </summary>
+        public async Task InstallAsync(UpdateInfo update, string exename, string exepath, string contexpath)
         {
             if (update == null) throw new ArgumentNullException(nameof(update));
 
-            DownloadNewVersion();
+            await Task.Run(() => DownloadNewVersion());
 
             File.WriteAllText("lastchange.json", update.ChangeLog ?? string.Empty);
 

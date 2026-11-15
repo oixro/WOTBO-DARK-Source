@@ -17,6 +17,12 @@ namespace WOTBO.Services.Network
         private const string Category = "Network";
         private const int DnsTimeoutMs = 3000;
 
+        // WebClient сам таймаутов не ставит: зависший сервер держал запрос
+        // до 100 секунд (HTTP) и до 5 минут на чтение. Обновление проверяется
+        // при старте, поэтому ожидание было заметно как «подвисшая» программа.
+        private const int StringTimeoutMs = 20000;
+        private const int FileTimeoutMs = 30000;
+
         private readonly IAppLogger _log;
 
         public NetworkService(IAppLogger log)
@@ -54,7 +60,7 @@ namespace WOTBO.Services.Network
         {
             try
             {
-                using (var client = new WebClient())
+                using (var client = new TimeoutWebClient(StringTimeoutMs))
                 {
                     client.Headers[HttpRequestHeader.UserAgent] = "WOTBO";
 
@@ -81,7 +87,7 @@ namespace WOTBO.Services.Network
             try
             {
                 _log.Info(Category, "скачивание: " + url);
-                using (var client = new WebClient())
+                using (var client = new TimeoutWebClient(FileTimeoutMs))
                 {
                     client.DownloadFile(url, path);
                 }
@@ -98,7 +104,7 @@ namespace WOTBO.Services.Network
             try
             {
                 _log.Info(Category, "скачивание: " + url);
-                using (var client = new WebClient())
+                using (var client = new TimeoutWebClient(FileTimeoutMs))
                 {
                     await client.DownloadFileTaskAsync(new Uri(url), path);
                 }
@@ -107,6 +113,30 @@ namespace WOTBO.Services.Network
             {
                 _log.Error(Category, "не удалось скачать файл: " + url, ex);
                 throw;
+            }
+        }
+        /// <summary>WebClient с явными таймаутами: иначе запрос может висеть минутами.</summary>
+        private sealed class TimeoutWebClient : WebClient
+        {
+            private readonly int _timeoutMs;
+
+            public TimeoutWebClient(int timeoutMs)
+            {
+                _timeoutMs = timeoutMs;
+            }
+
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                WebRequest request = base.GetWebRequest(address);
+
+                var http = request as HttpWebRequest;
+                if (http != null)
+                {
+                    http.Timeout = _timeoutMs;
+                    http.ReadWriteTimeout = _timeoutMs;
+                }
+
+                return request;
             }
         }
     }
