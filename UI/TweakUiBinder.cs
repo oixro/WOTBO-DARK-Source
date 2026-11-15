@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WOTBO.App;
@@ -33,6 +34,9 @@ namespace WOTBO.UI
         private readonly bool _showRollbackOnDetect;
         private readonly bool _uncheckOnDetect;
 
+        /// <summary>UI-контекст: detect идёт в фоне, а ShowApplied — в UI-потоке.</summary>
+        private readonly SynchronizationContext _ui;
+
         public TweakUiBinder(
             string id,
             CheckBox checkBox,
@@ -58,6 +62,7 @@ namespace WOTBO.UI
             _id = id;
             _checkBox = checkBox;
             _rollback = rollback;
+            _ui = SynchronizationContext.Current;
             _detectMessage = detectMessage;
             _onDetected = onDetected;
             _beforeApply = beforeApply;
@@ -132,12 +137,24 @@ namespace WOTBO.UI
 
                 AppServices.Tweaks.Reconcile(_id, state == TweakState.Applied);
 
-                if (state != TweakState.Applied || !_checkBox.IsHandleCreated)
+                if (state != TweakState.Applied)
                 {
                     return;
                 }
 
-                _checkBox.BeginInvoke(new Action(ShowApplied));
+                // Вкладка могла ещё ни разу не открываться: у контролов на
+                // скрытой панели нет хендла, старый BeginInvoke молча не
+                // выполнялся — и твик выглядел доступным, хотя уже применён.
+                if (_ui != null)
+                {
+                    _ui.Post(delegate { ShowApplied(); }, null);
+                    return;
+                }
+
+                if (_checkBox.IsHandleCreated)
+                {
+                    _checkBox.BeginInvoke(new Action(ShowApplied));
+                }
             });
         }
 
