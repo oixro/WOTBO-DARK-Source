@@ -200,7 +200,7 @@ namespace WOTBO
             Log.Info("App", $"==============WOTBO {version} ==============");
             ApplyWindowSize();
             CenterToScreen();
-            Log.Debug("UI", $"dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
+            Log.Debug("UI", $"dpi aware={NativeMethods.DpiAwareness()}, dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
             SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
             #region проверка запущенна ли + eula

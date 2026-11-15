@@ -43,29 +43,35 @@ namespace WOTBO.UI
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
-            ClientSize = new Size(460, 176);
             BackColor = Color.FromArgb(22, 22, 22);
             ForeColor = Color.White;
             Font = new Font("Tahoma", 8.25f, FontStyle.Regular);
-            // Формы создаются в коде, без дизайнера: без этих строк при
-            // масштабе Windows 125–200 % они не растягивались, а шрифт рос —
-            // текст лез друг на друга.
-            AutoScaleMode = AutoScaleMode.Dpi;
-            AutoScaleDimensions = new SizeF(96F, 96F);
 
+
+            // Как в дизайнерских формах: AutoScaleMode.Font сам растягивает
+            // контролы под масштаб Windows (125-200 %), а шрифт растёт в
+            // пунктах. Dpi.Scale и AutoSize тут давали обрезанные окна.
+            // Никакого AutoScale: размеры считаем сами через Dpi.Scale.
+            // WinForms-автомасштаб в рантайм-формах даёт неверный коэффициент
+            // (шрифт растёт на 1.75, а границы — на 1.15), из-за чего текст
+            // обрезается.
+            AutoScaleMode = AutoScaleMode.None;
+
+            ClientSize = new Size(Scale(460), Scale(184));
 
             var title = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 12, 432, 20),
+                Bounds = new Rectangle(Scale(14), Scale(12), Scale(432), Scale(20)),
                 Text = caption,
                 Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
                 ForeColor = Color.White,
+                AutoEllipsis = true,
             };
 
             _bar = new ProgressBar
             {
-                Bounds = new Rectangle(14, 40, 432, 16),
+                Bounds = new Rectangle(Scale(14), Scale(40), Scale(432), Scale(16)),
                 Minimum = 0,
                 Maximum = 100,
             };
@@ -73,32 +79,32 @@ namespace WOTBO.UI
             _percent = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 64, 120, 18),
+                Bounds = new Rectangle(Scale(14), Scale(64), Scale(120), Scale(18)),
                 Text = "0 %",
                 ForeColor = Color.White,
-            };
-
-            _size = new Label
-            {
-                AutoSize = false,
-                Bounds = new Rectangle(14, 82, 432, 18),
-                Text = "0,0 / 0,0 МБ",
-                ForeColor = Color.FromArgb(200, 200, 200),
-                TextAlign = ContentAlignment.MiddleCenter,
             };
 
             _speed = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(320, 64, 126, 18),
+                Bounds = new Rectangle(Scale(320), Scale(64), Scale(126), Scale(18)),
                 Text = "0,0 Мбит/с",
                 ForeColor = Color.FromArgb(200, 200, 200),
                 TextAlign = ContentAlignment.TopRight,
             };
 
+            _size = new Label
+            {
+                AutoSize = false,
+                Bounds = new Rectangle(Scale(14), Scale(88), Scale(432), Scale(18)),
+                Text = "0,0 / 0,0 МБ",
+                ForeColor = Color.FromArgb(200, 200, 200),
+                TextAlign = ContentAlignment.MiddleCenter,
+            };
+
             _cancel = new Button
             {
-                Bounds = new Rectangle(346, 118, 100, 28),
+                Bounds = new Rectangle(Scale(346), Scale(124), Scale(100), Scale(28)),
                 Text = "Отмена",
                 DialogResult = DialogResult.Cancel,
             };
@@ -107,8 +113,8 @@ namespace WOTBO.UI
             Controls.Add(title);
             Controls.Add(_bar);
             Controls.Add(_percent);
-            Controls.Add(_size);
             Controls.Add(_speed);
+            Controls.Add(_size);
             Controls.Add(_cancel);
 
             _tick = new Timer { Interval = TickMs };
@@ -118,6 +124,27 @@ namespace WOTBO.UI
             FormClosing += OnFormClosing;
         }
 
+        private static readonly float DpiFactor = ReadDpiFactor();
+
+        private static float ReadDpiFactor()
+        {
+            try
+            {
+                using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    return graphics.DpiX / 96f;
+                }
+            }
+            catch
+            {
+                return 1f;
+            }
+        }
+
+        private static int Scale(int value)
+        {
+            return (int)Math.Round(value * DpiFactor);
+        }
         /// <summary>Ошибка загрузки, если была.</summary>
         public Exception Error { get; private set; }
 

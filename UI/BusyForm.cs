@@ -11,7 +11,7 @@ namespace WOTBO.UI
     /// <c>WebClient.DownloadFile</c> вызывался прямо в UI-потоке и окно
     /// замирало на всё время скачивания (или до таймаута).
     /// </summary>
-    internal sealed class BusyForm : Form
+    public sealed class BusyForm : Form
     {
         private readonly Label _status;
         private readonly Label _hint;
@@ -26,30 +26,33 @@ namespace WOTBO.UI
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
-            ClientSize = new Size(420, 118);
             BackColor = Color.FromArgb(22, 22, 22);
             ForeColor = Color.White;
             Font = new Font("Tahoma", 8.25f, FontStyle.Regular);
-            // Формы создаются в коде, без дизайнера: без этих строк при
-            // масштабе Windows 125–200 % они не растягивались, а шрифт рос —
-            // текст лез друг на друга.
-            AutoScaleMode = AutoScaleMode.Dpi;
-            AutoScaleDimensions = new SizeF(96F, 96F);
 
+
+            // AutoScaleMode.Font — тот же механизм, что в дизайнерских
+            // формах: контролы тянутся под масштаб, шрифт растёт сам.
+            // Размеры считаем сами через Dpi.Scale: WinForms-автомасштаб
+            // в рантайм-формах даёт неверный коэффициент при 125-200 %.
+            AutoScaleMode = AutoScaleMode.None;
+
+            ClientSize = new Size(Scale(420), Scale(126));
 
             var title = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 12, 392, 20),
+                Bounds = new Rectangle(Scale(14), Scale(12), Scale(392), Scale(20)),
                 Text = caption,
                 Font = new Font("Tahoma", 9.75f, FontStyle.Bold),
                 ForeColor = Color.White,
+                AutoEllipsis = true,
             };
 
             _status = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 38, 392, 18),
+                Bounds = new Rectangle(Scale(14), Scale(38), Scale(392), Scale(18)),
                 Text = message,
                 ForeColor = Color.FromArgb(200, 200, 200),
                 AutoEllipsis = true,
@@ -57,7 +60,7 @@ namespace WOTBO.UI
 
             var bar = new ProgressBar
             {
-                Bounds = new Rectangle(14, 62, 392, 14),
+                Bounds = new Rectangle(Scale(14), Scale(62), Scale(392), Scale(14)),
                 Style = ProgressBarStyle.Marquee,
                 MarqueeAnimationSpeed = 28,
             };
@@ -65,7 +68,7 @@ namespace WOTBO.UI
             _hint = new Label
             {
                 AutoSize = false,
-                Bounds = new Rectangle(14, 84, 392, 24),
+                Bounds = new Rectangle(Scale(14), Scale(84), Scale(392), Scale(24)),
                 Text = "Не закрывайте окно.",
                 ForeColor = Color.FromArgb(150, 150, 150),
             };
@@ -78,6 +81,27 @@ namespace WOTBO.UI
             FormClosing += OnFormClosing;
         }
 
+        private static readonly float DpiFactor = ReadDpiFactor();
+
+        private static float ReadDpiFactor()
+        {
+            try
+            {
+                using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    return graphics.DpiX / 96f;
+                }
+            }
+            catch
+            {
+                return 1f;
+            }
+        }
+
+        private static int Scale(int value)
+        {
+            return (int)Math.Round(value * DpiFactor);
+        }
         /// <summary>Ошибка фонового действия (если была).</summary>
         public Exception Error { get; private set; }
 

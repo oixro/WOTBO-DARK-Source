@@ -18,6 +18,26 @@ namespace WOTBO.UI
         [DllImport("dwmapi.dll")]
         public static extern int DwmExtendFrameIntoClientArea(IntPtr hWnd, ref Margins margins);
 
+        [DllImport("shcore.dll")]
+        private static extern int GetProcessDpiAwareness(IntPtr process, out int awareness);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentProcess();
+
+        /// <summary>0 — DPI не учитывается, 1 — системный, 2 — на монитор.</summary>
+        public static int DpiAwareness()
+        {
+            try
+            {
+                int value;
+                return GetProcessDpiAwareness(GetCurrentProcess(), out value) == 0 ? value : -1;
+            }
+            catch
+            {
+                return -2;
+            }
+        }
+
         [DllImport("dwmapi.dll")]
         public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
