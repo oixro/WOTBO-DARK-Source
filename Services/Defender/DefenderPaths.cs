@@ -119,6 +119,13 @@ namespace WOTBO.Services.Defender
         }
 
         /// <summary>Аварийное снятие safeboot на случай проблем с загрузкой.</summary>
+        /// <summary>Видимое окно прогресса в безопасном режиме (запуск через RunOnce).</summary>
+        public static string ProgressScript
+        {
+            get { return Path.Combine(AppPaths.Windows, "Temp", "wotbo-defender-progress.cmd"); }
+        }
+
+        /// <summary>Аварийное снятие safeboot на случай проблем с загрузкой.</summary>
         public static string UndoBat
         {
             get { return Path.Combine(AppPaths.SystemDrive + "\\", "WOTBO-UNDO-SAFE-MODE.bat"); }

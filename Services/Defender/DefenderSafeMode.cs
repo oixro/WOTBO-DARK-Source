@@ -46,7 +46,8 @@ namespace WOTBO.Services.Defender
             }
 
             WriteUndoBat(log);
-            WriteDesktopHelpers(log);
+            WriteDesktopHelpers(log, phase);
+            SetRunOnce(log);
 
             if (!Run(log, "bcdedit.exe", "/set {current} safeboot minimal"))
             {
@@ -142,7 +143,7 @@ namespace WOTBO.Services.Defender
 
                     key.SetValue(
                         RunOnceValue,
-                        "cmd.exe /c \"" + DefenderPaths.StageVisibleRunner + "\"",
+                        "cmd.exe /c \"" + DefenderPaths.ProgressScript + "\"",
                         Microsoft.Win32.RegistryValueKind.String);
                 }
 
@@ -173,7 +174,7 @@ namespace WOTBO.Services.Defender
             }
         }
 
-        private static void WriteDesktopHelpers(IAppLogger log)
+        private static void WriteDesktopHelpers(IAppLogger log, string phase)
         {
             try
             {
@@ -192,12 +193,67 @@ namespace WOTBO.Services.Defender
                 undo.AppendLine("bcdedit /deletevalue {current} safeboot");
                 undo.AppendLine("shutdown /r /t 5 /f");
                 File.WriteAllText(DefenderPaths.DesktopUndoSafeMode, undo.ToString(), Encoding.Default);
+
+                File.WriteAllText(
+                    DefenderPaths.ProgressScript,
+                    BuildProgressScript(phase),
+                    Encoding.GetEncoding(866));
+
                 log.Info(LogCategory, "ярлыки безопасного режима созданы на рабочем столе");
             }
             catch (Exception exception)
             {
                 log.Warn(LogCategory, "не удалось создать ярлыки: " + exception.Message);
             }
+        }
+
+        /// <summary>
+        /// Окно прогресса для безопасного режима: показывает хвост лога стадии
+        /// и закрывается, когда движок запишет результат в state.ini.
+        /// </summary>
+        private static string BuildProgressScript(string phase)
+        {
+            bool restore = string.Equals(phase, DefenderEngine.PhaseRestore, StringComparison.OrdinalIgnoreCase);
+            string action = restore
+                ? "восстанавливаем Windows Defender в безопасном режиме"
+                : "отключаем Windows Defender в безопасном режиме";
+
+            var text = new StringBuilder();
+            text.AppendLine("@echo off");
+            // Консоль переводим в 866: файл записан в этой кодировке,
+            // иначе на нерусской Windows кириллица рассыпается.
+            text.AppendLine("chcp 866 >nul");
+            text.AppendLine("setlocal enabledelayedexpansion");
+            text.AppendLine("title WOTBO: Windows Defender (safe mode)");
+            text.AppendLine("mode con: cols=96 lines=26");
+            text.AppendLine("color 0F");
+            text.AppendLine("set \"LOG=%WINDIR%\\Temp\\wotbo-defender-stage.log\"");
+            text.AppendLine("set \"STATE=" + DefenderPaths.StateFile + "\"");
+            text.AppendLine("set /a ticks=0");
+            text.AppendLine(":loop");
+            text.AppendLine("set /a ticks+=1");
+            text.AppendLine("if !ticks! gtr 400 goto timeout");
+            text.AppendLine("cls");
+            text.AppendLine("echo.");
+            text.AppendLine("echo   WOTBO: " + action);
+            text.AppendLine("echo   Не выключайте компьютер.");
+            text.AppendLine("echo   Лог: %LOG%");
+            text.AppendLine("echo   ------------------------------------------------------------");
+            text.AppendLine("powershell -NoProfile -ExecutionPolicy Bypass -Command \"$p='%LOG%'; if (Test-Path -LiteralPath $p) { Get-Content -LiteralPath $p -Tail 10 } else { 'Лог ещё не создан, ждём...' }\"");
+            text.AppendLine("echo   ------------------------------------------------------------");
+            text.AppendLine("echo.");
+            text.AppendLine("if not exist \"%STATE%\" goto wait");
+            text.AppendLine("findstr /c:\"result=\" \"%STATE%\" >nul || goto wait");
+            text.AppendLine("echo   Готово. Нажмите любую клавишу, чтобы закрыть окно.");
+            text.AppendLine("pause >nul");
+            text.AppendLine("exit /b 0");
+            text.AppendLine(":wait");
+            text.AppendLine("timeout /t 3 /nobreak >nul");
+            text.AppendLine("goto loop");
+            text.AppendLine(":timeout");
+            text.AppendLine("echo   Время ожидания истекло. Нажмите любую клавишу.");
+            text.AppendLine("pause >nul");
+            return text.ToString();
         }
 
         private static void WriteDesktopScript(string path, string runner, string title)
