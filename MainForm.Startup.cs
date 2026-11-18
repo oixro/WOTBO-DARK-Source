@@ -143,10 +143,10 @@ namespace WOTBO
                 BackColor = Color.Transparent,
                 Cursor = SystemCursors.Hand,
                 Font = startupContent.Font,
-                ForeColor = Color.White,
+                ForeColor = Color.Silver,
                 Height = Dpi.Px(17),
                 Left = 0,
-                Text = "показать задачи из планировщика",
+                Text = "Показать задачи из планировщика задач",
                 Top = top,
                 Width = Math.Max(80, startupContent.ClientSize.Width - 14),
             };
@@ -168,7 +168,7 @@ namespace WOTBO
             {
                 startupTasksVisible = false;
                 RemoveTaskRows();
-                label.Text = "показать задачи из планировщика";
+                label.Text = "Показать задачи из планировщика задач";
                 PanelScroller.Refresh(startupContent);
                 UpdateStartupStatus();
                 return;
@@ -177,7 +177,7 @@ namespace WOTBO
             int generation = startupGeneration;
             startupTasksBusy = true;
             label.Enabled = false;
-            label.Text = "читаем задачи…";
+            label.Text = "Читаем задачи…";
 
             try
             {
@@ -197,14 +197,14 @@ namespace WOTBO
                 startupSuppressEvents = false;
 
                 startupTasksVisible = true;
-                label.Text = "скрыть задачи из планировщика";
+                label.Text = "Скрыть задачи из планировщика задач";
                 label.Enabled = true;
                 PanelScroller.Refresh(startupContent);
                 UpdateStartupStatus();
             }
             catch (Exception exception)
             {
-                label.Text = "показать задачи из планировщика";
+                label.Text = "Показать задачи из планировщика задач";
                 label.Enabled = true;
                 startupStatus.Text = "Не удалось прочитать задачи";
                 Log.Error("Startup", "tasks: " + exception.Message, exception);
