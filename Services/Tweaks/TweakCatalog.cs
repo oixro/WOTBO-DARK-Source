@@ -72,7 +72,6 @@ namespace WOTBO.Services.Tweaks
                 new FfmpegTweak(),
                 new AnselTweak(),
                 new CompactOsTweak(),
-                new WinSxsTweak(),
                 new EdgeTweak(),
                 new MicaTweak(),
                 new CursorsTweak(),

@@ -194,7 +194,6 @@
     <Compile Include="Services\Tweaks\FfmpegTweak.cs" />
     <Compile Include="Services\Tweaks\AnselTweak.cs" />
     <Compile Include="Services\Tweaks\CompactOsTweak.cs" />
-    <Compile Include="Services\Tweaks\WinSxsTweak.cs" />
     <Compile Include="Services\Tweaks\EdgeTweak.cs" />
     <Compile Include="Services\Tweaks\MicaTweak.cs" />
     <Compile Include="Services\Tweaks\WotboContextTweak.cs" />

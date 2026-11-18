@@ -498,8 +498,6 @@ namespace WOTBO
                 showRollbackOnApply: false, showRollbackOnDetect: false);
             Bind("extra.compactos", checkBox_compactos, null,
                 disableOnApply: false, showRollbackOnApply: false);
-            Bind("extra.winsxs", checkBox_WinSxS, null,
-                disableOnApply: false, showRollbackOnApply: false);
             Bind("extra.iconcache", checkBox_picture_cache, back_dop_1, "Max Cached Icons был применён");
             Bind("extra.mobiletraffic", checkBox_mobile_traffic, back_dop_2, "DefaultTTL был применён");
             Bind("extra.scoobe", checkBox_nastroyka, back_dop_3, "ScoobeSystemSettingEnabled был применён");

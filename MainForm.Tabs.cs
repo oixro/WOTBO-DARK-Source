@@ -14,32 +14,35 @@ namespace WOTBO
 {
     /// <summary>
     /// Две списочные вкладки: установленные приложения и глубокая очистка.
-    /// В отличие от твиков, здесь не чекбоксы с откатом, а список с
-    /// отдельными кнопками — как в optimizerDuck.
+    /// Строки — обычные чекбоксы в ScrollPanel, поэтому полоса прокрутки
+    /// своя, как на остальных вкладках, а не системная белая.
     /// </summary>
     public partial class MainForm
     {
+        private const int ListRowStep = 20;
+
         private AppsService appsService;
         private CleanupService cleanupService;
 
-        private CheckedListBox appsList;
+        private ScrollPanel appsContent;
         private Label appsStatus;
         private Button appsRefresh;
         private Button appsRemove;
 
-        private CheckedListBox cleanupList;
+        private ScrollPanel cleanupContent;
         private Label cleanupStatus;
         private Button cleanupRefresh;
         private Button cleanupClean;
 
         private bool appsLoaded;
         private bool appsBusy;
+        private bool cleanupLoaded;
         private bool cleanupBusy;
 
         private void SetupExtraTabs()
         {
             appsService = new AppsService(AppServices.Processes, Log.Instance);
-            cleanupService = new CleanupService(Log.Instance);
+            cleanupService = new CleanupService(AppServices.Processes, Log.Instance);
 
             BuildAppsPanel();
             BuildCleanupPanel();
@@ -54,7 +57,7 @@ namespace WOTBO
 
             panel_cleanup.VisibleChanged += delegate
             {
-                if (panel_cleanup.Visible && cleanupList.Items.Count == 0 && !cleanupBusy)
+                if (panel_cleanup.Visible && !cleanupLoaded && !cleanupBusy)
                 {
                     ScanCleanupAsync();
                 }
@@ -67,24 +70,16 @@ namespace WOTBO
                 panel_apps,
                 "Установленные приложения",
                 "Store/UWP-пакеты текущего пользователя. Удаление необратимо.",
-                out appsList,
+                out appsContent,
                 out appsStatus,
                 out appsRefresh,
                 out appsRemove);
 
-            appsRefresh.Text = "Обновить";
             appsRemove.Text = "Удалить";
-            appsRemove.Width = 110;
+            appsRemove.Enabled = false;
 
             appsRefresh.Click += delegate { LoadAppsAsync(); };
             appsRemove.Click += delegate { RemoveAppsAsync(); };
-            appsList.ItemCheck += delegate
-            {
-                if (appsList.IsHandleCreated)
-                {
-                    appsList.BeginInvoke(new Action(UpdateAppsButtons));
-                }
-            };
         }
 
         private void BuildCleanupPanel()
@@ -93,32 +88,23 @@ namespace WOTBO
                 panel_cleanup,
                 "Глубокая очистка",
                 "Занятые файлы пропускаются. Отката нет.",
-                out cleanupList,
+                out cleanupContent,
                 out cleanupStatus,
                 out cleanupRefresh,
                 out cleanupClean);
 
-            cleanupRefresh.Text = "Обновить";
             cleanupClean.Text = "Очистить";
-            cleanupClean.Width = 110;
             cleanupClean.Enabled = false;
 
             cleanupRefresh.Click += delegate { ScanCleanupAsync(); };
             cleanupClean.Click += delegate { CleanSelectedAsync(); };
-            cleanupList.ItemCheck += delegate
-            {
-                if (cleanupList.IsHandleCreated)
-                {
-                    cleanupList.BeginInvoke(new Action(UpdateCleanupButtons));
-                }
-            };
         }
 
         private void CreateListChrome(
             Panel panel,
             string title,
             string hint,
-            out CheckedListBox list,
+            out ScrollPanel content,
             out Label status,
             out Button refresh,
             out Button action)
@@ -136,22 +122,18 @@ namespace WOTBO
             };
             panel.Controls.Add(titleLabel);
 
-            list = new CheckedListBox
+            content = new ScrollPanel
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                BackColor = Color.FromArgb(35, 44, 55),
-                BorderStyle = BorderStyle.None,
-                CheckOnClick = true,
-                Font = panel.Font,
-                ForeColor = Color.White,
-                FormattingEnabled = true,
-                HorizontalScrollbar = true,
-                IntegralHeight = false,
                 Location = new Point(6, 28),
-                Size = new Size(Math.Max(100, panel.ClientSize.Width - 12), Math.Max(100, panel.ClientSize.Height - 92)),
+                Name = panel.Name + "_content",
+                Size = new Size(
+                    Math.Max(100, panel.ClientSize.Width - 12),
+                    Math.Max(100, panel.ClientSize.Height - 92)),
                 TabIndex = 0,
             };
-            panel.Controls.Add(list);
+            panel.Controls.Add(content);
+            new PanelScroller(content);
 
             status = new Label
             {
@@ -165,10 +147,10 @@ namespace WOTBO
             };
             panel.Controls.Add(status);
 
-            refresh = CreateFlatButton(panel, "Обновить", 6, panel.ClientSize.Height - 34, 90);
+            refresh = CreateFlatButton(panel, "Обновить", 6, panel.ClientSize.Height - 34, 77);
             panel.Controls.Add(refresh);
 
-            action = CreateFlatButton(panel, "Удалить", 102, panel.ClientSize.Height - 34, 90);
+            action = CreateFlatButton(panel, "Удалить", 89, panel.ClientSize.Height - 34, 77);
             panel.Controls.Add(action);
         }
 
@@ -182,12 +164,80 @@ namespace WOTBO
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.White,
                 Location = new Point(left, top),
-                Font = panel.Font,
                 Size = new Size(width, 23),
                 TabStop = false,
                 Text = text,
                 UseVisualStyleBackColor = false,
+                FlatAppearance = { BorderSize = 0, MouseOverBackColor = Color.FromArgb(39, 52, 59), MouseDownBackColor = Color.FromArgb(33, 46, 52) },
             };
+        }
+
+        private static void ClearRows(ScrollPanel content)
+        {
+            var rows = content.Controls
+                .OfType<CheckBox>()
+                .ToList();
+
+            foreach (CheckBox row in rows)
+            {
+                content.Controls.Remove(row);
+                row.Dispose();
+            }
+        }
+
+        private void AddRow(ScrollPanel content, string text, string tooltip, object tag, EventHandler onChecked)
+        {
+            List<CheckBox> rows = content.Controls.OfType<CheckBox>().ToList();
+            int top = rows.Count == 0 ? 2 : rows.Max(item => item.Top) + ListRowStep;
+
+            var row = new CheckBox
+            {
+                AutoEllipsis = true,
+                AutoSize = false,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.Transparent,
+                Font = content.Font,
+                ForeColor = Color.White,
+                Height = 17,
+                Left = 0,
+                Tag = tag,
+                Text = text,
+                Top = top,
+                UseVisualStyleBackColor = true,
+                Width = Math.Max(80, content.ClientSize.Width - 14),
+            };
+
+            row.CheckedChanged += onChecked;
+            content.Controls.Add(row);
+
+            if (!string.IsNullOrEmpty(tooltip))
+            {
+                toolTip1.SetToolTip(row, tooltip);
+            }
+        }
+
+        private static List<CheckBox> CheckedRows(ScrollPanel content)
+        {
+            return content.Controls
+                .OfType<CheckBox>()
+                .Where(row => row.Checked)
+                .ToList();
+        }
+
+        private void UpdateAppsButtons()
+        {
+            if (appsRemove != null && appsContent != null)
+            {
+                appsRemove.Enabled = !appsBusy && CheckedRows(appsContent).Count > 0;
+            }
+        }
+
+        private void UpdateCleanupButtons()
+        {
+            if (cleanupClean != null && cleanupContent != null)
+            {
+                cleanupClean.Enabled = !cleanupBusy && CheckedRows(cleanupContent).Count > 0;
+            }
         }
 
         private async void LoadAppsAsync()
@@ -206,19 +256,24 @@ namespace WOTBO
             try
             {
                 List<AppPackage> packages = await appsService.GetAsync();
-                appsList.BeginUpdate();
-                appsList.Items.Clear();
+                ClearRows(appsContent);
 
-                foreach (AppPackage package in packages.OrderBy(item => item.Name, StringComparer.CurrentCultureIgnoreCase))
+                foreach (AppPackage package in packages.OrderBy(item => item.DisplayName, StringComparer.CurrentCultureIgnoreCase))
                 {
-                    appsList.Items.Add(package);
+                    AddRow(
+                        appsContent,
+                        package.DisplayName,
+                        package.Name + "\r\n" + package.FullName,
+                        package,
+                        delegate { UpdateAppsButtons(); });
                 }
 
-                appsList.EndUpdate();
-                appsStatus.Text = "Приложений: " + appsList.Items.Count;
+                PanelScroller.Refresh(appsContent);
+                appsStatus.Text = "Приложений: " + packages.Count;
             }
             catch (Exception exception)
             {
+                appsLoaded = false;
                 appsStatus.Text = "Не удалось получить список";
                 Log.Error("Apps", "LoadApps: " + exception.Message, exception);
             }
@@ -237,7 +292,11 @@ namespace WOTBO
                 return;
             }
 
-            var selected = appsList.CheckedItems.Cast<AppPackage>().ToList();
+            List<AppPackage> selected = CheckedRows(appsContent)
+                .Select(row => row.Tag as AppPackage)
+                .Where(item => item != null)
+                .ToList();
+
             if (selected.Count == 0)
             {
                 return;
@@ -260,7 +319,7 @@ namespace WOTBO
             appsBusy = true;
             appsRefresh.Enabled = false;
             appsRemove.Enabled = false;
-            appsList.Enabled = false;
+            appsContent.Enabled = false;
 
             var failed = new List<string>();
             int done = 0;
@@ -280,9 +339,9 @@ namespace WOTBO
             }
 
             appsBusy = false;
-            appsList.Enabled = true;
+            appsContent.Enabled = true;
             appsRefresh.Enabled = true;
-            appsList.Items.Clear();
+            ClearRows(appsContent);
             appsLoaded = false;
             LoadAppsAsync();
 
@@ -302,14 +361,6 @@ namespace WOTBO
             }
         }
 
-        private void UpdateAppsButtons()
-        {
-            if (appsRemove != null)
-            {
-                appsRemove.Enabled = !appsBusy && appsList != null && appsList.CheckedItems.Count > 0;
-            }
-        }
-
         private async void ScanCleanupAsync()
         {
             if (cleanupBusy)
@@ -317,11 +368,12 @@ namespace WOTBO
                 return;
             }
 
+            cleanupLoaded = true;
             cleanupBusy = true;
             cleanupRefresh.Enabled = false;
             cleanupClean.Enabled = false;
-            cleanupList.Enabled = false;
-            cleanupList.Items.Clear();
+            cleanupContent.Enabled = false;
+            ClearRows(cleanupContent);
             cleanupStatus.Text = "Считаем размеры…";
 
             try
@@ -331,9 +383,17 @@ namespace WOTBO
                 {
                     cleanupStatus.Text = "Считаем размеры… " + (i + 1) + " из " + items.Count;
                     items[i].Size = await cleanupService.ScanAsync(items[i]);
-                    cleanupList.Items.Add(items[i]);
+                    AddRow(
+                        cleanupContent,
+                        items[i].ToString(),
+                        items[i].Kind == CleanupKind.Dism
+                            ? "DISM /StartComponentCleanup /ResetBase — необратимо, может занять 10–30 минут"
+                            : (string.IsNullOrEmpty(items[i].Path) ? "Корзина" : items[i].Path),
+                        items[i],
+                        delegate { UpdateCleanupButtons(); });
                 }
 
+                PanelScroller.Refresh(cleanupContent);
                 long total = items.Sum(item => item.Size);
                 cleanupStatus.Text = "Всего можно освободить: " + CleanupService.FormatSize(total);
             }
@@ -346,7 +406,7 @@ namespace WOTBO
             {
                 cleanupBusy = false;
                 cleanupRefresh.Enabled = true;
-                cleanupList.Enabled = true;
+                cleanupContent.Enabled = true;
                 UpdateCleanupButtons();
             }
         }
@@ -358,15 +418,23 @@ namespace WOTBO
                 return;
             }
 
-            var selected = cleanupList.CheckedItems.Cast<CleanupItem>().ToList();
+            List<CleanupItem> selected = CheckedRows(cleanupContent)
+                .Select(row => row.Tag as CleanupItem)
+                .Where(item => item != null)
+                .ToList();
+
             if (selected.Count == 0)
             {
                 return;
             }
 
+            string warning = selected.Any(item => item.Kind == CleanupKind.Dism)
+                ? "\n\nDISM ResetBase необратим: после него нельзя удалить установленные обновления. Может занять 10–30 минут."
+                : string.Empty;
+
             DialogResult answer = MessageBox.Show(
                 "Очистить выбранные пункты (" + selected.Count + ")?\n\n"
-                    + "Файлы будут удалены без корзины. Занятые файлы останутся на месте.",
+                    + "Файлы будут удалены без корзины. Занятые файлы останутся на месте." + warning,
                 "WOTBO",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
@@ -376,10 +444,11 @@ namespace WOTBO
                 return;
             }
 
+            cleanupLoaded = true;
             cleanupBusy = true;
             cleanupRefresh.Enabled = false;
             cleanupClean.Enabled = false;
-            cleanupList.Enabled = false;
+            cleanupContent.Enabled = false;
             long freed = 0;
 
             foreach (CleanupItem item in selected)
@@ -389,25 +458,17 @@ namespace WOTBO
             }
 
             cleanupBusy = false;
-            cleanupList.Enabled = true;
+            cleanupContent.Enabled = true;
             cleanupRefresh.Enabled = true;
             ScanCleanupAsync();
 
             MessageBox.Show(
-                "Освобождено: " + CleanupService.FormatSize(freed) + ".",
+                freed > 0
+                    ? "Освобождено: " + CleanupService.FormatSize(freed) + "."
+                    : "Очистка завершена.",
                 "WOTBO",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
-        }
-
-        private void UpdateCleanupButtons()
-        {
-            if (cleanupClean != null)
-            {
-                cleanupClean.Enabled = !cleanupBusy
-                    && cleanupList != null
-                    && cleanupList.CheckedItems.Count > 0;
-            }
         }
     }
 }

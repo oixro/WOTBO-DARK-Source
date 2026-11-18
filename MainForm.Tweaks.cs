@@ -134,7 +134,6 @@ namespace WOTBO
             #region dop
             Binder("extra.onedrive").Apply();
             Binder("extra.compactos").Apply();
-            Binder("extra.winsxs").Apply();
             Binder("extra.iconcache").Apply();
             Binder("extra.mobiletraffic").Apply();
             Binder("extra.scoobe").Apply();

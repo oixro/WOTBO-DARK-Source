@@ -4,8 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using WOTBO.App.Logging;
+using WOTBO.Services.Processes;
 
 namespace WOTBO.Services.Cleanup
 {
@@ -14,6 +16,7 @@ namespace WOTBO.Services.Cleanup
         Directory,
         Thumbnails,
         RecycleBin,
+        Dism,
     }
 
     /// <summary>Один пункт глубокой очистки.</summary>
@@ -39,7 +42,9 @@ namespace WOTBO.Services.Cleanup
 
         public override string ToString()
         {
-            return Name + " — " + CleanupService.FormatSize(Size);
+            return Kind == CleanupKind.Dism
+                ? Name
+                : Name + " — " + CleanupService.FormatSize(Size);
         }
     }
 
@@ -54,10 +59,12 @@ namespace WOTBO.Services.Cleanup
         private const uint SherbNoProgressUi = 0x00000002;
         private const uint SherbNoSound = 0x00000004;
 
+        private readonly IProcessService _processes;
         private readonly IAppLogger _log;
 
-        public CleanupService(IAppLogger log)
+        public CleanupService(IProcessService processes, IAppLogger log)
         {
+            _processes = processes ?? throw new ArgumentNullException(nameof(processes));
             _log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
@@ -71,6 +78,7 @@ namespace WOTBO.Services.Cleanup
                 new CleanupItem("temp", "Временные файлы пользователя", Path.GetTempPath(), CleanupKind.Directory),
                 new CleanupItem("wintemp", "Временные файлы Windows", Path.Combine(windows, "Temp"), CleanupKind.Directory),
                 new CleanupItem("update", "Кэш обновлений Windows", Path.Combine(windows, "SoftwareDistribution", "Download"), CleanupKind.Directory),
+                new CleanupItem("winsxs", "Компоненты WinSxS (DISM ResetBase)", string.Empty, CleanupKind.Dism),
                 new CleanupItem("prefetch", "Prefetch", Path.Combine(windows, "Prefetch"), CleanupKind.Directory),
                 new CleanupItem("thumbs", "Кэш эскизов", Path.Combine(local, @"Microsoft\Windows\Explorer"), CleanupKind.Thumbnails),
                 new CleanupItem("crash", "Дампы сбоев", Path.Combine(local, "CrashDumps"), CleanupKind.Directory),
@@ -88,6 +96,9 @@ namespace WOTBO.Services.Cleanup
                     {
                         case CleanupKind.RecycleBin:
                             return QueryRecycleBin();
+
+                        case CleanupKind.Dism:
+                            return 0L;
 
                         case CleanupKind.Thumbnails:
                             return Measure(item.Path, IsThumbnail);
@@ -114,6 +125,9 @@ namespace WOTBO.Services.Cleanup
                     {
                         case CleanupKind.RecycleBin:
                             return EmptyRecycleBin() ? Math.Max(0, item.Size) : 0L;
+
+                        case CleanupKind.Dism:
+                            return CleanupWinSxs();
 
                         case CleanupKind.Thumbnails:
                             return DeleteFiles(item.Path, IsThumbnail);
@@ -148,6 +162,23 @@ namespace WOTBO.Services.Cleanup
             }
 
             return bytes.ToString(CultureInfo.CurrentCulture) + " Б";
+        }
+
+        private long CleanupWinSxs()
+        {
+            ProcessOutput output = _processes.RunAsync(
+                "dism.exe",
+                "/Online /Cleanup-Image /StartComponentCleanup /ResetBase",
+                1800000,
+                Encoding.UTF8).GetAwaiter().GetResult();
+
+            _log.Info("Cleanup", "DISM ResetBase: код " + output.ExitCode);
+            if (!output.Ok)
+            {
+                _log.Warn("Cleanup", "DISM ResetBase: " + output.Text.Trim());
+            }
+
+            return 0L;
         }
 
         private static bool IsThumbnail(string path)

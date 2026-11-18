@@ -235,7 +235,6 @@ namespace WOTBO
                         //dop
                         checkBox_onedrive.Checked = true;
                         checkBox_compactos.Checked = true;
-                        checkBox_WinSxS.Checked = true;
                         checkBox_picture_cache.Checked = true;
                         checkBox_mobile_traffic.Checked = true;
                         checkBox_nastroyka.Checked = true;

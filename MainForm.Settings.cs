@@ -62,7 +62,7 @@ namespace WOTBO
                 using (Stream iconStream = archive.GetEntry("gear.ico").Open())
                 using (var icon = new Icon(iconStream, 22, 22))
                 {
-                    gearButton.Image = icon.ToBitmap();
+                    gearButton.Image = Tint(icon.ToBitmap(), Color.FromArgb(160, 173, 185));
                 }
             }
             catch
@@ -78,6 +78,30 @@ namespace WOTBO
 
             PanelHead.Controls.Add(gearButton);
             gearButton.BringToFront();
+        }
+
+        /// <summary>
+        /// Перекрасить иконку под цвет крестика закрытия: исходная
+        /// шестерёнка тёмная и на тёмной шапке её не видно.
+        /// </summary>
+        private static Bitmap Tint(Bitmap source, Color color)
+        {
+            var result = new Bitmap(source.Width, source.Height);
+            for (int y = 0; y < source.Height; y++)
+            {
+                for (int x = 0; x < source.Width; x++)
+                {
+                    Color pixel = source.GetPixel(x, y);
+                    if (pixel.A == 0)
+                    {
+                        continue;
+                    }
+
+                    result.SetPixel(x, y, Color.FromArgb(pixel.A, color.R, color.G, color.B));
+                }
+            }
+
+            return result;
         }
 
         /// <summary>Перенести существующий контрол на панель настроек.</summary>

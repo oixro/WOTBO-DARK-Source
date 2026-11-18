@@ -72,7 +72,6 @@ namespace WOTBO.Services.State
                 "gpu.directplay",
                 "ui.animations",
                 "extra.compactos",
-                "extra.winsxs",
                 "pro.bufferbloat",
                 "ui.tweakTooltips",
                 "ui.tooltips",

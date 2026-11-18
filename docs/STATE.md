@@ -55,11 +55,11 @@ HKCU\Software\oixro\wotbo\Backups\<tweak-id>
 - `Detect == Applied`, а состояния нет → `MarkApplied`;
 - `Detect != Applied`, а состояние есть → `Remove`.
 
-Отдельного полного прохода по всем 48 твикам нет: дорогие проверки
+Отдельного полного прохода по всем 88 твикам нет: дорогие проверки
 (`gpu.directplay`, `gpu.ansel`) не запускаются, пока не нужны.
 
 Это синхронизирует чекбокс, стрелку отката и `TweakHoverInfo`.
-Для одноразовых твиков (`tempclean`, `updateclean`, `winsxs`, `compactos`)
+Для одноразовых твиков (`compactos`)
 состояние по-прежнему означает «запускался», а не фактическое состояние
 системы.
 
@@ -76,7 +76,7 @@ HKCU\Software\oixro\wotbo\Backups\<tweak-id>
 
 ## Ограничения
 
-- `DISM`, `compact`, очистка WinSxS и обновлений меняют систему вне
+- `DISM`, `compact` и очистка меняют систему вне
   реестра/файловых операций. Для твиков без бэкапа (список ниже) сохраняется
   только время применения; для остальных при пустом бэкапе пишется
   предупреждение `бэкап ... пуст`.
@@ -101,7 +101,7 @@ HKCU\Software\oixro\wotbo\Backups\<tweak-id>
 ```text
 main.reservedstorage, main.hibernate, main.powerscheme,
 gpu.ansel, gpu.directplay, ui.animations,
-extra.compactos, extra.winsxs, pro.bufferbloat
+extra.compactos, pro.bufferbloat
 ```
 
 Их список — `TweakStateStore.SupportsBackup`. В подсказке при наведении
