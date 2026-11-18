@@ -109,7 +109,8 @@ namespace WOTBO
             out Label status,
             out Button refresh,
             out Button action,
-            string actionText = "Удалить")
+            string actionText = "Удалить",
+            bool withRefresh = true)
         {
             panel.Controls.Clear();
 
@@ -151,13 +152,17 @@ namespace WOTBO
             };
             panel.Controls.Add(status);
 
-            refresh = CreateFlatButton(
-                panel,
-                "Обновить",
-                Dpi.Px(6),
-                panel.ClientSize.Height - Dpi.Px(34),
-                77);
-            panel.Controls.Add(refresh);
+            refresh = null;
+            if (withRefresh)
+            {
+                refresh = CreateFlatButton(
+                    panel,
+                    "Обновить",
+                    Dpi.Px(6),
+                    panel.ClientSize.Height - Dpi.Px(34),
+                    77);
+                panel.Controls.Add(refresh);
+            }
 
             action = null;
             if (actionText != null)

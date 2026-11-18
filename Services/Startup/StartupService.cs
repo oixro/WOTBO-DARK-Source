@@ -96,13 +96,30 @@ namespace WOTBO.Services.Startup
 
                 ReadFolder(entries, Environment.GetFolderPath(Environment.SpecialFolder.Startup), StartupLocation.UserFolder, RegistryHive.CurrentUser);
                 ReadFolder(entries, Environment.GetFolderPath(Environment.SpecialFolder.CommonStartup), StartupLocation.CommonFolder, RegistryHive.LocalMachine);
-                ReadScheduledTasks(entries);
-                ReadUwpTasks(entries);
 
                 return entries
-                    .OrderBy(entry => GroupOrder(entry.Kind))
-                    .ThenBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase)
+                    .OrderBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase)
                     .ToList();
+            });
+        }
+
+        public Task<List<StartupEntry>> GetScheduledTasksAsync()
+        {
+            return Task.Run(() =>
+            {
+                var entries = new List<StartupEntry>();
+                ReadScheduledTasks(entries);
+                return entries;
+            });
+        }
+
+        public Task<List<StartupEntry>> GetUwpTasksAsync()
+        {
+            return Task.Run(() =>
+            {
+                var entries = new List<StartupEntry>();
+                ReadUwpTasks(entries);
+                return entries;
             });
         }
 

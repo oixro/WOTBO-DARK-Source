@@ -13,38 +13,44 @@ namespace WOTBO
     /// <summary>
     /// Вкладка «Автозагрузка»: Run/RunOnce и папки автозагрузки. Строка —
     /// переключатель: клик сразу пишет StartupApproved, как диспетчер задач.
+    /// Задачи планировщика по умолчанию не парсятся и показываются только
+    /// по клику на подпись.
     /// </summary>
     public partial class MainForm
     {
         private StartupService startupService;
         private ScrollPanel startupContent;
         private Label startupStatus;
-        private Button startupRefresh;
+        private Label startupTasksToggle;
 
-        private bool startupLoaded;
         private bool startupBusy;
         private bool startupSuppressEvents;
+        private bool startupTasksVisible;
+        private bool startupTasksBusy;
+        private int startupGeneration;
 
         private void SetupStartupTab()
         {
             startupService = new StartupService(AppServices.Processes, Log.Instance);
 
             Button unused;
+            Button unusedRefresh;
             CreateListChrome(
                 panel_startup,
                 "Автозагрузка",
                 "Выключение не удаляет запись — её можно вернуть.",
                 out startupContent,
                 out startupStatus,
-                out startupRefresh,
+                out unusedRefresh,
                 out unused,
-                null);
+                null,
+                false);
 
-            startupRefresh.Click += delegate { LoadStartupAsync(); };
-
+            // Список перечитывается каждый раз при открытии вкладки:
+            // отдельная кнопка «Обновить» не нужна.
             panel_startup.VisibleChanged += delegate
             {
-                if (panel_startup.Visible && !startupLoaded && !startupBusy)
+                if (panel_startup.Visible && !startupBusy)
                 {
                     LoadStartupAsync();
                 }
@@ -58,23 +64,23 @@ namespace WOTBO
                 return;
             }
 
+            int generation = ++startupGeneration;
             startupBusy = true;
-            startupLoaded = true;
-            startupRefresh.Enabled = false;
+            startupTasksVisible = false;
+            startupTasksBusy = false;
             startupStatus.Text = "Читаем автозагрузку…";
 
             try
             {
-                List<StartupEntry> entries = await startupService.GetAsync();
-                ClearRows(startupContent);
-                startupSuppressEvents = true;
-
-                foreach (StartupEntry entry in entries)
+                List<StartupEntry> apps = await startupService.GetAsync();
+                if (generation != startupGeneration)
                 {
-                    AddStartupRow(entry);
+                    return;
                 }
 
-                startupSuppressEvents = false;
+                ClearStartupRows();
+                int top = AddStartupEntries(apps, Dpi.Px(2));
+                startupTasksToggle = AddTasksToggle(top);
                 PanelScroller.Refresh(startupContent);
                 UpdateStartupStatus();
 
@@ -82,6 +88,27 @@ namespace WOTBO
                 {
                     panelReveal.Play(panel_startup);
                 }
+
+                startupStatus.Text = "Читаем UWP StartupTask…";
+                List<StartupEntry> uwp = await startupService.GetUwpTasksAsync();
+                if (generation != startupGeneration || startupTasksToggle == null)
+                {
+                    return;
+                }
+
+                // UWP-строки вставляем перед подписью, подпись уезжает вниз.
+                int labelTop = startupTasksToggle.Top;
+                startupSuppressEvents = true;
+                foreach (StartupEntry entry in uwp)
+                {
+                    AddStartupRow(entry, labelTop);
+                    labelTop += Dpi.Px(20);
+                }
+                startupSuppressEvents = false;
+                startupTasksToggle.Top = labelTop;
+
+                PanelScroller.Refresh(startupContent);
+                UpdateStartupStatus();
             }
             catch (Exception exception)
             {
@@ -91,16 +118,135 @@ namespace WOTBO
             finally
             {
                 startupBusy = false;
-                startupRefresh.Enabled = true;
             }
         }
 
-        private void AddStartupRow(StartupEntry entry)
+        private int AddStartupEntries(List<StartupEntry> entries, int top)
         {
-            List<CheckBox> rows = startupContent.Controls.OfType<CheckBox>().ToList();
-            int step = Dpi.Px(20);
-            int top = rows.Count == 0 ? Dpi.Px(2) : rows.Max(item => item.Top) + step;
+            startupSuppressEvents = true;
+            foreach (StartupEntry entry in entries)
+            {
+                AddStartupRow(entry, top);
+                top += Dpi.Px(20);
+            }
+            startupSuppressEvents = false;
 
+            return top;
+        }
+
+        private Label AddTasksToggle(int top)
+        {
+            var label = new Label
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                AutoSize = false,
+                BackColor = Color.Transparent,
+                Cursor = SystemCursors.Hand,
+                Font = startupContent.Font,
+                ForeColor = Color.White,
+                Height = Dpi.Px(17),
+                Left = 0,
+                Text = "показать задачи из планировщика",
+                Top = top,
+                Width = Math.Max(80, startupContent.ClientSize.Width - 14),
+            };
+
+            label.Click += ToggleStartupTasks;
+            startupContent.Controls.Add(label);
+            return label;
+        }
+
+        private async void ToggleStartupTasks(object sender, EventArgs e)
+        {
+            var label = sender as Label;
+            if (label == null || startupBusy || startupTasksBusy || startupTasksToggle == null)
+            {
+                return;
+            }
+
+            if (startupTasksVisible)
+            {
+                startupTasksVisible = false;
+                RemoveTaskRows();
+                label.Text = "показать задачи из планировщика";
+                PanelScroller.Refresh(startupContent);
+                UpdateStartupStatus();
+                return;
+            }
+
+            int generation = startupGeneration;
+            startupTasksBusy = true;
+            label.Enabled = false;
+            label.Text = "читаем задачи…";
+
+            try
+            {
+                List<StartupEntry> tasks = await startupService.GetScheduledTasksAsync();
+                if (generation != startupGeneration || label.IsDisposed)
+                {
+                    return;
+                }
+
+                int top = label.Top + Dpi.Px(20);
+                startupSuppressEvents = true;
+                foreach (StartupEntry task in tasks)
+                {
+                    AddStartupRow(task, top);
+                    top += Dpi.Px(20);
+                }
+                startupSuppressEvents = false;
+
+                startupTasksVisible = true;
+                label.Text = "скрыть задачи из планировщика";
+                label.Enabled = true;
+                PanelScroller.Refresh(startupContent);
+                UpdateStartupStatus();
+            }
+            catch (Exception exception)
+            {
+                label.Text = "показать задачи из планировщика";
+                label.Enabled = true;
+                startupStatus.Text = "Не удалось прочитать задачи";
+                Log.Error("Startup", "tasks: " + exception.Message, exception);
+            }
+            finally
+            {
+                startupTasksBusy = false;
+            }
+        }
+
+        private void RemoveTaskRows()
+        {
+            List<CheckBox> tasks = startupContent.Controls
+                .OfType<CheckBox>()
+                .Where(row => row.Tag is StartupEntry && ((StartupEntry)row.Tag).Kind == StartupLocation.ScheduledTask)
+                .ToList();
+
+            foreach (CheckBox row in tasks)
+            {
+                startupContent.Controls.Remove(row);
+                row.Dispose();
+            }
+        }
+
+        private void ClearStartupRows()
+        {
+            List<Control> rows = startupContent.Controls
+                .Cast<Control>()
+                .Where(control => (control is CheckBox) || control == startupTasksToggle)
+                .ToList();
+
+            foreach (Control control in rows)
+            {
+                startupContent.Controls.Remove(control);
+                control.Dispose();
+            }
+
+            startupTasksToggle = null;
+        }
+
+        private void AddStartupRow(StartupEntry entry, int top)
+        {
             var row = new CheckBox
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
