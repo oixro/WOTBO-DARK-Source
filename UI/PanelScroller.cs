@@ -63,7 +63,10 @@ namespace WOTBO.UI
                     _thumb.HideNow();
                 }
             };
-            _panel.Resize += delegate { UpdateThumb(); };
+            _panel.Resize += delegate
+            {
+                OnPanelResize();
+            };
 
             Active.Add(this);
             ByPanel[panel] = this;
@@ -138,7 +141,35 @@ namespace WOTBO.UI
 
             int maximum = Math.Max(0, ContentHeight - _panel.ClientSize.Height);
             value = Math.Max(0, Math.Min(maximum, value));
+            ApplyOffset(value);
+        }
 
+        /// <summary>
+        /// Окно вытянули или сжали: предел прокрутки изменился, и старый
+        /// <see cref="_offset"/> мог стать больше нового максимума. Раньше
+        /// здесь только пересчитывалась полоса, поэтому после растягивания
+        /// из «прокручено до конца» строки оставались сдвинутыми вверх,
+        /// за пределы видимой области, а полоса пряталась.
+        /// </summary>
+        private void OnPanelResize()
+        {
+            if (IsLocked)
+            {
+                return;
+            }
+
+            int maximum = Math.Max(0, ContentHeight - _panel.ClientSize.Height);
+            if (_offset > maximum)
+            {
+                ApplyOffset(maximum);
+                return;
+            }
+
+            UpdateThumb();
+        }
+
+        private void ApplyOffset(int value)
+        {
             int shift = _offset - value;
             if (shift == 0)
             {
@@ -162,7 +193,11 @@ namespace WOTBO.UI
             UpdateThumb();
             _panel.Invalidate(true);
             _panel.Update();
-            _thumb.Flash();
+
+            if (ContentHeight > _panel.ClientSize.Height)
+            {
+                _thumb.Flash();
+            }
         }
 
         private void UpdateThumb()
@@ -172,8 +207,16 @@ namespace WOTBO.UI
 
             if (content <= height + 1)
             {
+                // Если прокрутка больше не нужна, строки надо вернуть на
+                // исходные позиции, а не только сбросить _offset: иначе
+                // содержимое остаётся сдвинутым вверх и «пропадает».
+                if (_offset != 0)
+                {
+                    ApplyOffset(0);
+                    return;
+                }
+
                 _thumb.FadeOut();
-                _offset = 0;
                 return;
             }
 
