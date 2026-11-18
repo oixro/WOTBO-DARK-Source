@@ -108,25 +108,6 @@ namespace WOTBO
         }
         #endregion
         #region clean
-        async void label_clean_Click(object sender, EventArgs e)
-        {
-            await Task.Run(() => RunCleanMgr());
-            void RunCleanMgr()
-            {
-                // Запуск cleanmgr.exe с аргументом sageset:99
-                var process = new Process();
-                process.StartInfo.FileName = "cleanmgr.exe";
-                process.StartInfo.Arguments = "sageset:99";
-                process.Start();
-                process.WaitForExit();
-
-                // После завершения первого процесса, запускаем второй с аргументом sagerun:99
-                var secondProcess = new Process();
-                secondProcess.StartInfo.FileName = "cleanmgr.exe";
-                secondProcess.StartInfo.Arguments = "sagerun:99";
-                secondProcess.Start();
-            }
-        }
         #endregion
     }
 }

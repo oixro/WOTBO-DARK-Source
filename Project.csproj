@@ -149,9 +149,10 @@
     <Compile Include="Services\Defender\DefenderServiceHost.cs" />
     <Compile Include="Services\Defender\DefenderStatus.cs" />
     <Compile Include="Services\Tweaks\CursorsTweak.cs" />
-    <Compile Include="Services\Tweaks\UwpCleanupTweak.cs" />
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
     <Compile Include="Services\Tweaks\SimpleTweak.cs" />
+    <Compile Include="Services\Apps\AppsService.cs" />
+    <Compile Include="Services\Cleanup\CleanupService.cs" />
     <Compile Include="Services\Tweaks\TweakApplyException.cs" />
     <Compile Include="Services\Tweaks\ResourceDownload.cs" />
     <Compile Include="Services\Tweaks\ServiceStartTweak.cs" />
@@ -194,8 +195,6 @@
     <Compile Include="Services\Tweaks\AnselTweak.cs" />
     <Compile Include="Services\Tweaks\CompactOsTweak.cs" />
     <Compile Include="Services\Tweaks\WinSxsTweak.cs" />
-    <Compile Include="Services\Tweaks\UpdateCleanTweak.cs" />
-    <Compile Include="Services\Tweaks\TempCleanTweak.cs" />
     <Compile Include="Services\Tweaks\EdgeTweak.cs" />
     <Compile Include="Services\Tweaks\MicaTweak.cs" />
     <Compile Include="Services\Tweaks\WotboContextTweak.cs" />
@@ -251,6 +250,12 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Navigation.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.Tabs.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.Settings.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.SimpleTweaks.cs">

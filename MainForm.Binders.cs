@@ -401,10 +401,6 @@ namespace WOTBO
 
         private void SetupTweakBinders()
         {
-            // Новые реестровые твики: строки строятся в коде по таблице
-            // SimpleTweaks, биндинг — тот же, что у дизайнерских.
-            SetupSimpleTweaks();
-
             checkBox_disabledefender.CheckedChanged +=
                 (sender, args) => ApplyDefenderExclusiveMode(checkBox_disabledefender.Checked);
 
@@ -504,10 +500,6 @@ namespace WOTBO
                 disableOnApply: false, showRollbackOnApply: false);
             Bind("extra.winsxs", checkBox_WinSxS, null,
                 disableOnApply: false, showRollbackOnApply: false);
-            Bind("extra.tempclean", checkBox_temp, null,
-                disableOnApply: false, showRollbackOnApply: false);
-            Bind("extra.updateclean", checkBox_updclean, null,
-                disableOnApply: false, showRollbackOnApply: false);
             Bind("extra.iconcache", checkBox_picture_cache, back_dop_1, "Max Cached Icons был применён");
             Bind("extra.mobiletraffic", checkBox_mobile_traffic, back_dop_2, "DefaultTTL был применён");
             Bind("extra.scoobe", checkBox_nastroyka, back_dop_3, "ScoobeSystemSettingEnabled был применён");
@@ -528,16 +520,6 @@ namespace WOTBO
             Bind("extra.sleepstudy", checkBox_sleepstudy, back_dop_17, "SleepStudy отключён");
             Bind("extra.telemetry", checkBox_telemetry, back_dop_18, "службы телеметрии отключены");
             Bind("extra.widgets", checkBox_widgets, back_dop_19, "виджеты отключены");
-            Bind("extra.uwpcleanup", checkBox_uwpcleanup, null, "лишние UWP-приложения удалены",
-                beforeApply: () => ShowNotification("UWP", "Удаляем приложения. Это может занять до минуты.", ToolTipIcon.Info),
-                confirmApply: () => MessageBox.Show(
-                    "Будут удалены лишние UWP-приложения.\n\n" +
-                    "Удалённые приложения можно снова скачать в Microsoft Store — его мы не трогаем.\n\n" +
-                    "Откатить это действие нельзя.\n\n" +
-                    "Применить?",
-                    "Удалить лишние UWP приложения", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes,
-                showRollbackOnApply: false,
-                showRollbackOnDetect: false);
 
             Bind("pro.homegallery", checkBox_pro_1, back_pro_1, "pro_1 был применён",
                 showRollbackOnApply: false, showRollbackOnDetect: false);

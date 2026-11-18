@@ -73,12 +73,9 @@ namespace WOTBO.Services.State
                 "ui.animations",
                 "extra.compactos",
                 "extra.winsxs",
-                "extra.tempclean",
-                "extra.updateclean",
                 "pro.bufferbloat",
                 "ui.tweakTooltips",
                 "ui.tooltips",
-                "extra.uwpcleanup",
             };
 
         /// <summary>Может ли твик иметь бэкап значений/файлов.</summary>

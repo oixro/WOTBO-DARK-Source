@@ -216,7 +216,7 @@ namespace WOTBO.UI
         /// <summary>Применить, если чекбокс отмечен.</summary>
         public void Apply()
         {
-            if (!_checkBox.Checked)
+            if (!_checkBox.Checked || !_checkBox.Enabled)
             {
                 return;
             }

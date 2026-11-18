@@ -35,7 +35,7 @@ namespace WOTBO
             back_ui_tooltips = new PictureBox
             {
                 Name = "back_ui_tooltips",
-                Location = Dpi.Scale(this, 0, 345),
+                Location = Dpi.Scale(this, 0, 50),
                 Size = Dpi.ScaleSize(this, 15, 15),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
@@ -53,15 +53,15 @@ namespace WOTBO
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = Dpi.Scale(this, 20, 345),
+                Location = Dpi.Scale(this, 20, 50),
                 Font = panel_ui_1.Font,
                 TabIndex = 100,
                 UseVisualStyleBackColor = true,
             };
             checkBox_tweak_tooltips.CheckedChanged += CheckBox_CheckedChanged;
 
-            panel_ui_1.Controls.Add(back_ui_tooltips);
-            panel_ui_1.Controls.Add(checkBox_tweak_tooltips);
+            panel_settings.Controls.Add(back_ui_tooltips);
+            panel_settings.Controls.Add(checkBox_tweak_tooltips);
 
             SetupTooltipsToggle();
 
@@ -96,7 +96,7 @@ namespace WOTBO
             back_ui_tooltips_desc = new PictureBox
             {
                 Name = "back_ui_tooltips_desc",
-                Location = Dpi.Scale(this, 0, 365),
+                Location = Dpi.Scale(this, 0, 70),
                 Size = Dpi.ScaleSize(this, 15, 15),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
@@ -114,15 +114,15 @@ namespace WOTBO
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = Dpi.Scale(this, 20, 365),
+                Location = Dpi.Scale(this, 20, 70),
                 Font = panel_ui_1.Font,
                 TabIndex = 101,
                 UseVisualStyleBackColor = true,
             };
             checkBox_tooltips.CheckedChanged += CheckBox_CheckedChanged;
 
-            panel_ui_1.Controls.Add(back_ui_tooltips_desc);
-            panel_ui_1.Controls.Add(checkBox_tooltips);
+            panel_settings.Controls.Add(back_ui_tooltips_desc);
+            panel_settings.Controls.Add(checkBox_tooltips);
 
             bool hidden = !AppSettings.TooltipsEnabled;
             bool applied = AppServices.Tweaks.IsApplied("ui.tooltips");
@@ -203,6 +203,16 @@ namespace WOTBO
             Log.Debug("UI", $"dpi aware={NativeMethods.DpiAwareness()}, dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
             SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
+
+            // Строки новых твиков создаём после того, как окно получило
+            // финальный размер и WinForms один раз пересчитал дизайнерские
+            // координаты. Иначе новые строки остаются в 96-DPI, а старые
+            // уезжают вместе с автоскейлом.
+            SetupSimpleTweaks();
+            foreach (Panel panel in new[] { panel1, panel_ui_1, panel2, panel_dop })
+            {
+                PanelScroller.Refresh(panel);
+            }
             #region проверка запущенна ли + eula
             AppServices.Startup.EnsureSingleInstance(exename, exepath);
             if (!AppServices.Startup.IsEulaAccepted())
@@ -472,7 +482,6 @@ namespace WOTBO
             Binder("main.powerscheme").DetectInBackground();
             Binder("main.mmagent").DetectInBackground();
             Binder("pro.bufferbloat").DetectInBackground();
-            Binder("extra.uwpcleanup").DetectInBackground();
             Binder("extra.compactos").DetectInBackground();
         }
 
@@ -560,20 +569,17 @@ namespace WOTBO
             {
                 Log.Info("GPU", "не nvidia");
                 nvidia = false;
-                checkBox_ansel.Visible = false;
-                checkBox_dopNVIDIA_tweaks.Visible = false;
-                checkBox_hdcp.Visible = false;
-                checkBox_nvecc.Visible = false;
-                checkBox_nvpower.Visible = false;
-                checkBox_nvhard.Visible = false;
-                checkBox_nvtelemetry.Visible = false;
+
+                // Чужие строки не прячем и не двигаем: раскладка остаётся
+                // стабильной, а применить их нельзя — чекбоксы выключены.
                 label_inspector.Visible = false;
-                checkBox_directplay.Location = Dpi.Scale(this, 20, 45);
-                back_gpu_1.Location = Dpi.Scale(this, 0, 45);
-                // Без NVIDIA строки Ansel/HDCP/NVIDIA скрыты — Game Bar
-                // поднимается вплотную к DirectPlay, без дыры.
-                checkBox_gamebar.Location = Dpi.Scale(this, 20, 65);
-                back_gpu_5.Location = Dpi.Scale(this, 0, 65);
+                checkBox_ansel.Enabled = false;
+                checkBox_dopNVIDIA_tweaks.Enabled = false;
+                checkBox_hdcp.Enabled = false;
+                checkBox_nvecc.Enabled = false;
+                checkBox_nvpower.Enabled = false;
+                checkBox_nvhard.Enabled = false;
+                checkBox_nvtelemetry.Enabled = false;
             }//не nvidia
             #endregion
         }

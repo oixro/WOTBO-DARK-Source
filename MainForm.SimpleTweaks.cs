@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using WOTBO.App.Logging;
 using WOTBO.Properties;
 using WOTBO.Services.Tweaks;
 using WOTBO.UI;
@@ -30,7 +31,7 @@ namespace WOTBO
                     continue;
                 }
 
-                int step = Dpi.Scale(panel, 20);
+                int step = RowStep(panel);
                 int top = FindInsertTop(panel, step);
                 int count = group.Count();
 
@@ -66,8 +67,47 @@ namespace WOTBO
         /// подписями-действиями, если они стоят вплотную под списком
         /// (например, «Активировать Windows» в «Дополнительно»).
         /// </summary>
+        /// <summary>Шаг строк на этой панели: у масштабированного окна он не 20.</summary>
+        private static int RowStep(Panel panel)
+        {
+            List<int> tops = panel.Controls
+                .OfType<CheckBox>()
+                .Select(control => control.Top)
+                .Distinct()
+                .OrderBy(value => value)
+                .ToList();
+
+            int step = int.MaxValue;
+            for (int i = 1; i < tops.Count; i++)
+            {
+                int delta = tops[i] - tops[i - 1];
+                if (delta > 0 && delta < step)
+                {
+                    step = delta;
+                }
+            }
+
+            return step == int.MaxValue ? Dpi.Scale(panel, 20) : step;
+        }
+
         private static int FindInsertTop(Panel panel, int step)
         {
+            // На GPU сверху ссылки, а часть строк NVIDIA скрыта на чужой
+            // карте: ставим новые строки сразу после ссылок, чтобы не
+            // оставлять дыру на пол-списка.
+            if (panel != null && panel.Name == "panel2")
+            {
+                CheckBox first = panel.Controls
+                    .OfType<CheckBox>()
+                    .OrderBy(control => control.Top)
+                    .FirstOrDefault();
+
+                if (first != null)
+                {
+                    return first.Top;
+                }
+            }
+
             int last = -1;
             int next = int.MaxValue;
 

@@ -135,8 +135,6 @@ namespace WOTBO
             Binder("extra.onedrive").Apply();
             Binder("extra.compactos").Apply();
             Binder("extra.winsxs").Apply();
-            Binder("extra.tempclean").Apply();
-            Binder("extra.updateclean").Apply();
             Binder("extra.iconcache").Apply();
             Binder("extra.mobiletraffic").Apply();
             Binder("extra.scoobe").Apply();
@@ -154,7 +152,6 @@ namespace WOTBO
             Binder("extra.kernellatency").Apply();
             Binder("extra.ndis").Apply();
             Binder("extra.sleepstudy").Apply();
-            Binder("extra.uwpcleanup").Apply();
             Binder("extra.telemetry").Apply();
             Binder("extra.widgets").Apply();
 

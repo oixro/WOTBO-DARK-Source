@@ -92,6 +92,8 @@ namespace WOTBO
             AppIcon.Apply(this);
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
             Dpi.Configure(PanelMain, 395f);
+            SetupSettingsPanel();
+            SetupExtraTabs();
             Log.Debug("Startup", $"Dpi.Configure: {startupWatch.ElapsedMilliseconds} мс");
 
             notifier = new BalloonNotifier();
@@ -234,8 +236,6 @@ namespace WOTBO
                         checkBox_onedrive.Checked = true;
                         checkBox_compactos.Checked = true;
                         checkBox_WinSxS.Checked = true;
-                        checkBox_temp.Checked = true;
-                        checkBox_updclean.Checked = true;
                         checkBox_picture_cache.Checked = true;
                         checkBox_mobile_traffic.Checked = true;
                         checkBox_nastroyka.Checked = true;
@@ -264,7 +264,7 @@ namespace WOTBO
             #endregion
             #region label animations
             HoverAnimator.Attach(
-                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver },
+                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_apps, label_cleanup, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver },
                 Color.FromArgb(192, 192, 192),
                 Color.FromArgb(255, 255, 255),
                 NavRestingColor);
@@ -310,7 +310,9 @@ namespace WOTBO
             }
 
             // В режиме съёмки скриншотов анимация только мешает.
-            if (!ScreenshotMode)
+            // Списочные вкладки не анимируем построчно: у CheckedListBox
+            // один контрол, а не строки-чекбоксы.
+            if (!ScreenshotMode && NewPanel != panel_apps && NewPanel != panel_cleanup)
             {
                 panelReveal.Play(NewPanel);
             }
@@ -421,7 +423,7 @@ namespace WOTBO
             int headHeight = Dpi.Scale(this, 36);
             int left = Dpi.Scale(this, 105);
             int rightGap = Dpi.Scale(this, 8);
-            int footerGap = Dpi.Scale(this, 20);
+            int footerGap = Dpi.Scale(this, 26);
 
             int height = Math.Max(Dpi.Scale(this, 100), ClientSize.Height - headHeight - footerGap);
             int width = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
@@ -441,7 +443,7 @@ namespace WOTBO
             int headHeight = Dpi.Scale(this, 36);
             int left = Dpi.Scale(this, 105);
             int rightGap = Dpi.Scale(this, 8);
-            int footerGap = Dpi.Scale(this, 20);
+            int footerGap = Dpi.Scale(this, 26);
 
             // Края окна должны оставаться «голой» формой: шапка и панель
             // перекрывают WM_NCHITTEST, и тогда мышью их не ухватить.
@@ -459,7 +461,7 @@ namespace WOTBO
             int contentWidth = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
             int contentHeight = Math.Max(Dpi.Scale(this, 100), PanelMain.Height - footerGap);
 
-            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5 };
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5, panel_settings, panel_apps, panel_cleanup };
             foreach (Panel panel in panels)
             {
                 if (panel == null) continue;
