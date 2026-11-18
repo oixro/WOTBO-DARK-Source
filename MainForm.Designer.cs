@@ -268,16 +268,12 @@ namespace WOTBO
             this.back_dop_17 = new System.Windows.Forms.PictureBox();
             this.checkBox_vbs = new System.Windows.Forms.CheckBox();
             this.checkBox_searchindex = new System.Windows.Forms.CheckBox();
-            this.checkBox_svchost = new System.Windows.Forms.CheckBox();
             this.checkBox_telemetry = new System.Windows.Forms.CheckBox();
             this.checkBox_widgets = new System.Windows.Forms.CheckBox();
-            this.checkBox_autostart = new System.Windows.Forms.CheckBox();
             this.back_main_21 = new System.Windows.Forms.PictureBox();
             this.back_main_22 = new System.Windows.Forms.PictureBox();
             this.back_dop_18 = new System.Windows.Forms.PictureBox();
             this.back_dop_19 = new System.Windows.Forms.PictureBox();
-            this.back_dop_20 = new System.Windows.Forms.PictureBox();
-            this.back_dop_21 = new System.Windows.Forms.PictureBox();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -1721,7 +1717,7 @@ namespace WOTBO
             this.label_activate.AutoSize = true;
             this.label_activate.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_activate.ForeColor = System.Drawing.Color.White;
-            this.label_activate.Location = new System.Drawing.Point(20, 605);
+            this.label_activate.Location = new System.Drawing.Point(20, 565);
             this.label_activate.Name = "label_activate";
             this.label_activate.Size = new System.Drawing.Size(126, 13);
             this.label_activate.TabIndex = 23;
@@ -2219,21 +2215,17 @@ namespace WOTBO
             this.panel_dop.Controls.Add(this.back_dop_16);
             this.panel_dop.Controls.Add(this.back_dop_17);
             this.panel_dop.Controls.Add(this.checkBox_uwpcleanup);
-            this.panel_dop.Controls.Add(this.checkBox_svchost);
             this.panel_dop.Controls.Add(this.checkBox_telemetry);
             this.panel_dop.Controls.Add(this.checkBox_widgets);
-            this.panel_dop.Controls.Add(this.checkBox_autostart);
             this.panel_dop.Controls.Add(this.back_dop_18);
             this.panel_dop.Controls.Add(this.back_dop_19);
-            this.panel_dop.Controls.Add(this.back_dop_20);
-            this.panel_dop.Controls.Add(this.back_dop_21);
             // 
             // label_clean
             // 
             this.label_clean.AutoSize = true;
             this.label_clean.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_clean.ForeColor = System.Drawing.Color.White;
-            this.label_clean.Location = new System.Drawing.Point(20, 625);
+            this.label_clean.Location = new System.Drawing.Point(20, 585);
             this.label_clean.Name = "label_clean";
             this.label_clean.Size = new System.Drawing.Size(164, 13);
             this.label_clean.TabIndex = 13;
@@ -2959,39 +2951,12 @@ namespace WOTBO
             this.back_main_22.Visible = false;
             this.back_main_22.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
-            // checkBox_svchost
-            // 
-            this.checkBox_svchost.AutoSize = true;
-            this.checkBox_svchost.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_svchost.ForeColor = System.Drawing.Color.White;
-            this.checkBox_svchost.Location = new System.Drawing.Point(20, 525);
-            this.checkBox_svchost.Name = "checkBox_svchost";
-            this.checkBox_svchost.Size = new System.Drawing.Size(220, 17);
-            this.checkBox_svchost.TabIndex = 64;
-            this.checkBox_svchost.Tag = "";
-            this.checkBox_svchost.Text = "Объединить службы в один процесс";
-            this.toolTip1.SetToolTip(this.checkBox_svchost, "SvcHostSplitThresholdInKB: службы идут в меньшем числе процессов svchost. Экономит 100–300 МБ, нужна перезагрузка.");
-            this.checkBox_svchost.UseVisualStyleBackColor = true;
-            this.checkBox_svchost.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // back_dop_18
-            // 
-            this.back_dop_18.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_dop_18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_18.Location = new System.Drawing.Point(0, 525);
-            this.back_dop_18.Name = "back_dop_18";
-            this.back_dop_18.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_18.TabIndex = 47;
-            this.back_dop_18.TabStop = false;
-            this.back_dop_18.Visible = false;
-            this.back_dop_18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
             // checkBox_telemetry
             // 
             this.checkBox_telemetry.AutoSize = true;
             this.checkBox_telemetry.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_telemetry.ForeColor = System.Drawing.Color.White;
-            this.checkBox_telemetry.Location = new System.Drawing.Point(20, 545);
+            this.checkBox_telemetry.Location = new System.Drawing.Point(20, 525);
             this.checkBox_telemetry.Name = "checkBox_telemetry";
             this.checkBox_telemetry.Size = new System.Drawing.Size(220, 17);
             this.checkBox_telemetry.TabIndex = 65;
@@ -3001,24 +2966,24 @@ namespace WOTBO
             this.checkBox_telemetry.UseVisualStyleBackColor = true;
             this.checkBox_telemetry.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
-            // back_dop_19
+            // back_dop_18
             // 
-            this.back_dop_19.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_dop_19.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_19.Location = new System.Drawing.Point(0, 545);
-            this.back_dop_19.Name = "back_dop_19";
-            this.back_dop_19.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_19.TabIndex = 48;
-            this.back_dop_19.TabStop = false;
-            this.back_dop_19.Visible = false;
-            this.back_dop_19.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            this.back_dop_18.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_dop_18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_18.Location = new System.Drawing.Point(0, 525);
+            this.back_dop_18.Name = "back_dop_18";
+            this.back_dop_18.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_18.TabIndex = 48;
+            this.back_dop_18.TabStop = false;
+            this.back_dop_18.Visible = false;
+            this.back_dop_18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // checkBox_widgets
             // 
             this.checkBox_widgets.AutoSize = true;
             this.checkBox_widgets.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_widgets.ForeColor = System.Drawing.Color.White;
-            this.checkBox_widgets.Location = new System.Drawing.Point(20, 565);
+            this.checkBox_widgets.Location = new System.Drawing.Point(20, 545);
             this.checkBox_widgets.Name = "checkBox_widgets";
             this.checkBox_widgets.Size = new System.Drawing.Size(220, 17);
             this.checkBox_widgets.TabIndex = 66;
@@ -3028,44 +2993,17 @@ namespace WOTBO
             this.checkBox_widgets.UseVisualStyleBackColor = true;
             this.checkBox_widgets.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
-            // back_dop_20
+            // back_dop_19
             // 
-            this.back_dop_20.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_dop_20.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_20.Location = new System.Drawing.Point(0, 565);
-            this.back_dop_20.Name = "back_dop_20";
-            this.back_dop_20.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_20.TabIndex = 49;
-            this.back_dop_20.TabStop = false;
-            this.back_dop_20.Visible = false;
-            this.back_dop_20.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
-            // checkBox_autostart
-            // 
-            this.checkBox_autostart.AutoSize = true;
-            this.checkBox_autostart.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_autostart.ForeColor = System.Drawing.Color.White;
-            this.checkBox_autostart.Location = new System.Drawing.Point(20, 585);
-            this.checkBox_autostart.Name = "checkBox_autostart";
-            this.checkBox_autostart.Size = new System.Drawing.Size(220, 17);
-            this.checkBox_autostart.TabIndex = 67;
-            this.checkBox_autostart.Tag = "";
-            this.checkBox_autostart.Text = "Отключить автозапуск тяжёлых программ";
-            this.toolTip1.SetToolTip(this.checkBox_autostart, "OneDrive, Teams, Discord, Steam, Epic, Adobe, Skype и похожие — так же, как галочка «Отключено» в диспетчере задач.");
-            this.checkBox_autostart.UseVisualStyleBackColor = true;
-            this.checkBox_autostart.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // back_dop_21
-            // 
-            this.back_dop_21.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_dop_21.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_21.Location = new System.Drawing.Point(0, 585);
-            this.back_dop_21.Name = "back_dop_21";
-            this.back_dop_21.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_21.TabIndex = 50;
-            this.back_dop_21.TabStop = false;
-            this.back_dop_21.Visible = false;
-            this.back_dop_21.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            this.back_dop_19.BackgroundImage = global::WOTBO.Properties.Resources.back;
+            this.back_dop_19.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.back_dop_19.Location = new System.Drawing.Point(0, 545);
+            this.back_dop_19.Name = "back_dop_19";
+            this.back_dop_19.Size = new System.Drawing.Size(15, 15);
+            this.back_dop_19.TabIndex = 49;
+            this.back_dop_19.TabStop = false;
+            this.back_dop_19.Visible = false;
+            this.back_dop_19.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel_ui_1);
             this.Controls.Add(this.panel_dop);
@@ -3281,16 +3219,12 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_cursors;
         private System.Windows.Forms.CheckBox checkBox_vbs;
         private System.Windows.Forms.CheckBox checkBox_searchindex;
-        private System.Windows.Forms.CheckBox checkBox_svchost;
         private System.Windows.Forms.CheckBox checkBox_telemetry;
         private System.Windows.Forms.CheckBox checkBox_widgets;
-        private System.Windows.Forms.CheckBox checkBox_autostart;
         private System.Windows.Forms.PictureBox back_main_21;
         private System.Windows.Forms.PictureBox back_main_22;
         private System.Windows.Forms.PictureBox back_dop_18;
         private System.Windows.Forms.PictureBox back_dop_19;
-        private System.Windows.Forms.PictureBox back_dop_20;
-        private System.Windows.Forms.PictureBox back_dop_21;
         private System.Windows.Forms.CheckBox checkBox_nvecc;
         private System.Windows.Forms.CheckBox checkBox_nvpower;
         private System.Windows.Forms.CheckBox checkBox_nvhard;

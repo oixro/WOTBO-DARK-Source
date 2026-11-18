@@ -522,10 +522,8 @@ namespace WOTBO
             Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена");
             Bind("extra.ndis", checkBox_ndis, back_dop_16, "watchdog'и NDIS отключены");
             Bind("extra.sleepstudy", checkBox_sleepstudy, back_dop_17, "SleepStudy отключён");
-            Bind("extra.svchostmerge", checkBox_svchost, back_dop_18, "службы объединены в один процесс");
-            Bind("extra.telemetry", checkBox_telemetry, back_dop_19, "службы телеметрии отключены");
-            Bind("extra.widgets", checkBox_widgets, back_dop_20, "виджеты отключены");
-            Bind("extra.autostart", checkBox_autostart, back_dop_21, "автозапуск тяжёлых программ отключён");
+            Bind("extra.telemetry", checkBox_telemetry, back_dop_18, "службы телеметрии отключены");
+            Bind("extra.widgets", checkBox_widgets, back_dop_19, "виджеты отключены");
             Bind("extra.uwpcleanup", checkBox_uwpcleanup, null, "лишние UWP-приложения удалены",
                 beforeApply: () => ShowNotification("UWP", "Удаляем приложения. Это может занять до минуты.", ToolTipIcon.Info),
                 confirmApply: () => MessageBox.Show(
