@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using WOTBO.App.Logging;
+using WOTBO.Services.Processes;
 
 namespace WOTBO.Services.Startup
 {
@@ -18,6 +20,8 @@ namespace WOTBO.Services.Startup
         HklmRunOnce32,
         UserFolder,
         CommonFolder,
+        ScheduledTask,
+        UwpTask,
     }
 
     /// <summary>Одна запись автозагрузки.</summary>
@@ -39,6 +43,12 @@ namespace WOTBO.Services.Startup
 
         public string ValueName { get; set; }
 
+        /// <summary>Полный путь задачи планировщика для schtasks.</summary>
+        public string TaskPath { get; set; }
+
+        /// <summary>Путь к ключу UWP StartupTask.</summary>
+        public string UwpKey { get; set; }
+
         public bool Enabled { get; set; }
 
         public override string ToString()
@@ -59,10 +69,15 @@ namespace WOTBO.Services.Startup
         private const string RunOncePath = @"Software\Microsoft\Windows\CurrentVersion\RunOnce";
         private const string ApprovedPath = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved";
 
+        private const string UwpDataPath =
+            @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData";
+
+        private readonly IProcessService _processes;
         private readonly IAppLogger _log;
 
-        public StartupService(IAppLogger log)
+        public StartupService(IProcessService processes, IAppLogger log)
         {
+            _processes = processes ?? throw new ArgumentNullException(nameof(processes));
             _log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
@@ -81,9 +96,12 @@ namespace WOTBO.Services.Startup
 
                 ReadFolder(entries, Environment.GetFolderPath(Environment.SpecialFolder.Startup), StartupLocation.UserFolder, RegistryHive.CurrentUser);
                 ReadFolder(entries, Environment.GetFolderPath(Environment.SpecialFolder.CommonStartup), StartupLocation.CommonFolder, RegistryHive.LocalMachine);
+                ReadScheduledTasks(entries);
+                ReadUwpTasks(entries);
 
                 return entries
-                    .OrderBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase)
+                    .OrderBy(entry => GroupOrder(entry.Kind))
+                    .ThenBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase)
                     .ToList();
             });
         }
@@ -100,6 +118,16 @@ namespace WOTBO.Services.Startup
 
         private bool SetEnabled(StartupEntry entry, bool enabled)
         {
+            if (entry.Kind == StartupLocation.ScheduledTask)
+            {
+                return SetTaskEnabled(entry, enabled);
+            }
+
+            if (entry.Kind == StartupLocation.UwpTask)
+            {
+                return SetUwpEnabled(entry, enabled);
+            }
+
             try
             {
                 string path = ApprovedPath + "\\" + entry.ApprovedKey;
@@ -127,6 +155,190 @@ namespace WOTBO.Services.Startup
                 _log.Warn(Category, "не удалось изменить " + entry.Name + ": " + exception.Message);
                 return false;
             }
+        }
+
+        private bool SetTaskEnabled(StartupEntry entry, bool enabled)
+        {
+            string arguments = "/Change /TN \"" + entry.TaskPath + "\" "
+                + (enabled ? "/ENABLE" : "/DISABLE");
+
+            try
+            {
+                ProcessOutput output = _processes.RunAsync(
+                    "schtasks.exe", arguments, 30000, Encoding.UTF8).GetAwaiter().GetResult();
+
+                if (!output.Ok)
+                {
+                    _log.Warn(Category, "schtasks " + entry.TaskPath + ": " + output.Text.Trim());
+                }
+
+                return output.Ok;
+            }
+            catch (Exception exception)
+            {
+                _log.Warn(Category, "schtasks " + entry.TaskPath + ": " + exception.Message);
+                return false;
+            }
+        }
+
+        private bool SetUwpEnabled(StartupEntry entry, bool enabled)
+        {
+            try
+            {
+                using (RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(entry.UwpKey, true))
+                {
+                    if (key == null)
+                    {
+                        return false;
+                    }
+
+                    key.SetValue("State", enabled ? 2 : 1, RegistryValueKind.DWord);
+                }
+
+                _log.Info(Category, (enabled ? "включено: " : "выключено: ") + entry.Name);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                _log.Warn(Category, "UWP " + entry.Name + ": " + exception.Message);
+                return false;
+            }
+        }
+
+        private void ReadScheduledTasks(List<StartupEntry> entries)
+        {
+            string script = Path.Combine(Path.GetTempPath(), "wotbo-startup-tasks.ps1");
+            string outputFile = Path.Combine(Path.GetTempPath(), "wotbo-startup-tasks.txt");
+
+            File.WriteAllText(
+                script,
+                "Get-ScheduledTask | ForEach-Object {\r\n"
+                    + "  $startup = $_.Triggers | Where-Object { $_.CimClass.CimClassName -match 'Logon|Boot' }\r\n"
+                    + "  if ($startup) { $_.TaskPath + [char]9 + $_.TaskName + [char]9 + $_.Settings.Enabled }\r\n"
+                    + "} | Set-Content -LiteralPath '" + outputFile.Replace("'", "''") + "' -Encoding UTF8\r\n",
+                Encoding.UTF8);
+
+            try
+            {
+                File.Delete(outputFile);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                ProcessOutput output = _processes.RunAsync(
+                    "powershell.exe",
+                    "-NoProfile -ExecutionPolicy Bypass -File \"" + script + "\"",
+                    30000,
+                    Encoding.UTF8).GetAwaiter().GetResult();
+
+                if (!File.Exists(outputFile))
+                {
+                    _log.Warn(Category, "список задач не получен: " + output.Text.Trim());
+                    return;
+                }
+
+                foreach (string raw in File.ReadAllLines(outputFile, Encoding.UTF8))
+                {
+                    string[] parts = raw.Split('\t');
+                    if (parts.Length < 3)
+                    {
+                        continue;
+                    }
+
+                    string taskPath = parts[0].Trim();
+                    string taskName = parts[1].Trim();
+                    bool enabled;
+                    if (taskName.Length == 0 || !bool.TryParse(parts[2].Trim(), out enabled))
+                    {
+                        continue;
+                    }
+
+                    string fullPath = taskPath.TrimEnd('\\') + "\\" + taskName;
+                    entries.Add(new StartupEntry
+                    {
+                        Name = taskName,
+                        Command = fullPath,
+                        Location = "Планировщик: " + taskPath,
+                        Kind = StartupLocation.ScheduledTask,
+                        TaskPath = fullPath,
+                        Enabled = enabled,
+                    });
+                }
+            }
+            catch (Exception exception)
+            {
+                _log.Warn(Category, "задачи планировщика: " + exception.Message);
+            }
+        }
+
+        private void ReadUwpTasks(List<StartupEntry> entries)
+        {
+            try
+            {
+                using (RegistryKey baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(UwpDataPath))
+                {
+                    if (baseKey == null)
+                    {
+                        return;
+                    }
+
+                    foreach (string family in baseKey.GetSubKeyNames())
+                    {
+                        using (RegistryKey familyKey = baseKey.OpenSubKey(family))
+                        {
+                            if (familyKey == null)
+                            {
+                                continue;
+                            }
+
+                            foreach (string task in familyKey.GetSubKeyNames())
+                            {
+                                using (RegistryKey taskKey = familyKey.OpenSubKey(task))
+                                {
+                                    object stateValue = taskKey == null ? null : taskKey.GetValue("State");
+                                    if (!(stateValue is int))
+                                    {
+                                        continue;
+                                    }
+
+                                    int state = (int)stateValue;
+                                    entries.Add(new StartupEntry
+                                    {
+                                        Name = family.Split('_')[0],
+                                        Command = family + "\\" + task,
+                                        Location = "UWP StartupTask",
+                                        Kind = StartupLocation.UwpTask,
+                                        UwpKey = UwpDataPath + "\\" + family + "\\" + task,
+                                        Enabled = state == 2 || state == 4,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                _log.Warn(Category, "UWP StartupTask: " + exception.Message);
+            }
+        }
+
+        private static int GroupOrder(StartupLocation kind)
+        {
+            if (kind == StartupLocation.ScheduledTask)
+            {
+                return 1;
+            }
+
+            if (kind == StartupLocation.UwpTask)
+            {
+                return 2;
+            }
+
+            return 0;
         }
 
         private void ReadRunKey(

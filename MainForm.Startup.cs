@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using WOTBO.App;
 using WOTBO.App.Logging;
 using WOTBO.Services.Startup;
 using WOTBO.UI;
@@ -26,7 +27,7 @@ namespace WOTBO
 
         private void SetupStartupTab()
         {
-            startupService = new StartupService(Log.Instance);
+            startupService = new StartupService(AppServices.Processes, Log.Instance);
 
             Button unused;
             CreateListChrome(
@@ -112,7 +113,7 @@ namespace WOTBO
                 Height = Dpi.Px(17),
                 Left = 0,
                 Tag = entry,
-                Text = entry.Name,
+                Text = RowText(entry),
                 Top = top,
                 UseVisualStyleBackColor = true,
                 Width = Math.Max(80, startupContent.ClientSize.Width - 14),
@@ -121,6 +122,21 @@ namespace WOTBO
             toolTip1.SetToolTip(row, entry.Command + "\r\n" + entry.Location);
             row.CheckedChanged += StartupRowChecked;
             startupContent.Controls.Add(row);
+        }
+
+        private static string RowText(StartupEntry entry)
+        {
+            if (entry.Kind == StartupLocation.ScheduledTask)
+            {
+                return "[задача] " + entry.Name;
+            }
+
+            if (entry.Kind == StartupLocation.UwpTask)
+            {
+                return "[UWP] " + entry.Name;
+            }
+
+            return entry.Name;
         }
 
         private async void StartupRowChecked(object sender, EventArgs e)
