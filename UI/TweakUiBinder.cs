@@ -180,10 +180,11 @@ namespace WOTBO.UI
             });
         }
 
-        /// <summary>Твик не применим на этой системе: строку убираем совсем.</summary>
+        /// <summary>Твик не применим на этой системе: строку оставляем, но выключаем.</summary>
         private void ShowUnavailable()
         {
-            _checkBox.Visible = false;
+            _checkBox.Enabled = false;
+            _checkBox.Checked = false;
             if (_rollback != null)
             {
                 _rollback.Visible = false;

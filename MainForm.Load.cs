@@ -577,29 +577,11 @@ namespace WOTBO
                 Log.Info("GPU", "не nvidia");
                 nvidia = false;
 
-                // Чужие строки не прячем и не двигаем: раскладка остаётся
-                // стабильной, а применить их нельзя — чекбоксы выключены.
-                label_inspector.Visible = false;
-
-                // Ссылка Inspector скрыта — закрываем её строку, сдвигая
-                // весь список на один шаг вверх. Иначе между «Скачать DDU»
-                // и первой строкой остаётся пустая полоса.
-                int step = RowStep(panel2);
-                foreach (Control control in panel2.Controls)
-                {
-                    if (control == label_inspector || control.Name.EndsWith("_thumb", StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    if (control.Top > label_inspector.Top)
-                    {
-                        control.Top -= step;
-                    }
-                }
-
-                PanelScroller.Refresh(panel2);
-
+                // Ничего не скрываем и не двигаем: на чужой карте строки
+                // остаются на местах, просто выключены.
+                label_inspector.Enabled = false;
+                label_inspector.ForeColor = Color.FromArgb(120, 130, 140);
+                label_inspector.Cursor = Cursors.Default;
                 checkBox_ansel.Enabled = false;
                 checkBox_dopNVIDIA_tweaks.Enabled = false;
                 checkBox_hdcp.Enabled = false;
