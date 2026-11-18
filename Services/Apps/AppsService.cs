@@ -58,11 +58,16 @@ namespace WOTBO.Services.Apps
         {
             var result = new List<AppPackage>();
             string script = Path.Combine(Path.GetTempPath(), "wotbo-apps-list.ps1");
+            string outputFile = Path.Combine(Path.GetTempPath(), "wotbo-apps-list.txt");
+
+            // Пишем результат в файл UTF-8: консоль PowerShell на русской
+            // Windows отдаёт OEM-кодировку, и кириллица превращалась в "?".
+            string escapedOutput = outputFile.Replace("'", "''");
 
             File.WriteAllText(
                 script,
                 "$start = Get-StartApps\r\n"
-                    + "Get-AppxPackage | Where-Object { -not $_.IsFramework -and -not $_.NonRemovable "
+                    + "$rows = Get-AppxPackage | Where-Object { -not $_.IsFramework -and -not $_.NonRemovable "
                     + "-and $_.Name -notmatch '^(Microsoft\\.(VCLibs|NET|UI\\.Xaml|WindowsAppRuntime|Services\\.Store))' "
                     + "-and $_.Name -notmatch '^(Microsoft\\.(WindowsStore|StorePurchaseApp|DesktopAppInstaller))$' } "
                     + "| Sort-Object Name | ForEach-Object {\r\n"
@@ -70,8 +75,17 @@ namespace WOTBO.Services.Apps
                     + "  $friendly = ($start | Where-Object { $_.AppID -like ($family + '!*') } | Select-Object -First 1).Name\r\n"
                     + "  if (-not $friendly) { $friendly = $_.Name }\r\n"
                     + "  $friendly + [char]9 + $_.Name + [char]9 + $_.PackageFullName\r\n"
-                    + "}",
+                    + "}\r\n"
+                    + "$rows | Set-Content -LiteralPath '" + escapedOutput + "' -Encoding UTF8\r\n",
                 Encoding.UTF8);
+
+            try
+            {
+                File.Delete(outputFile);
+            }
+            catch
+            {
+            }
 
             ProcessOutput output = await _processes.RunAsync(
                 "powershell.exe",
@@ -85,8 +99,12 @@ namespace WOTBO.Services.Apps
                 return result;
             }
 
+            string text = File.Exists(outputFile)
+                ? File.ReadAllText(outputFile, Encoding.UTF8)
+                : output.Text;
+
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (string raw in output.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string raw in text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string line = raw.Trim();
                 if (line.Length == 0)
