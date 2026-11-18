@@ -132,7 +132,7 @@ namespace WOTBO
                 Name = panel.Name + "_content",
                 Size = new Size(
                     Math.Max(100, panel.ClientSize.Width - Dpi.Px(12)),
-                    Math.Max(100, panel.ClientSize.Height - Dpi.Px(92))),
+                    Math.Max(100, panel.ClientSize.Height - Dpi.Px(withRefresh || actionText != null ? 92 : 54))),
                 TabIndex = 0,
             };
             panel.Controls.Add(content);
@@ -144,7 +144,11 @@ namespace WOTBO
                 AutoEllipsis = true,
                 BackColor = Color.Transparent,
                 ForeColor = Color.Silver,
-                Location = new Point(Dpi.Px(6), panel.ClientSize.Height - Dpi.Px(58)),
+                // Без кнопок подпись статуса прижимаем к низу панели,
+                // иначе между ней и краем остаётся пустая полоса.
+                Location = new Point(
+                    Dpi.Px(6),
+                    panel.ClientSize.Height - Dpi.Px(withRefresh || actionText != null ? 58 : 28)),
                 Size = new Size(
                     Math.Max(100, panel.ClientSize.Width - Dpi.Px(12)),
                     Dpi.Px(18)),
