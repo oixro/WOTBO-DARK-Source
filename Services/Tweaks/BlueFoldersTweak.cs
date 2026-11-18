@@ -66,9 +66,14 @@ namespace WOTBO.Services.Tweaks
         public override TweakState Detect(TweakContext context)
         {
             string path = TargetPath(context);
+
+            // Маркеры в HKCU появились в новой версии. Если иконки ставила
+            // старая версия (или маркеры потерялись), остаётся _bak — по нему
+            // и определяем, что файл уже подменён.
+            bool legacyBackup = HasOriginalBackup(path);
             if (!File.Exists(path))
             {
-                return TweakState.NotApplied;
+                return legacyBackup ? TweakState.Applied : TweakState.NotApplied;
             }
 
             string root = WOTBO.Services.Registry.RegistryPaths.AppRoot;
@@ -77,7 +82,7 @@ namespace WOTBO.Services.Tweaks
 
             if (prefix == null || size == null)
             {
-                return TweakState.NotApplied;
+                return legacyBackup ? TweakState.Applied : TweakState.NotApplied;
             }
 
             try
@@ -93,7 +98,40 @@ namespace WOTBO.Services.Tweaks
             }
             catch
             {
-                return TweakState.NotApplied;
+                return legacyBackup ? TweakState.Applied : TweakState.NotApplied;
+            }
+        }
+
+        private static bool HasOriginalBackup(string path)
+        {
+            string backup = path + "_bak";
+            try
+            {
+                if (!File.Exists(backup))
+                {
+                    return false;
+                }
+
+                if (!File.Exists(path))
+                {
+                    return true;
+                }
+
+                var current = new FileInfo(path);
+                var original = new FileInfo(backup);
+                if (current.Length != original.Length)
+                {
+                    return true;
+                }
+
+                return !string.Equals(
+                    PrefixHash(path),
+                    PrefixHash(backup),
+                    StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
             }
         }
 
