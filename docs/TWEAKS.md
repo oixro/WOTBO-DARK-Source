@@ -16,7 +16,7 @@ public interface ITweak
 `TweakContext` содержит `IRegistryService` и `IAppLogger`. Твик не знает
 о чекбоксах, стрелках и панелях — это остаётся в `Form1`.
 
-`TweakCatalog` — словарь по `Id`, сейчас сорок восемь твиков.
+`TweakCatalog` — словарь по `Id`, сейчас 92 твика.
 
 ## Пилот
 
@@ -70,6 +70,25 @@ public interface ITweak
 | `pro.win32priority` | `HKLM\...\PriorityControl` | значение выбирает диалог `Win32Priority`, откат → `2` |
 | `main.mmagent` | prefetcher `.reg`, `smartctl`, `*-mmagent` | RAM/SSD-детект, `ApplicationPreLaunch`, `MC`/`PC`, `MOAF` |
 | `main.reservedstorage` | DISM | `Set-ReservedStorageState Disabled/Enabled` |
+
+## Простые реестровые твики
+
+Для наборов «только значения реестра» есть `SimpleTweaks` и `SimpleTweak`
+(`Services/Tweaks/SimpleTweak.cs`). Каждая запись описывает id, категорию,
+панель, подпись, подсказку и `TweakValue[]`; из неё одновременно получаются
+класс для каталога и строка на вкладке (`MainForm.SimpleTweaks.cs`).
+Позиции считаются от последнего чекбокса панели, подписи-действия ниже
+сдвигаются автоматически.
+
+`TweakValue.WithMissing(value)` говорит: если параметра нет, это значит
+`value` (дефолт Windows), а не «не применено». `TweakState.Unavailable`
+скрывает строку на неподходящей ОС.
+
+`REG_AIO.reg` больше не содержит значений, у которых есть отдельная строка:
+Game DVR, FSO, `Hidden`, `HideFileExt`, `ShowSyncProviderNotifications`,
+`AllowAutoGameMode`. При добавлении нового твика сначала уберите его
+значения из пакета и из `REG_AIO_RESTORE.reg`, иначе у ключа будет два
+владельца и откат пойдёт не в ту сторону.
 
 `Form1` для них использует `TweakUiBinder` (`UI/TweakUiBinder.cs`):
 

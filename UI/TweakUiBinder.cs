@@ -96,6 +96,12 @@ namespace WOTBO.UI
                 Log.Debug("Tweak:" + _id, $"detect {watch.ElapsedMilliseconds} мс");
             }
 
+            if (state == TweakState.Unavailable)
+            {
+                ShowUnavailable();
+                return false;
+            }
+
             AppServices.Tweaks.Reconcile(_id, state == TweakState.Applied);
 
             if (state != TweakState.Applied)
@@ -135,6 +141,20 @@ namespace WOTBO.UI
                     Log.Debug("Tweak:" + _id, $"detect {watch.ElapsedMilliseconds} мс");
                 }
 
+                if (state == TweakState.Unavailable)
+                {
+                    if (_ui != null)
+                    {
+                        _ui.Post(delegate { ShowUnavailable(); }, null);
+                    }
+                    else if (_checkBox.IsHandleCreated)
+                    {
+                        _checkBox.BeginInvoke(new Action(ShowUnavailable));
+                    }
+
+                    return;
+                }
+
                 AppServices.Tweaks.Reconcile(_id, state == TweakState.Applied);
 
                 if (state != TweakState.Applied)
@@ -156,6 +176,16 @@ namespace WOTBO.UI
                     _checkBox.BeginInvoke(new Action(ShowApplied));
                 }
             });
+        }
+
+        /// <summary>Твик не применим на этой системе: строку убираем совсем.</summary>
+        private void ShowUnavailable()
+        {
+            _checkBox.Visible = false;
+            if (_rollback != null)
+            {
+                _rollback.Visible = false;
+            }
         }
 
         /// <summary>Пометки «применён» в интерфейсе (всегда в UI-потоке).</summary>

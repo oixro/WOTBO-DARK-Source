@@ -157,6 +157,11 @@ namespace WOTBO
             Binder("extra.uwpcleanup").Apply();
             Binder("extra.telemetry").Apply();
             Binder("extra.widgets").Apply();
+
+            foreach (string id in _simpleTweakIds)
+            {
+                Binder(id).Apply();
+            }
             #endregion
             #region pro
             Binder("pro.homegallery").Apply(); //disable main & gallery folder in explorer.exe

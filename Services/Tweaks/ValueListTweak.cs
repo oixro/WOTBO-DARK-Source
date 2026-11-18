@@ -31,12 +31,34 @@ namespace WOTBO.Services.Tweaks
 
         public RegistryValueKind Kind { get; private set; }
 
+        /// <summary>
+        /// Значение, которое Windows считает дефолтным, если параметра в реестре
+        /// нет. Нужно для настроек, включённых «из коробки»: отсутствие ключа
+        /// тогда означает «уже применено», а не «не применено».
+        /// </summary>
+        public object MissingValue { get; private set; }
+
+        public bool HasMissingValue { get; private set; }
+
+        /// <summary>Считать отсутствие значения эквивалентом указанного значения.</summary>
+        public TweakValue WithMissing(object value)
+        {
+            MissingValue = value;
+            HasMissingValue = true;
+            return this;
+        }
+
         public bool Matches(TweakContext context)
         {
             object current = context.Registry.GetValue(Hive, Path, Name);
             if (current == null)
             {
-                return false;
+                if (!HasMissingValue)
+                {
+                    return false;
+                }
+
+                current = MissingValue;
             }
 
             switch (Kind)

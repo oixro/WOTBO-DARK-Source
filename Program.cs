@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using WOTBO.App;
+using WOTBO.App.Logging;
+using WOTBO.Services.Tweaks;
 
 namespace WOTBO
 {
@@ -13,6 +16,13 @@ namespace WOTBO
             if (IsServiceMode())
             {
                 Services.Defender.DefenderServiceHost.RunAsService();
+                return;
+            }
+
+            string tweakTestId;
+            if (TryGetTweakTestId(out tweakTestId))
+            {
+                RunTweakTest(tweakTestId);
                 return;
             }
 
@@ -58,6 +68,72 @@ namespace WOTBO
             }
 
             AppBootstrap.Run();
+        }
+
+        /// <summary>
+        /// <c>WOTBO.exe --tweak-test &lt;id&gt;</c> — служебная проверка одного
+        /// твика: detect → apply → detect → rollback → detect. Пишет результат
+        /// в <c>%TEMP%\wotbo-tweak-test.txt</c>. Нужна для проверки новых
+        /// твиков без кликов по форме.
+        /// </summary>
+        private static bool TryGetTweakTestId(out string id)
+        {
+            id = null;
+            string[] args = Environment.GetCommandLineArgs();
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (!string.Equals(args[i], "--tweak-test", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                id = i + 1 < args.Length ? args[i + 1] : null;
+                return !string.IsNullOrEmpty(id);
+            }
+
+            return false;
+        }
+
+        private static void RunTweakTest(string id)
+        {
+            string file = Path.Combine(Path.GetTempPath(), "wotbo-tweak-test.txt");
+            var lines = new System.Collections.Generic.List<string>();
+
+            try
+            {
+                Log.Initialize(new AppLogger(AppPaths.LogFilePath));
+
+                TweakContext context = AppServices.TweakContext;
+                ITweak tweak = AppServices.TweakCatalog.Get(id);
+
+                lines.Add("id=" + id);
+                lines.Add("before=" + tweak.Detect(context));
+
+                using (TweakScope.Apply(id))
+                {
+                    tweak.Apply(context);
+                }
+
+                lines.Add("after=" + tweak.Detect(context));
+                lines.Add("applied=" + AppServices.Tweaks.IsApplied(id));
+
+                using (TweakScope.Rollback(id))
+                {
+                    tweak.Rollback(context);
+                }
+
+                lines.Add("rollback=" + tweak.Detect(context));
+                lines.Add("stateAfterRollback=" + AppServices.Tweaks.IsApplied(id));
+            }
+            catch (Exception exception)
+            {
+                lines.Add("error=" + exception);
+            }
+            finally
+            {
+                File.WriteAllLines(file, lines);
+            }
         }
 
         /// <summary>

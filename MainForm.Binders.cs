@@ -401,6 +401,10 @@ namespace WOTBO
 
         private void SetupTweakBinders()
         {
+            // Новые реестровые твики: строки строятся в коде по таблице
+            // SimpleTweaks, биндинг — тот же, что у дизайнерских.
+            SetupSimpleTweaks();
+
             checkBox_disabledefender.CheckedChanged +=
                 (sender, args) => ApplyDefenderExclusiveMode(checkBox_disabledefender.Checked);
 

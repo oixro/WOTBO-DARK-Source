@@ -151,6 +151,7 @@
     <Compile Include="Services\Tweaks\CursorsTweak.cs" />
     <Compile Include="Services\Tweaks\UwpCleanupTweak.cs" />
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
+    <Compile Include="Services\Tweaks\SimpleTweak.cs" />
     <Compile Include="Services\Tweaks\TweakApplyException.cs" />
     <Compile Include="Services\Tweaks\ResourceDownload.cs" />
     <Compile Include="Services\Tweaks\ServiceStartTweak.cs" />
@@ -250,6 +251,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Navigation.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.SimpleTweaks.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Screenshots.cs">

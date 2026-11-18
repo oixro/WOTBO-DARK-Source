@@ -453,6 +453,11 @@ namespace WOTBO
             Binder("main.searchindex").Detect();
             Binder("extra.telemetry").Detect();
             Binder("extra.widgets").Detect();
+
+            foreach (string id in _simpleTweakIds)
+            {
+                Binder(id).Detect();
+            }
             #endregion
             detectWatch.Stop();
             Log.Debug("UI", $"detect loop: {detectWatch.ElapsedMilliseconds} мс");

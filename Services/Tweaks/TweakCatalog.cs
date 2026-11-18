@@ -38,7 +38,7 @@ namespace WOTBO.Services.Tweaks
 
         public static TweakCatalog CreateDefault()
         {
-            return new TweakCatalog(new ITweak[]
+            var tweaks = new List<ITweak>
             {
                 new JpegQualityTweak(),
                 new IconCacheTweak(),
@@ -115,7 +115,14 @@ namespace WOTBO.Services.Tweaks
                 new Win32PriorityTweak(),
                 new MmAgentTweak(),
                 new ReservedStorageTweak(),
-            });
+            };
+
+            foreach (SimpleTweakDefinition definition in SimpleTweaks.All)
+            {
+                tweaks.Add(new SimpleTweak(definition));
+            }
+
+            return new TweakCatalog(tweaks);
         }
     }
 }
