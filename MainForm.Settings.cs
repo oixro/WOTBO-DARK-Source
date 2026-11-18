@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
@@ -28,6 +29,7 @@ namespace WOTBO
                 Visible = false,
             };
             Controls.Add(panel_settings);
+            new PanelScroller(panel_settings);
 
             label_settings_title = new Label
             {
@@ -35,7 +37,7 @@ namespace WOTBO
                 BackColor = Color.Transparent,
                 ForeColor = Color.White,
                 Font = new Font(Font, FontStyle.Bold),
-                Location = Dpi.Scale(this, 20, 5),
+                Location = new Point(Dpi.Px(20), Dpi.Px(5)),
                 Name = "label_settings_title",
                 Text = "Настройки WOTBO",
             };
@@ -48,27 +50,14 @@ namespace WOTBO
             {
                 BackColor = Color.Transparent,
                 Cursor = SystemCursors.Hand,
-                Location = Dpi.Scale(this, 6, 6),
+                Location = new Point(Dpi.Px(6), Dpi.Px(6)),
                 Name = "gearButton",
-                Size = Dpi.ScaleSize(this, 22, 22),
+                Size = new Size(Dpi.Px(22), Dpi.Px(22)),
                 SizeMode = PictureBoxSizeMode.Zoom,
                 TabStop = false,
             };
 
-            try
-            {
-                using (var stream = new MemoryStream(Resources.gear))
-                using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
-                using (Stream iconStream = archive.GetEntry("gear.ico").Open())
-                using (var icon = new Icon(iconStream, 22, 22))
-                {
-                    gearButton.Image = Tint(icon.ToBitmap(), Color.FromArgb(160, 173, 185));
-                }
-            }
-            catch
-            {
-                // без иконки останется пустой квадрат — настройки всё равно откроются
-            }
+            gearButton.Paint += PaintGear;
 
             gearButton.Click += delegate
             {
@@ -80,28 +69,49 @@ namespace WOTBO
             gearButton.BringToFront();
         }
 
-        /// <summary>
-        /// Перекрасить иконку под цвет крестика закрытия: исходная
-        /// шестерёнка тёмная и на тёмной шапке её не видно.
-        /// </summary>
-        private static Bitmap Tint(Bitmap source, Color color)
+        /// <summary>Шестерёнка рисуется сама: иконка из ресурса на тёмной шапке терялась.</summary>
+        private void PaintGear(object sender, PaintEventArgs e)
         {
-            var result = new Bitmap(source.Width, source.Height);
-            for (int y = 0; y < source.Height; y++)
-            {
-                for (int x = 0; x < source.Width; x++)
-                {
-                    Color pixel = source.GetPixel(x, y);
-                    if (pixel.A == 0)
-                    {
-                        continue;
-                    }
+            Control control = (Control)sender;
+            Graphics graphics = e.Graphics;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    result.SetPixel(x, y, Color.FromArgb(pixel.A, color.R, color.G, color.B));
+            float cx = control.ClientSize.Width / 2f;
+            float cy = control.ClientSize.Height / 2f;
+            float radius = Math.Min(cx, cy) - 1f;
+            float tooth = Math.Max(2f, radius * 0.32f);
+
+            using (var pen = new Pen(Color.FromArgb(160, 173, 185), Math.Max(1.6f, radius * 0.18f)))
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    double angle = Math.PI * i / 4d;
+                    float x1 = cx + (float)(Math.Cos(angle) * (radius - tooth));
+                    float y1 = cy + (float)(Math.Sin(angle) * (radius - tooth));
+                    float x2 = cx + (float)(Math.Cos(angle) * radius);
+                    float y2 = cy + (float)(Math.Sin(angle) * radius);
+                    graphics.DrawLine(pen, x1, y1, x2, y2);
                 }
+
+                float ring = radius - tooth + 0.5f;
+                graphics.DrawEllipse(pen, cx - ring, cy - ring, ring * 2f, ring * 2f);
+                graphics.DrawEllipse(pen, cx - radius * 0.28f, cy - radius * 0.28f, radius * 0.56f, radius * 0.56f);
+            }
+        }
+
+        private void LayoutGear()
+        {
+            if (gearButton == null || PanelHead == null)
+            {
+                return;
             }
 
-            return result;
+            int size = Dpi.Px(22);
+            gearButton.Size = new Size(size, size);
+            gearButton.Location = new Point(
+                Dpi.Px(6),
+                Math.Max(0, (PanelHead.ClientSize.Height - size) / 2));
+            gearButton.Invalidate();
         }
 
         /// <summary>Перенести существующий контрол на панель настроек.</summary>
@@ -118,7 +128,7 @@ namespace WOTBO
                 parent.Controls.Remove(control);
             }
 
-            control.Location = new Point(Dpi.Scale(this, left), Dpi.Scale(this, top));
+            control.Location = new Point(Dpi.Px(left), Dpi.Px(top));
             panel_settings.Controls.Add(control);
         }
 

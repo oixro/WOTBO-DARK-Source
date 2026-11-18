@@ -117,7 +117,7 @@ namespace WOTBO
                 BackColor = Color.Transparent,
                 Font = new Font(Font, FontStyle.Bold),
                 ForeColor = Color.White,
-                Location = new Point(6, 5),
+                Location = new Point(Dpi.Px(6), Dpi.Px(5)),
                 Text = title,
             };
             panel.Controls.Add(titleLabel);
@@ -125,11 +125,11 @@ namespace WOTBO
             content = new ScrollPanel
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                Location = new Point(6, 28),
+                Location = new Point(Dpi.Px(6), Dpi.Px(28)),
                 Name = panel.Name + "_content",
                 Size = new Size(
-                    Math.Max(100, panel.ClientSize.Width - 12),
-                    Math.Max(100, panel.ClientSize.Height - 92)),
+                    Math.Max(100, panel.ClientSize.Width - Dpi.Px(12)),
+                    Math.Max(100, panel.ClientSize.Height - Dpi.Px(92))),
                 TabIndex = 0,
             };
             panel.Controls.Add(content);
@@ -141,16 +141,28 @@ namespace WOTBO
                 AutoEllipsis = true,
                 BackColor = Color.Transparent,
                 ForeColor = Color.Silver,
-                Location = new Point(6, panel.ClientSize.Height - 58),
-                Size = new Size(Math.Max(100, panel.ClientSize.Width - 12), 18),
+                Location = new Point(Dpi.Px(6), panel.ClientSize.Height - Dpi.Px(58)),
+                Size = new Size(
+                    Math.Max(100, panel.ClientSize.Width - Dpi.Px(12)),
+                    Dpi.Px(18)),
                 Text = hint,
             };
             panel.Controls.Add(status);
 
-            refresh = CreateFlatButton(panel, "Обновить", 6, panel.ClientSize.Height - 34, 77);
+            refresh = CreateFlatButton(
+                panel,
+                "Обновить",
+                Dpi.Px(6),
+                panel.ClientSize.Height - Dpi.Px(34),
+                77);
             panel.Controls.Add(refresh);
 
-            action = CreateFlatButton(panel, "Удалить", 89, panel.ClientSize.Height - 34, 77);
+            action = CreateFlatButton(
+                panel,
+                "Удалить",
+                Dpi.Px(89),
+                panel.ClientSize.Height - Dpi.Px(34),
+                77);
             panel.Controls.Add(action);
         }
 
@@ -164,7 +176,7 @@ namespace WOTBO
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.White,
                 Location = new Point(left, top),
-                Size = new Size(width, 23),
+                Size = new Size(Dpi.Px(width), Dpi.Px(23)),
                 TabStop = false,
                 Text = text,
                 UseVisualStyleBackColor = false,
@@ -188,7 +200,8 @@ namespace WOTBO
         private void AddRow(ScrollPanel content, string text, string tooltip, object tag, EventHandler onChecked)
         {
             List<CheckBox> rows = content.Controls.OfType<CheckBox>().ToList();
-            int top = rows.Count == 0 ? 2 : rows.Max(item => item.Top) + ListRowStep;
+            int step = Dpi.Px(ListRowStep);
+            int top = rows.Count == 0 ? Dpi.Px(2) : rows.Max(item => item.Top) + step;
 
             var row = new CheckBox
             {
@@ -198,7 +211,7 @@ namespace WOTBO
                 BackColor = Color.Transparent,
                 Font = content.Font,
                 ForeColor = Color.White,
-                Height = 17,
+                Height = Dpi.Px(17),
                 Left = 0,
                 Tag = tag,
                 Text = text,
@@ -394,6 +407,12 @@ namespace WOTBO
                 }
 
                 PanelScroller.Refresh(cleanupContent);
+
+                if (panel_cleanup.Visible && !ScreenshotMode)
+                {
+                    panelReveal.Play(panel_cleanup);
+                }
+
                 long total = items.Sum(item => item.Size);
                 cleanupStatus.Text = "Всего можно освободить: " + CleanupService.FormatSize(total);
             }

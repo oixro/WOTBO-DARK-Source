@@ -92,8 +92,6 @@ namespace WOTBO
             AppIcon.Apply(this);
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
             Dpi.Configure(PanelMain, 395f);
-            SetupSettingsPanel();
-            SetupExtraTabs();
             Log.Debug("Startup", $"Dpi.Configure: {startupWatch.ElapsedMilliseconds} мс");
 
             notifier = new BalloonNotifier();
@@ -484,6 +482,7 @@ namespace WOTBO
             ButtonClose.Left = Math.Max(0, PanelHead.Width - ButtonClose.Width - Dpi.Scale(this, 5));
 
             CenterHeader();
+            LayoutGear();
 
             // После изменения размеров перерисовываем всё: иначе остаются
             // куски старого градиента на месте прежней панели.

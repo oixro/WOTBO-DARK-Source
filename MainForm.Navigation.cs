@@ -118,7 +118,7 @@ namespace WOTBO
         /// </summary>
         private void SetupScrolling()
         {
-            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5, panel_settings };
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5 };
 
             foreach (Panel panel in panels)
             {

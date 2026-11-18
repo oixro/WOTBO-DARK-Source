@@ -87,7 +87,7 @@ namespace WOTBO
                 }
             }
 
-            return step == int.MaxValue ? Dpi.Scale(panel, 20) : step;
+            return step == int.MaxValue ? Dpi.Px(20) : step;
         }
 
         private static int FindInsertTop(Panel panel, int step)
@@ -126,7 +126,7 @@ namespace WOTBO
 
             if (last < 0)
             {
-                return Dpi.Scale(panel, 5);
+                return Dpi.Px(5);
             }
 
             foreach (Control control in panel.Controls)
@@ -176,15 +176,15 @@ namespace WOTBO
         private CheckBox CreateTweakRow(Panel panel, SimpleTweakDefinition definition, int top)
         {
             CheckBox template = panel.Controls.OfType<CheckBox>().FirstOrDefault();
+            int left = template != null ? template.Left : Dpi.Px(20);
 
             var checkBox = new CheckBox
             {
                 AutoSize = true,
                 BackColor = Color.Transparent,
                 ForeColor = Color.White,
-                Location = new Point(Dpi.Scale(panel, 20), top),
+                Location = new Point(left, top),
                 Name = "checkBox_" + definition.Id.Replace('.', '_'),
-                Size = new Size(Dpi.Scale(panel, 220), Dpi.Scale(panel, 17)),
                 TabIndex = 0,
                 Tag = "",
                 Text = definition.Text,
@@ -205,13 +205,17 @@ namespace WOTBO
 
         private PictureBox CreateRollbackRow(Panel panel, CheckBox checkBox, int top)
         {
+            PictureBox template = panel.Controls
+                .OfType<PictureBox>()
+                .FirstOrDefault(control => control.Name.StartsWith("back_", StringComparison.Ordinal));
+
             var picture = new PictureBox
             {
                 BackgroundImage = Resources.back,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Location = new Point(0, top),
                 Name = "back_" + checkBox.Name.Replace("checkBox_", string.Empty),
-                Size = new Size(Dpi.Scale(panel, 15), Dpi.Scale(panel, 15)),
+                Size = template != null ? template.Size : new Size(Dpi.Px(15), Dpi.Px(15)),
                 TabIndex = 0,
                 TabStop = false,
                 Visible = false,

@@ -35,8 +35,8 @@ namespace WOTBO
             back_ui_tooltips = new PictureBox
             {
                 Name = "back_ui_tooltips",
-                Location = Dpi.Scale(this, 0, 50),
-                Size = Dpi.ScaleSize(this, 15, 15),
+                Location = new Point(Dpi.Px(0), Dpi.Px(50)),
+                Size = new Size(Dpi.Px(15), Dpi.Px(15)),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
                 BackgroundImageLayout = ImageLayout.Stretch,
@@ -53,7 +53,7 @@ namespace WOTBO
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = Dpi.Scale(this, 20, 50),
+                Location = new Point(Dpi.Px(20), Dpi.Px(50)),
                 Font = panel_ui_1.Font,
                 TabIndex = 100,
                 UseVisualStyleBackColor = true,
@@ -96,8 +96,8 @@ namespace WOTBO
             back_ui_tooltips_desc = new PictureBox
             {
                 Name = "back_ui_tooltips_desc",
-                Location = Dpi.Scale(this, 0, 70),
-                Size = Dpi.ScaleSize(this, 15, 15),
+                Location = new Point(Dpi.Px(0), Dpi.Px(70)),
+                Size = new Size(Dpi.Px(15), Dpi.Px(15)),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 BackgroundImage = back_animations.BackgroundImage,
                 BackgroundImageLayout = ImageLayout.Stretch,
@@ -114,7 +114,7 @@ namespace WOTBO
                 AutoSize = true,
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
-                Location = Dpi.Scale(this, 20, 70),
+                Location = new Point(Dpi.Px(20), Dpi.Px(70)),
                 Font = panel_ui_1.Font,
                 TabIndex = 101,
                 UseVisualStyleBackColor = true,
@@ -200,6 +200,13 @@ namespace WOTBO
             Log.Info("App", $"==============WOTBO {version} ==============");
             ApplyWindowSize();
             CenterToScreen();
+
+            // Панели, которые создаются кодом, строим после финального
+            // автоскейла: иначе при 125–200 % их размеры считаются от 96 DPI.
+            SetupSettingsPanel();
+            SetupExtraTabs();
+            LayoutForSize();
+
             Log.Debug("UI", $"dpi aware={NativeMethods.DpiAwareness()}, dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
             SetupTweakTooltipsToggle();
             TweakHoverInfo.Attach(this);
