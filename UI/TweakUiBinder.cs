@@ -61,6 +61,8 @@ namespace WOTBO.UI
 
             _id = id;
             _checkBox = checkBox;
+            _checkBox.ForeColor = System.Drawing.Color.White;
+            _checkBox.BackColor = System.Drawing.Color.Transparent;
             _rollback = rollback;
             _ui = SynchronizationContext.Current;
             _detectMessage = detectMessage;
