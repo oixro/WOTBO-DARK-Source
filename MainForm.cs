@@ -105,7 +105,9 @@ namespace WOTBO
             Log.Debug("Startup", $"ProgramLinks+Navigation: {startupWatch.ElapsedMilliseconds} мс");
 
             #region двигаем окно
-            WindowDragBehavior.Attach(new List<Control> { LabelHead, PanelHead, logo });
+            WindowDragBehavior.Attach(new List<Control> { PanelHead });
+            WindowDragBehavior.AttachClickableDrag(LabelHead, ShowSettings);
+            WindowDragBehavior.AttachClickableDrag(logo, ShowSettings);
             #endregion
             #region плавное закрытие + окраска формы
             async void Exit() { for (Opacity = 1; Opacity > .0; Opacity -= .2) await Task.Delay(7); Close(); }
@@ -480,9 +482,11 @@ namespace WOTBO
             label_ver.Left = Math.Max(0, PanelMain.Width - label_ver.Width - Dpi.Scale(this, 8));
 
             ButtonClose.Left = Math.Max(0, PanelHead.Width - ButtonClose.Width - Dpi.Scale(this, 5));
+            // Панель шапки сдвинута вниз на edge, чтобы сверху ловился ресайз.
+            // Крестик центрируем в видимой полосе 36 px, а не в PanelHead.
+            ButtonClose.Top = (Dpi.Scale(this, 36) - ButtonClose.Height) / 2 - edge;
 
             CenterHeader();
-            LayoutGear();
 
             // После изменения размеров перерисовываем всё: иначе остаются
             // куски старого градиента на месте прежней панели.
