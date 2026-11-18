@@ -131,8 +131,10 @@ namespace WOTBO
             this.checkBox_onedrive = new System.Windows.Forms.CheckBox();
             this.panel_5 = new WOTBO.UI.ScrollPanel();
             this.panel_apps = new WOTBO.UI.ScrollPanel();
+            this.panel_startup = new WOTBO.UI.ScrollPanel();
             this.panel_cleanup = new WOTBO.UI.ScrollPanel();
             this.label_apps = new System.Windows.Forms.Label();
+            this.label_startup = new System.Windows.Forms.Label();
             this.label_cleanup = new System.Windows.Forms.Label();
             this.panel_sorry = new WOTBO.UI.ScrollPanel();
             this.label_download_24 = new System.Windows.Forms.Label();
@@ -1576,6 +1578,25 @@ namespace WOTBO
             this.back_pro_1.Visible = false;
             this.back_pro_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
+            // panel_startup
+            // 
+            this.panel_startup.Location = new System.Drawing.Point(105, 36);
+            this.panel_startup.Name = "panel_startup";
+            this.panel_startup.Size = new System.Drawing.Size(287, 250);
+            this.panel_startup.TabIndex = 0;
+            this.panel_startup.Visible = false;
+            // 
+            // label_startup
+            // 
+            this.label_startup.AutoSize = true;
+            this.label_startup.Cursor = WOTBO.UI.SystemCursors.Hand;
+            this.label_startup.ForeColor = System.Drawing.Color.Silver;
+            this.label_startup.Location = new System.Drawing.Point(3, 123);
+            this.label_startup.Name = "label_startup";
+            this.label_startup.Size = new System.Drawing.Size(95, 13);
+            this.label_startup.TabIndex = 31;
+            this.label_startup.Text = "7. Автозагрузка";
+            // 
             // panel_apps
             // 
             this.panel_apps.Location = new System.Drawing.Point(105, 36);
@@ -2030,6 +2051,7 @@ namespace WOTBO
             this.PanelMain.Controls.Add(this.label_main);
             this.PanelMain.Controls.Add(this.label_site);
             this.PanelMain.Controls.Add(this.label_apps);
+            this.PanelMain.Controls.Add(this.label_startup);
             this.PanelMain.Controls.Add(this.label_cleanup);
             this.PanelMain.Controls.Add(this.label_gpu);
             this.PanelMain.Controls.Add(this.button_new);
@@ -2062,11 +2084,11 @@ namespace WOTBO
             this.label_site.AutoSize = true;
             this.label_site.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_site.ForeColor = System.Drawing.Color.Silver;
-            this.label_site.Location = new System.Drawing.Point(3, 163);
+            this.label_site.Location = new System.Drawing.Point(3, 183);
             this.label_site.Name = "label_site";
             this.label_site.Size = new System.Drawing.Size(45, 13);
             this.label_site.TabIndex = 24;
-            this.label_site.Text = "9. Сайт";
+            this.label_site.Text = "10. Сайт";
             this.label_site.Click += new System.EventHandler(this.label_site_Click);
             this.label_site.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
@@ -2130,11 +2152,11 @@ namespace WOTBO
             this.label_progs.AutoSize = true;
             this.label_progs.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_progs.ForeColor = System.Drawing.Color.Silver;
-            this.label_progs.Location = new System.Drawing.Point(3, 123);
+            this.label_progs.Location = new System.Drawing.Point(3, 143);
             this.label_progs.Name = "label_progs";
             this.label_progs.Size = new System.Drawing.Size(95, 13);
             this.label_progs.TabIndex = 28;
-            this.label_progs.Text = "7. Скачивания";
+            this.label_progs.Text = "8. Скачивания";
             this.label_progs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             // 
             // label_ver
@@ -2167,11 +2189,11 @@ namespace WOTBO
             this.label_pc.AutoSize = true;
             this.label_pc.Cursor = WOTBO.UI.SystemCursors.Hand;
             this.label_pc.ForeColor = System.Drawing.Color.Silver;
-            this.label_pc.Location = new System.Drawing.Point(3, 143);
+            this.label_pc.Location = new System.Drawing.Point(3, 163);
             this.label_pc.Name = "label_pc";
             this.label_pc.Size = new System.Drawing.Size(56, 13);
             this.label_pc.TabIndex = 29;
-            this.label_pc.Text = "8. Инфо о ПК";
+            this.label_pc.Text = "9. Инфо о ПК";
             this.label_pc.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Label_MouseUp);
             this.panel_dop.Controls.Add(this.back_dop_6);
             this.panel_dop.Controls.Add(this.checkBox_dwm);
@@ -2971,6 +2993,7 @@ namespace WOTBO
             this.Controls.Add(this.panel_sorry);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel_apps);
+            this.Controls.Add(this.panel_startup);
             this.Controls.Add(this.panel_cleanup);
             this.Controls.Add(this.PanelHead);
             this.Controls.Add(this.PanelMain);
@@ -3101,6 +3124,7 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_picture_cache;
         private WOTBO.UI.ScrollPanel panel_5;
         private WOTBO.UI.ScrollPanel panel_apps;
+        private WOTBO.UI.ScrollPanel panel_startup;
         private WOTBO.UI.ScrollPanel panel_cleanup;
         private WOTBO.UI.ScrollPanel panel_sorry;
         private System.Windows.Forms.Label label_download_21;
@@ -3235,6 +3259,7 @@ namespace WOTBO
         private System.Windows.Forms.PictureBox back_dop_movetemp;
         private System.Windows.Forms.Label label_site;
         private System.Windows.Forms.Label label_apps;
+        private System.Windows.Forms.Label label_startup;
         private System.Windows.Forms.Label label_cleanup;
         private System.Windows.Forms.Label label_download_24;
         private System.Windows.Forms.CheckBox checkBox_animation;

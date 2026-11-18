@@ -37,6 +37,7 @@ namespace WOTBO
             navigation.Bind(label_interface, panel_ui_1);
             navigation.Bind(label_dop, panel_dop);
             navigation.Bind(label_apps, panel_apps);
+            navigation.Bind(label_startup, panel_startup);
             navigation.Bind(label_cleanup, panel_cleanup);
 
             navigation.Bind(label_progs, panel_sorry);
@@ -46,6 +47,7 @@ namespace WOTBO
 
             SetupWelcome();
             label_apps.MouseUp += Label_MouseUp;
+            label_startup.MouseUp += Label_MouseUp;
             label_cleanup.MouseUp += Label_MouseUp;
 
             SetupNavHighlight();
@@ -90,7 +92,7 @@ namespace WOTBO
         /// <summary>Стартовый экран: вкладки скрыты, подсветки в меню нет.</summary>
         private void ShowWelcome()
         {
-            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5, panel_settings, panel_apps, panel_cleanup };
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5, panel_settings, panel_apps, panel_cleanup, panel_startup };
 
             foreach (Panel panel in panels)
             {
@@ -140,7 +142,7 @@ namespace WOTBO
         /// </summary>
         private void SetupNavHighlight()
         {
-            Label[] labels = { label_main, label_interface, label_gpu, label_dop, label_apps, label_cleanup, label_progs, label_pc };
+            Label[] labels = { label_main, label_interface, label_gpu, label_dop, label_apps, label_cleanup, label_startup, label_progs, label_pc };
             _navLabels = new List<Label>();
 
             foreach (Label label in labels)
@@ -190,6 +192,7 @@ namespace WOTBO
             else if (panel == panel_dop) active = label_dop;
             else if (panel == panel_apps) active = label_apps;
             else if (panel == panel_cleanup) active = label_cleanup;
+            else if (panel == panel_startup) active = label_startup;
             else if (panel == panel_sorry) active = label_progs;
             else if (panel == panel_5) active = label_pc;
 

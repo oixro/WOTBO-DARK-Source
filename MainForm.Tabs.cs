@@ -46,6 +46,7 @@ namespace WOTBO
 
             BuildAppsPanel();
             BuildCleanupPanel();
+            SetupStartupTab();
 
             panel_apps.VisibleChanged += delegate
             {
@@ -107,7 +108,8 @@ namespace WOTBO
             out ScrollPanel content,
             out Label status,
             out Button refresh,
-            out Button action)
+            out Button action,
+            string actionText = "Удалить")
         {
             panel.Controls.Clear();
 
@@ -157,13 +159,17 @@ namespace WOTBO
                 77);
             panel.Controls.Add(refresh);
 
-            action = CreateFlatButton(
-                panel,
-                "Удалить",
-                Dpi.Px(89),
-                panel.ClientSize.Height - Dpi.Px(34),
-                77);
-            panel.Controls.Add(action);
+            action = null;
+            if (actionText != null)
+            {
+                action = CreateFlatButton(
+                    panel,
+                    actionText,
+                    Dpi.Px(89),
+                    panel.ClientSize.Height - Dpi.Px(34),
+                    77);
+                panel.Controls.Add(action);
+            }
         }
 
         private Button CreateFlatButton(Panel panel, string text, int left, int top, int width)

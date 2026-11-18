@@ -263,7 +263,7 @@ namespace WOTBO
             #endregion
             #region label animations
             HoverAnimator.Attach(
-                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_apps, label_cleanup, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver },
+                new List<Control> { label_main, label_interface, label_gpu, label_dop, label_apps, label_cleanup, label_startup, label_progs, label_pc, label_site, label_winver, LabelHead, label_ver },
                 Color.FromArgb(192, 192, 192),
                 Color.FromArgb(255, 255, 255),
                 NavRestingColor);
@@ -311,7 +311,10 @@ namespace WOTBO
             // В режиме съёмки скриншотов анимация только мешает.
             // Списочные вкладки не анимируем построчно: у CheckedListBox
             // один контрол, а не строки-чекбоксы.
-            if (!ScreenshotMode && NewPanel != panel_apps && NewPanel != panel_cleanup)
+            if (!ScreenshotMode
+                && NewPanel != panel_apps
+                && NewPanel != panel_cleanup
+                && NewPanel != panel_startup)
             {
                 panelReveal.Play(NewPanel);
             }
@@ -460,7 +463,7 @@ namespace WOTBO
             int contentWidth = Math.Max(Dpi.Scale(this, 200), ClientSize.Width - left - rightGap);
             int contentHeight = Math.Max(Dpi.Scale(this, 100), PanelMain.Height - footerGap);
 
-            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5, panel_settings, panel_apps, panel_cleanup };
+            Panel[] panels = { panel1, panel_ui_1, panel_dop, panel2, panel_sorry, panel_5, panel_settings, panel_apps, panel_cleanup, panel_startup };
             foreach (Panel panel in panels)
             {
                 if (panel == null) continue;

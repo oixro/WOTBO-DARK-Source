@@ -152,6 +152,7 @@
     <Compile Include="Services\Tweaks\ValueListTweak.cs" />
     <Compile Include="Services\Tweaks\SimpleTweak.cs" />
     <Compile Include="Services\Apps\AppsService.cs" />
+    <Compile Include="Services\Startup\StartupService.cs" />
     <Compile Include="Services\Cleanup\CleanupService.cs" />
     <Compile Include="Services\Tweaks\TweakApplyException.cs" />
     <Compile Include="Services\Tweaks\ResourceDownload.cs" />
@@ -249,6 +250,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Navigation.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.Startup.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.Tabs.cs">
