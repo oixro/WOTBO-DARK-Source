@@ -30,6 +30,13 @@ namespace WOTBO.Services.Storage
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
 
             Directory.CreateDirectory(workspace.Root);
+
+            if (workspace.IsPrepared())
+            {
+                _log.Info(Category, "ресурсы актуальны, пропускаем распаковку");
+                return;
+            }
+
             _log.Info(Category, "tempfolder создан - " + workspace.Root);
 
             File.WriteAllBytes(workspace.RegpackZip, Resources.regpack);
@@ -63,6 +70,9 @@ namespace WOTBO.Services.Storage
             {
                 File.WriteAllText(ExplorerBat, Resources.explor);
             }
+
+            workspace.MarkPrepared();
+            _log.Info(Category, "ресурсы распакованы и помечены актуальными");
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using WOTBO.App.Logging;
 
 namespace WOTBO.Services.Storage
@@ -14,6 +15,7 @@ namespace WOTBO.Services.Storage
     public sealed class TempWorkspace
     {
         private const string Category = "Temp";
+        private const string MarkerName = ".prepared";
 
         private readonly string _baseDirectory;
         private readonly IAppLogger _log;
@@ -76,11 +78,72 @@ namespace WOTBO.Services.Storage
         /// <summary>
         /// Очищает рабочую папку. Вызывается один раз при старте.
         /// </summary>
+        /// <summary>
+        /// Отпечаток встроенных ресурсов: версия exe, размер и время сборки.
+        /// Пока он совпадает, распаковку можно не повторять.
+        /// </summary>
+        public static string ResourcesFingerprint()
+        {
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                var file = new FileInfo(assembly.Location);
+                return assembly.GetName().Version + "|" + file.Length + "|" + file.LastWriteTimeUtc.Ticks;
+            }
+            catch
+            {
+                return "unknown";
+            }
+        }
+
+        public bool IsPrepared()
+        {
+            try
+            {
+                string marker = Path.Combine(Root, MarkerName);
+                if (!File.Exists(marker)
+                    || !string.Equals(
+                        File.ReadAllText(marker).Trim(),
+                        ResourcesFingerprint(),
+                        StringComparison.Ordinal))
+                {
+                    return false;
+                }
+
+                return File.Exists(RegpackZip)
+                    && File.Exists(SuExecutable)
+                    && Directory.Exists(Regpack)
+                    && Directory.Exists(Ui);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void MarkPrepared()
+        {
+            try
+            {
+                File.WriteAllText(Path.Combine(Root, MarkerName), ResourcesFingerprint());
+            }
+            catch (Exception exception)
+            {
+                _log.Warn(Category, "не удалось сохранить маркер ресурсов: " + exception.Message);
+            }
+        }
+
         public void Prepare()
         {
             if (!Directory.Exists(Root))
             {
                 _log.Info(Category, "tempfolder нету");
+                return;
+            }
+
+            if (IsPrepared())
+            {
+                _log.Info(Category, "ресурсы актуальны, распаковка не нужна");
                 return;
             }
 

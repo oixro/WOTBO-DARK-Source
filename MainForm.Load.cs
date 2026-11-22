@@ -195,11 +195,12 @@ namespace WOTBO
             }
         }
 
-        async void MainForm_Load(object sender, EventArgs e)
+        void MainForm_Load(object sender, EventArgs e)
         {
             Log.Info("App", $"==============WOTBO {version} ==============");
             ApplyWindowSize();
             CenterToScreen();
+            Opacity = 1; // дизайнер стартует с 0; без старого fade окно было бы невидимым
 
             // Убираем следы удалённого твика AlwaysOnTop у старых установок.
             WOTBO.Services.Windows.LegacyCleanup.RemoveAlwaysOnTop(AppServices.TweakContext);
@@ -284,43 +285,104 @@ namespace WOTBO
                 Log.Info("Windows", $"чеки под win 11 для win10 отключены");
             }
             #endregion
-            #region temp
-            var workspace = AppServices.Workspace;
-            workspace.Prepare();
-            tempfolder = workspace.Root;
-            path_regpack7z = workspace.RegpackZip;
-            path_regpack = workspace.Regpack;
-            path_services = workspace.Services;
-            path_uizip = workspace.UiZip;
-            path_ui = workspace.Ui;
-            path_scheme = workspace.Scheme;
-
-            AppServices.ResourceExtractor.Extract(workspace);
-            #endregion
-            // Detect-ы выполняем до показа окна: иначе чекбоксы и стрелки
-            // появляются уже на глазах и окно «дёргается».
-            DetectAllTweaks();
-
-            #region инет + обнова
-            // Сеть и GitHub не должны задерживать показ окна.
-            _ = CheckForUpdatesAsync();
-            #endregion
-            #region позиция, размеры и плавный запуск
-            if (SystemInformation.UserInteractive)
+            Log.Debug("Startup", "load ready, showing window");
+            // Всё тяжёлое — после первого кадра: настройки, вкладки,
+            // распаковка, PcInfo и Detect-ы больше не задерживают показ окна.
+            Shown += delegate
             {
-                for (Opacity = 0; Opacity < 1; Opacity += .1) await Task.Delay(7);
-            }
-            else
-            {
-                // В неинтерактивной сессии Opacity бросает Win32Exception.
-                Opacity = 1;
-            }
-
-            Log.Info("UI", $"плавно открылись");
-            #endregion
-            BeginInvoke(new Action(DetectHeavyTweaks));
-            DetectGpuTweaks();
+                Log.Debug("Startup", "shown");
+                BeginInvoke(new Action(FinishStartup));
+            };
         }
+
+        /// <summary>
+        /// Вторая половина запуска. Вызывается после первого кадра, чтобы окно
+        /// появлялось сразу, а не после распаковки и всех Detect-ов.
+        /// </summary>
+        private void FinishStartup()
+        {
+            if (IsDisposed || Disposing)
+            {
+                return;
+            }
+
+            var watch = Stopwatch.StartNew();
+            Log.Debug("Startup", "FinishStartup begin");
+            try
+            {
+                SetupSettingsPanel();
+                SetupExtraTabs();
+                LayoutForSize();
+                SetupTweakTooltipsToggle();
+                TweakHoverInfo.Attach(this);
+
+                SetupSimpleTweaks();
+                foreach (Panel panel in new[] { panel1, panel_ui_1, panel2, panel_dop })
+                {
+                    PanelScroller.Refresh(panel);
+                }
+
+                AppServices.Startup.MigrateState();
+
+                #region temp
+                var workspace = AppServices.Workspace;
+                workspace.Prepare();
+                tempfolder = workspace.Root;
+                path_regpack7z = workspace.RegpackZip;
+                path_regpack = workspace.Regpack;
+                path_services = workspace.Services;
+                path_uizip = workspace.UiZip;
+                path_ui = workspace.Ui;
+                path_scheme = workspace.Scheme;
+
+                AppServices.ResourceExtractor.Extract(workspace);
+                #endregion
+
+                pcInfo = new PcInfoView(panel_5, CopyPcReport);
+                pcInfo.ShowLoading("Получаем информацию о ПК…");
+                LoadSystemInfoAsync();
+
+                DetectAllTweaks();
+                BeginInvoke(new Action(DetectHeavyTweaks));
+                DetectGpuTweaks();
+                _ = CheckForUpdatesAsync();
+
+                Log.Debug("Startup", $"FinishStartup: {watch.ElapsedMilliseconds} мс");
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Startup", "FinishStartup", exception);
+                MessageBox.Show(
+                    "Не удалось завершить запуск WOTBO:\n" + exception.Message,
+                    "WOTBO",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private async void LoadSystemInfoAsync()
+        {
+            try
+            {
+                PcReport report = await AppServices.PcReport.BuildAsync();
+
+                this.Invoke((MethodInvoker)delegate
+                {
+                    pcInfo.Render(report);
+                    Log.Info("System", report.ToText());
+                });
+            }
+            catch (Exception exception)
+            {
+                Log.Error("System", "не удалось получить информацию о ПК", exception);
+
+                this.Invoke((MethodInvoker)delegate
+                {
+                    pcInfo.ShowError("Не удалось получить информацию о ПК");
+                });
+            }
+        }
+
 
         /// <summary>
         /// Все Detect-ы твиков. Выполняются после первого кадра, чтобы окно

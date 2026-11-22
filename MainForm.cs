@@ -127,32 +127,6 @@ namespace WOTBO
             Log.Debug("Startup", $"painting+size: {startupWatch.ElapsedMilliseconds} мс");
 
             #endregion
-            #region инфо о ПК
-            pcInfo = new PcInfoView(panel_5, CopyPcReport);
-            pcInfo.ShowLoading("Получаем информацию о ПК…");
-            LoadSystemInfoAsync();
-            async void LoadSystemInfoAsync()
-            {
-                try
-                {
-                    PcReport report = await AppServices.PcReport.BuildAsync();
-
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        pcInfo.Render(report);
-                        Log.Info("System", report.ToText());
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("System", "не удалось получить информацию о ПК", ex);
-
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        pcInfo.ShowError("Не удалось получить информацию о ПК");
-                    });
-                }
-            }
             #endregion
             #region key binds
             KeyPreview = true;
@@ -269,7 +243,7 @@ namespace WOTBO
                 NavRestingColor);
             #endregion
         }
-        #endregion
+
         #region my void's
         #region анимка
         /// <summary>
