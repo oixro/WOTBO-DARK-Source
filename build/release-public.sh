@@ -181,7 +181,7 @@ info "заметки: $(printf '%s' "$NOTES" | head -n1)"
 
 # ------------------------------------------------------------- assemble ----
 cp "$ARTIFACT" "$TMP_DIR/public/WOTBO.exe"
-printf '%s\n' "$FULL_VERSION" > "$TMP_DIR/public/ver.json"
+printf '%s\n' "$DISPLAY_VERSION" > "$TMP_DIR/public/ver.json"
 printf '%s\n' "$NOTES" > "$TMP_DIR/public/lastchange.json"
 
 info "изменения публичного канала:"
