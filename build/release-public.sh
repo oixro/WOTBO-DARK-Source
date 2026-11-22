@@ -61,12 +61,7 @@ import sys
 parts = [int(x) for x in sys.argv[1].split(".")]
 while len(parts) < 4:
     parts.append(0)
-if parts[3] > 0:
-    out = parts
-elif parts[2] > 0:
-    out = parts[:3]
-else:
-    out = parts[:2]
+out = parts if parts[3] > 0 else parts[:3]
 print(".".join(str(x) for x in out))
 PY
 )"
@@ -74,7 +69,7 @@ PY
 info "версия: $DISPLAY_VERSION ($FULL_VERSION)"
 
 # ------------------------------------------------------------------- git ---
-if [ "$ALLOW_DIRTY" -eq 0 ] && [ -n "$(git status --porcelain)" ]; then
+if [ "$ALLOW_DIRTY" -eq 0 ] && [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     die "рабочее дерево грязное. Закоммить изменения или передай --allow-dirty"
 fi
 
