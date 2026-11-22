@@ -60,7 +60,25 @@ namespace WOTBO.Services.Tweaks
 
         public override void Rollback(TweakContext context)
         {
-            // Восстанавливается через TweakScope из снимков веток.
+            // Если твик ставила старая версия без бэкапа WOTBO, возвращаем
+            // стандартную видимость разделов. При наличии бэкапа TweakScope
+            // восстановит точные прежние значения после этого метода.
+            if (!context.Store.HasBackup(Id))
+            {
+                context.Registry.DeleteValue(
+                    RegistryHive.LocalMachine, RegistryPaths.Explorer, "HubMode");
+
+                context.Processes.RunSuper(
+                    @"cmd.exe /c reg add ""HKCR\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000001"" /f",
+                    context.Workspace.SuExecutable);
+
+                context.Registry.WriteValue(
+                    RegistryHive.CurrentUser,
+                    RegistryPaths.GalleryClsid,
+                    "System.IsPinnedToNameSpaceTree",
+                    0x00000001,
+                    RegistryValueKind.DWord);
+            }
         }
     }
 }
