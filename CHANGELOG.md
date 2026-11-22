@@ -208,7 +208,11 @@
   `NonRemovable`, Store и winget. Отката нет — об этом предупреждает окно.
   Список читается из UTF-8-файла, а не из консоли PowerShell: на русской
   Windows кириллица больше не превращается в `??????????`.
-- **Edge-твик сокращён с 122 до 54 политик.** Удалены устаревшие и убранные
+- **«Убрать „Главная“ и „Галерея“» исправлен.** Detect проверял
+  `System.IsPinnedToNameSpaceTree=1` у Галереи и потому не видел применённый
+  твик. Теперь оба раздела считаются скрытыми при значениях `0`; `HubMode`
+  пишется напрямую через `RegistryService`, а не через `reg.exe` без проверки.
+- - **Edge-твик сокращён с 122 до 54 политик.** Удалены устаревшие и убранные
   Microsoft политики (`EdgeEnhanceImagesEnabled`, `TabFreezingEnabled`,
   `MetricsReportingEnabled`, `DefaultPluginsSetting`, `LegacySameSite…`,
   `EdgeCollectionsEnabled`, `WebWidget*`, `PromotionalTabsEnabled`,

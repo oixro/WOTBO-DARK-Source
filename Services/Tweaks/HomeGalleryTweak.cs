@@ -29,7 +29,7 @@ namespace WOTBO.Services.Tweaks
 
             return Convert.ToInt32(hub ?? 0) == 1
                 && Convert.ToInt32(home ?? -1) == 0
-                && Convert.ToInt32(gallery ?? -1) == 1
+                && Convert.ToInt32(gallery ?? -1) == 0
                 ? TweakState.Applied
                 : TweakState.NotApplied;
         }
@@ -40,16 +40,21 @@ namespace WOTBO.Services.Tweaks
             context.BackupRegistryKey(RegistryHive.ClassesRoot, RegistryPaths.HomeGalleryClsid);
             context.BackupRegistryKey(RegistryHive.CurrentUser, RegistryPaths.GalleryClsid);
 
-            context.Processes.StartCaptured(
-                @"reg add ""HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"" /v ""HubMode"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1");
+            context.Registry.WriteValue(
+                RegistryHive.LocalMachine,
+                RegistryPaths.Explorer,
+                "HubMode",
+                0x00000001,
+                RegistryValueKind.DWord);
             context.Processes.RunSuper(
                 @"cmd.exe /c reg add ""HKCR\CLSID\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000000"" /f",
                 context.Workspace.SuExecutable);
-            context.Processes.StartCaptured(
-                "reg add \"HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}\" /v \"System.IsPinnedToNameSpaceTree\" /t REG_DWORD /d \"00000000\" /f >nul 2>&1");
-            context.Processes.RunSuper(
-                @"cmd.exe /c reg add ""HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"" /v ""System.IsPinnedToNameSpaceTree"" /t REG_DWORD /d ""00000001"" /f >nul 2>&1",
-                context.Workspace.SuExecutable);
+            context.Registry.WriteValue(
+                RegistryHive.CurrentUser,
+                RegistryPaths.GalleryClsid,
+                "System.IsPinnedToNameSpaceTree",
+                0x00000000,
+                RegistryValueKind.DWord);
             context.Processes.StartCaptured("taskkill /f /im explorer.exe && timeout /t 1 && explorer.exe");
         }
 
