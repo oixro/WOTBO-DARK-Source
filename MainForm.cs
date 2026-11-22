@@ -106,6 +106,9 @@ namespace WOTBO
 
             InitializeComponent();
             label_ver.Text = version;
+            // AutoSize растягивает подпись вправо, поэтому после смены текста
+            // («2.34 dev», «2.34.1») её нужно снова прижать к правому краю.
+            label_ver.SizeChanged += delegate { AlignVersionLabel(); };
             Log.Debug("Startup", $"InitializeComponent: {startupWatch.ElapsedMilliseconds} мс");
 
             AppIcon.Apply(this);
@@ -475,7 +478,7 @@ namespace WOTBO
             button_new.Top = PanelMain.Height - Dpi.Scale(this, 52);
             label_winver.Top = PanelMain.Height - Dpi.Scale(this, 19);
             label_ver.Top = PanelMain.Height - Dpi.Scale(this, 17);
-            label_ver.Left = Math.Max(0, PanelMain.Width - label_ver.Width - Dpi.Scale(this, 8));
+            AlignVersionLabel();
 
             ButtonClose.Left = Math.Max(0, PanelHead.Width - ButtonClose.Width - Dpi.Scale(this, 5));
             // Панель шапки сдвинута вниз на edge, чтобы сверху ловился ресайз.
@@ -487,6 +490,17 @@ namespace WOTBO
             // После изменения размеров перерисовываем всё: иначе остаются
             // куски старого градиента на месте прежней панели.
             Invalidate(true);
+        }
+
+        /// <summary>Подпись версии всегда прижата к правому краю панели.</summary>
+        private void AlignVersionLabel()
+        {
+            if (label_ver == null || PanelMain == null)
+            {
+                return;
+            }
+
+            label_ver.Left = Math.Max(0, PanelMain.Width - label_ver.Width - Dpi.Scale(this, 8));
         }
 
         /// <summary>
