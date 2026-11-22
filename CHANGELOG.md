@@ -208,6 +208,17 @@
   `NonRemovable`, Store и winget. Отката нет — об этом предупреждает окно.
   Список читается из UTF-8-файла, а не из консоли PowerShell: на русской
   Windows кириллица больше не превращается в `??????????`.
+- **Edge-твик сокращён с 122 до 54 политик.** Удалены устаревшие и убранные
+  Microsoft политики (`EdgeEnhanceImagesEnabled`, `TabFreezingEnabled`,
+  `MetricsReportingEnabled`, `DefaultPluginsSetting`, `LegacySameSite…`,
+  `EdgeCollectionsEnabled`, `WebWidget*`, `PromotionalTabsEnabled`,
+  `SiteSafetyServicesEnabled`, `EdgeFollowEnabled`, `RemoveDesktopShortcutDefault`
+  и другие), IE mode/Application Guard, дубль `TyposquattingCheckerEnabled`,
+  а также значения, выключавшие защиту: SmartScreen, Tracking Prevention,
+  site isolation, audio sandbox, component updates, renderer code integrity,
+  SSL override, command-line warnings. Убраны дефолтные/бесполезные значения,
+  исправлены URL `www.google.com` → `https://www.google.com/`; при повторном
+  применении старые значения удаляются из реестра.
 - **Вкладка «Автозагрузка»**. Список Run/RunOnce для HKCU, HKLM и 32-битной
   ветки плюс папки «Автозагрузка»; переключатель пишет `StartupApproved`
   (12 байт, как диспетчер задач) и не удаляет саму запись. UWP StartupTask

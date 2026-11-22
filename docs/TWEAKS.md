@@ -54,7 +54,7 @@ public interface ITweak
 | `ui.ffmpeg` | `C:\Windows\ffmpeg.exe` + SystemFileAssociations | последний essentials build через GitHub API |
 | `gpu.ansel` | `NvCameraEnable.exe` | `on/off`; detect через утилиту |
 | `extra.compactos` | `compact /CompactOS:always` | односторонняя |
-| `extra.edge` | `HKLM\SOFTWARE\Policies\Microsoft\Edge` | 122 политики Edge + RestoreOnStartupURLs |
+| `extra.edge` | `HKLM\SOFTWARE\Policies\Microsoft\Edge` | 54 актуальные политики Edge + RestoreOnStartupURLs |
 | `ui.explorerdetails` | `things.reg`/`un_things.reg`, `UseCompactMode` | мелкие настройки проводника; w10 — `Taskmgr_win10_*.reg` |
 | `extra.onedrive` | `OneDriveSetup.exe /uninstall` | одностороннее удаление OneDrive |
 | `pro.homegallery` | `HKLM\...\Explorer` + CLSID Home/Gallery | `HubMode=1`, `System.IsPinnedToNameSpaceTree=0`, CLSID через `su.exe` |
