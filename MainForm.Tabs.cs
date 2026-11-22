@@ -33,6 +33,7 @@ namespace WOTBO
         private Label cleanupStatus;
         private Button cleanupRefresh;
         private Button cleanupClean;
+        private Button cleanupSelectAll;
 
         private bool appsLoaded;
         private bool appsBusy;
@@ -97,8 +98,18 @@ namespace WOTBO
             cleanupClean.Text = "Очистить";
             cleanupClean.Enabled = false;
 
+            cleanupSelectAll = CreateFlatButton(
+                panel_cleanup,
+                "Выбрать всё",
+                Dpi.Px(172),
+                panel_cleanup.ClientSize.Height - Dpi.Px(34),
+                95);
+            cleanupSelectAll.Enabled = false;
+            panel_cleanup.Controls.Add(cleanupSelectAll);
+
             cleanupRefresh.Click += delegate { ScanCleanupAsync(); };
             cleanupClean.Click += delegate { CleanSelectedAsync(); };
+            cleanupSelectAll.Click += delegate { SelectAllCleanup(); };
         }
 
         private void CreateListChrome(
@@ -264,8 +275,25 @@ namespace WOTBO
         {
             if (cleanupClean != null && cleanupContent != null)
             {
+                int rows = cleanupContent.Controls.OfType<CheckBox>().Count();
                 cleanupClean.Enabled = !cleanupBusy && CheckedRows(cleanupContent).Count > 0;
+                cleanupSelectAll.Enabled = !cleanupBusy && rows > 0;
             }
+        }
+
+        private void SelectAllCleanup()
+        {
+            if (cleanupBusy || cleanupContent == null)
+            {
+                return;
+            }
+
+            foreach (CheckBox row in cleanupContent.Controls.OfType<CheckBox>())
+            {
+                row.Checked = true;
+            }
+
+            UpdateCleanupButtons();
         }
 
         private async void LoadAppsAsync()
@@ -400,6 +428,7 @@ namespace WOTBO
             cleanupBusy = true;
             cleanupRefresh.Enabled = false;
             cleanupClean.Enabled = false;
+            cleanupSelectAll.Enabled = false;
             cleanupContent.Enabled = false;
             ClearRows(cleanupContent);
             cleanupStatus.Text = "Считаем размеры…";
@@ -482,6 +511,7 @@ namespace WOTBO
             cleanupBusy = true;
             cleanupRefresh.Enabled = false;
             cleanupClean.Enabled = false;
+            cleanupSelectAll.Enabled = false;
             cleanupContent.Enabled = false;
             long freed = 0;
 
