@@ -200,7 +200,9 @@ namespace WOTBO
             Log.Info("App", $"==============WOTBO {version} ==============");
             ApplyWindowSize();
             CenterToScreen();
-            Opacity = 1; // дизайнер стартует с 0; без старого fade окно было бы невидимым
+            // Окно остаётся прозрачным до первого полного кадра: иначе видно
+            // белые прямоугольники контролов, ещё не успевших отрисоваться.
+            Opacity = ScreenshotMode ? 1 : 0;
 
             // Убираем следы удалённого твика AlwaysOnTop у старых установок.
             WOTBO.Services.Windows.LegacyCleanup.RemoveAlwaysOnTop(AppServices.TweakContext);
@@ -299,7 +301,7 @@ namespace WOTBO
         /// Вторая половина запуска. Вызывается после первого кадра, чтобы окно
         /// появлялось сразу, а не после распаковки и всех Detect-ов.
         /// </summary>
-        private void FinishStartup()
+        private async void FinishStartup()
         {
             if (IsDisposed || Disposing)
             {
@@ -310,6 +312,12 @@ namespace WOTBO
             Log.Debug("Startup", "FinishStartup begin");
             try
             {
+                // Показываем окно сразу: на экране только статичный welcome-экран,
+                // все вкладки ещё скрыты, поэтому тяжёлая инициализация ниже
+                // уже не может ничего «мигнуть» на видимой части.
+                LayoutForSize();
+                await FadeInAsync();
+
                 SetupSettingsPanel();
                 SetupExtraTabs();
                 LayoutForSize();
@@ -357,6 +365,38 @@ namespace WOTBO
                     "WOTBO",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task FadeInAsync()
+        {
+            if (ScreenshotMode || !SystemInformation.UserInteractive)
+            {
+                Opacity = 1;
+                return;
+            }
+
+            try
+            {
+                // Даём окну нарисовать фон и контролы, пока оно ещё прозрачно.
+                Refresh();
+                Update();
+                await Task.Delay(40);
+
+                for (int step = 1; step <= 20; step++)
+                {
+                    if (IsDisposed) return;
+                    Opacity = step / 20.0;
+                    await Task.Delay(8);
+                }
+
+                Opacity = 1;
+                Log.Info("UI", "плавно открылись");
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("UI", "fade: " + exception.Message);
+                Opacity = 1;
             }
         }
 
