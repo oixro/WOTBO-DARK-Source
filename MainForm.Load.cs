@@ -816,7 +816,7 @@ namespace WOTBO
 
                     case UpdateStatus.Dev:
                         Log.Info("Update", "версия dev");
-                        label_ver.Text = $"d{version}";
+                        label_ver.Text = $"{version} dev";
                         break;
 
                     case UpdateStatus.NoInternet:

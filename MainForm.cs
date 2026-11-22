@@ -29,7 +29,7 @@ namespace WOTBO
     public partial class MainForm : ShadowForm
     {
         #region переменные
-        string version = $"build - {Assembly.GetExecutingAssembly().GetName().Version.ToString(2)}";
+        string version = FormatVersion(Assembly.GetExecutingAssembly().GetName().Version);
         bool win10;
         static string tempfolder = AppPaths.WorkDirectory;
         static string path_regpack7z = tempfolder + @"\regpack.zip";
@@ -80,6 +80,25 @@ namespace WOTBO
         /// <summary>Режим съёмки скриншотов: без тостов и проверки обновлений.</summary>
         public static bool ScreenshotMode { get; set; }
         #endregion
+        /// <summary>
+        /// Версия для окна и лога: без «build - », с мажором, минором и
+        /// патчем, а четвёртая часть — только если она реально задана.
+        /// </summary>
+        private static string FormatVersion(Version value)
+        {
+            if (value == null)
+            {
+                return "0.0";
+            }
+
+            if (value.Revision > 0)
+            {
+                return value.ToString(4);
+            }
+
+            return value.Build > 0 ? value.ToString(3) : value.ToString(2);
+        }
+
         #region default crap
         public MainForm()
         {
