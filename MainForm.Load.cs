@@ -207,25 +207,8 @@ namespace WOTBO
             // Убираем следы удалённого твика AlwaysOnTop у старых установок.
             WOTBO.Services.Windows.LegacyCleanup.RemoveAlwaysOnTop(AppServices.TweakContext);
 
-            // Панели, которые создаются кодом, строим после финального
-            // автоскейла: иначе при 125–200 % их размеры считаются от 96 DPI.
-            SetupSettingsPanel();
-            SetupExtraTabs();
-            LayoutForSize();
-
             Log.Debug("UI", $"dpi aware={NativeMethods.DpiAwareness()}, dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
-            SetupTweakTooltipsToggle();
-            TweakHoverInfo.Attach(this);
 
-            // Строки новых твиков создаём после того, как окно получило
-            // финальный размер и WinForms один раз пересчитал дизайнерские
-            // координаты. Иначе новые строки остаются в 96-DPI, а старые
-            // уезжают вместе с автоскейлом.
-            SetupSimpleTweaks();
-            foreach (Panel panel in new[] { panel1, panel_ui_1, panel2, panel_dop })
-            {
-                PanelScroller.Refresh(panel);
-            }
             #region проверка запущенна ли + eula
             AppServices.Startup.EnsureSingleInstance(exename, exepath);
             if (!AppServices.Startup.IsEulaAccepted())
