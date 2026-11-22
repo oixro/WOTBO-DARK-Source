@@ -48,7 +48,6 @@ namespace WOTBO
             this.checkBox_bluefolders = new System.Windows.Forms.CheckBox();
             this.checkBoxUI_Buttons_2 = new System.Windows.Forms.CheckBox();
             this.checkBox_contex = new System.Windows.Forms.CheckBox();
-            this.checkBox_pro_14 = new System.Windows.Forms.CheckBox();
             this.checkBox_zalipanie = new System.Windows.Forms.CheckBox();
             this.checkBox_nastroyka = new System.Windows.Forms.CheckBox();
             this.checkBox_compactos = new System.Windows.Forms.CheckBox();
@@ -118,7 +117,6 @@ namespace WOTBO
             this.checkBoxUI_Buttons_4 = new System.Windows.Forms.CheckBox();
             this.checkBoxUI_Buttons_1 = new System.Windows.Forms.CheckBox();
             this.back_animations = new System.Windows.Forms.PictureBox();
-            this.back_pro_14 = new System.Windows.Forms.PictureBox();
             this.back_pro_13 = new System.Windows.Forms.PictureBox();
             this.back_pro_1 = new System.Windows.Forms.PictureBox();
             this.panel_dop = new WOTBO.UI.ScrollPanel();
@@ -198,7 +196,6 @@ namespace WOTBO
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_animations)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_1)).BeginInit();
             this.panel_dop.SuspendLayout();
@@ -522,20 +519,6 @@ namespace WOTBO
             this.toolTip1.SetToolTip(this.checkBox_contex, "Возвращает классическое контекстное меню");
             this.checkBox_contex.UseVisualStyleBackColor = false;
             this.checkBox_contex.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // checkBox_pro_14
-            // 
-            this.checkBox_pro_14.AutoSize = true;
-            this.checkBox_pro_14.ForeColor = System.Drawing.Color.White;
-            this.checkBox_pro_14.Location = new System.Drawing.Point(20, 305);
-            this.checkBox_pro_14.Name = "checkBox_pro_14";
-            this.checkBox_pro_14.Size = new System.Drawing.Size(171, 17);
-            this.checkBox_pro_14.TabIndex = 21;
-            this.checkBox_pro_14.Tag = "";
-            this.checkBox_pro_14.Text = "Закреплять окна поверх";
-            this.toolTip1.SetToolTip(this.checkBox_pro_14, "Закрепление окна по нажатию Ctrl+Пробел\r\n");
-            this.checkBox_pro_14.UseVisualStyleBackColor = true;
-            this.checkBox_pro_14.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // checkBox_zalipanie
             // 
@@ -1297,8 +1280,6 @@ namespace WOTBO
             this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_2);
             this.panel_ui_1.Controls.Add(this.checkBoxUI_Buttons_1);
             this.panel_ui_1.Controls.Add(this.checkBox_contex);
-            this.panel_ui_1.Controls.Add(this.back_pro_14);
-            this.panel_ui_1.Controls.Add(this.checkBox_pro_14);
             this.panel_ui_1.Controls.Add(this.back_pro_13);
             this.panel_ui_1.Controls.Add(this.checkBox_pro_13);
             this.panel_ui_1.Controls.Add(this.checkBox_pro_1);
@@ -1541,18 +1522,6 @@ namespace WOTBO
             this.back_animations.TabStop = false;
             this.back_animations.Visible = false;
             this.back_animations.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
-            // back_pro_14
-            // 
-            this.back_pro_14.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_pro_14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_pro_14.Location = new System.Drawing.Point(0, 305);
-            this.back_pro_14.Name = "back_pro_14";
-            this.back_pro_14.Size = new System.Drawing.Size(15, 15);
-            this.back_pro_14.TabIndex = 12;
-            this.back_pro_14.TabStop = false;
-            this.back_pro_14.Visible = false;
-            this.back_pro_14.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // back_pro_13
             // 
@@ -3034,7 +3003,6 @@ namespace WOTBO
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_ui_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_animations)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.back_pro_14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.back_pro_1)).EndInit();
             this.panel_dop.ResumeLayout(false);
@@ -3109,8 +3077,6 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_reg;
         private System.Windows.Forms.CheckBox checkBox_mica;
         private System.Windows.Forms.PictureBox back_ui_11;
-        private System.Windows.Forms.PictureBox back_pro_14;
-        private System.Windows.Forms.CheckBox checkBox_pro_14;
         private WOTBO.UI.ScrollPanel panel_dop;
         private System.Windows.Forms.PictureBox back_dop_4;
         private System.Windows.Forms.CheckBox checkBox_zalipanie;

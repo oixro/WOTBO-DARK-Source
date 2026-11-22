@@ -106,7 +106,6 @@ namespace WOTBO.Services.Tweaks
                 new OneDriveTweak(),
                 new HomeGalleryTweak(),
                 new UnlockerTweak(),
-                new AlwaysOnTopTweak(),
                 new AnimationsTweak(),
                 new Win32PriorityTweak(),
                 new MmAgentTweak(),

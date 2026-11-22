@@ -100,7 +100,6 @@ endpoint — для них остаются статические ссылки.
 imageres.zip          ui.bluefolders (Windows 10)
 BlueIcon_Minimal.zip  ui.bluefolders (Windows 11)
 unlocker.zip          pro.unlocker
-AlwaysOnTop.exe       pro.alwaysontop
 smartctl.exe          main.mmagent
 ```
 

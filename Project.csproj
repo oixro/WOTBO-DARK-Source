@@ -203,7 +203,6 @@
     <Compile Include="Services\Tweaks\OneDriveTweak.cs" />
     <Compile Include="Services\Tweaks\HomeGalleryTweak.cs" />
     <Compile Include="Services\Tweaks\UnlockerTweak.cs" />
-    <Compile Include="Services\Tweaks\AlwaysOnTopTweak.cs" />
     <Compile Include="Services\Tweaks\AnimationsTweak.cs" />
     <Compile Include="Services\Tweaks\Win32PriorityTweak.cs" />
     <Compile Include="Services\Tweaks\MmAgentTweak.cs" />
@@ -211,6 +210,7 @@
     <Compile Include="Services\Windows\ExplorerRecovery.cs" />
     <Compile Include="Services\Windows\TweakReset.cs" />
     <Compile Include="Services\Windows\WindowsVersionService.cs" />
+    <Compile Include="Services\Windows\LegacyCleanup.cs" />
     <Compile Include="UI\TweakHoverInfo.cs" />
     <Compile Include="UI\PanelReveal.cs" />
     <Compile Include="UI\ScrollThumb.cs" />

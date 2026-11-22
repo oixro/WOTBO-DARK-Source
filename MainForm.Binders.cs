@@ -534,8 +534,6 @@ namespace WOTBO
                     "Применить?",
                     "Windows optimization tool by oixro (WOTBO)", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
             Bind("pro.unlocker", checkBox_pro_13, back_pro_13, "unclockewr был применён");
-            Bind("pro.alwaysontop", checkBox_pro_14, back_pro_14, "AlwaysOnTop был применён",
-                inRollback: () => AppServices.Processes.StartCaptured("taskkill /f /im AlwaysOnTop.exe"));
 
             TweakHoverInfo.Register(checkBox_ansel.Name, "gpu.ansel");
             TweakHoverInfo.Register(back_gpu_4.Name, "gpu.ansel");

@@ -180,7 +180,6 @@ namespace WOTBO
             //} //cleanmgr
             Binder("pro.bufferbloat").Apply(); //Bufferbloat
             Binder("pro.unlocker").Apply(); //unlocker
-            Binder("pro.alwaysontop").Apply();//alwaysontop
             #endregion
 
             if (checkBox_tweak_tooltips.Checked)

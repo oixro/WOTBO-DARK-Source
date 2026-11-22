@@ -201,6 +201,9 @@ namespace WOTBO
             ApplyWindowSize();
             CenterToScreen();
 
+            // Убираем следы удалённого твика AlwaysOnTop у старых установок.
+            WOTBO.Services.Windows.LegacyCleanup.RemoveAlwaysOnTop(AppServices.TweakContext);
+
             // Панели, которые создаются кодом, строим после финального
             // автоскейла: иначе при 125–200 % их размеры считаются от 96 DPI.
             SetupSettingsPanel();
@@ -428,7 +431,6 @@ namespace WOTBO
             }
 
             Binder("pro.unlocker").Detect();
-            Binder("pro.alwaysontop").Detect();
             Binder("ui.ffmpeg").Detect();
             Binder("extra.iconcache").Detect();
             Binder("extra.mobiletraffic").Detect();
@@ -661,7 +663,6 @@ namespace WOTBO
                 label_progs.Enabled = false;
                 checkBox_mmagent.Enabled = false;
                 checkBox_pro_13.Enabled = false;
-                checkBox_pro_14.Enabled = false;
                 checkBox_ffmpeg.Enabled = false;
                 checkBox_mica.Enabled = false;
                 checkBox_cursors.Enabled = false;
