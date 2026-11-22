@@ -81,8 +81,8 @@ namespace WOTBO
         public static bool ScreenshotMode { get; set; }
         #endregion
         /// <summary>
-        /// Версия для окна и лога: без «build - », с мажором, минором и
-        /// патчем, а четвёртая часть — только если она реально задана.
+        /// Версия для окна и лога: без «build - », всегда с мажором, минором
+        /// и патчем; четвёртая часть — только если она реально задана.
         /// </summary>
         private static string FormatVersion(Version value)
         {
@@ -91,12 +91,7 @@ namespace WOTBO
                 return "0.0";
             }
 
-            if (value.Revision > 0)
-            {
-                return value.ToString(4);
-            }
-
-            return value.Build > 0 ? value.ToString(3) : value.ToString(2);
+            return value.Revision > 0 ? value.ToString(4) : value.ToString(3);
         }
 
         #region default crap
