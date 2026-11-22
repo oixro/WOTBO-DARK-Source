@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using WOTBO.App.Logging;
@@ -32,6 +33,8 @@ namespace WOTBO.Services.Storage
             "[Threading.Thread]::CurrentThread.CurrentUICulture='en-US'; " +
             "(Get-WindowsReservedStorageState).ReservedStorageState\"";
 
+        private static readonly Encoding ConsoleEncoding = CreateConsoleEncoding();
+
         private readonly IProcessService _process;
         private readonly IAppLogger _log;
 
@@ -61,7 +64,7 @@ namespace WOTBO.Services.Storage
 
             // Запасной путь для систем без командлета (Win10 до 2004 и т.п.).
             return await _process
-                .ReadOutputAsync("cmd.exe", "/c chcp 65001 && DISM /Online /Get-ReservedStorageState", 20000, Encoding.UTF8)
+                .ReadOutputAsync("cmd.exe", "/c Dism /Online /Get-ReservedStorageState", 20000, ConsoleEncoding)
                 .ConfigureAwait(false);
         }
 
@@ -88,6 +91,25 @@ namespace WOTBO.Services.Storage
 
             _log.Debug(Category, "reserved storage unknown: " + Short(state));
             return false;
+        }
+
+        private static Encoding CreateConsoleEncoding()
+        {
+            try
+            {
+                return Encoding.GetEncoding(CultureInfo.CurrentCulture.TextInfo.OEMCodePage);
+            }
+            catch
+            {
+                try
+                {
+                    return Encoding.GetEncoding(866);
+                }
+                catch
+                {
+                    return Encoding.Default;
+                }
+            }
         }
 
         private static string Short(string text)

@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Text;
 using WOTBO.Services.Processes;
 
@@ -7,6 +9,12 @@ namespace WOTBO.Services.Tweaks
     public sealed class ReservedStorageTweak : TweakBase
     {
         private const string LogCategory = "Tweak:main.reservedstorage";
+
+        /// <summary>0x800F0975: зарезервированное хранилище занято обслуживанием Windows.</summary>
+        private const int ReservedStorageInUse = unchecked((int)0x800F0975);
+
+        /// <summary>DISM пишет в кодировке консоли, а не в UTF-8, даже после chcp.</summary>
+        private static readonly Encoding ConsoleEncoding = CreateConsoleEncoding();
 
         public override string Id { get { return "main.reservedstorage"; } }
         public override string Category { get { return "Main"; } }
@@ -23,33 +31,19 @@ namespace WOTBO.Services.Tweaks
             // Раньше команда уходила «в никуда»: если DISM отказывался, твик
             // всё равно помечался применённым. Теперь ждём результат и
             // проверяем код возврата.
-            ProcessOutput result = context.Processes
-                .RunAsync(
-                    "cmd.exe",
-                    "/c chcp 65001 && Dism /Online /Set-ReservedStorageState /State:Disabled",
-                    180000,
-                    Encoding.UTF8)
-                .GetAwaiter()
-                .GetResult();
+            ProcessOutput result = RunDism(context, "/Online /Set-ReservedStorageState /State:Disabled", 180000);
 
             if (!result.Ok)
             {
-                throw new TweakApplyException(
-                    "DISM не смог отключить зарезервированное хранилище (код " + result.ExitCode + ").\n\n" + Tail(result.Text),
-                    null);
+                context.Log.Error(LogCategory, "DISM не смог отключить зарезервированное хранилище (код 0x"
+                    + ((uint)result.ExitCode).ToString("X8") + "):\n" + result.Text);
+
+                throw new TweakApplyException(DescribeFailure(result, "отключить"), null);
             }
 
             context.Log.Info(LogCategory, "DISM: " + Tail(result.Text));
 
-            string state = context.Processes
-                .RunAsync(
-                    "cmd.exe",
-                    "/c chcp 65001 && Dism /Online /Get-ReservedStorageState",
-                    60000,
-                    Encoding.UTF8)
-                .GetAwaiter()
-                .GetResult()
-                .Text;
+            string state = RunDism(context, "/Online /Get-ReservedStorageState", 60000).Text;
 
             if (!IsDisabled(state))
             {
@@ -61,20 +55,59 @@ namespace WOTBO.Services.Tweaks
 
         public override void Rollback(TweakContext context)
         {
-            ProcessOutput result = context.Processes
-                .RunAsync(
-                    "cmd.exe",
-                    "/c chcp 65001 && Dism.exe /Online /Set-ReservedStorageState /State:Enabled",
-                    180000,
-                    Encoding.UTF8)
-                .GetAwaiter()
-                .GetResult();
+            ProcessOutput result = RunDism(context, "/Online /Set-ReservedStorageState /State:Enabled", 180000);
 
             if (!result.Ok)
             {
-                throw new TweakApplyException(
-                    "DISM не смог вернуть зарезервированное хранилище (код " + result.ExitCode + ").\n\n" + Tail(result.Text),
-                    null);
+                context.Log.Error(LogCategory, "DISM не смог вернуть зарезервированное хранилище (код 0x"
+                    + ((uint)result.ExitCode).ToString("X8") + "):\n" + result.Text);
+
+                throw new TweakApplyException(DescribeFailure(result, "вернуть"), null);
+            }
+        }
+
+        private static ProcessOutput RunDism(TweakContext context, string arguments, int timeoutMs)
+        {
+            return context.Processes
+                .RunAsync("cmd.exe", "/c Dism " + arguments, timeoutMs, ConsoleEncoding)
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        /// <summary>
+        /// Понятный текст вместо дампа локализованного вывода DISM.
+        /// Код 0x800F0975 — не поломка WOTBO: Windows в этот момент ставит
+        /// обновление и держит зарезервированное хранилище занятым.
+        /// </summary>
+        private static string DescribeFailure(ProcessOutput result, string action)
+        {
+            if (result.ExitCode == ReservedStorageInUse)
+            {
+                return "Windows сейчас использует зарезервированное хранилище — обычно идёт установка обновления.\n\n"
+                    + "Перезагрузите ПК, дайте Windows завершить обновление и повторите.";
+            }
+
+            return "DISM не смог " + action + " зарезервированное хранилище (код 0x"
+                + ((uint)result.ExitCode).ToString("X8") + ").\n\n"
+                + "Подробности: C:\\Windows\\Logs\\DISM\\dism.log";
+        }
+
+        private static Encoding CreateConsoleEncoding()
+        {
+            try
+            {
+                return Encoding.GetEncoding(CultureInfo.CurrentCulture.TextInfo.OEMCodePage);
+            }
+            catch
+            {
+                try
+                {
+                    return Encoding.GetEncoding(866);
+                }
+                catch
+                {
+                    return Encoding.Default;
+                }
             }
         }
 
