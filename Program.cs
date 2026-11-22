@@ -37,10 +37,19 @@ namespace WOTBO
 
                 using (var form = new MainForm())
                 {
-                    form.Show();
-                    PumpMessages(4000);
-                    form.ExportScreenshots(screenshotDirectory, screenshotScale);
-                    form.Close();
+                    // Полноценный цикл сообщений вместо ручного DoEvents:
+                    // иначе у async-загрузки вкладок нет WinForms-контекста
+                    // синхронизации и продолжения падают в пул потоков.
+                    var start = new Timer { Interval = 5000 };
+                    start.Tick += delegate
+                    {
+                        start.Stop();
+                        form.ExportScreenshots(screenshotDirectory, screenshotScale);
+                        form.Close();
+                    };
+                    form.Tag = start;
+                    start.Start();
+                    Application.Run(form);
                 }
 
                 return;
