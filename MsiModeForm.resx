@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label1.Text" xml:space="preserve">
-    <value>1. Видеодрайвер (соответствует наименованию вашей видеокарты) в MSI (ставим ✅ ) и выдаем приоритет High;
-2. Если у вас есть NVME-накопители - проверьте, чтобы они стояли в MsiX режиме с приоритетом High. Если у вас нет NVME-накопителей - ставим High в приоритет на SATA ACHI контроллер;
-3. Аудиодрайвер вводим в MSI (ставим ✅ );
-4. На USB-хабы - ставим 1 в поле "limit";
-5. Убедитесь, что на всех остальных устройствах (исключения указаны выше) в приоритетах стоит только Undefined.
-● Не забудьте применить данные параметры кнопкой "Apply" в правом верхнем углу программы.
-</value>
+    <value>1. В MSI_util посмотрите графу IRQ: число с минусом (-x) — устройство уже в MSI/MSI-X, обычное число — line-based.
+2. NVMe всегда работает в MSI-X. В MSI-X также могут работать SATA Intel, сетевые Intel/Realtek, Wi-Fi/Bluetooth и USB-хабы.
+3. Универсальная настройка: у всех устройств приоритет Undefined, у всех USB-хабов limit = 1. У NVMe limit всегда 2048.
+4. Видеокарты RTX 5000: приоритет High (не обязательно, с Undefined результат тот же) и limit 2048. Для AMD — так же, если в графе max limit стоит число, отличное от 1.
+5. Если в строке Supported modes есть MSI — переводите устройство в MSI.
+6. Всегда ставьте актуальные чипсетные INF-драйверы и свежие драйверы сетевых карт и Wi-Fi/Bluetooth.
+● Примените настройки кнопкой "Apply" в правом верхнем углу MSI_util и перезагрузите ПК.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
 </root>
