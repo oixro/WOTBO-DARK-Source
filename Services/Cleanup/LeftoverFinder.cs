@@ -17,7 +17,6 @@ namespace WOTBO.Services.Cleanup
     /// Папки в AppData, которые, скорее всего, остались от удалённых программ:
     /// имя ни на что установленное не похоже, папка не менялась 90 дней и
     /// весит больше 50 МБ. Всегда «на усмотрение пользователя», без галочки.
-    /// Логика повторяет LeftoverFinder из Roomy (MIT).
     /// </summary>
     internal static class LeftoverFinder
     {

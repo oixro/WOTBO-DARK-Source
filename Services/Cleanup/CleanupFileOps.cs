@@ -24,8 +24,7 @@ namespace WOTBO.Services.Cleanup
 
     /// <summary>
     /// Подсчёт и удаление с защитой: не ходим по junction/symlink, не трогаем
-    /// личные и системные корни, занятые файлы просто пропускаем. Логика
-    /// повторяет FileOps из Roomy (MIT).
+    /// личные и системные корни, занятые файлы просто пропускаем.
     /// </summary>
     internal static class CleanupFileOps
     {

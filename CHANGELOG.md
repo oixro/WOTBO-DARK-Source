@@ -14,7 +14,7 @@
   не превращается в мусор.
 - Подсказка «Режим MSI» переписана: IRQ с минусом = MSI/MSI-X, NVMe всегда
   MSI-X, универсальные Undefined/limit, RTX 5000 и AMD, актуальные драйверы.
-- **Вкладка «Очистка» переписана по логике Roomy.** Сканер ищет не только
+- **Вкладка «Очистка» переписана.** Сканер ищет не только
   TEMP и корзину, но и кэш обновлений и Delivery Optimization, системные
   дампы и WER, кэши браузеров (Chrome, Edge, Brave, Vivaldi, Chromium,
   Firefox, Opera), кэши приложений (Discord, Slack, Teams, Spotify, VS Code,

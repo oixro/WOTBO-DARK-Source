@@ -7,8 +7,7 @@ namespace WOTBO.Services.Cleanup
 {
     /// <summary>
     /// Проверки и удаление через handle, а не по строке пути: junction или
-    /// symlink нельзя подсунуть между проверкой и удалением. Логика взята из
-    /// Roomy (MIT), адаптирована под .NET Framework 4.8.
+    /// symlink нельзя подсунуть между проверкой и удалением.
     /// </summary>
     internal static class SafeFileSystem
     {

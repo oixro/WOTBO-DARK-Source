@@ -29,7 +29,7 @@ namespace WOTBO.Services.Cleanup
         Review,
     }
 
-    /// <summary>Один пункт очистки. Логика и набор мест взяты из Roomy (MIT).</summary>
+    /// <summary>Один пункт очистки.</summary>
     public sealed class CleanupItem
     {
         public CleanupItem(
