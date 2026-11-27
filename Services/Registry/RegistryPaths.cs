@@ -68,6 +68,7 @@ namespace WOTBO.Services.Registry
 
         public const string TweakTooltips = "tweakTooltips";
         public const string Tooltips = "tooltips";
+        public const string WindowHeight = "windowHeight";
         public const string JpegImportQuality = "JPEGImportQuality";
         public const string MaxCachedIcons = "Max Cached Icons";
         public const string StickyKeysFlags = "Flags";

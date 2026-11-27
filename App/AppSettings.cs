@@ -37,6 +37,34 @@ namespace WOTBO.App
         }
 
         /// <summary>
+        /// Высота окна в единицах 96 DPI. 0 — размер по умолчанию.
+        /// Ширина фиксирована, поэтому храним только высоту.
+        /// </summary>
+        public static int WindowHeight
+        {
+            get
+            {
+                object value = AppServices.Registry.GetValue(
+                    RegistryHive.CurrentUser,
+                    RootPath,
+                    WOTBO.Services.Registry.RegistryPaths.WindowHeight);
+
+                int height;
+                return value != null && int.TryParse(Convert.ToString(value), out height) && height > 0
+                    ? height
+                    : 0;
+            }
+            set
+            {
+                AppServices.Registry.WriteValue(
+                    RegistryHive.CurrentUser,
+                    RootPath,
+                    WOTBO.Services.Registry.RegistryPaths.WindowHeight,
+                    Math.Max(0, value));
+            }
+        }
+
+        /// <summary>
         /// Показывать подсказки о применённых твиках. По умолчанию выключено.
         /// </summary>
         public static bool TweakTooltipsEnabled

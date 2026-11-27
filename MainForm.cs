@@ -137,7 +137,11 @@ namespace WOTBO
             // пересчитываем здесь.
             Resizable = true;
             Resize += delegate { if (_layoutReady) LayoutForSize(); };
-            ResizeEnd += delegate { if (pcInfo != null) pcInfo.Relayout(); };
+            ResizeEnd += delegate
+            {
+                SaveWindowHeight();
+                if (pcInfo != null) pcInfo.Relayout();
+            };
 
             CenterToScreen();
             Controls.OfType<Panel>().ToList().ForEach(x => x.GetType().GetProperty("DoubleBuffered")?.SetValue(x, true));
@@ -402,12 +406,36 @@ namespace WOTBO
             MinimumSize = new Size(width, minHeight);
             MaximumSize = new Size(width, Screen.FromControl(this).WorkingArea.Height);
 
-            ClientSize = new Size(width, Math.Max(minHeight, PanelMain.Bottom));
+            // Высоту запоминаем между запусками: пользователь мог растянуть
+            // окно под длинный список.
+            int height = Math.Max(minHeight, PanelMain.Bottom);
+            int saved = AppSettings.WindowHeight;
+            if (saved > 0)
+            {
+                height = Math.Max(minHeight, Dpi.Scale(this, saved));
+            }
+
+            int frame = Math.Max(0, Height - ClientSize.Height);
+            int maxClient = Math.Max(minHeight, Screen.FromControl(this).WorkingArea.Height - frame);
+            ClientSize = new Size(width, Math.Min(height, maxClient));
 
             LayoutForSize();
             CenterHeader();
 
             _layoutReady = true;
+        }
+
+        /// <summary>Сохраняем высоту в единицах 96 DPI, чтобы она не зависела от масштаба.</summary>
+        private void SaveWindowHeight()
+        {
+            if (!_layoutReady || IsDisposed || Disposing)
+            {
+                return;
+            }
+
+            int dpi = DeviceDpi > 0 ? DeviceDpi : 96;
+            int logical = (int)Math.Round(ClientSize.Height * 96.0 / dpi);
+            AppSettings.WindowHeight = logical > 305 ? logical : 0;
         }
 
         /// <summary>Границы панели вкладки для текущего размера окна.</summary>
