@@ -100,11 +100,12 @@ namespace WOTBO
 
             cleanupSelectAll = CreateFlatButton(
                 panel_cleanup,
-                "Выбрать всё",
+                "Безопасные",
                 Dpi.Px(172),
                 panel_cleanup.ClientSize.Height - Dpi.Px(34),
                 95);
             cleanupSelectAll.Enabled = false;
+            toolTip1.SetToolTip(cleanupSelectAll, "Отметить только безопасные пункты. Остальные выбирайте вручную.");
             panel_cleanup.Controls.Add(cleanupSelectAll);
 
             cleanupRefresh.Click += delegate { ScanCleanupAsync(); };
@@ -210,24 +211,53 @@ namespace WOTBO
             };
         }
 
+        private static readonly object CleanupHeaderTag = new object();
+
         private static void ClearRows(ScrollPanel content)
         {
             var rows = content.Controls
-                .OfType<CheckBox>()
+                .Cast<Control>()
+                .Where(control => control is CheckBox || ReferenceEquals(control.Tag, CleanupHeaderTag))
                 .ToList();
 
-            foreach (CheckBox row in rows)
+            foreach (Control row in rows)
             {
                 content.Controls.Remove(row);
                 row.Dispose();
             }
         }
 
+        private void AddCleanupHeader(ScrollPanel content, string text)
+        {
+            int top = content.Controls.Count == 0
+                ? Dpi.Px(2)
+                : content.Controls.Cast<Control>().Max(control => control.Bottom) + Dpi.Px(6);
+
+            var header = new Label
+            {
+                AutoEllipsis = true,
+                AutoSize = false,
+                BackColor = Color.Transparent,
+                Font = new Font(content.Font, FontStyle.Bold),
+                ForeColor = Color.Silver,
+                Height = Dpi.Px(16),
+                Left = 0,
+                Tag = CleanupHeaderTag,
+                Text = text,
+                Top = top,
+                Width = Math.Max(80, content.ClientSize.Width - 14),
+            };
+
+            content.Controls.Add(header);
+        }
+
         private void AddRow(ScrollPanel content, string text, string tooltip, object tag, EventHandler onChecked)
         {
             List<CheckBox> rows = content.Controls.OfType<CheckBox>().ToList();
             int step = Dpi.Px(ListRowStep);
-            int top = rows.Count == 0 ? Dpi.Px(2) : rows.Max(item => item.Top) + step;
+            int top = content.Controls.Count == 0
+                ? Dpi.Px(2)
+                : content.Controls.Cast<Control>().Max(control => control.Bottom) + Dpi.Px(2);
 
             var row = new CheckBox
             {
@@ -290,6 +320,12 @@ namespace WOTBO
 
             foreach (CheckBox row in cleanupContent.Controls.OfType<CheckBox>())
             {
+                var item = row.Tag as CleanupItem;
+                if (item != null && item.Safety == CleanupSafety.Review)
+                {
+                    continue;
+                }
+
                 row.Checked = true;
             }
 
@@ -429,33 +465,40 @@ namespace WOTBO
             cleanupRefresh.Enabled = false;
             cleanupClean.Enabled = false;
             cleanupSelectAll.Enabled = false;
-            cleanupContent.Enabled = false;
             ClearRows(cleanupContent);
             cleanupStatus.Text = "Считаем размеры…";
 
             try
             {
-                List<CleanupItem> items = cleanupService.CreateItems();
+                List<CleanupItem> items = await Task.Run(() => cleanupService.CreateItems());
+                string group = null;
                 for (int i = 0; i < items.Count; i++)
                 {
                     cleanupStatus.Text = "Считаем размеры… " + (i + 1) + " из " + items.Count;
-                    items[i].Size = await cleanupService.ScanAsync(items[i]);
+                    CleanupItem item = await cleanupService.ScanAsync(items[i]);
+
+                    // Пустые категории не показываем: список иначе превращается
+                    // в десятки строк «0 Б». DISM показываем всегда.
+                    if (item.Size <= 0 && item.Action == CleanupAction.Delete)
+                    {
+                        continue;
+                    }
+
+                    if (!string.Equals(group, item.Group, StringComparison.Ordinal))
+                    {
+                        group = item.Group;
+                        AddCleanupHeader(cleanupContent, group);
+                    }
+
                     AddRow(
                         cleanupContent,
-                        items[i].ToString(),
-                        items[i].Kind == CleanupKind.Dism
-                            ? "DISM /StartComponentCleanup /ResetBase — необратимо, может занять 10–30 минут"
-                            : (string.IsNullOrEmpty(items[i].Path) ? "Корзина" : items[i].Path),
-                        items[i],
+                        item.ToString(),
+                        CleanupTooltip(item),
+                        item,
                         delegate { UpdateCleanupButtons(); });
                 }
 
                 PanelScroller.Refresh(cleanupContent);
-
-                if (panel_cleanup.Visible && !ScreenshotMode)
-                {
-                    panelReveal.Play(panel_cleanup);
-                }
 
                 long total = items.Sum(item => item.Size);
                 cleanupStatus.Text = "Всего можно освободить: " + CleanupService.FormatSize(total);
@@ -469,8 +512,8 @@ namespace WOTBO
             {
                 cleanupBusy = false;
                 cleanupRefresh.Enabled = true;
-                cleanupContent.Enabled = true;
                 UpdateCleanupButtons();
+
             }
         }
 
@@ -491,7 +534,7 @@ namespace WOTBO
                 return;
             }
 
-            string warning = selected.Any(item => item.Kind == CleanupKind.Dism)
+            string warning = selected.Any(item => item.Action == CleanupAction.Dism)
                 ? "\n\nDISM ResetBase необратим: после него нельзя удалить установленные обновления. Может занять 10–30 минут."
                 : string.Empty;
 
@@ -533,6 +576,42 @@ namespace WOTBO
                 "WOTBO",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+        }
+
+        private static string CleanupTooltip(CleanupItem item)
+        {
+            if (item.Action == CleanupAction.Dism)
+            {
+                return "DISM /StartComponentCleanup /ResetBase — необратимо, может занять 10–30 минут";
+            }
+
+            if (item.Action == CleanupAction.EmptyRecycleBin)
+            {
+                return "Корзина";
+            }
+
+            if (item.Action == CleanupAction.HibernateOff)
+            {
+                return "Отключит гибернацию и быстрый запуск. Вернуть можно твиком «Гибернация».";
+            }
+
+            string detail = string.IsNullOrEmpty(item.Detail)
+                ? CleanupService.FormatSize(item.Size)
+                : item.Detail;
+
+            if (item.Safety == CleanupSafety.Review)
+            {
+                detail = "На ваше усмотрение. " + detail;
+            }
+
+            if (item.Paths == null || item.Paths.Count == 0)
+            {
+                return detail;
+            }
+
+            return item.Paths.Count == 1
+                ? detail + "\n" + item.Paths[0]
+                : detail + "\n" + item.Paths.Count + " мест";
         }
     }
 }

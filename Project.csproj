@@ -153,7 +153,11 @@
     <Compile Include="Services\Tweaks\SimpleTweak.cs" />
     <Compile Include="Services\Apps\AppsService.cs" />
     <Compile Include="Services\Startup\StartupService.cs" />
+    <Compile Include="Services\Cleanup\CleanupFileOps.cs" />
+    <Compile Include="Services\Cleanup\CleanupLocations.cs" />
     <Compile Include="Services\Cleanup\CleanupService.cs" />
+    <Compile Include="Services\Cleanup\LeftoverFinder.cs" />
+    <Compile Include="Services\Cleanup\SafeFileSystem.cs" />
     <Compile Include="Services\Tweaks\TweakApplyException.cs" />
     <Compile Include="Services\Tweaks\ResourceDownload.cs" />
     <Compile Include="Services\Tweaks\ServiceStartTweak.cs" />
