@@ -40,7 +40,7 @@ namespace WOTBO
         static string path_scheme = tempfolder + @"\scheme.pow";
         private CheckBox checkBox_tweak_tooltips;
         private PictureBox back_ui_tooltips;
-        string curver = (Assembly.GetExecutingAssembly().GetName().Version.ToString(2)).Trim();
+        string curver = FormatVersion(Assembly.GetExecutingAssembly().GetName().Version);
         string exename = AppDomain.CurrentDomain.FriendlyName;
         string exepath = Assembly.GetEntryAssembly().Location;
         string contexpath = @"C:\Windows\wotbo.exe";
