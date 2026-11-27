@@ -229,9 +229,7 @@ namespace WOTBO
 
         private void AddCleanupHeader(ScrollPanel content, string text)
         {
-            int top = content.Controls.Count == 0
-                ? Dpi.Px(2)
-                : content.Controls.Cast<Control>().Max(control => control.Bottom) + Dpi.Px(6);
+            int top = NextRowTop(content) + Dpi.Px(4);
 
             var header = new Label
             {
@@ -251,13 +249,28 @@ namespace WOTBO
             content.Controls.Add(header);
         }
 
+        /// <summary>
+        /// Низ последней строки списка. Полосу прокрутки и прочие служебные
+        /// контролы не учитываем: после растягивания окна thumb уезжает вниз
+        /// и раньше утаскивал за собой весь список.
+        /// </summary>
+        private int NextRowTop(ScrollPanel content)
+        {
+            int bottom = 0;
+            foreach (Control control in content.Controls)
+            {
+                if (control is CheckBox || ReferenceEquals(control.Tag, CleanupHeaderTag))
+                {
+                    bottom = Math.Max(bottom, control.Bottom);
+                }
+            }
+
+            return bottom == 0 ? Dpi.Px(2) : bottom + Dpi.Px(2);
+        }
+
         private void AddRow(ScrollPanel content, string text, string tooltip, object tag, EventHandler onChecked)
         {
-            List<CheckBox> rows = content.Controls.OfType<CheckBox>().ToList();
-            int step = Dpi.Px(ListRowStep);
-            int top = content.Controls.Count == 0
-                ? Dpi.Px(2)
-                : content.Controls.Cast<Control>().Max(control => control.Bottom) + Dpi.Px(2);
+            int top = NextRowTop(content);
 
             var row = new CheckBox
             {
