@@ -94,7 +94,6 @@ namespace WOTBO.Services.Tweaks
                 new NvidiaPowerTweak(),
                 new NvidiaPowerHardTweak(),
                 new IpiLatencyTweak(),
-                new NdisWatchdogTweak(),
                 new SleepStudyTweak(),
                 new VbsTweak(),
                 new SearchIndexTweak(),

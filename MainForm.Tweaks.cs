@@ -149,7 +149,6 @@ namespace WOTBO
             Binder("extra.nagle").Apply();
             Binder("extra.appcompat").Apply();
             Binder("extra.kernellatency").Apply();
-            Binder("extra.ndis").Apply();
             Binder("extra.sleepstudy").Apply();
             Binder("extra.telemetry").Apply();
             Binder("extra.widgets").Apply();

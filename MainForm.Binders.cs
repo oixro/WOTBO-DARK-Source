@@ -96,6 +96,27 @@ namespace WOTBO
             return true;
         }
 
+        /// <summary>
+        /// KernelLatency меняет DPC/прерывания. На части драйверов это даёт
+        /// обрывы сети, фризы и статтеры — предупреждаем до применения.
+        /// </summary>
+        private static bool ConfirmKernelLatencyApply()
+        {
+            DialogResult answer = MessageBox.Show(
+                "Твик экспериментальный и меняет обработку DPC и прерываний в ядре.\n\n"
+                + "У части пользователей после него пропадал интернет (Ethernet/Wi-Fi) "
+                + "до перезагрузки, появлялись статтеры и фризы в играх.\n\n"
+                + "Применять только если понимаете риск. Если что-то сломается — "
+                + "верните твик стрелкой отката и перезагрузите ПК.\n\n"
+                + "Продолжить?",
+                "WOTBO — предупреждение",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+
+            return answer == DialogResult.Yes;
+        }
+
         private bool ConfirmDefenderApply()
         {
             DefenderProtectionState protection = DefenderStatus.GetProtection();
@@ -513,8 +534,8 @@ namespace WOTBO
             Bind("extra.sysrestore", checkBox_sysrestore, back_dop_12, "точки восстановления отключены");
             Bind("extra.nagle", checkBox_nagle, back_dop_13, "Nagle отключён");
             Bind("extra.appcompat", checkBox_appcompat, back_dop_14, "помощник совместимости отключён");
-            Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена");
-            Bind("extra.ndis", checkBox_ndis, back_dop_16, "watchdog'и NDIS отключены");
+            Bind("extra.kernellatency", checkBox_kernellatency, back_dop_15, "низкая задержка ядра включена",
+                confirmApply: ConfirmKernelLatencyApply);
             Bind("extra.sleepstudy", checkBox_sleepstudy, back_dop_17, "SleepStudy отключён");
             Bind("extra.telemetry", checkBox_telemetry, back_dop_18, "службы телеметрии отключены");
             Bind("extra.widgets", checkBox_widgets, back_dop_19, "виджеты отключены");

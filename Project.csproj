@@ -170,7 +170,6 @@
     <Compile Include="Services\Tweaks\NvidiaPowerTweak.cs" />
     <Compile Include="Services\Tweaks\NvidiaPowerHardTweak.cs" />
     <Compile Include="Services\Tweaks\IpiLatencyTweak.cs" />
-    <Compile Include="Services\Tweaks\NdisWatchdogTweak.cs" />
     <Compile Include="Services\Tweaks\SleepStudyTweak.cs" />
     <Compile Include="Services\Tweaks\StartupDelayTweak.cs" />
     <Compile Include="Services\Tweaks\MmcssTweak.cs" />

@@ -206,6 +206,7 @@ namespace WOTBO
 
             // Убираем следы удалённого твика AlwaysOnTop у старых установок.
             WOTBO.Services.Windows.LegacyCleanup.RemoveAlwaysOnTop(AppServices.TweakContext);
+            WOTBO.Services.Windows.LegacyCleanup.RemoveNdisWatchdogs(AppServices.TweakContext);
 
             Log.Debug("UI", $"dpi aware={NativeMethods.DpiAwareness()}, dpi={DeviceDpi}, screen={Screen.FromControl(this).Bounds}, client={ClientSize.Width}x{ClientSize.Height}, autoscale={AutoScaleDimensions}");
 
@@ -551,7 +552,6 @@ namespace WOTBO
             Binder("extra.appcompat").Detect();
             Binder("extra.kernellatency").Detect();
             Binder("main.ipilatency").Detect();
-            Binder("extra.ndis").Detect();
             Binder("extra.sleepstudy").Detect();
             Binder("main.vbs").Detect();
             Binder("main.searchindex").Detect();

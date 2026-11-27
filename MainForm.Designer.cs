@@ -255,14 +255,12 @@ namespace WOTBO
             this.checkBox_nvhard = new System.Windows.Forms.CheckBox();
             this.checkBox_nvtelemetry = new System.Windows.Forms.CheckBox();
             this.checkBox_ipilatency = new System.Windows.Forms.CheckBox();
-            this.checkBox_ndis = new System.Windows.Forms.CheckBox();
             this.checkBox_sleepstudy = new System.Windows.Forms.CheckBox();
             this.back_gpu_6 = new System.Windows.Forms.PictureBox();
             this.back_gpu_7 = new System.Windows.Forms.PictureBox();
             this.back_gpu_8 = new System.Windows.Forms.PictureBox();
             this.back_gpu_9 = new System.Windows.Forms.PictureBox();
             this.back_main_20 = new System.Windows.Forms.PictureBox();
-            this.back_dop_16 = new System.Windows.Forms.PictureBox();
             this.back_dop_17 = new System.Windows.Forms.PictureBox();
             this.checkBox_vbs = new System.Windows.Forms.CheckBox();
             this.checkBox_searchindex = new System.Windows.Forms.CheckBox();
@@ -2190,9 +2188,7 @@ namespace WOTBO
             this.panel_dop.Controls.Add(this.back_dop_13);
             this.panel_dop.Controls.Add(this.back_dop_14);
             this.panel_dop.Controls.Add(this.back_dop_15);
-            this.panel_dop.Controls.Add(this.checkBox_ndis);
             this.panel_dop.Controls.Add(this.checkBox_sleepstudy);
-            this.panel_dop.Controls.Add(this.back_dop_16);
             this.panel_dop.Controls.Add(this.back_dop_17);
             this.panel_dop.Controls.Add(this.checkBox_telemetry);
             this.panel_dop.Controls.Add(this.checkBox_widgets);
@@ -2794,39 +2790,12 @@ namespace WOTBO
             this.back_main_20.Visible = false;
             this.back_main_20.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
-            // checkBox_ndis
-            // 
-            this.checkBox_ndis.AutoSize = true;
-            this.checkBox_ndis.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_ndis.ForeColor = System.Drawing.Color.White;
-            this.checkBox_ndis.Location = new System.Drawing.Point(20, 405);
-            this.checkBox_ndis.Name = "checkBox_ndis";
-            this.checkBox_ndis.Size = new System.Drawing.Size(220, 17);
-            this.checkBox_ndis.TabIndex = 59;
-            this.checkBox_ndis.Tag = "";
-            this.checkBox_ndis.Text = "Отключить watchdog'и NDIS";
-            this.toolTip1.SetToolTip(this.checkBox_ndis, "Отключает сторожевые таймеры и отладочные замеры сетевого стека NDIS.");
-            this.checkBox_ndis.UseVisualStyleBackColor = true;
-            this.checkBox_ndis.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
-            // 
-            // back_dop_16
-            // 
-            this.back_dop_16.BackgroundImage = global::WOTBO.Properties.Resources.back;
-            this.back_dop_16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_16.Location = new System.Drawing.Point(0, 405);
-            this.back_dop_16.Name = "back_dop_16";
-            this.back_dop_16.Size = new System.Drawing.Size(15, 15);
-            this.back_dop_16.TabIndex = 42;
-            this.back_dop_16.TabStop = false;
-            this.back_dop_16.Visible = false;
-            this.back_dop_16.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
             // checkBox_sleepstudy
             // 
             this.checkBox_sleepstudy.AutoSize = true;
             this.checkBox_sleepstudy.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_sleepstudy.ForeColor = System.Drawing.Color.White;
-            this.checkBox_sleepstudy.Location = new System.Drawing.Point(20, 425);
+            this.checkBox_sleepstudy.Location = new System.Drawing.Point(20, 405);
             this.checkBox_sleepstudy.Name = "checkBox_sleepstudy";
             this.checkBox_sleepstudy.Size = new System.Drawing.Size(220, 17);
             this.checkBox_sleepstudy.TabIndex = 60;
@@ -2840,7 +2809,7 @@ namespace WOTBO
             // 
             this.back_dop_17.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_17.Location = new System.Drawing.Point(0, 425);
+            this.back_dop_17.Location = new System.Drawing.Point(0, 405);
             this.back_dop_17.Name = "back_dop_17";
             this.back_dop_17.Size = new System.Drawing.Size(15, 15);
             this.back_dop_17.TabIndex = 43;
@@ -2907,7 +2876,7 @@ namespace WOTBO
             this.checkBox_telemetry.AutoSize = true;
             this.checkBox_telemetry.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_telemetry.ForeColor = System.Drawing.Color.White;
-            this.checkBox_telemetry.Location = new System.Drawing.Point(20, 445);
+            this.checkBox_telemetry.Location = new System.Drawing.Point(20, 425);
             this.checkBox_telemetry.Name = "checkBox_telemetry";
             this.checkBox_telemetry.Size = new System.Drawing.Size(220, 17);
             this.checkBox_telemetry.TabIndex = 65;
@@ -2921,7 +2890,7 @@ namespace WOTBO
             // 
             this.back_dop_18.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_18.Location = new System.Drawing.Point(0, 445);
+            this.back_dop_18.Location = new System.Drawing.Point(0, 425);
             this.back_dop_18.Name = "back_dop_18";
             this.back_dop_18.Size = new System.Drawing.Size(15, 15);
             this.back_dop_18.TabIndex = 48;
@@ -2934,7 +2903,7 @@ namespace WOTBO
             this.checkBox_widgets.AutoSize = true;
             this.checkBox_widgets.BackColor = System.Drawing.Color.Transparent;
             this.checkBox_widgets.ForeColor = System.Drawing.Color.White;
-            this.checkBox_widgets.Location = new System.Drawing.Point(20, 465);
+            this.checkBox_widgets.Location = new System.Drawing.Point(20, 445);
             this.checkBox_widgets.Name = "checkBox_widgets";
             this.checkBox_widgets.Size = new System.Drawing.Size(220, 17);
             this.checkBox_widgets.TabIndex = 66;
@@ -2948,7 +2917,7 @@ namespace WOTBO
             // 
             this.back_dop_19.BackgroundImage = global::WOTBO.Properties.Resources.back;
             this.back_dop_19.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.back_dop_19.Location = new System.Drawing.Point(0, 465);
+            this.back_dop_19.Location = new System.Drawing.Point(0, 445);
             this.back_dop_19.Name = "back_dop_19";
             this.back_dop_19.Size = new System.Drawing.Size(15, 15);
             this.back_dop_19.TabIndex = 49;
@@ -3181,14 +3150,12 @@ namespace WOTBO
         private System.Windows.Forms.CheckBox checkBox_nvhard;
         private System.Windows.Forms.CheckBox checkBox_nvtelemetry;
         private System.Windows.Forms.CheckBox checkBox_ipilatency;
-        private System.Windows.Forms.CheckBox checkBox_ndis;
         private System.Windows.Forms.CheckBox checkBox_sleepstudy;
         private System.Windows.Forms.PictureBox back_gpu_6;
         private System.Windows.Forms.PictureBox back_gpu_7;
         private System.Windows.Forms.PictureBox back_gpu_8;
         private System.Windows.Forms.PictureBox back_gpu_9;
         private System.Windows.Forms.PictureBox back_main_20;
-        private System.Windows.Forms.PictureBox back_dop_16;
         private System.Windows.Forms.PictureBox back_dop_17;
         private System.Windows.Forms.CheckBox checkBox_startupdelay;
         private System.Windows.Forms.CheckBox checkBox_mmcss;
